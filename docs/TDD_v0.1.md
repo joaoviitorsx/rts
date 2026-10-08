@@ -23,66 +23,42 @@
 
 ## 1. Estrutura de pastas 📎
 
-Godot .NET exige o `.csproj` do jogo na raiz, com o mesmo nome do projeto. A simulação vive em um **projeto .NET separado**, sem referência ao GodotSharp, e o projeto do jogo referencia ele.
+> **Atualizado em 08/10/2026 (A1–A3):** o projeto Godot mora em `godot/`; originais de terceiros em `art/vendor_raw/` (fora do git e fora da Godot).
 
 ```text
 rts/
-├── project.godot
 ├── Ironvale.sln                     # sim + testes + cli + jogo
-├── Ironvale.csproj                  # assembly do jogo (Godot.NET.Sdk) → só código de view
-├── .gitignore / .gitattributes / .editorconfig
-│
-├── src/                             # (.gdignore) — Godot não importa nada daqui
+├── CREDITS.md
+├── src/                             # .NET puro, fora do projeto Godot
 │   ├── Ironvale.Sim/                # net8.0, ZERO dependência de Godot
-│   │   ├── Core/          World, EntityId, Qty, Rng (PCG32), StateHasher
-│   │   ├── Time/          SimClock, Calendar, Frequency, Scheduler, ISimSystem
-│   │   ├── Content/       ContentDb, *Def (ResourceDef, BuildingDef, RecipeDef, PolicyDef), ContentLoader (JSON)
-│   │   ├── Map/           GridMap, Cell, Footprint
-│   │   ├── Economy/       Stockpile, Ledger (conservação)
-│   │   ├── Population/    Household, Needs
-│   │   ├── Buildings/     Building, ConstructionSite
-│   │   ├── Jobs/          JobSlot, JobAssignment
-│   │   ├── Logistics/     HaulTask, Carrier, Shipment
-│   │   ├── Policies/      Policy, KeepAbovePolicy, PolicyLog
-│   │   ├── Systems/       ProductionSystem, TransportSystem, ConsumptionSystem, NeedsSystem, ToolWearSystem, PolicySystem, SubsistenceSystem
-│   │   ├── Commands/      ISimCommand + comandos, CommandQueue, CommandResult
-│   │   ├── Events/        SimEvent + tipos (BuildingPlaced, ShipmentStarted, …)
-│   │   ├── Telemetry/     ResourceSeries, TelemetryRecorder, DeadlockDetector
-│   │   └── Save/          SaveModel (DTOs), SaveSerializer, Migrations/
-│   └── Ironvale.Sim.Cli/            # runner headless: `dotnet run -- --seed 42 --years 50 --csv out/`
-│
-├── tests/                           # (.gdignore)
+│   │   ├── Core/ Time/ Content/ Map/ Economy/ Population/ Buildings/
+│   │   ├── Logistics/ Policies/ Systems/ Commands/ Events/ Telemetry/ Save/
+│   │   └── World.cs
+│   └── Ironvale.Sim.Cli/            # runner headless
+├── tests/
 │   └── Ironvale.Sim.Tests/          # xUnit
-│
-├── data/                            # conteúdo data-driven (JSON) — lido pela sim, empacotado no export
-│   ├── resources.json
-│   ├── buildings.json
-│   ├── recipes.json
-│   ├── policies.json
-│   ├── balance.json                 # constantes globais (consumo/dia, desgaste, capacidade de carga…)
-│   └── scenarios/mvp_start.json     # 6 famílias, Salão, estoque da carroça
-│
-├── game/                            # camada VIEW (Godot)
-│   ├── scenes/        main.tscn, world/world_view.tscn, ui/hud.tscn, ui/debug_panel.tscn, ui/build_bar.tscn, ui/building_panel.tscn
-│   ├── scripts/       SimHost.cs, WorldView.cs, CameraRig.cs, AgentRenderer.cs, BuildController.cs, ui/*.cs
-│   ├── visuals/       visual_catalog.json (defId → primitiva ou .glb), VisualFactory.cs
-│   └── materials/     placeholders cinza por função
-│
-├── assets/                          # packs de terceiros, intocados, um subdir por pack
-│   └── third_party/quaternius_stylized_nature/ (só glTF + Textures; FBX/OBJ com .gdignore)
-│
-├── tools/                           # scripts auxiliares (ex.: dump de telemetria → gráfico)
+├── scripts/
+│   └── setup_vendor.py              # art/vendor_raw → godot/assets/vendor (só glTF/GLB + texturas)
+├── art/
+│   └── vendor_raw/                  # pacotes originais, intocados (gitignored) — ver docs/vendor_sources.md
+├── godot/                           # projeto Godot (res:// = godot/)
+│   ├── project.godot
+│   ├── Ironvale.csproj              # assembly do jogo (Godot.NET.Sdk) → ProjectReference ../src/Ironvale.Sim
+│   ├── data/                        # conteúdo data-driven (JSON), empacotado no export (res://data)
+│   │   ├── resources.json  buildings.json  recipes.json  policies.json  balance.json
+│   │   └── scenarios/mvp_start.json
+│   ├── game/                        # VIEW: scenes/, scripts/, visuals/
+│   ├── assets/
+│   │   ├── vendor/<pack_id>/        # cópias geradas pelo script (gitignored)
+│   │   └── <categoria>/             # cenas herdadas BLD_*/ENV_*/PROP_*/CHR_* (versionadas) — Etapa 2
+│   └── addons/                      # godot_devpilot_mcp (symlink local), Terrain3D (Etapa 2)
 └── docs/
 ```
 
-### 1.1 Regras do csproj do jogo
-- `Ironvale.csproj` faz `<Compile Remove="src/**;tests/**;tools/**" />` (o SDK do Godot inclui todo `**/*.cs` por padrão) e `<ProjectReference Include="src/Ironvale.Sim/Ironvale.Sim.csproj" />`.
-- `Ironvale.Sim` e `Ironvale.Sim.Tests` compilam e rodam **só com o .NET SDK**, sem Godot instalado.
-- `src/` e `tests/` têm `.gdignore` para o editor não varrer `bin/obj`.
-
-### 1.2 Assets
-- Proposta: mover `assets/Stylized Nature MegaKit[Standard]/` → `assets/third_party/quaternius_stylized_nature/` (sem espaço/colchete), manter **só glTF + Textures**, colocar `.gdignore` em `FBX/`, `FBX (Unity)/`, `OBJ/`, previews, e manter o `License_Standard.txt`.
-- Cada pack novo (KayKit, LOWPO) segue o mesmo padrão `assets/third_party/<autor>_<pack>/`.
+### 1.1 Regras
+- `Ironvale.Sim` e `Ironvale.Sim.Tests` compilam e rodam **só com o .NET SDK**, sem Godot.
+- Testes e CLI leem o conteúdo de `godot/data/` (mesmos arquivos que o jogo).
+- O código do jogo referencia só cenas em `godot/assets/<categoria>/`, nunca `vendor/` direto.
 
 ---
 

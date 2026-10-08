@@ -14,8 +14,10 @@ TestResults/
 /out/
 .godot_mcp/
 
-# Third-party pack formats we don't use (kept locally, ignored by Godot via .gdignore)
-assets/third_party/*/_unused/
+# Third-party packs: originals and the copies Godot imports are NOT versioned.
+# Sources are documented in docs/vendor_sources.md; rebuild with scripts/setup_vendor.py.
+/art/vendor_raw/
+/godot/assets/vendor/
 
 # Dev tooling addon (symlink to local godot-devpilot-mcp checkout)
-addons/godot_devpilot_mcp
+/godot/addons/godot_devpilot_mcp
