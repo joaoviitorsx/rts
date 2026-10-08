@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_stylized_nature/TwistedTree_1.gltf" id="1_TwistedTree_1"]
+
+[node name="ENV_TwistedTree_A" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_TwistedTree_1")]
+transform = Transform3D(0.62, 0, 0, 0, 0.62, 0, 0, 0, 0.62, 0, 0.07491, 0)

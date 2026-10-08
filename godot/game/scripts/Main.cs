@@ -51,7 +51,7 @@ public partial class Main : Node3D
         AddChild(camera);
         var map = host.World.Map;
         camera.SetBounds(new Rect2(0, 0, map.Width * catalog.CellSize, map.Height * catalog.CellSize));
-        if (host.World.SeatBuilding is { } seat) camera.FocusOn(view.FootprintCenter(seat), 55);
+        if (host.World.SeatBuilding is { } seat) camera.FocusOn(view.FootprintCenter(seat), 40);
 
         var build = new BuildController { Name = "BuildController" };
         AddChild(build);
@@ -62,6 +62,7 @@ public partial class Main : Node3D
         ui.Init(host, build, view);
 
         ApplyCommandLine(host);
+        PerfProbe.AttachIfRequested(this);
         if (OS.GetCmdlineUserArgs().Contains("--debug")) ui.ToggleDebug();
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
         {

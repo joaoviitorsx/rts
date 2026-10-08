@@ -27,3 +27,6 @@ TestResults/
 
 # Dev tooling addon (symlink to local godot-devpilot-mcp checkout)
 /godot/addons/godot_devpilot_mcp
+
+# Third-party Godot addons installed by scripts/setup_vendor.py (see docs/vendor_sources.md)
+/godot/addons/terrain_3d/

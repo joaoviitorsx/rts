@@ -132,6 +132,39 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
     return plan
 
 
+# Godot addons installed from art/vendor_raw (PC only: Windows/Linux x86_64 binaries).
+ADDONS = [
+    # (glob for the raw folder, addon folder inside it, destination, binary name filters to keep)
+    ("Terrain3D_v*", "addons/terrain_3d", "godot/addons/terrain_3d", ("windows.", "linux.")),
+]
+ADDON_ARCH_SKIP = ("arm64", "rv64", "arm32")
+
+
+def install_addons(dry_run: bool) -> int:
+    for pattern, sub, dst, keep in ADDONS:
+        matches = sorted(d for d in RAW.iterdir() if d.is_dir() and fnmatch.fnmatch(d.name, pattern))
+        if not matches:
+            print(f"- addon {dst}: not in art/vendor_raw/ (skipped)")
+            continue
+        src = matches[-1] / sub
+        copied = 0
+        for f in sorted(src.rglob("*")):
+            if not f.is_file():
+                continue
+            rel = f.relative_to(src)
+            if rel.parts[0] == "bin" and (not any(k in f.name for k in keep) or any(a in f.name for a in ADDON_ARCH_SKIP)):
+                continue
+            out = ROOT / dst / rel
+            if same_file(f, out):
+                continue
+            copied += 1
+            if not dry_run:
+                out.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(f, out)
+        print(f"- addon {dst} from '{matches[-1].name}': {copied} files {'to copy' if dry_run else 'copied'}")
+    return 0
+
+
 # Derived assets built with Blender from the vendor copies (never from/into art/vendor_raw).
 DERIVED = [
     ("tools/blender/make_head_only.py",
@@ -228,6 +261,8 @@ def main() -> int:
                     print(f"  would delete {f.relative_to(ROOT)}")
                 else:
                     f.unlink()
+
+    install_addons(args.dry_run)
 
     if (args.derive or args.force_derive) and not args.dry_run:
         if derive(args.force_derive) != 0:

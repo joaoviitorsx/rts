@@ -70,8 +70,8 @@ def rotate_xz(x, z, deg):
 
 # ---------------------------------------------------------------------------------------------- bounds
 
-def gltf_min_y(res_path: str) -> float:
-    """Min Y of a .gltf's geometry in scene space (node transforms applied)."""
+def gltf_bounds(res_path: str):
+    """(min, max) [x, y, z] of a .gltf's geometry in scene space (node transforms applied)."""
     path = GODOT / res_path.removeprefix("res://")
     doc = json.loads(path.read_text(encoding="utf-8"))
 
@@ -89,7 +89,8 @@ def gltf_min_y(res_path: str) -> float:
     def mul(a, b):
         return [[sum(a[i][k] * b[k][j] for k in range(4)) for j in range(4)] for i in range(4)]
 
-    lo = [math.inf]
+    lo = [math.inf] * 3
+    hi = [-math.inf] * 3
 
     def walk(i, m):
         n = doc["nodes"][i]
@@ -100,15 +101,21 @@ def gltf_min_y(res_path: str) -> float:
                 for cx in (a["min"][0], a["max"][0]):
                     for cy in (a["min"][1], a["max"][1]):
                         for cz in (a["min"][2], a["max"][2]):
-                            y = m[1][0] * cx + m[1][1] * cy + m[1][2] * cz + m[1][3]
-                            lo[0] = min(lo[0], y)
+                            for k in range(3):
+                                v = m[k][0] * cx + m[k][1] * cy + m[k][2] * cz + m[k][3]
+                                lo[k] = min(lo[k], v)
+                                hi[k] = max(hi[k], v)
         for ch in n.get("children", []):
             walk(ch, m)
 
     ident = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
     for r in doc["scenes"][doc.get("scene", 0)]["nodes"]:
         walk(r, ident)
-    return lo[0]
+    return lo, hi
+
+
+def gltf_min_y(res_path: str) -> float:
+    return gltf_bounds(res_path)[0][1]
 
 
 # ---------------------------------------------------------------------------------------------- scene writer
@@ -134,10 +141,11 @@ class Scene:
         self.names[name] = n + 1
         return name if n == 0 else f"{name}_{n + 1}"
 
-    def instance(self, path: str, name: str, xform: str, parent: str = "."):
+    def instance(self, path: str, name: str, xform: str, parent: str = ".", props: list[str] | None = None):
         eid = self.ext_id(path)
+        extra = "".join(p + "\n" for p in (props or []))
         self.nodes.append(f'[node name="{self.unique(name)}" parent="{parent}" instance=ExtResource("{eid}")]\n'
-                          f"transform = {xform}\n")
+                          f"transform = {xform}\n{extra}")
 
     def node(self, name: str, type_: str, props: list[str], parent: str = "."):
         body = "".join(p + "\n" for p in props)
@@ -265,7 +273,11 @@ def _build_block(scene: Scene, b: dict, style: dict, idx: dict, origin):
     if "roof" in b:
         roof_rot = b.get("roof_rot", 0)
         roof_y = b.get("roof_y", WALL_H)
-        scene.instance(PREFIX["MVK"].format(b["roof"]), "Roof", transform((ox, roof_y, oz), roof_rot))
+        roof_path = PREFIX["MVK"].format(b["roof"])
+        # Most MVK roofs are centred, some (e.g. 6x4) have the pivot at one end: centre them on the block.
+        lo, hi = gltf_bounds(roof_path)
+        cx, cz = rotate_xz(-round((lo[0] + hi[0]) / 2), -round((lo[2] + hi[2]) / 2), roof_rot)
+        scene.instance(roof_path, "Roof", transform((ox + cx, roof_y, oz + cz), roof_rot))
         # Gable ends: the roof pieces are open at both ends of the ridge (roof-local ±Z).
         span, depth = roof_span(b["roof"])
         if b.get("gables", True) and span:
@@ -297,7 +309,8 @@ def build_placeholder(scene: Scene, e: dict, idx: dict):
 def build_character(scene: Scene, e: dict, idx: dict):
     script = "res://game/scripts/visual/ModularCharacter.cs"
     scene.root_props.append(f'script = ExtResource("{scene.ext_id(script, "Script")}")')
-    scene.instance(resolve(e["body"], idx), "Body", transform())
+    # Body scale sets the height (~1.75 m); outfit/hair meshes are moved onto the body skeleton at runtime.
+    scene.instance(resolve(e["body"], idx), "Body", transform(scale=e.get("body_scale", 1.0)))
     scene.instance(resolve(e["outfit"], idx), "Outfit", transform())
     if e.get("hair"):
         scene.instance(resolve(e["hair"], idx), "Hair", transform())

@@ -6,7 +6,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/CommonTree_1",
-   "scale": 0.6,
+   "scale": 1.2,
    "sink": -0.08
   },
   {
@@ -14,7 +14,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/CommonTree_2",
-   "scale": 0.6,
+   "scale": 1.2,
    "sink": -0.08
   },
   {
@@ -22,7 +22,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/CommonTree_3",
-   "scale": 0.6,
+   "scale": 1.2,
    "sink": -0.08
   },
   {
@@ -30,7 +30,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/CommonTree_4",
-   "scale": 0.6,
+   "scale": 1.2,
    "sink": -0.08
   },
   {
@@ -38,7 +38,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/CommonTree_5",
-   "scale": 0.6,
+   "scale": 1.2,
    "sink": -0.08
   },
   {
@@ -46,7 +46,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/Pine_1",
-   "scale": 0.6,
+   "scale": 1.35,
    "sink": -0.08
   },
   {
@@ -54,7 +54,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/Pine_2",
-   "scale": 0.6,
+   "scale": 1.35,
    "sink": -0.08
   },
   {
@@ -62,7 +62,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/Pine_3",
-   "scale": 0.6,
+   "scale": 1.35,
    "sink": -0.08
   },
   {
@@ -70,7 +70,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/Pine_4",
-   "scale": 0.6,
+   "scale": 1.35,
    "sink": -0.08
   },
   {
@@ -78,7 +78,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/Pine_5",
-   "scale": 0.6,
+   "scale": 1.35,
    "sink": -0.08
   },
   {
@@ -86,7 +86,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/DeadTree_1",
-   "scale": 0.4,
+   "scale": 0.75,
    "sink": -0.05
   },
   {
@@ -94,7 +94,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/DeadTree_2",
-   "scale": 0.4,
+   "scale": 0.75,
    "sink": -0.05
   },
   {
@@ -102,7 +102,7 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/DeadTree_3",
-   "scale": 0.4,
+   "scale": 0.75,
    "sink": -0.05
   },
   {
@@ -124,28 +124,28 @@
    "category": "environment",
    "kind": "model",
    "src": "NAT/Grass_Common_Short",
-   "scale": 0.35
+   "scale": 0.45
   },
   {
    "id": "ENV_Grass_B",
    "category": "environment",
    "kind": "model",
    "src": "NAT/Grass_Common_Tall",
-   "scale": 0.35
+   "scale": 0.45
   },
   {
    "id": "ENV_Grass_C",
    "category": "environment",
    "kind": "model",
    "src": "NAT/Grass_Wispy_Short",
-   "scale": 0.35
+   "scale": 0.45
   },
   {
    "id": "ENV_Grass_D",
    "category": "environment",
    "kind": "model",
    "src": "NAT/Grass_Wispy_Tall",
-   "scale": 0.35
+   "scale": 0.45
   },
   {
    "id": "ENV_Flower_A",
@@ -1741,7 +1741,8 @@
    "outfit": "res://assets/vendor/quaternius_outfits_fantasy/outfits/Male_Peasant.gltf",
    "hair": "res://assets/vendor/quaternius_base_characters/hair_rigged/Hair_SimpleParted.gltf",
    "library": "res://assets/characters/animations/LIB_Villager.tres",
-   "autoplay": "idle"
+   "autoplay": "idle",
+   "body_scale": 0.96
   },
   {
    "id": "CHR_Villager_Base_F",
@@ -1751,7 +1752,103 @@
    "outfit": "res://assets/vendor/quaternius_outfits_fantasy/outfits/Female_Peasant.gltf",
    "hair": "res://assets/vendor/quaternius_base_characters/hair_rigged/Hair_Buns.gltf",
    "library": "res://assets/characters/animations/LIB_Villager.tres",
-   "autoplay": "idle"
+   "autoplay": "idle",
+   "body_scale": 0.985
+  },
+  {
+   "id": "ENV_Plant_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Plant_1",
+   "scale": 0.6
+  },
+  {
+   "id": "ENV_Plant_B",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Plant_1_Big",
+   "scale": 0.4
+  },
+  {
+   "id": "ENV_GroundLeaf_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Plant_7",
+   "scale": 0.9
+  },
+  {
+   "id": "ENV_GroundLeaf_B",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Plant_7_Big",
+   "scale": 0.8
+  },
+  {
+   "id": "ENV_FlowerSingle_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Flower_3_Single",
+   "scale": 0.3
+  },
+  {
+   "id": "ENV_FlowerSingle_B",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Flower_4_Single",
+   "scale": 0.3
+  },
+  {
+   "id": "ENV_Petal_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Petal_1",
+   "scale": 1.0
+  },
+  {
+   "id": "ENV_Petal_B",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Petal_3",
+   "scale": 1.0
+  },
+  {
+   "id": "ENV_Clover_B",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Clover_2",
+   "scale": 0.35
+  },
+  {
+   "id": "ENV_TwistedTree_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/TwistedTree_1",
+   "scale": 0.62,
+   "sink": -0.05
+  },
+  {
+   "id": "ENV_TwistedTree_B",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/TwistedTree_3",
+   "scale": 0.62,
+   "sink": -0.05
+  },
+  {
+   "id": "ENV_Oak_Big_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/CommonTree_3",
+   "scale": 1.45,
+   "sink": -0.1
+  },
+  {
+   "id": "ENV_Pine_Big_A",
+   "category": "environment",
+   "kind": "model",
+   "src": "NAT/Pine_2",
+   "scale": 1.5,
+   "sink": -0.1
   }
  ]
 }

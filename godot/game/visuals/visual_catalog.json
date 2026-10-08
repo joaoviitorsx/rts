@@ -1,15 +1,17 @@
 {
   // View-only mapping: simulation id → visual. The simulation never reads this file.
-  // To swap a placeholder for a real model later, replace the entry with { "scene": "res://assets/<categoria>/BLD_*.tscn" }.
-  // Primitive sizes are in meters (1 grid cell = 2 m). "roof" adds a second primitive on top (cozy colour-by-function).
+  // "scene"/"variants" point to our asset scenes (godot/assets/<categoria>/), never to vendor files.
+  // "primitive" entries are fallbacks/placeholders. 1 grid cell = 2 m.
   "cellSize": 2.0,
+  "construction": "res://assets/buildings/BLD_Site_A.tscn",
   "buildings": {
-    "hall":       { "primitive": "box",      "size": [5.4, 3.2, 5.4], "color": "#c9b79c", "roof": { "primitive": "prism", "height": 1.8, "color": "#6f7f99" } },
-    "house":      { "primitive": "box",      "size": [3.2, 2.2, 3.2], "color": "#e8dcc4", "roof": { "primitive": "prism", "height": 1.4, "color": "#d9b45a" } },
-    "woodcutter": { "primitive": "box",      "size": [3.0, 1.8, 2.6], "color": "#a47c58", "roof": { "primitive": "prism", "height": 1.0, "color": "#b0563f" } },
-    "field":      { "primitive": "box",      "size": [7.6, 0.15, 7.6], "color": "#9c7a4e" },
-    "granary":    { "primitive": "cylinder", "size": [4.6, 3.0, 3.4], "color": "#d8c7a0", "roof": { "primitive": "cone", "height": 1.6, "color": "#b0563f" } }
+    "hall":       { "scene": "res://assets/buildings/BLD_Hall_A.tscn" },
+    "house":      { "variants": ["res://assets/buildings/BLD_House_T1_A.tscn", "res://assets/buildings/BLD_House_T1_B.tscn", "res://assets/buildings/BLD_House_T1_C.tscn"] },
+    "woodcutter": { "scene": "res://assets/buildings/BLD_Woodcutter_A.tscn" },
+    "field":      { "scene": "res://assets/buildings/BLD_Field_A.tscn" },
+    "granary":    { "scene": "res://assets/buildings/BLD_Granary_A.tscn" }
   },
+  "characters": ["res://assets/characters/CHR_Villager_Base.tscn", "res://assets/characters/CHR_Villager_Base_F.tscn"],
   "agents": {
     "carrier":    { "size": [0.6, 1.0, 0.6], "color": "#3b6fb6" },
     "working":    { "size": [0.6, 1.0, 0.6], "color": "#4f9a4a" },

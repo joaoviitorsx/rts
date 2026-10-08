@@ -3,14 +3,14 @@ using Godot;
 namespace Ironvale.Game;
 
 /// <summary>
-/// Official RTS camera: perspective with low FOV, high pitch (~57°), smooth pan and zoom,
+/// Official RTS camera: perspective FOV 32°, pitch 50° (owner: 45–55°, 30–35°), smooth pan and zoom,
 /// rotation in 90° steps. No pixel snapping (cozy 3D direction).
 /// Controls: WASD/arrows/screen edge/middle-drag = pan · wheel = zoom · Q/E = rotate.
 /// </summary>
 public partial class CameraRig : Node3D
 {
-    [Export] public float Fov { get; set; } = 30f;
-    [Export] public float PitchDegrees { get; set; } = 57f;
+    [Export] public float Fov { get; set; } = 32f;
+    [Export] public float PitchDegrees { get; set; } = 50f;
     [Export] public float MinDistance { get; set; } = 18f;
     [Export] public float MaxDistance { get; set; } = 140f;
     [Export] public float PanSpeed { get; set; } = 1.1f;      // fraction of distance per second
@@ -39,6 +39,9 @@ public partial class CameraRig : Node3D
     }
 
     public void SetBounds(Rect2 boundsXZ) => _bounds = boundsXZ;
+
+    /// <summary>GDScript-friendly variant (nullable args are not exposed to GDScript).</summary>
+    public void FocusAt(Vector3 point, float distance) => FocusOn(point, distance);
 
     public void FocusOn(Vector3 point, float? distance = null)
     {

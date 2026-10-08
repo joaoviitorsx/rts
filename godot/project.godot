@@ -29,7 +29,7 @@ project/assembly_name="Ironvale"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_devpilot_mcp/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_devpilot_mcp/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [importer_defaults]
 
@@ -49,3 +49,74 @@ texture={
 
 rendering_device/driver.windows="d3d12"
 anti_aliasing/quality/msaa_3d=2
+
+[shader_globals]
+
+ground_base={
+"type": "color",
+"value": Color(0.36862746, 0.4392157, 0.27058825, 1)
+}
+ground_light={
+"type": "color",
+"value": Color(0.5254902, 0.627451, 0.30980393, 1)
+}
+ground_dark={
+"type": "color",
+"value": Color(0.20784314, 0.29411766, 0.20784314, 1)
+}
+ground_dirt={
+"type": "color",
+"value": Color(0.47058824, 0.33333334, 0.23137255, 1)
+}
+ground_path={
+"type": "color",
+"value": Color(0.64705884, 0.54509807, 0.4, 1)
+}
+ground_plowed={
+"type": "color",
+"value": Color(0.36862746, 0.25882354, 0.1882353, 1)
+}
+veg_tip={
+"type": "color",
+"value": Color(0.6627451, 0.7529412, 0.3764706, 1)
+}
+veg_shadow={
+"type": "color",
+"value": Color(0.20784314, 0.29411766, 0.20784314, 1)
+}
+flower_a={
+"type": "color",
+"value": Color(0.9490196, 0.9098039, 0.78431374, 1)
+}
+flower_b={
+"type": "color",
+"value": Color(0.90588236, 0.7529412, 0.2901961, 1)
+}
+ground_patch_scale={
+"type": "float",
+"value": 0.03
+}
+ground_patch_strength={
+"type": "float",
+"value": 0.7
+}
+ground_shade_strength={
+"type": "float",
+"value": 0.35
+}
+wind_strength={
+"type": "float",
+"value": 0.06
+}
+wind_speed={
+"type": "float",
+"value": 1.2
+}
+ground_mask_rect={
+"type": "vec4",
+"value": Vector4(0, 0, 1, 1)
+}
+ground_mask={
+"type": "sampler2D",
+"value": ""
+}

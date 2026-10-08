@@ -34,6 +34,32 @@ public sealed class VisualCatalog
         _buildings = root["buildings"].AsGodotDictionary();
         _agents = root["agents"].AsGodotDictionary();
         _resourceColors = root["resourceColors"].AsGodotDictionary();
+        var characters = new List<string>();
+        if (root.TryGetValue("characters", out var chars))
+            foreach (var c in chars.AsGodotArray()) characters.Add(c.AsString());
+        CharacterScenes = characters;
+        ConstructionScene = root.TryGetValue("construction", out var site) ? site.AsString() : null;
+    }
+
+    /// <summary>Construction site visual, stretched to the footprint (the site scene is authored at 4×4 m).</summary>
+    public Node3D? CreateConstructionSite(Vector2 footprintMeters)
+    {
+        if (ConstructionScene is null) return null;
+        var node = GD.Load<PackedScene>(ConstructionScene).Instantiate<Node3D>();
+        node.Scale = new Vector3(footprintMeters.X / 4f, 1f, footprintMeters.Y / 4f);
+        return node;
+    }
+
+    /// <summary>Semi-transparent preview material on every mesh of a scene (build ghost).</summary>
+    private void MakeGhost(Node node)
+    {
+        var mat = Material(new Color(0.85f, 0.95f, 1f), ghost: true);
+        foreach (var child in node.FindChildren("*", "GeometryInstance3D", true, false))
+        {
+            var g = (GeometryInstance3D)child;
+            g.MaterialOverride = mat;
+            g.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
+        }
     }
 
     public Vector3 CellToWorld(int x, int y) => new(x * CellSize, 0, y * CellSize);
@@ -47,8 +73,17 @@ public sealed class VisualCatalog
         return (ToVector3(e["size"]), new Color(e["color"].AsString()));
     }
 
-    /// <summary>Visual for a building, centred on its footprint, base at Y = 0.</summary>
-    public Node3D CreateBuilding(string defId, Vector2 footprintMeters, bool ghost = false)
+    /// <summary>Character scenes for villagers (variety picked by household id).</summary>
+    public IReadOnlyList<string> CharacterScenes { get; }
+
+    /// <summary>Scene shown while a building is under construction (scaled to the footprint).</summary>
+    public string? ConstructionScene { get; }
+
+    /// <summary>
+    /// Visual for a building, centred on its footprint, base at Y = 0. <paramref name="variantSeed"/> picks
+    /// among "variants" deterministically (e.g. the building id). Ghosts always use the first variant.
+    /// </summary>
+    public Node3D CreateBuilding(string defId, Vector2 footprintMeters, bool ghost = false, int variantSeed = 0)
     {
         var root = new Node3D { Name = defId };
         if (!_buildings.TryGetValue(defId, out var entryVariant))
@@ -59,10 +94,18 @@ public sealed class VisualCatalog
         }
 
         var entry = entryVariant.AsGodotDictionary();
-        if (entry.TryGetValue("scene", out var scenePath))
+        string? scenePath = null;
+        if (entry.TryGetValue("scene", out var single)) scenePath = single.AsString();
+        else if (entry.TryGetValue("variants", out var variants))
         {
-            var scene = GD.Load<PackedScene>(scenePath.AsString());
-            root.AddChild(scene.Instantiate<Node3D>());
+            var list = variants.AsGodotArray();
+            scenePath = list[ghost ? 0 : Mathf.PosMod(variantSeed, list.Count)].AsString();
+        }
+        if (scenePath is not null)
+        {
+            var node = GD.Load<PackedScene>(scenePath).Instantiate<Node3D>();
+            if (ghost) MakeGhost(node);
+            root.AddChild(node);
             return root;
         }
 

@@ -1,24 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Ironvale.Game.Visual;
 using Ironvale.Sim;
 using Ironvale.Sim.Buildings;
 using Ironvale.Sim.Logistics;
 using Cell = Ironvale.Sim.Map.Cell;
 using Ironvale.Sim.Population;
+using Ironvale.Sim.Time;
 
 namespace Ironvale.Game;
 
 /// <summary>
-/// Read-only mirror of the world: ground, building nodes (synced by id every frame), stock piles and one
-/// cube per household (MultiMesh). Never mutates the simulation.
+/// Read-only mirror of the world: ground, building scenes (synced by id every frame), construction sites,
+/// stock piles and one animated villager per household. Never mutates the simulation.
 /// </summary>
 public partial class WorldView : Node3D
 {
     private SimHost _host = null!;
     private VisualCatalog _catalog = null!;
     private readonly Dictionary<int, BuildingNode> _buildings = new();
-    private MultiMeshInstance3D _agents = null!;
+    private Node3D _agents = null!;
+    private readonly Dictionary<int, Agent> _agentNodes = new();
     private MeshInstance3D _ground = null!;
     private Node3D _selection = null!;
 
@@ -28,7 +31,16 @@ public partial class WorldView : Node3D
         public required Node3D Visual;
         public required MeshInstance3D Pile;
         public required Label3D Label;
+        public Node3D? Site;
         public bool WasActive;
+    }
+
+    private sealed class Agent
+    {
+        public required Node3D Root;
+        public required ModularCharacter Character;
+        public Vector3 LastPosition;
+        public bool Seen;
     }
 
     public int SelectedBuildingId { get; set; }
@@ -39,17 +51,7 @@ public partial class WorldView : Node3D
         _catalog = catalog;
         _host.WorldReplaced += Rebuild;
 
-        _agents = new MultiMeshInstance3D
-        {
-            Name = "Agents",
-            Multimesh = new MultiMesh
-            {
-                TransformFormat = MultiMesh.TransformFormatEnum.Transform3D,
-                UseColors = true,
-                Mesh = new BoxMesh { Size = _catalog.Agent("carrier").size },
-            },
-            MaterialOverride = new StandardMaterial3D { VertexColorUseAsAlbedo = true, Roughness = 0.8f },
-        };
+        _agents = new Node3D { Name = "Agents" };
         AddChild(_agents);
 
         _selection = _catalog.Primitive("box", new Vector3(1, 0.08f, 1), new Color(1, 0.9f, 0.3f, 0.6f), ghost: true);
@@ -62,6 +64,8 @@ public partial class WorldView : Node3D
     {
         foreach (var node in _buildings.Values) node.Root.QueueFree();
         _buildings.Clear();
+        foreach (var agent in _agentNodes.Values) agent.Root.QueueFree();
+        _agentNodes.Clear();
         _ground?.QueueFree();
         _ground = CreateGround(_host.World.Map);
         AddChild(_ground);
@@ -102,7 +106,7 @@ public partial class WorldView : Node3D
         var (wCells, hCells) = b.Size;
         var footprint = new Vector2(wCells, hCells) * _catalog.CellSize;
         var root = new Node3D { Name = $"Building_{b.Id}", Position = FootprintCenter(b) };
-        var visual = _catalog.CreateBuilding(b.Def.Id, footprint);
+        var visual = _catalog.CreateBuilding(b.Def.Id, footprint, variantSeed: b.Id);
         if (b.Rotation % 2 == 1) visual.RotationDegrees = new Vector3(0, 90, 0);
         root.AddChild(visual);
 
@@ -121,8 +125,14 @@ public partial class WorldView : Node3D
             Modulate = new Color(1, 1, 1, 0.95f),
         };
         root.AddChild(label);
+        Node3D? site = null;
+        if (!b.IsActive && _catalog.CreateConstructionSite(footprint) is { } s)
+        {
+            site = s;
+            root.AddChild(site);
+        }
         AddChild(root);
-        return new BuildingNode { Root = root, Visual = visual, Pile = pile, Label = label };
+        return new BuildingNode { Root = root, Visual = visual, Pile = pile, Label = label, Site = site };
     }
 
     private void UpdateBuildingNode(World w, Building b, BuildingNode node)
@@ -136,7 +146,12 @@ public partial class WorldView : Node3D
         }
         else
         {
-            if (!node.WasActive) node.Visual.Scale = Vector3.One;
+            if (!node.WasActive)
+            {
+                node.Visual.Scale = Vector3.One;
+                node.Site?.QueueFree();
+                node.Site = null;
+            }
             bool isProducer = b.IsProducer;
             node.Label.Visible = isProducer || b.IsStorage;
             node.Label.Text = isProducer
@@ -177,50 +192,94 @@ public partial class WorldView : Node3D
 
     private void UpdateAgents(World w)
     {
-        var mm = _agents.Multimesh;
-        int count = w.Households.Count + w.Carriers.Count(c => c.Retiring);
-        if (mm.InstanceCount != count) mm.InstanceCount = count;
-
-        var carrierColor = _catalog.Agent("carrier").color;
-        var workingColor = _catalog.Agent("working").color;
-        var idleColor = _catalog.Agent("subsisting").color;
-        float half = _catalog.Agent("carrier").size.Y / 2;
+        foreach (var a in _agentNodes.Values) a.Seen = false;
         float alpha = _host.TickAlpha;
         int ticksPerCell = w.Content.Balance.CarrierTicksPerCell;
+        float dt = (float)GetProcessDeltaTime();
+        var season = w.Calendar.Season;
 
-        int i = 0;
         foreach (var h in w.Households)
         {
-            Vector3 pos;
-            Color color;
             var carrier = h.State == HouseholdState.Hauling ? w.CarrierOf(h.Id) : null;
             if (carrier is not null)
             {
-                pos = CarrierPosition(carrier, alpha, ticksPerCell);
-                color = carrierColor;
+                UpdateCarrierAgent(w, h.Id, carrier, alpha, ticksPerCell, dt);
+                continue;
             }
-            else if (h.State == HouseholdState.Working && w.GetBuilding(h.JobBuildingId) is { } job)
+            var agent = GetAgent(h.Id);
+            if (h.State == HouseholdState.Working && w.GetBuilding(h.JobBuildingId) is { } job)
             {
-                pos = AroundBuilding(job, h.Id);
-                color = workingColor;
+                var pos = AroundBuilding(job, h.Id);
+                Place(agent, pos, FootprintCenter(job) - pos);
+                agent.Character.Play(WorkAnimation(job, season));
             }
             else
             {
                 var home = w.GetBuilding(h.HomeId) ?? w.SeatBuilding;
-                pos = home is null ? Vector3.Zero : AroundBuilding(home, h.Id);
-                color = idleColor;
+                var pos = home is null ? Vector3.Zero : AroundBuilding(home, h.Id);
+                Place(agent, pos, null);
+                agent.Character.Play(h.Id % 3 == 0 ? "talk" : "idle");
             }
-            mm.SetInstanceTransform(i, new Transform3D(Basis.Identity, pos + new Vector3(0, half, 0)));
-            mm.SetInstanceColor(i, color);
-            i++;
         }
         foreach (var c in w.Carriers)
+            if (c.Retiring) UpdateCarrierAgent(w, -c.Id, c, alpha, ticksPerCell, dt);
+
+        foreach (var id in _agentNodes.Where(kv => !kv.Value.Seen).Select(kv => kv.Key).ToList())
         {
-            if (!c.Retiring) continue;
-            mm.SetInstanceTransform(i, new Transform3D(Basis.Identity, CarrierPosition(c, alpha, ticksPerCell) + new Vector3(0, half, 0)));
-            mm.SetInstanceColor(i, carrierColor.Darkened(0.3f));
-            i++;
+            _agentNodes[id].Root.QueueFree();
+            _agentNodes.Remove(id);
         }
+    }
+
+    private void UpdateCarrierAgent(World w, int key, Carrier c, float alpha, int ticksPerCell, float dt)
+    {
+        var agent = GetAgent(key);
+        var pos = CarrierPosition(c, alpha, ticksPerCell);
+        float speed = dt > 0 ? agent.LastPosition.DistanceTo(pos) / dt : 0;
+        Place(agent, pos, pos - agent.LastPosition);
+        bool loaded = c.ShipmentId != 0;
+        string anim = c.IsMoving
+            ? (loaded ? "walk_carry" : speed > 3f ? "run" : "walk")
+            : c.Phase is CarrierPhase.Loading or CarrierPhase.Unloading ? "pickup" : loaded ? "idle_carry" : "idle";
+        // Walk ≈ 1 m/s, run ≈ 5 m/s in the clips: scale so feet roughly match the (time-compressed) sim speed.
+        float rate = anim switch { "walk" or "walk_carry" => speed / 1.0f, "run" => speed / 5.4f, _ => 1f };
+        agent.Character.Play(anim, Mathf.Clamp(rate, 0.6f, 3f));
+    }
+
+    private static string WorkAnimation(Building job, Season season) => job.Def.Id switch
+    {
+        "woodcutter" => "chop",
+        "field" => season == Season.Spring ? "plant_seed" : "watering",
+        _ => "interact",
+    };
+
+    private Agent GetAgent(int key)
+    {
+        if (_agentNodes.TryGetValue(key, out var agent))
+        {
+            agent.Seen = true;
+            return agent;
+        }
+        var scenes = _catalog.CharacterScenes;
+        var root = GD.Load<PackedScene>(scenes[Mathf.PosMod(key, scenes.Count)]).Instantiate<Node3D>();
+        _agents.AddChild(root);
+        var character = (ModularCharacter)root;
+        character.ApplyHairColor(ModularCharacter.HairPalette[Mathf.PosMod(key * 7, ModularCharacter.HairPalette.Length)]);
+        agent = new Agent { Root = root, Character = character, Seen = true };
+        _agentNodes[key] = agent;
+        return agent;
+    }
+
+    private static void Place(Agent agent, Vector3 position, Vector3? facing)
+    {
+        if (agent.LastPosition == Vector3.Zero) agent.LastPosition = position;
+        agent.Root.Position = position;
+        if (facing is { } f && f.LengthSquared() > 1e-6f)
+        {
+            float target = Mathf.Atan2(f.X, f.Z);   // models face +Z
+            agent.Root.Rotation = new Vector3(0, Mathf.LerpAngle(agent.Root.Rotation.Y, target, 0.25f), 0);
+        }
+        agent.LastPosition = position;
     }
 
     private Vector3 CarrierPosition(Carrier c, float alpha, int ticksPerCell)

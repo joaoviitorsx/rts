@@ -5,4 +5,4 @@
 [node name="ENV_Grass_C" type="Node3D"]
 
 [node name="Model" parent="." instance=ExtResource("1_Grass_Wispy_Short")]
-transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.03001, 0)
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0.03859, 0)

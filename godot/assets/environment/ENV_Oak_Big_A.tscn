@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_stylized_nature/CommonTree_3.gltf" id="1_CommonTree_3"]
+
+[node name="ENV_Oak_Big_A" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_CommonTree_3")]
+transform = Transform3D(1.45, 0, 0, 0, 1.45, 0, 0, 0, 1.45, 0, 0.25202, 0)

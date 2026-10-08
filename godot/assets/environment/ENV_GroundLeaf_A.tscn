@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_stylized_nature/Plant_7.gltf" id="1_Plant_7"]
+
+[node name="ENV_GroundLeaf_A" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_Plant_7")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, -0.07119, 0)
