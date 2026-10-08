@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# .NET build output
+bin/
+obj/
+*.user
+.vs/
+.idea/
+TestResults/
+
+# Local tooling / outputs
+/out/
+.godot_mcp/
+
+# Third-party pack formats we don't use (kept locally, ignored by Godot via .gdignore)
+assets/third_party/*/_unused/
