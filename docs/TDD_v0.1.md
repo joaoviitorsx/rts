@@ -484,5 +484,22 @@ Capacidade Administrativa, sugestão automática de política ("o jogo aprende c
 
 ---
 
+## 12. Implementação do Marco 1 (o que mudou em relação ao desenho)
+
+Todas as propostas da §11 foram aprovadas (08/10/2026). Desvios e detalhes que surgiram ao implementar:
+
+| Tema | Desenho | Implementado | Por quê |
+|---|---|---|---|
+| Leitura pela view | interfaces `IReadOnlyWorld` | classes com setters `internal` (outro assembly não consegue escrever) + listas `IReadOnlyList` | mesma garantia, imposta pelo compilador, sem duplicar interfaces |
+| Sistemas | SubsistenceSystem separado | subsistência dentro de `ConsumptionSystem`; novo `HouseholdStateSystem` (horário, primeiro) | subsistência é desconto no consumo; o estado da família decide quem trabalha na hora |
+| Save | System.Text.Json com source generator | System.Text.Json por reflexão | simplicidade; trocar depois não muda o formato |
+| Prioridade dos carregadores | maior estoque | (1) recurso abaixo do limiar de alguma política, (2) buffer mais cheio, (3) carga, (4) distância | sem isso a comida (carga maior) bloqueava a lenha e o lenhador parava cheio |
+| Log de política | — | motivo de bloqueio só é registrado quando muda | evitar spam diário |
+| Deadlock | estoques congelados + famílias paradas | 60 dias sem produção de edifícios, sem entregas e sem retirada de armazém, com população > 0 | subsistência impede "famílias 100% paradas"; o detector mede a economia |
+| Pasta do projeto Godot | raiz | `godot/` (A1) | Godot não varre `src/`/`tests/` |
+
+Números do balanceamento são placeholders em `godot/data/balance.json` até existir a Economy Sheet.
+
 ## Changelog
 - **v0.1 (08/10/2026)** — primeira versão para aprovação.
+- **v0.1.1 (08/10/2026)** — estrutura `godot/` + `art/vendor_raw/`; §12 notas de implementação do Marco 1.
