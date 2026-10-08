@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_fantasy_props/Crate_Metal.gltf" id="1_Crate_Metal"]
+
+[node name="PROP_Crate_B" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_Crate_Metal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00263, 0)

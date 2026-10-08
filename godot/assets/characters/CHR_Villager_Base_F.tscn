@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://game/scripts/visual/ModularCharacter.cs" id="1_ModularCharacter"]
+[ext_resource type="PackedScene" path="res://assets/characters/source/CHR_Base_Female_HeadOnly.glb" id="2_CHR_Base_Female_HeadOnly"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_outfits_fantasy/outfits/Female_Peasant.gltf" id="3_Female_Peasant"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_base_characters/hair_rigged/Hair_Buns.gltf" id="4_Hair_Buns"]
+[ext_resource type="AnimationLibrary" path="res://assets/characters/animations/LIB_Villager.tres" id="5_LIB_Villager"]
+
+[node name="CHR_Villager_Base_F" type="Node3D"]
+script = ExtResource("1_ModularCharacter")
+
+[node name="Body" parent="." instance=ExtResource("2_CHR_Base_Female_HeadOnly")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Outfit" parent="." instance=ExtResource("3_Female_Peasant")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Hair" parent="." instance=ExtResource("4_Hair_Buns")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Body")
+libraries = {
+&"": ExtResource("5_LIB_Villager")
+}
+autoplay = &"idle"

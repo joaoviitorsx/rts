@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Wall_UnevenBrick_Straight.gltf" id="1_Wall_UnevenBrick_Straigh"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Wall_UnevenBrick_Door_Round.gltf" id="2_Wall_UnevenBrick_Door_Ro"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Door_1_Round.gltf" id="3_Door_1_Round"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Wall_UnevenBrick_Window_Wide_Round.gltf" id="4_Wall_UnevenBrick_Window_"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Corner_Exterior_Brick.gltf" id="5_Corner_Exterior_Brick"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Roof_RoundTiles_6x4.gltf" id="6_Roof_RoundTiles_6x4"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Roof_Front_Brick6.gltf" id="7_Roof_Front_Brick6"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Sack_A.tscn" id="8_PROP_Sack_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Barrel_A.tscn" id="9_PROP_Barrel_A"]
+
+[node name="BLD_Granary_A" type="Node3D"]
+
+[node name="Wall_S0" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="Wall_S1" parent="." instance=ExtResource("2_Wall_UnevenBrick_Door_Ro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="Door_S1" parent="." instance=ExtResource("3_Door_1_Round")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.56, 0.03, 1.89)
+
+[node name="Wall_S2" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="Wall_N0" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, -2)
+
+[node name="Wall_N1" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -2)
+
+[node name="Wall_N2" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0, -2)
+
+[node name="Wall_E0" parent="." instance=ExtResource("4_Wall_UnevenBrick_Window_")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3, 0, 1)
+
+[node name="Wall_E1" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3, 0, -1)
+
+[node name="Wall_W0" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3, 0, -1)
+
+[node name="Wall_W1" parent="." instance=ExtResource("1_Wall_UnevenBrick_Straigh")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3, 0, 1)
+
+[node name="Corner" parent="." instance=ExtResource("5_Corner_Exterior_Brick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
+
+[node name="Corner_2" parent="." instance=ExtResource("5_Corner_Exterior_Brick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 2)
+
+[node name="Corner_3" parent="." instance=ExtResource("5_Corner_Exterior_Brick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -2)
+
+[node name="Corner_4" parent="." instance=ExtResource("5_Corner_Exterior_Brick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -2)
+
+[node name="Roof" parent="." instance=ExtResource("6_Roof_RoundTiles_6x4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.12, 0)
+
+[node name="Gable" parent="." instance=ExtResource("7_Roof_Front_Brick6")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 3.12, 2)
+
+[node name="Gable_2" parent="." instance=ExtResource("7_Roof_Front_Brick6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.12, -2)
+
+[node name="PROP_Sack_A" parent="." instance=ExtResource("8_PROP_Sack_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2.6)
+
+[node name="PROP_Sack_A_2" parent="." instance=ExtResource("8_PROP_Sack_A")]
+transform = Transform3D(0.76604, 0, -0.64279, 0, 1, 0, 0.64279, 0, 0.76604, -1.3, 0, 2.7)
+
+[node name="PROP_Barrel_A" parent="." instance=ExtResource("9_PROP_Barrel_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, 2.6)

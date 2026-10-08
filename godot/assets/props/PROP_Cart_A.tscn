@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Prop_Wagon.gltf" id="1_Prop_Wagon"]
+
+[node name="PROP_Cart_A" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_Prop_Wagon")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00313, 0)

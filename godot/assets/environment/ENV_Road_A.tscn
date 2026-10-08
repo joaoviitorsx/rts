@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_PathStone_C.tscn" id="1_ENV_PathStone_C"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.710, 0.604, 0.427, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(2, 0.03, 2)
+
+[node name="ENV_Road_A" type="Node3D"]
+metadata/note = "Estrada: placeholder de terra até as texturas watercolor/Terrain3D"
+
+[node name="Dirt" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
+mesh = SubResource("BoxMesh_2")
+
+[node name="ENV_PathStone_C" parent="." instance=ExtResource("1_ENV_PathStone_C")]
+transform = Transform3D(0.93969, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.93969, -0.5, 0.02, 0.3)
+
+[node name="ENV_PathStone_C_2" parent="." instance=ExtResource("1_ENV_PathStone_C")]
+transform = Transform3D(0.25882, 0, -0.96593, 0, 1, 0, 0.96593, 0, 0.25882, 0.5, 0.02, -0.4)

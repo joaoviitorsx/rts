@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_stylized_nature/Grass_Common_Short.gltf" id="1_Grass_Common_Short"]
+
+[node name="ENV_Grass_A" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_Grass_Common_Short")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.00783, 0)

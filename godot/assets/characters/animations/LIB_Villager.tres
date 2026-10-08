@@ -1,0 +1,34 @@
+[gd_resource type="AnimationLibrary" format=3 uid="uid://dh5pnjbe2rbww"]
+
+[ext_resource type="Animation" uid="uid://bc05xr24hai86" path="res://assets/characters/animations/ANIM_chop.res" id="1_43agh"]
+[ext_resource type="Animation" uid="uid://cpeopyhvk8i0p" path="res://assets/characters/animations/ANIM_harvest.res" id="2_oqsi0"]
+[ext_resource type="Animation" uid="uid://q6npv24w8b88" path="res://assets/characters/animations/ANIM_idle.res" id="3_mtadh"]
+[ext_resource type="Animation" uid="uid://batncnkdi4yxl" path="res://assets/characters/animations/ANIM_idle_carry.res" id="4_qc5ln"]
+[ext_resource type="Animation" uid="uid://bmbogjg2mruhh" path="res://assets/characters/animations/ANIM_interact.res" id="5_nsw5h"]
+[ext_resource type="Animation" uid="uid://blfbyk3fbxnu4" path="res://assets/characters/animations/ANIM_mine.res" id="6_pj1av"]
+[ext_resource type="Animation" uid="uid://6peub81or044" path="res://assets/characters/animations/ANIM_pickup.res" id="7_q6xbb"]
+[ext_resource type="Animation" uid="uid://ceab0ajk6a3in" path="res://assets/characters/animations/ANIM_plant_seed.res" id="8_jb7h1"]
+[ext_resource type="Animation" uid="uid://c7vta7pripr4f" path="res://assets/characters/animations/ANIM_run.res" id="9_id5jo"]
+[ext_resource type="Animation" uid="uid://d37l2e3n6xsx0" path="res://assets/characters/animations/ANIM_sit.res" id="10_luxs7"]
+[ext_resource type="Animation" uid="uid://dj4h4efph7dhd" path="res://assets/characters/animations/ANIM_talk.res" id="11_oacxa"]
+[ext_resource type="Animation" uid="uid://88p1c0yibv7p" path="res://assets/characters/animations/ANIM_walk.res" id="12_wcegh"]
+[ext_resource type="Animation" uid="uid://cpt10778u4p0y" path="res://assets/characters/animations/ANIM_walk_carry.res" id="13_ngxhj"]
+[ext_resource type="Animation" uid="uid://buvsaju6fl4uv" path="res://assets/characters/animations/ANIM_watering.res" id="14_q83sb"]
+
+[resource]
+_data = {
+&"chop": ExtResource("1_43agh"),
+&"harvest": ExtResource("2_oqsi0"),
+&"idle": ExtResource("3_mtadh"),
+&"idle_carry": ExtResource("4_qc5ln"),
+&"interact": ExtResource("5_nsw5h"),
+&"mine": ExtResource("6_pj1av"),
+&"pickup": ExtResource("7_q6xbb"),
+&"plant_seed": ExtResource("8_jb7h1"),
+&"run": ExtResource("9_id5jo"),
+&"sit": ExtResource("10_luxs7"),
+&"talk": ExtResource("11_oacxa"),
+&"walk": ExtResource("12_wcegh"),
+&"walk_carry": ExtResource("13_ngxhj"),
+&"watering": ExtResource("14_q83sb")
+}

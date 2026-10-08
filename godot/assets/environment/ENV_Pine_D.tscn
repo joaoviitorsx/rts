@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_stylized_nature/Pine_4.gltf" id="1_Pine_4"]
+
+[node name="ENV_Pine_D" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_Pine_4")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.06105, 0)

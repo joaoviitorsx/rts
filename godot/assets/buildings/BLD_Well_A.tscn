@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Bucket_A.tscn" id="1_PROP_Bucket_A"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.553, 0.553, 0.525, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+top_radius = 0.8
+bottom_radius = 0.8
+height = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3"]
+albedo_color = Color(0.310, 0.498, 0.651, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4"]
+material = SubResource("StandardMaterial3D_3")
+top_radius = 0.65
+bottom_radius = 0.65
+height = 0.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5"]
+albedo_color = Color(0.478, 0.333, 0.196, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_6"]
+material = SubResource("StandardMaterial3D_5")
+size = Vector3(0.15, 2, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7"]
+albedo_color = Color(0.478, 0.333, 0.196, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_8"]
+material = SubResource("StandardMaterial3D_7")
+size = Vector3(0.15, 2, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_9"]
+albedo_color = Color(0.478, 0.333, 0.196, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_10"]
+material = SubResource("StandardMaterial3D_9")
+size = Vector3(1.7, 0.12, 0.12)
+
+[node name="BLD_Well_A" type="Node3D"]
+metadata/note = "poço montado com placeholders (falta modelo)"
+
+[node name="Ring" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("CylinderMesh_2")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.725, 0)
+mesh = SubResource("CylinderMesh_4")
+
+[node name="PostL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 1, 0)
+mesh = SubResource("BoxMesh_6")
+
+[node name="PostR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1, 0)
+mesh = SubResource("BoxMesh_8")
+
+[node name="Beam" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96, 0)
+mesh = SubResource("BoxMesh_10")
+
+[node name="PROP_Bucket_A" parent="." instance=ExtResource("1_PROP_Bucket_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.8, 0.9)

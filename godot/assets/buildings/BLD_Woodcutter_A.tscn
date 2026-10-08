@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Wall_Plaster_WoodGrid.gltf" id="1_Wall_Plaster_WoodGrid"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Wall_Plaster_Door_Flat.gltf" id="2_Wall_Plaster_Door_Flat"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Door_1_Flat.gltf" id="3_Door_1_Flat"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Corner_Exterior_Wood.gltf" id="4_Corner_Exterior_Wood"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Roof_2x4_RoundTile.gltf" id="5_Roof_2x4_RoundTile"]
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Roof_Front_Brick2.gltf" id="6_Roof_Front_Brick2"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_ChoppingBlock_A.tscn" id="7_PROP_ChoppingBlock_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_WoodPile_A.tscn" id="8_PROP_WoodPile_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Axe_A.tscn" id="9_PROP_Axe_A"]
+
+[node name="BLD_Woodcutter_A" type="Node3D"]
+
+[node name="Wall_S0" parent="." instance=ExtResource("1_Wall_Plaster_WoodGrid")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 2)
+
+[node name="Wall_N0" parent="." instance=ExtResource("1_Wall_Plaster_WoodGrid")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1, 0, -2)
+
+[node name="Wall_E0" parent="." instance=ExtResource("2_Wall_Plaster_Door_Flat")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 1)
+
+[node name="Door_E0" parent="." instance=ExtResource("3_Door_1_Flat")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.11, 0.03, 1.56)
+
+[node name="Wall_E1" parent="." instance=ExtResource("1_Wall_Plaster_WoodGrid")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, -1)
+
+[node name="Wall_W0" parent="." instance=ExtResource("1_Wall_Plaster_WoodGrid")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 0, -1)
+
+[node name="Wall_W1" parent="." instance=ExtResource("1_Wall_Plaster_WoodGrid")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -2, 0, 1)
+
+[node name="Corner" parent="." instance=ExtResource("4_Corner_Exterior_Wood")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="Corner_2" parent="." instance=ExtResource("4_Corner_Exterior_Wood")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="Corner_3" parent="." instance=ExtResource("4_Corner_Exterior_Wood")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="Corner_4" parent="." instance=ExtResource("4_Corner_Exterior_Wood")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="Roof" parent="." instance=ExtResource("5_Roof_2x4_RoundTile")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3.12, 0)
+
+[node name="Gable" parent="." instance=ExtResource("6_Roof_Front_Brick2")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1, 3.12, 2)
+
+[node name="Gable_2" parent="." instance=ExtResource("6_Roof_Front_Brick2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3.12, -2)
+
+[node name="PROP_ChoppingBlock_A" parent="." instance=ExtResource("7_PROP_ChoppingBlock_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0.9)
+
+[node name="PROP_WoodPile_A" parent="." instance=ExtResource("8_PROP_WoodPile_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1.1, 0, -1)
+
+[node name="PROP_Axe_A" parent="." instance=ExtResource("9_PROP_Axe_A")]
+transform = Transform3D(0.86603, 0, -0.5, 0, 1, 0, 0.5, 0, 0.86603, 1.25, 0.95, 0.9)

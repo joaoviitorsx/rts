@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_Rock_C.tscn" id="1_ENV_Rock_C"]
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pebble_B.tscn" id="2_ENV_Pebble_B"]
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_Grass_B.tscn" id="3_ENV_Grass_B"]
+
+[node name="ENV_RockGroup_B" type="Node3D"]
+
+[node name="ENV_Rock_C" parent="." instance=ExtResource("1_ENV_Rock_C")]
+transform = Transform3D(0.86603, 0, -0.5, 0, 1, 0, 0.5, 0, 0.86603, 0, 0, 0)
+
+[node name="ENV_Pebble_B" parent="." instance=ExtResource("2_ENV_Pebble_B")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0, 0.2)
+
+[node name="ENV_Grass_B" parent="." instance=ExtResource("3_ENV_Grass_B")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0, 0.7)

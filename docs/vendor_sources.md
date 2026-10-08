@@ -31,5 +31,5 @@ original folder name, then run the script.
 - `desktop.ini` files were deleted from the Stylized Nature folder during the first reorganization.
 
 ## Temporary
-- `godot/assets/vendor/.gdignore` keeps Godot from importing ~390 MB while Marco 1 uses primitives.
-  It is removed at the start of Etapa 2 (import settings per pack). `--clean` also deletes it.
+- (removed) the temporary `.gdignore` used during Marco 1.
+

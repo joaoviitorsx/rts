@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Floor_UnevenBrick.gltf" id="1_Floor_UnevenBrick"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Stall_A.tscn" id="2_PROP_Stall_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_StallCart_A.tscn" id="3_PROP_StallCart_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_FarmCrate_B.tscn" id="4_PROP_FarmCrate_B"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Barrel_B.tscn" id="5_PROP_Barrel_B"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_FarmCrate_C.tscn" id="6_PROP_FarmCrate_C"]
+
+[node name="BLD_Market_A" type="Node3D"]
+
+[node name="Floor_UnevenBrick" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.01, -2)
+
+[node name="Floor_UnevenBrick_2" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.01, 0)
+
+[node name="Floor_UnevenBrick_3" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.01, 2)
+
+[node name="Floor_UnevenBrick_4" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -2)
+
+[node name="Floor_UnevenBrick_5" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+
+[node name="Floor_UnevenBrick_6" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 2)
+
+[node name="Floor_UnevenBrick_7" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.01, -2)
+
+[node name="Floor_UnevenBrick_8" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.01, 0)
+
+[node name="Floor_UnevenBrick_9" parent="." instance=ExtResource("1_Floor_UnevenBrick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.01, 2)
+
+[node name="PROP_Stall_A" parent="." instance=ExtResource("2_PROP_Stall_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.6)
+
+[node name="PROP_StallCart_A" parent="." instance=ExtResource("3_PROP_StallCart_A")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.6, 0, 1.2)
+
+[node name="PROP_FarmCrate_B" parent="." instance=ExtResource("4_PROP_FarmCrate_B")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 0.4)
+
+[node name="PROP_Barrel_B" parent="." instance=ExtResource("5_PROP_Barrel_B")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0.6)
+
+[node name="PROP_FarmCrate_C" parent="." instance=ExtResource("6_PROP_FarmCrate_C")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, -1.8)

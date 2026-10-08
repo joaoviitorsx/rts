@@ -11,6 +11,7 @@ Usage:
     python3 scripts/setup_vendor.py            # copy/update
     python3 scripts/setup_vendor.py --dry-run  # show what would change
     python3 scripts/setup_vendor.py --clean    # also delete files in vendor/ that no source produces
+    python3 scripts/setup_vendor.py --derive   # also (re)build derived files with Blender (head-only bodies)
 
 Sources and versions of each pack: docs/vendor_sources.md
 """
@@ -21,7 +22,9 @@ import fnmatch
 import hashlib
 import json
 import shutil
+import shutil as _sh
 import struct
+import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import unquote
@@ -129,6 +132,47 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
     return plan
 
 
+# Derived assets built with Blender from the vendor copies (never from/into art/vendor_raw).
+DERIVED = [
+    ("tools/blender/make_head_only.py",
+     "godot/assets/vendor/quaternius_base_characters/bodies/Superhero_Male_FullBody.gltf",
+     "godot/assets/characters/source/CHR_Base_Male_HeadOnly.glb"),
+    ("tools/blender/make_head_only.py",
+     "godot/assets/vendor/quaternius_base_characters/bodies/Superhero_Female_FullBody.gltf",
+     "godot/assets/characters/source/CHR_Base_Female_HeadOnly.glb"),
+]
+
+
+def blender_command() -> list[str] | None:
+    if _sh.which("blender"):
+        return ["blender"]
+    if _sh.which("flatpak") and subprocess.run(["flatpak", "info", "org.blender.Blender"],
+                                               capture_output=True).returncode == 0:
+        return ["flatpak", "run", "org.blender.Blender"]
+    return None
+
+
+def derive(force: bool) -> int:
+    blender = blender_command()
+    for script, src, dst in DERIVED:
+        out = ROOT / dst
+        if out.exists() and not force:
+            print(f"- derived {dst}: up to date")
+            continue
+        if blender is None:
+            print(f"error: Blender not found (needed for {dst})", file=sys.stderr)
+            return 1
+        out.parent.mkdir(parents=True, exist_ok=True)
+        cmd = blender + ["-b", "--python", str(ROOT / script), "--", str(ROOT / src), str(out)]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        ok = result.returncode == 0 and out.exists()
+        print(f"- derived {dst}: {'built' if ok else 'FAILED'}")
+        if not ok:
+            print(result.stdout[-2000:], result.stderr[-2000:], file=sys.stderr)
+            return 1
+    return 0
+
+
 def same_file(a: Path, b: Path) -> bool:
     if not b.exists() or a.stat().st_size != b.stat().st_size:
         return False
@@ -139,6 +183,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--clean", action="store_true", help="delete files in vendor/ no source produces")
+    parser.add_argument("--derive", action="store_true", help="build derived files with Blender if missing")
+    parser.add_argument("--force-derive", action="store_true", help="rebuild derived files even if present")
     args = parser.parse_args()
 
     if not RAW.is_dir():
@@ -182,6 +228,10 @@ def main() -> int:
                     print(f"  would delete {f.relative_to(ROOT)}")
                 else:
                     f.unlink()
+
+    if (args.derive or args.force_derive) and not args.dry_run:
+        if derive(args.force_derive) != 0:
+            return 1
 
     verb = "would copy" if args.dry_run else "copied"
     print(f"{verb} {copied}, unchanged {unchanged}" + (f", removed {removed}" if args.clean else ""))

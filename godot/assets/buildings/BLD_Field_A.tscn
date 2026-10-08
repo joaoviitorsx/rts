@@ -1,0 +1,124 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Wheat_Stage3.tscn" id="1_PROP_Wheat_Stage3"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Fence_A.tscn" id="2_PROP_Fence_A"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.612, 0.478, 0.306, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(7.6, 0.06, 7.6)
+
+[node name="BLD_Field_A" type="Node3D"]
+metadata/note = "campo: solo e trigo são placeholders (falta)"
+
+[node name="Soil" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+mesh = SubResource("BoxMesh_2")
+
+[node name="PROP_Wheat_Stage3" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.06, -2.7)
+
+[node name="PROP_Wheat_Stage3_2" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.06, -2.7)
+
+[node name="PROP_Wheat_Stage3_3" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.06, -2.7)
+
+[node name="PROP_Wheat_Stage3_4" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.06, -2.7)
+
+[node name="PROP_Wheat_Stage3_5" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.06, -1.35)
+
+[node name="PROP_Wheat_Stage3_6" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.06, -1.35)
+
+[node name="PROP_Wheat_Stage3_7" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.06, -1.35)
+
+[node name="PROP_Wheat_Stage3_8" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.06, -1.35)
+
+[node name="PROP_Wheat_Stage3_9" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.06, 0)
+
+[node name="PROP_Wheat_Stage3_10" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.06, 0)
+
+[node name="PROP_Wheat_Stage3_11" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.06, 0)
+
+[node name="PROP_Wheat_Stage3_12" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.06, 0)
+
+[node name="PROP_Wheat_Stage3_13" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.06, 1.35)
+
+[node name="PROP_Wheat_Stage3_14" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.06, 1.35)
+
+[node name="PROP_Wheat_Stage3_15" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.06, 1.35)
+
+[node name="PROP_Wheat_Stage3_16" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.06, 1.35)
+
+[node name="PROP_Wheat_Stage3_17" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0.06, 2.7)
+
+[node name="PROP_Wheat_Stage3_18" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.06, 2.7)
+
+[node name="PROP_Wheat_Stage3_19" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.06, 2.7)
+
+[node name="PROP_Wheat_Stage3_20" parent="." instance=ExtResource("1_PROP_Wheat_Stage3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.06, 2.7)
+
+[node name="PROP_Fence_A" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -3.95)
+
+[node name="PROP_Fence_A_2" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -3.95)
+
+[node name="PROP_Fence_A_3" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -3.95)
+
+[node name="PROP_Fence_A_4" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3.95)
+
+[node name="PROP_Fence_A_5" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 3.95)
+
+[node name="PROP_Fence_A_6" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3.95)
+
+[node name="PROP_Fence_A_7" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3.95)
+
+[node name="PROP_Fence_A_8" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.95, 0, -3)
+
+[node name="PROP_Fence_A_9" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.95, 0, -1)
+
+[node name="PROP_Fence_A_10" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.95, 0, 1)
+
+[node name="PROP_Fence_A_11" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.95, 0, 3)
+
+[node name="PROP_Fence_A_12" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3.95, 0, -3)
+
+[node name="PROP_Fence_A_13" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3.95, 0, -1)
+
+[node name="PROP_Fence_A_14" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3.95, 0, 1)
+
+[node name="PROP_Fence_A_15" parent="." instance=ExtResource("2_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3.95, 0, 3)

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_fantasy_props/Pickaxe_Bronze.gltf" id="1_Pickaxe_Bronze"]
+
+[node name="PROP_Pickaxe_A" type="Node3D"]
+metadata/note = "pivô no cabo (para segurar na mão)"
+
+[node name="Model" parent="." instance=ExtResource("1_Pickaxe_Bronze")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_fantasy_props/Bench.gltf" id="1_Bench"]
+
+[node name="PROP_Bench_A" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_Bench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00726, 0)

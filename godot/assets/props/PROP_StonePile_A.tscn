@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.604, 0.604, 0.604, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(1.2, 0.6, 1)
+
+[node name="PROP_StonePile_A" type="Node3D"]
+metadata/placeholder = true
+metadata/note = "falta: pilha de pedra (KayKit Resource Bits)"
+
+[node name="Placeholder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_2")

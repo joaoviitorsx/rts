@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.561, 0.749, 0.353, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(1.6, 0.15, 0.35)
+
+[node name="PROP_Wheat_Stage1" type="Node3D"]
+metadata/placeholder = true
+metadata/note = "falta: trigo broto"
+
+[node name="Placeholder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
+mesh = SubResource("BoxMesh_2")

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.478, 0.333, 0.196, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.45
+
+[node name="ENV_Stump_A" type="Node3D"]
+metadata/placeholder = true
+metadata/note = "falta: toco de árvore"
+
+[node name="Placeholder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+mesh = SubResource("CylinderMesh_2")

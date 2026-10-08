@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Floor_WoodLight.gltf" id="1_Floor_WoodLight"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Crate_A.tscn" id="2_PROP_Crate_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_WoodPile_A.tscn" id="3_PROP_WoodPile_A"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.608, 0.478, 0.310, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(0.15, 2.4, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3"]
+albedo_color = Color(0.608, 0.478, 0.310, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_4"]
+material = SubResource("StandardMaterial3D_3")
+size = Vector3(0.15, 2.4, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5"]
+albedo_color = Color(0.608, 0.478, 0.310, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_6"]
+material = SubResource("StandardMaterial3D_5")
+size = Vector3(0.15, 2.4, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7"]
+albedo_color = Color(0.608, 0.478, 0.310, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_8"]
+material = SubResource("StandardMaterial3D_7")
+size = Vector3(0.15, 2.4, 0.15)
+
+[node name="BLD_Site_A" type="Node3D"]
+
+[node name="Floor_WoodLight" parent="." instance=ExtResource("1_Floor_WoodLight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.02, -1)
+
+[node name="Floor_WoodLight_2" parent="." instance=ExtResource("1_Floor_WoodLight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.02, 1)
+
+[node name="Floor_WoodLight_3" parent="." instance=ExtResource("1_Floor_WoodLight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.02, -1)
+
+[node name="Floor_WoodLight_4" parent="." instance=ExtResource("1_Floor_WoodLight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.02, 1)
+
+[node name="Post" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.2, -1.9)
+mesh = SubResource("BoxMesh_2")
+
+[node name="Post_2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.2, 1.9)
+mesh = SubResource("BoxMesh_4")
+
+[node name="Post_3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1.2, -1.9)
+mesh = SubResource("BoxMesh_6")
+
+[node name="Post_4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1.2, 1.9)
+mesh = SubResource("BoxMesh_8")
+
+[node name="PROP_Crate_A" parent="." instance=ExtResource("2_PROP_Crate_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.02, 0.6)
+
+[node name="PROP_WoodPile_A" parent="." instance=ExtResource("3_PROP_WoodPile_A")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.02, -0.5)
