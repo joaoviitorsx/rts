@@ -30,21 +30,21 @@ public sealed class PolicySystem : ISimSystem
         int mine = w.Households.Count(h => h.AssignedBy == AssignmentSource.Policy && h.AssignedByPolicyId == p.Id);
         if (mine >= p.Def.MaxHouseholds)
         {
-            Blocked(w, p, $"{ResName(w, p)} {stock} < {p.Threshold}, mas já uso o máximo de {p.Def.MaxHouseholds} famílias");
+            Blocked(w, p, "max", $"{ResName(w, p)} {stock} < {p.Threshold}, mas já uso o máximo de {p.Def.MaxHouseholds} famílias");
             return;
         }
 
         var target = FindProducer(w, p, cal.Season);
         if (target is null)
         {
-            Blocked(w, p, $"{ResName(w, p)} {stock} < {p.Threshold}, mas não há vaga produtiva para {ResName(w, p)}");
+            Blocked(w, p, "no_slot", $"{ResName(w, p)} {stock} < {p.Threshold}, mas não há vaga produtiva para {ResName(w, p)}");
             return;
         }
 
         var candidate = FindCandidate(w, p);
         if (candidate is null)
         {
-            Blocked(w, p, $"{ResName(w, p)} {stock} < {p.Threshold}, mas não há família disponível");
+            Blocked(w, p, "no_household", $"{ResName(w, p)} {stock} < {p.Threshold}, mas não há família disponível");
             return;
         }
 
@@ -69,12 +69,12 @@ public sealed class PolicySystem : ISimSystem
         w.LogPolicy(p, $"Família {h.Name} liberada de {w.DescribeBuilding(b)}: {ResName(w, p)} {stock} > {p.ReleaseAbove}");
     }
 
-    private static void Blocked(World w, Policy p, string reason)
+    private static void Blocked(World w, Policy p, string reasonKey, string text)
     {
-        // Same reason as last time → stay quiet (no daily spam).
-        if (p.LastBlockedReason == reason) return;
-        p.LastBlockedReason = reason;
-        w.LogPolicy(p, reason);
+        // Same reason as last time → stay quiet (no daily spam while the stock keeps changing).
+        if (p.LastBlockedReason == reasonKey) return;
+        p.LastBlockedReason = reasonKey;
+        w.LogPolicy(p, text);
     }
 
     /// <summary>

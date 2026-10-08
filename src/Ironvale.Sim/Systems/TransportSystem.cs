@@ -94,30 +94,40 @@ public sealed class TransportSystem : ISimSystem
         return c.Pos == c.Target;
     }
 
-    /// <summary>Picks the producer with most waiting output (ties: nearest, then lowest id/resource).</summary>
+    /// <summary>
+    /// Picks what to haul. Priority: (1) resources a policy says are short (urgent), (2) the fullest producer
+    /// buffer (a full buffer stops production), (3) bigger load, (4) nearest, (5) lowest id/resource.
+    /// </summary>
     private static bool TryPlan(World w, Carrier c)
     {
         var bal = w.Content.Balance;
+        Span<bool> urgent = stackalloc bool[w.Content.ResourceCount];
+        foreach (var p in w.Policies)
+            if (p.Enabled && w.StorageStockIncludingTransit(p.Resource) < p.Threshold) urgent[p.Resource] = true;
+
         Building? best = null;
         int bestRes = -1;
         Qty bestAmount = Qty.Zero;
-        int bestDist = int.MaxValue;
+        (int urgent, long fill, long amount, int negDist) bestKey = default;
 
         foreach (var b in w.Buildings)
         {
             if (!b.IsActive || !b.IsProducer) continue;
             int dist = c.Pos.Manhattan(b.Center);
+            long cap = Math.Max(1, b.Stock.Capacity.Milli);
+            long fill = b.Stock.Total.Milli * Permille.One / cap;
             for (int r = 0; r < w.Content.ResourceCount; r++)
             {
                 var free = b.Stock.Free(r);
                 if (free < bal.MinPickup || !free.IsPositive) continue;
                 var amount = Qty.Min(free, w.Content.Resources[r].CarryPerTrip);
-                if (amount > bestAmount || (amount == bestAmount && dist < bestDist))
+                var key = (urgent[r] ? 1 : 0, fill, amount.Milli, -dist);
+                if (best is null || key.CompareTo(bestKey) > 0)
                 {
                     best = b;
                     bestRes = r;
                     bestAmount = amount;
-                    bestDist = dist;
+                    bestKey = key;
                 }
             }
         }

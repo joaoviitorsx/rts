@@ -1,0 +1,6 @@
+{
+  "policies": [
+    { "id": "keep_above", "name": "Manter recurso acima de N", "kind": "keep_above",
+      "caCost": 1, "hysteresisPermille": 250, "maxHouseholds": 4 }
+  ]
+}

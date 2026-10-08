@@ -1,0 +1,19 @@
+{
+  // Placeholders (TDD §3, Q6). All "Permille" values: 1000 = 100%.
+  "foodPerMemberPerDay": 0.3,
+  "firewoodPerHouseholdPerWinterDay": 1.0,
+  "homelessHeatPermille": 2000,
+  "toolWearPerWorkDayPermille": 8,
+  "toolFactorFloorPermille": 500,
+  "hungryFactorPermille": 600,
+  "coldFactorPermille": 700,
+  "leaveAfterDeficitDays": 30,
+  "subsistenceFoodCoverPermille": 500,
+  "subsistenceFirewoodCoverPermille": 500,
+  "carrierTicksPerCell": 2,
+  "carrierLoadTicks": 4,
+  "minPickup": 2,
+  "harvestVariancePermille": 100,
+  "deadlockWindowDays": 60,
+  "policyLogMax": 200
+}

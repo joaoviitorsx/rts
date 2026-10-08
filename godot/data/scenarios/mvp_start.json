@@ -1,0 +1,20 @@
+{
+  // GDD v0.2 §4.1: 6 families, a cart of supplies (stored in the Salão), late spring.
+  "id": "mvp_start",
+  "name": "Chegada",
+  "map": { "width": 64, "height": 64 },
+  "startMonth": 2,
+  "buildings": [
+    { "def": "hall", "origin": [30, 30], "rotation": 0 }
+  ],
+  "stock": { "wood": 120, "firewood": 60, "food": 300, "stone": 30, "tools": 12, "coins": 50 },
+  "householdToolCondition": 1000,
+  "households": [
+    { "name": "Halberg", "members": 4, "workers": 2 },
+    { "name": "Falk",    "members": 5, "workers": 2 },
+    { "name": "Roth",    "members": 3, "workers": 2 },
+    { "name": "Weber",   "members": 4, "workers": 2 },
+    { "name": "Brandt",  "members": 4, "workers": 2 },
+    { "name": "Moser",   "members": 4, "workers": 2 }
+  ]
+}

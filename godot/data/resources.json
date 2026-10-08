@@ -1,0 +1,11 @@
+{
+  // Order defines resource indices for a given content hash. Saves store ids, not indices.
+  "resources": [
+    { "id": "wood",     "name": "Madeira",     "carryPerTrip": 15 },
+    { "id": "firewood", "name": "Lenha",       "carryPerTrip": 15 },
+    { "id": "food",     "name": "Comida",      "carryPerTrip": 25 },
+    { "id": "stone",    "name": "Pedra",       "carryPerTrip": 8 },
+    { "id": "tools",    "name": "Ferramentas", "carryPerTrip": 5 },
+    { "id": "coins",    "name": "Moedas",      "carryPerTrip": 50 }
+  ]
+}

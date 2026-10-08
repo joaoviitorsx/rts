@@ -1,0 +1,9 @@
+{
+  // outputs = per worker per sim hour (1 day = 10 hours). Placeholders until the Economy Sheet exists.
+  "recipes": [
+    { "id": "chop_wood",      "name": "Cortar madeira", "kind": "continuous", "outputs": { "wood": 0.5 },     "usesTools": true },
+    { "id": "split_firewood", "name": "Rachar lenha",   "kind": "continuous", "outputs": { "firewood": 0.5 }, "usesTools": true },
+    { "id": "grow_food",      "name": "Cultivar",       "kind": "seasonal",   "outputs": { "food": 0.8 },     "usesTools": true,
+      "workSeasons": ["spring", "summer"] }
+  ]
+}
