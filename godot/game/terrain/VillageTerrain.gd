@@ -29,7 +29,7 @@ const PALETTES := {
 @export var cover := Rect2(0, 0, 256, 256)   ## world XZ rect that must have terrain (regions are added to cover it)
 @export var texture_paths: Dictionary = {"grass": "", "dirt": "", "path": ""}
 @export var uv_scale := 0.08
-@export var palette := "moss"
+@export var palette := "meadow"   ## approved 2026-10-08 (more saturated, Koastalia-like)
 @export var detail_texture_path := ""   ## optional watercolor detail for dirt/path (CC0), subtle
 
 var terrain: Node3D  # Terrain3D (typed loosely so the script parses even without the extension)

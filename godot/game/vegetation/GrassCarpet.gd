@@ -16,47 +16,129 @@ const GroundMask := preload("res://game/terrain/GroundMask.gd")
 
 var instances := 0
 
+## Streaming (large maps): only chunks within `stream_radius` of `stream_focus` exist; a few are built per
+## tick, far ones are freed. Memory and instance count stay bounded whatever the map size.
+@export var stream_radius := 70.0
+@export var chunks_per_tick := 6
+var _mask
+var _area: Rect2
+var _seed := 1
+var _focus: Node3D
+var _chunks := {}          # Vector2i -> Array[Node]
+var _tick := 0.0
+var _mesh: ArrayMesh
+var _material: ShaderMaterial
 
-func build(mask: GroundMask, area: Rect2, seed_value: int = 1) -> int:
-	for c in get_children():
-		c.queue_free()
+
+func stream(mask, area: Rect2, focus: Node3D, seed_value: int = 1) -> void:
+	_mask = mask
+	_area = area
+	_focus = focus
+	_seed = seed_value
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value
-	var mesh := _clump_mesh(rng)
+	_mesh = _clump_mesh(rng)
+	_material = _make_material()
+	set_process(true)
+
+
+func _make_material() -> ShaderMaterial:
 	var material := ShaderMaterial.new()
 	material.shader = SHADER
 	material.set_shader_parameter("fade_end", fade_end)
 	material.set_shader_parameter("fade_start", fade_end * 0.6)
-	var chunks := {}
-	instances = 0
-	var y := area.position.y
-	while y < area.end.y:
-		var x := area.position.x
-		while x < area.end.x:
+	return material
+
+
+func _ready() -> void:
+	set_process(false)
+
+
+func _process(_delta: float) -> void:
+	if _focus == null:
+		return
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return
+	# Grass is only visible where the camera distance < fade_end: stream just that disc around the point
+	# under the camera (zero grass when zoomed far out — the baked ground colour carries the look).
+	var eye := cam.global_position
+	var radius := sqrt(maxf(fade_end * fade_end - eye.y * eye.y, 0.0))
+	var ground := Vector2(eye.x, eye.z)
+	var center := Vector2i(floori(ground.x / chunk_size), floori(ground.y / chunk_size))
+	_tick -= _delta
+	if _tick <= 0.0:
+		_tick = 0.25
+		for key: Vector2i in _chunks.keys():
+			if (Vector2(key) + Vector2(0.5, 0.5)).distance_to(ground / chunk_size) * chunk_size > radius + chunk_size * 2.0:
+				for n: Node in _chunks[key]:
+					n.queue_free()
+				_chunks.erase(key)
+		_queue.clear()
+		var r := int(ceil(radius / chunk_size))
+		for dz in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				var key := center + Vector2i(dx, dz)
+				if _chunks.has(key) or (Vector2(key) + Vector2(0.5, 0.5)).distance_to(ground / chunk_size) * chunk_size > radius + chunk_size:
+					continue
+				if Rect2(Vector2(key) * chunk_size, Vector2.ONE * chunk_size).intersects(_area):
+					_queue.append(key)
+		_queue.sort_custom(func(a, b): return (a - center).length_squared() < (b - center).length_squared())
+	# Incremental build with a per-frame time budget (no hitches).
+	var start := Time.get_ticks_usec()
+	while not _queue.is_empty() and Time.get_ticks_usec() - start < budget_usec:
+		if _building.is_empty():
+			var key: Vector2i = _queue[0]
+			if _chunks.has(key):
+				_queue.pop_front()
+				continue
+			var rng := RandomNumberGenerator.new()
+			rng.seed = hash(Vector3i(key.x, key.y, _seed))
+			_building = {"key": key, "y": float(key.y) * chunk_size, "list": [], "rng": rng}
+		if _step_chunk(start):
+			_queue.pop_front()
+
+
+@export var budget_usec := 1500         ## max time per frame spent building grass chunks
+var _queue: Array = []
+var _building := {}
+
+
+## Builds rows of the current chunk until the frame budget runs out. Returns true when the chunk is done.
+func _step_chunk(start: int) -> bool:
+	var key: Vector2i = _building["key"]
+	var rng: RandomNumberGenerator = _building["rng"]
+	var list: Array = _building["list"]
+	var x0 := float(key.x) * chunk_size
+	var y_end := float(key.y) * chunk_size + chunk_size
+	while _building["y"] < y_end:
+		var y: float = _building["y"]
+		var x := x0
+		while x < x0 + chunk_size:
 			var p := Vector3(x + rng.randf_range(-0.45, 0.45) * spacing, 0, y + rng.randf_range(-0.45, 0.45) * spacing)
-			var m := mask.sample(p)
-			if maxf(maxf(m.r, m.g), m.b) < 0.8:   # the shader shrinks the rest smoothly (baked grass amount)
-				var s := rng.randf_range(0.8, 1.2)
-				var t := Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, rng.randf_range(0.8, 1.25) * s, s)), p)
-				var key := Vector2i(floori(p.x / chunk_size), floori(p.z / chunk_size))
-				if not chunks.has(key):
-					chunks[key] = []
-				chunks[key].append(t)
-				instances += 1
+			if _area.has_point(Vector2(p.x, p.z)):
+				var m: Color = _mask.sample(p)
+				if maxf(maxf(m.r, m.g), m.b) < 0.8:
+					var sc := rng.randf_range(0.8, 1.2)
+					list.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(sc, rng.randf_range(0.8, 1.25) * sc, sc)), p))
 			x += spacing
-		y += spacing
-	for key in chunks:
-		var list: Array = chunks[key]
-		_add_chunk(mesh, material, list, "Grass_%d_%d" % [key.x, key.y], 0.0, near_range)
+		_building["y"] = y + spacing
+		if Time.get_ticks_usec() - start > budget_usec:
+			return false
+	var nodes: Array = []
+	if not list.is_empty():
+		nodes.append(_add_chunk(_mesh, _material, list, "Grass_%d_%d" % [key.x, key.y], 0.0, near_range))
 		var sparse: Array = []
 		for i in range(0, list.size(), 3):
 			var t: Transform3D = list[i]
 			sparse.append(Transform3D(t.basis.scaled(Vector3(1.35, 1.0, 1.35)), t.origin))
-		_add_chunk(mesh, material, sparse, "GrassFar_%d_%d" % [key.x, key.y], near_range, fade_end + 5.0)
-	return instances
+		nodes.append(_add_chunk(_mesh, _material, sparse, "GrassFar_%d_%d" % [key.x, key.y], near_range, fade_end + 5.0))
+	_chunks[key] = nodes
+	_building = {}
+	return true
 
 
-func _add_chunk(mesh: Mesh, material: Material, list: Array, node_name: String, begin: float, end: float) -> void:
+func _add_chunk(mesh: Mesh, material: Material, list: Array, node_name: String, begin: float, end: float) -> Node:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.mesh = mesh
@@ -71,6 +153,7 @@ func _add_chunk(mesh: Mesh, material: Material, list: Array, node_name: String, 
 	node.visibility_range_begin = begin
 	node.visibility_range_end = end
 	add_child(node)
+	return node
 
 
 ## One clump: several tapered, slightly curved blades (3 triangles each). UV.y = 0 root … 1 tip.

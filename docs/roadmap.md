@@ -7,7 +7,7 @@
 | Marco 1 — núcleo da simulação + view cinza | ✅ aprovado (08/10/2026) | sim C# headless, 50 testes, soak 50 anos, CLI, view com primitivas |
 | Etapa 1 — inventário de assets | ✅ | `docs/asset_manifest.md`, `CREDITS.md` |
 | Reorganização A1–A3 | ✅ | `godot/`, `art/vendor_raw/`, `scripts/setup_vendor.py`, `docs/vendor_sources.md` |
-| **Etapa 2 — integração de assets** | ⏳ próxima | ver abaixo |
+| **Etapa 2 — integração de assets** | 🟡 em andamento (pausado 08/10/2026) | ver abaixo + "Onde paramos" |
 | Etapa 3 — TEST_VILLAGE_01 | ⏳ | cena de validação + screenshots em 3 zooms + opções de material |
 | **Marco 2 — loop central (GDD v0.2)** | 📋 registrado, não iniciado | ver abaixo |
 
@@ -33,3 +33,18 @@
 ### Economy Sheet via CLI
 - Cenários de balanceamento na CLI: **jogador passivo**, **jogador ingênuo**, **abertura ótima**.
 - `docs/balance_report.md` com CSV e gráficos por cenário, verificando se as crises 1–3 aparecem nos minutos previstos no GDD v0.2 §4.
+
+## Onde paramos (08/10/2026)
+- Look-dev do chão **aprovado** (paleta V2 "meadow", mais saturada, virou padrão global). Imagens em `docs/lookdev/`.
+- TEST_VILLAGE_01 reconstruída com o pipeline do look-dev (`tools/assets/build_test_village.py` → `.tscn` + `_layout.json`,
+  controlador `scenes/test/TestVillage.gd`): casas giradas ±5–15° para a estrada, telhados tile/thatch/slate, quintais com props,
+  terra só em entrada/quintal, 249 árvores em florestas (MultiMesh), aglomerados de tufos/flores, 20 aldeões.
+- Performance (sem vsync, RTX 4050, 1080p): perto 5,6 ms (~179 FPS, 1% low 164); distante 6,9 ms.
+- **Pendências ao retomar:**
+  1. Zoom médio teve 1 pico de 112 ms (1% low 11 FPS) após o streaming incremental — investigar (provável fila de blocos
+     reconstruída a cada tick ou criação de muitos MultiMesh no mesmo frame). Perto/distante estão estáveis.
+  2. Raio do streaming no zoom próximo ainda cria ~225 blocos (1 M primitivas): reduzir (frustum + raio menor) e/ou
+     mesclar peças das construções (~400–750 draw calls).
+  3. Capturar DEPOIS em 3 zooms e montar antes/depois (ANTES está só no scratchpad da sessão — refazer a partir do commit `eb2ac8d`).
+  4. Depois: adaptar HUD/debug do Marco 1 às regras do `docs/UI_UX_guide.md` §8.1; incluir telas §2.3 no plano do Marco 2.
+- Arquivos ainda ausentes: `docs/asset_production_bible_mvp.md`, `docs/reference/koastalia_ref.png`, KayKit Resource Bits, watercolor.

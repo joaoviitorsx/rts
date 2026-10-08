@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Generates godot/scenes/test/TEST_VILLAGE_01.tscn — the visual validation village (Etapa 3).
+"""Generates TEST_VILLAGE_01 (Etapa 3 visual validation) from the approved ground look-dev rules.
 
-Content (from the owner's brief; Bible §43 not in the repo yet): ~10 houses, hall, woodcutter, farm,
-2 fields, granary, warehouse, market, smithy, well, ~20 trees, ~10 rock groups, one road, and 20 villagers
-spawned at runtime by TestVillage.cs. Placement is deterministic (fixed RNG seed).
+Outputs:
+  godot/scenes/test/TEST_VILLAGE_01.tscn        buildings, yard props, rocks, roads (Path3D), camera
+  godot/scenes/test/TEST_VILLAGE_01_layout.json  ground shapes (roads, entrances, yards, gardens, fields,
+                                                 shade) and forest/tree placements, read by TestVillage.gd
+Content per the owner's brief (Bible §43 not in the repo): ~10 houses, hall, woodcutter, farm, 2 fields,
+granary, warehouse, market, smithy, well, forests framing the village, ~10 rock groups, one road,
+20 villagers (spawned at runtime). Deterministic (fixed seed).
 """
 import json
 import math
@@ -15,126 +19,219 @@ sys.path.insert(0, str(Path(__file__).parent))
 from build_scenes import Scene, transform, fmt, GODOT  # noqa: E402
 
 OUT = GODOT / "scenes" / "test" / "TEST_VILLAGE_01.tscn"
+LAYOUT = GODOT / "scenes" / "test" / "TEST_VILLAGE_01_layout.json"
 B = "res://assets/buildings/{}.tscn"
 E = "res://assets/environment/{}.tscn"
 P = "res://assets/props/{}.tscn"
+rng = random.Random(1)
 
-# (id, center x, center z, rotation, footprint w×d in meters, door side in local space)
+# (id, x, z, facing (0 = door to +Z / south, 180 = north), footprint w×d, door side in local space)
+# Door sides of the modular scenes: House A/B S, House C E, woodcutter hut E, others S.
 BUILDINGS = [
-    ("BLD_Hall_A", 128, 114, 0, (6, 6)),
-    ("BLD_Market_A", 116, 121, 0, (6, 6)),
-    ("BLD_Well_A", 137, 123, 0, (2, 2)),
-    ("BLD_Granary_A", 141, 114, 0, (6, 4)),
-    ("BLD_Warehouse_A", 152, 113, 0, (6, 6)),
-    ("BLD_Smithy_A", 101, 120, 0, (4, 6)),
-    ("BLD_Woodcutter_A", 80, 138, 180, (4, 4)),
-    ("BLD_Farm_A", 176, 121, 0, (6, 4)),
-    ("BLD_Field_A", 172, 142, 0, (8, 8)),
-    ("BLD_Field_A", 182, 142, 0, (8, 8)),
-    # houses: north of the road face south (rot 0), south of the road face north (rot 180)
-    ("BLD_House_T1_A", 92, 122, 0, (4, 4)),
-    ("BLD_House_T1_B", 160, 122, 0, (4, 4)),
-    ("BLD_House_T1_C", 92, 138, 180, (4, 4)),
-    ("BLD_House_T1_A", 100, 138, 180, (4, 4)),
-    ("BLD_House_T1_B", 108, 138, 180, (4, 4)),
-    ("BLD_House_T1_C", 116, 138, 180, (4, 4)),
-    ("BLD_House_T1_A", 140, 138, 180, (4, 4)),
-    ("BLD_House_T1_B", 148, 138, 180, (4, 4)),
-    ("BLD_House_T1_C", 156, 138, 180, (4, 4)),
-    ("BLD_House_T1_A", 164, 112, 0, (4, 4)),
+    ("BLD_Hall_A", 128, 114, 0, (6, 6), "S"),
+    ("BLD_Market_A", 116, 121, 0, (6, 6), None),
+    ("BLD_Well_A", 137, 123, 0, (2, 2), None),
+    ("BLD_Granary_A", 141, 114, 0, (6, 4), "S"),
+    ("BLD_Warehouse_A", 152, 113, 0, (6, 6), "S"),
+    ("BLD_Smithy_A", 101, 120, 0, (4, 6), "S"),
+    ("BLD_Woodcutter_A", 80, 138, 180, (4, 4), "E"),
+    ("BLD_Farm_A", 176, 121, 0, (6, 4), "S"),
+    ("BLD_Field_A", 172, 142, 0, (8, 8), None),
+    ("BLD_Field_A", 182, 142, 0, (8, 8), None),
+    ("BLD_House_T1_A", 92, 122, 0, (4, 4), "S"),
+    ("BLD_House_T1_B", 160, 122, 0, (4, 4), "S"),
+    ("BLD_House_T1_C", 92, 138, 180, (4, 4), "E"),
+    ("BLD_House_T1_A", 100, 139, 180, (4, 4), "S"),
+    ("BLD_House_T1_B", 108, 138, 180, (4, 4), "S"),
+    ("BLD_House_T1_C", 116, 139, 180, (4, 4), "E"),
+    ("BLD_House_T1_A", 140, 138, 180, (4, 4), "S"),
+    ("BLD_House_T1_B", 148, 139, 180, (4, 4), "S"),
+    ("BLD_House_T1_C", 156, 138, 180, (4, 4), "E"),
+    ("BLD_House_T1_A", 164, 112, 0, (4, 4), "S"),
 ]
-ROAD = [(68, 130), (96, 130), (124, 130), (150, 131), (170, 131), (196, 131)]
-ROAD_HALL = [(128, 130), (128, 118)]
+ROAD = [(56, 130), (78, 131.5), (96, 129.6), (112, 130.8), (124, 129.8), (138, 131.2), (150, 130.4), (170, 131.6), (190, 130.2), (215, 131)]
+ROAD_HALL = [(128, 130.2), (127.6, 124), (128.2, 118)]
+MASK_RECT = [36, 76, 204, 116]          # x, z, width, depth of the painted ground
+ROOF_WEIGHTS = [("thatch", 0.5), ("tile", 0.35), ("slate", 0.15)]
+SIDE_DIR = {"S": (0, 1), "N": (0, -1), "E": (1, 0), "W": (-1, 0)}
 
 
-def curve(scene: Scene, points):
-    data = []
-    for x, z in points:
-        data += [0, 0, 0, 0, 0, 0, x, 0.05, z]
-    return scene.subresource("Curve3D", [
-        "_data = {\n\"points\": PackedVector3Array(" + ", ".join(fmt(v) for v in data) + "),\n"
-        "\"tilts\": PackedFloat32Array(" + ", ".join("0" for _ in points) + ")\n}",
-        f"point_count = {len(points)}",
-    ])
+def rot(x, z, deg):
+    a = math.radians(deg)
+    return x * math.cos(a) + z * math.sin(a), -x * math.sin(a) + z * math.cos(a)
+
+
+def local_to_world(cx, cz, deg, lx, lz):
+    rx, rz = rot(lx, lz, deg)
+    return cx + rx, cz + rz
+
+
+def nearest_on_road(px, pz):
+    best, bd = None, 1e9
+    for road in (ROAD, ROAD_HALL):
+        for (ax, az), (bx, bz) in zip(road, road[1:]):
+            dx, dz = bx - ax, bz - az
+            t = max(0.0, min(1.0, ((px - ax) * dx + (pz - az) * dz) / (dx * dx + dz * dz)))
+            qx, qz = ax + t * dx, az + t * dz
+            d = math.hypot(px - qx, pz - qz)
+            if d < bd:
+                best, bd = (qx, qz), d
+    return best
+
+
+def pick_roof():
+    r = rng.random()
+    for name, w in ROOF_WEIGHTS:
+        if r < w:
+            return name
+        r -= w
+    return "tile"
 
 
 def main():
-    rng = random.Random(1)
     s = Scene("TEST_VILLAGE_01")
-    s.root_props.append(f'script = ExtResource("{s.ext_id("res://scenes/test/TestVillage.cs", "Script")}")')
-
-    sky_mat = s.subresource("ProceduralSkyMaterial", ["sky_top_color = Color(0.42, 0.62, 0.88, 1)",
-                                                      "sky_horizon_color = Color(0.82, 0.88, 0.94, 1)",
-                                                      "ground_horizon_color = Color(0.75, 0.8, 0.7, 1)"])
-    sky = s.subresource("Sky", [f'sky_material = SubResource("{sky_mat}")'])
-    env = s.subresource("Environment", ["background_mode = 2", f'sky = SubResource("{sky}")', "ambient_light_source = 3",
-                                        "ambient_light_energy = 0.9", "tonemap_mode = 2", "ssao_enabled = true",
-                                        "glow_enabled = true", "glow_intensity = 0.3"])
-    s.node("WorldEnvironment", "WorldEnvironment", [f'environment = SubResource("{env}")'])
-    s.node("Sun", "DirectionalLight3D", ["transform = Transform3D(0.819, -0.4698, 0.3289, 0, 0.5736, 0.8192, -0.5736, -0.6709, 0.4698, 0, 20, 0)",
-                                          "light_color = Color(1, 0.96, 0.88, 1)", "light_energy = 1.15", "shadow_enabled = true",
-                                          "directional_shadow_max_distance = 250.0"])
+    s.root_props.append(f'script = ExtResource("{s.ext_id("res://scenes/test/TestVillage.gd", "Script")}")')
     terrain_script = s.ext_id("res://game/terrain/VillageTerrain.gd", "Script")
-    s.node("VillageTerrain", "Node3D", [f'script = ExtResource("{terrain_script}")', "cover = Rect2(40, 80, 180, 110)"])
+    s.node("VillageTerrain", "Node3D", [f'script = ExtResource("{terrain_script}")',
+                                        f"cover = Rect2({MASK_RECT[0] - 20}, {MASK_RECT[1] - 20}, {MASK_RECT[2] + 40}, {MASK_RECT[3] + 40})"])
+    grass_script = s.ext_id("res://game/vegetation/GrassCarpet.gd", "Script")
+    s.node("GrassCarpet", "Node3D", [f'script = ExtResource("{grass_script}")'])
 
-    s.node("Road", "Path3D", [f'curve = SubResource("{curve(s, ROAD)}")'])
-    s.node("RoadHall", "Path3D", [f'curve = SubResource("{curve(s, ROAD_HALL)}")'])
+    def curve(points):
+        data = []
+        for x, z in points:
+            data += [0, 0, 0, 0, 0, 0, x, 0.05, z]
+        return s.subresource("Curve3D", [
+            "_data = {\n\"points\": PackedVector3Array(" + ", ".join(fmt(v) for v in data) + "),\n"
+            "\"tilts\": PackedFloat32Array(" + ", ".join("0" for _ in points) + ")\n}", f"point_count = {len(points)}"])
+
+    s.node("Road", "Path3D", [f'curve = SubResource("{curve(ROAD)}")'])
+    s.node("RoadHall", "Path3D", [f'curve = SubResource("{curve(ROAD_HALL)}")'])
+
+    layout = {"mask_rect": MASK_RECT, "roads": [{"points": ROAD, "width": 2.8}, {"points": ROAD_HALL, "width": 2.2}],
+              "dirt": [], "paths": [], "plowed": [], "walls": [], "shade": [], "trees": [], "rocks": [],
+              "fences": [], "bush_edges": []}
+    occupied = []   # (x, z, radius) for tree/rock placement
 
     s.node("Buildings", "Node3D", [])
-    for bid, x, z, rot, (w, d) in BUILDINGS:
-        s.instance(B.format(bid), bid, transform((x, 0, z), rot), parent="Buildings",
-                   props=[f"metadata/footprint = Vector2({w}, {d})"])
+    s.node("Props", "Node3D", [])
+    for bid, x, z, facing, (w, d), door in BUILDINGS:
+        is_house = bid.startswith("BLD_House")
+        jitter = rng.choice([-1, 1]) * rng.uniform(5, 15) if is_house else 0.0
+        deg = facing + jitter
+        props = [f"metadata/footprint = Vector2({w}, {d})"]
+        if is_house or bid in ("BLD_Hall_A", "BLD_Granary_A", "BLD_Warehouse_A", "BLD_Farm_A", "BLD_Smithy_A", "BLD_Woodcutter_A"):
+            roof = "slate" if bid == "BLD_Hall_A" else ("tile" if bid in ("BLD_Granary_A", "BLD_Warehouse_A") else pick_roof())
+            props.append(f'metadata/roof = "{roof}"')
+        s.instance(B.format(bid), bid, transform((x, 0, z), deg), parent="Buildings", props=props)
+        occupied.append((x, z, max(w, d) * 0.75 + 2.0))
 
-    s.node("Nature", "Node3D", [])
-    occupied = [(x, z, max(w, d) / 2 + 2.5) for _, x, z, _, (w, d) in BUILDINGS]
+        if bid == "BLD_Field_A":
+            layout["plowed"].append({"center": [x, z], "size": [w - 0.4, d - 0.4], "rot": deg})
+            continue
+        if bid == "BLD_Market_A":
+            layout["dirt"].append({"center": [x, z], "size": [w + 1.5, d + 1.5], "value": 0.8})
+            continue
+        layout["walls"].append({"center": [x, z], "size": [w, d], "rot": deg})
+        if door:
+            dx, dz = SIDE_DIR[door]
+            reach = (d if dz else w) / 2 + 1.1
+            ex, ez = local_to_world(x, z, deg, dx * reach, dz * reach)
+            layout["dirt"].append({"center": [ex, ez], "size": [1.8 + (1.5 if not is_house else 0), 1.4], "value": 0.9})
+            rx, rz = nearest_on_road(ex, ez)
+            if math.hypot(rx - ex, rz - ez) < 14:
+                layout["paths"].append({"points": [[ex, ez], [rx, rz]], "width": 1.1, "value": 0.85})
+        if bid == "BLD_Hall_A":
+            hx, hz = local_to_world(x, z, deg, 0, d / 2 + 3.0)
+            layout["dirt"].append({"center": [hx, hz], "size": [7.0, 4.0], "value": 0.75})
+        if is_house:
+            # Back yard: irregular dirt + 1–3 optional props (fence, garden, firewood, barrel, bucket, bench)
+            yx, yz = local_to_world(x, z, deg, 0, -(d / 2 + 2.0))
+            layout["dirt"].append({"center": [yx, yz], "size": [w * 0.8, 2.4], "value": 0.7})
+            choices = rng.sample(["fence", "garden", "firewood", "barrel", "bucket", "bench"], rng.randint(1, 3))
+            if "fence" in choices:
+                for lx in (-1.0, 1.0):
+                    fx, fz = local_to_world(x, z, deg, lx * 1.05, -(d / 2 + 3.4))
+                    s.instance(P.format("PROP_Fence_A"), "PROP_Fence_A", transform((fx, 0, fz), deg), parent="Props")
+                    layout["fences"].append([fx, fz])
+                for lx in (-1, 1):
+                    fx, fz = local_to_world(x, z, deg, lx * 2.1, -(d / 2 + 2.3))
+                    s.instance(P.format("PROP_Fence_A"), "PROP_Fence_A", transform((fx, 0, fz), deg + 90), parent="Props")
+                    layout["fences"].append([fx, fz])
+            if "garden" in choices:
+                gx, gz = local_to_world(x, z, deg, rng.choice([-1, 1]) * 2.2, -(d / 2 + 2.4))
+                layout["plowed"].append({"center": [gx, gz], "size": [1.8, 1.4], "rot": deg})
+                layout.setdefault("gardens", []).append([gx, gz, deg])
+            if "firewood" in choices:
+                fx, fz = local_to_world(x, z, deg, w / 2 + 0.9, -0.6)
+                s.instance(P.format("PROP_ChoppingBlock_A"), "PROP_ChoppingBlock_A", transform((fx, 0, fz), rng.uniform(0, 360)), parent="Props")
+                fx2, fz2 = local_to_world(x, z, deg, w / 2 + 0.8, 0.6)
+                s.instance(P.format("PROP_Crate_A"), "PROP_Crate_A", transform((fx2, 0, fz2), rng.uniform(0, 360)), parent="Props")
+            for item, prop in (("barrel", "PROP_Barrel_A"), ("bucket", "PROP_Bucket_A"), ("bench", "PROP_Bench_A")):
+                if item in choices:
+                    side = rng.choice([-1, 1])
+                    px, pz = local_to_world(x, z, deg, side * (w / 2 + 0.6), rng.uniform(-1.2, 1.2))
+                    s.instance(P.format(prop), prop, transform((px, 0, pz), deg + (90 if item == "bench" else rng.uniform(0, 360))), parent="Props")
 
-    def free(x, z, r=2.0):
-        if any(math.hypot(x - ox, z - oz) < orr + r for ox, oz, orr in occupied):
-            return False
-        if any(abs(z - rz) < 4.5 and 60 < x < 200 for _, rz in ROAD[:1]) and abs(z - 130.5) < 4.5:
-            return False
-        return True
+    for pid, x, z, r in [("PROP_Cart_A", 123, 126.2, 80), ("PROP_Barrel_A", 133, 126, 0), ("PROP_Crate_A", 145, 127, 20),
+                         ("PROP_Sack_A", 138, 118, 0), ("PROP_Fence_A", 186.5, 121, 90)]:
+        s.instance(P.format(pid), pid, transform((x, 0, z), r), parent="Props")
 
-    def scatter(ids, count, area, min_gap, scale_range=(0.85, 1.15)):
-        placed = 0
-        tries = 0
-        while placed < count and tries < count * 200:
+    def near_road(px, pz, margin):
+        q = nearest_on_road(px, pz)
+        return math.hypot(px - q[0], pz - q[1]) < margin
+
+    def free(px, pz, r):
+        return not near_road(px, pz, 3.5 + r * 0.3) and all(math.hypot(px - ox, pz - oz) > orad + r for ox, oz, orad in occupied)
+
+    # Forest belts framing the village (dense, clumped by noise) + a few groves/lone trees inside.
+    oaks = [f"ENV_Oak_{c}" for c in "ABCDE"] + ["ENV_Oak_Big_A"]
+    pines = [f"ENV_Pine_{c}" for c in "ABCDE"] + ["ENV_Pine_Big_A"]
+
+    def belt(area, count, kinds, gap, clump=0.0):
+        placed, tries = 0, 0
+        while placed < count and tries < count * 60:
             tries += 1
-            x = rng.uniform(area[0], area[1]); z = rng.uniform(area[2], area[3])
-            if not free(x, z, min_gap):
+            px, pz = rng.uniform(area[0], area[1]), rng.uniform(area[2], area[3])
+            if clump and (math.sin(px * 0.09) * math.cos(pz * 0.07) + 0.3) < clump * rng.random():
                 continue
-            occupied.append((x, z, min_gap))
-            sid = rng.choice(ids)
-            s.instance(E.format(sid), sid, transform((round(x, 2), 0, round(z, 2)), rng.uniform(0, 360),
-                                                    round(rng.uniform(*scale_range), 2)), parent="Nature")
+            if not free(px, pz, gap):
+                continue
+            occupied.append((px, pz, gap))
+            layout["trees"].append({"scene": E.format(rng.choice(kinds)), "pos": [round(px, 2), round(pz, 2)],
+                                    "rot": round(rng.uniform(0, 360), 1), "scale": round(rng.uniform(0.85, 1.25), 2)})
             placed += 1
 
-    oaks = [f"ENV_Oak_{c}" for c in "ABCDE"]
-    pines = [f"ENV_Pine_{c}" for c in "ABCDE"]
-    scatter(oaks + pines + ["ENV_Pine_Big_A", "ENV_Oak_Big_A"], 26, (56, 80, 96, 168), 2.2, (0.8, 1.3))   # western wood
-    scatter(pines + ["ENV_Pine_Big_A"], 14, (80, 200, 94, 104), 2.4, (0.8, 1.3))                       # northern belt
-    scatter(oaks + ["ENV_Oak_Big_A", "ENV_TwistedTree_A"], 10, (186, 208, 100, 168), 2.5, (0.8, 1.25)) # eastern grove
-    scatter(oaks + pines, 9, (95, 165, 146, 168), 2.6, (0.85, 1.2))                                    # southern edge
-    scatter(oaks + ["ENV_TwistedTree_B", "ENV_DeadTree_A"], 6, (80, 200, 104, 160), 6.0, (0.85, 1.15)) # lone trees in town
-    scatter(["ENV_RockGroup_A", "ENV_RockGroup_B"], 10, (60, 205, 95, 165), 3.0)
-    # grass tufts, flowers and pebbles are scattered at runtime with MultiMesh (VillageTerrain.scatter)
-    for i in range(14):   # path stones along the road edges
-        x = 70 + i * 9 + rng.uniform(-2, 2)
-        s.instance(E.format("ENV_PathStone_C"), "ENV_PathStone_C",
-                   transform((round(x, 2), 0, round(130.5 + rng.choice([-2.2, 2.2]), 2)), rng.uniform(0, 360)), parent="Nature")
+    belt((36, 74, 76, 192), 70, oaks + pines, 2.2, clump=0.6)       # west wood
+    belt((74, 218, 76, 101), 70, pines + oaks, 2.2, clump=0.6)      # north belt
+    belt((198, 240, 96, 192), 45, oaks + ["ENV_TwistedTree_A"], 2.3, clump=0.6)  # east grove
+    belt((74, 198, 160, 192), 55, oaks + pines, 2.3, clump=0.8)     # south edge, gappier
+    belt((84, 196, 104, 156), 9, oaks + ["ENV_TwistedTree_B"], 5.5)  # lone trees in town
+    for t in layout["trees"]:
+        layout["shade"].append({"center": t["pos"], "radius": 3.4 * t["scale"], "strength": 0.75})
 
-    s.node("Props", "Node3D", [])
-    for pid, x, z, rot in [("PROP_Cart_A", 124, 126, 80), ("PROP_Barrel_A", 133, 126, 0), ("PROP_Crate_A", 145, 127, 20),
-                           ("PROP_Sack_A", 138, 118, 0), ("PROP_WoodPile_A", 75, 134, 0), ("PROP_Fence_A", 186, 121, 90)]:
-        s.instance(P.format(pid), pid, transform((x, 0, z), rot), parent="Props")
+    s.node("Rocks", "Node3D", [])
+    placed = 0
+    while placed < 10:
+        px, pz = rng.uniform(70, 205), rng.uniform(100, 162)
+        if not free(px, pz, 2.5):
+            continue
+        occupied.append((px, pz, 2.5))
+        rid = rng.choice(["ENV_RockGroup_A", "ENV_RockGroup_B"])
+        s.instance(E.format(rid), rid, transform((round(px, 2), -0.35, round(pz, 2)), rng.uniform(0, 360), round(rng.uniform(1.0, 1.4), 2)), parent="Rocks")
+        layout["rocks"].append([round(px, 2), round(pz, 2)])
+        layout["shade"].append({"center": [px, pz], "radius": 2.4, "strength": 0.6})
+        placed += 1
 
     s.node("Villagers", "Node3D", [])
-    rig_script = s.ext_id("res://game/scripts/CameraRig.cs", "Script")
-    s.node("CameraRig", "Node3D", [f'script = ExtResource("{rig_script}")', "transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128, 0, 128)"])
+    rig = s.ext_id("res://game/scripts/CameraRig.cs", "Script")
+    s.node("CameraRig", "Node3D", [f'script = ExtResource("{rig}")', "transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 0, 128)"])
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(s.render(), encoding="utf-8")
-    print(f"wrote {OUT.relative_to(GODOT.parent)}: {len(BUILDINGS)} buildings, {len(s.nodes)} nodes")
+    LAYOUT.write_text(json.dumps(layout, indent=0), encoding="utf-8")
+    print(f"wrote {OUT.name} ({len(BUILDINGS)} buildings, {len(s.nodes)} nodes) and {LAYOUT.name} "
+          f"({len(layout['trees'])} trees, {len(layout['dirt'])} dirt shapes, {len(layout['fences'])} fences)")
 
 
 if __name__ == "__main__":

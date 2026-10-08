@@ -1,473 +1,283 @@
-[gd_scene load_steps=45 format=3]
+[gd_scene load_steps=29 format=3]
 
-[ext_resource type="Script" path="res://scenes/test/TestVillage.cs" id="1_TestVillage"]
+[ext_resource type="Script" path="res://scenes/test/TestVillage.gd" id="1_TestVillage"]
 [ext_resource type="Script" path="res://game/terrain/VillageTerrain.gd" id="2_VillageTerrain"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Hall_A.tscn" id="3_BLD_Hall_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Market_A.tscn" id="4_BLD_Market_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Well_A.tscn" id="5_BLD_Well_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Granary_A.tscn" id="6_BLD_Granary_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Warehouse_A.tscn" id="7_BLD_Warehouse_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Smithy_A.tscn" id="8_BLD_Smithy_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Woodcutter_A.tscn" id="9_BLD_Woodcutter_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Farm_A.tscn" id="10_BLD_Farm_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Field_A.tscn" id="11_BLD_Field_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_House_T1_A.tscn" id="12_BLD_House_T1_A"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_House_T1_B.tscn" id="13_BLD_House_T1_B"]
-[ext_resource type="PackedScene" path="res://assets/buildings/BLD_House_T1_C.tscn" id="14_BLD_House_T1_C"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Oak_B.tscn" id="15_ENV_Oak_B"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Oak_D.tscn" id="16_ENV_Oak_D"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pine_C.tscn" id="17_ENV_Pine_C"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pine_A.tscn" id="18_ENV_Pine_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pine_B.tscn" id="19_ENV_Pine_B"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pine_D.tscn" id="20_ENV_Pine_D"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Oak_E.tscn" id="21_ENV_Oak_E"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Oak_Big_A.tscn" id="22_ENV_Oak_Big_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pine_E.tscn" id="23_ENV_Pine_E"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Pine_Big_A.tscn" id="24_ENV_Pine_Big_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_TwistedTree_A.tscn" id="25_ENV_TwistedTree_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Oak_A.tscn" id="26_ENV_Oak_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_Oak_C.tscn" id="27_ENV_Oak_C"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_DeadTree_A.tscn" id="28_ENV_DeadTree_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_TwistedTree_B.tscn" id="29_ENV_TwistedTree_B"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_A.tscn" id="30_ENV_RockGroup_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_B.tscn" id="31_ENV_RockGroup_B"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_PathStone_C.tscn" id="32_ENV_PathStone_C"]
-[ext_resource type="PackedScene" path="res://assets/props/PROP_Cart_A.tscn" id="33_PROP_Cart_A"]
-[ext_resource type="PackedScene" path="res://assets/props/PROP_Barrel_A.tscn" id="34_PROP_Barrel_A"]
-[ext_resource type="PackedScene" path="res://assets/props/PROP_Crate_A.tscn" id="35_PROP_Crate_A"]
-[ext_resource type="PackedScene" path="res://assets/props/PROP_Sack_A.tscn" id="36_PROP_Sack_A"]
-[ext_resource type="PackedScene" path="res://assets/props/PROP_WoodPile_A.tscn" id="37_PROP_WoodPile_A"]
-[ext_resource type="PackedScene" path="res://assets/props/PROP_Fence_A.tscn" id="38_PROP_Fence_A"]
-[ext_resource type="Script" path="res://game/scripts/CameraRig.cs" id="39_CameraRig"]
+[ext_resource type="Script" path="res://game/vegetation/GrassCarpet.gd" id="3_GrassCarpet"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Hall_A.tscn" id="4_BLD_Hall_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Market_A.tscn" id="5_BLD_Market_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Well_A.tscn" id="6_BLD_Well_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Granary_A.tscn" id="7_BLD_Granary_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Warehouse_A.tscn" id="8_BLD_Warehouse_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Smithy_A.tscn" id="9_BLD_Smithy_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Woodcutter_A.tscn" id="10_BLD_Woodcutter_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Farm_A.tscn" id="11_BLD_Farm_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_Field_A.tscn" id="12_BLD_Field_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_House_T1_A.tscn" id="13_BLD_House_T1_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Barrel_A.tscn" id="14_PROP_Barrel_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Bench_A.tscn" id="15_PROP_Bench_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_House_T1_B.tscn" id="16_BLD_House_T1_B"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Bucket_A.tscn" id="17_PROP_Bucket_A"]
+[ext_resource type="PackedScene" path="res://assets/buildings/BLD_House_T1_C.tscn" id="18_BLD_House_T1_C"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Fence_A.tscn" id="19_PROP_Fence_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_ChoppingBlock_A.tscn" id="20_PROP_ChoppingBlock_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Crate_A.tscn" id="21_PROP_Crate_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Cart_A.tscn" id="22_PROP_Cart_A"]
+[ext_resource type="PackedScene" path="res://assets/props/PROP_Sack_A.tscn" id="23_PROP_Sack_A"]
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_A.tscn" id="24_ENV_RockGroup_A"]
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_B.tscn" id="25_ENV_RockGroup_B"]
+[ext_resource type="Script" path="res://game/scripts/CameraRig.cs" id="26_CameraRig"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
-sky_top_color = Color(0.42, 0.62, 0.88, 1)
-sky_horizon_color = Color(0.82, 0.88, 0.94, 1)
-ground_horizon_color = Color(0.75, 0.8, 0.7, 1)
-
-[sub_resource type="Sky" id="Sky_2"]
-sky_material = SubResource("ProceduralSkyMaterial_1")
-
-[sub_resource type="Environment" id="Environment_3"]
-background_mode = 2
-sky = SubResource("Sky_2")
-ambient_light_source = 3
-ambient_light_energy = 0.9
-tonemap_mode = 2
-ssao_enabled = true
-glow_enabled = true
-glow_intensity = 0.3
-
-[sub_resource type="Curve3D" id="Curve3D_4"]
+[sub_resource type="Curve3D" id="Curve3D_1"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 68, 0.05, 130, 0, 0, 0, 0, 0, 0, 96, 0.05, 130, 0, 0, 0, 0, 0, 0, 124, 0.05, 130, 0, 0, 0, 0, 0, 0, 150, 0.05, 131, 0, 0, 0, 0, 0, 0, 170, 0.05, 131, 0, 0, 0, 0, 0, 0, 196, 0.05, 131),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 56, 0.05, 130, 0, 0, 0, 0, 0, 0, 78, 0.05, 131.5, 0, 0, 0, 0, 0, 0, 96, 0.05, 129.6, 0, 0, 0, 0, 0, 0, 112, 0.05, 130.8, 0, 0, 0, 0, 0, 0, 124, 0.05, 129.8, 0, 0, 0, 0, 0, 0, 138, 0.05, 131.2, 0, 0, 0, 0, 0, 0, 150, 0.05, 130.4, 0, 0, 0, 0, 0, 0, 170, 0.05, 131.6, 0, 0, 0, 0, 0, 0, 190, 0.05, 130.2, 0, 0, 0, 0, 0, 0, 215, 0.05, 131),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 }
-point_count = 6
+point_count = 10
 
-[sub_resource type="Curve3D" id="Curve3D_5"]
+[sub_resource type="Curve3D" id="Curve3D_2"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 128, 0.05, 130, 0, 0, 0, 0, 0, 0, 128, 0.05, 118),
-"tilts": PackedFloat32Array(0, 0)
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 128, 0.05, 130.2, 0, 0, 0, 0, 0, 0, 127.6, 0.05, 124, 0, 0, 0, 0, 0, 0, 128.2, 0.05, 118),
+"tilts": PackedFloat32Array(0, 0, 0)
 }
-point_count = 2
+point_count = 3
 
 [node name="TEST_VILLAGE_01" type="Node3D"]
 script = ExtResource("1_TestVillage")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_3")
-
-[node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.819, -0.4698, 0.3289, 0, 0.5736, 0.8192, -0.5736, -0.6709, 0.4698, 0, 20, 0)
-light_color = Color(1, 0.96, 0.88, 1)
-light_energy = 1.15
-shadow_enabled = true
-directional_shadow_max_distance = 250.0
-
 [node name="VillageTerrain" type="Node3D" parent="."]
 script = ExtResource("2_VillageTerrain")
-cover = Rect2(40, 80, 180, 110)
+cover = Rect2(16, 56, 244, 156)
+
+[node name="GrassCarpet" type="Node3D" parent="."]
+script = ExtResource("3_GrassCarpet")
 
 [node name="Road" type="Path3D" parent="."]
-curve = SubResource("Curve3D_4")
+curve = SubResource("Curve3D_1")
 
 [node name="RoadHall" type="Path3D" parent="."]
-curve = SubResource("Curve3D_5")
+curve = SubResource("Curve3D_2")
 
 [node name="Buildings" type="Node3D" parent="."]
 
-[node name="BLD_Hall_A" parent="Buildings" instance=ExtResource("3_BLD_Hall_A")]
+[node name="Props" type="Node3D" parent="."]
+
+[node name="BLD_Hall_A" parent="Buildings" instance=ExtResource("4_BLD_Hall_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128, 0, 114)
 metadata/footprint = Vector2(6, 6)
+metadata/roof = "slate"
 
-[node name="BLD_Market_A" parent="Buildings" instance=ExtResource("4_BLD_Market_A")]
+[node name="BLD_Market_A" parent="Buildings" instance=ExtResource("5_BLD_Market_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 121)
 metadata/footprint = Vector2(6, 6)
 
-[node name="BLD_Well_A" parent="Buildings" instance=ExtResource("5_BLD_Well_A")]
+[node name="BLD_Well_A" parent="Buildings" instance=ExtResource("6_BLD_Well_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137, 0, 123)
 metadata/footprint = Vector2(2, 2)
 
-[node name="BLD_Granary_A" parent="Buildings" instance=ExtResource("6_BLD_Granary_A")]
+[node name="BLD_Granary_A" parent="Buildings" instance=ExtResource("7_BLD_Granary_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 141, 0, 114)
 metadata/footprint = Vector2(6, 4)
+metadata/roof = "tile"
 
-[node name="BLD_Warehouse_A" parent="Buildings" instance=ExtResource("7_BLD_Warehouse_A")]
+[node name="BLD_Warehouse_A" parent="Buildings" instance=ExtResource("8_BLD_Warehouse_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 152, 0, 113)
 metadata/footprint = Vector2(6, 6)
+metadata/roof = "tile"
 
-[node name="BLD_Smithy_A" parent="Buildings" instance=ExtResource("8_BLD_Smithy_A")]
+[node name="BLD_Smithy_A" parent="Buildings" instance=ExtResource("9_BLD_Smithy_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101, 0, 120)
 metadata/footprint = Vector2(4, 6)
+metadata/roof = "thatch"
 
-[node name="BLD_Woodcutter_A" parent="Buildings" instance=ExtResource("9_BLD_Woodcutter_A")]
+[node name="BLD_Woodcutter_A" parent="Buildings" instance=ExtResource("10_BLD_Woodcutter_A")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 80, 0, 138)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "tile"
 
-[node name="BLD_Farm_A" parent="Buildings" instance=ExtResource("10_BLD_Farm_A")]
+[node name="BLD_Farm_A" parent="Buildings" instance=ExtResource("11_BLD_Farm_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 176, 0, 121)
 metadata/footprint = Vector2(6, 4)
+metadata/roof = "tile"
 
-[node name="BLD_Field_A" parent="Buildings" instance=ExtResource("11_BLD_Field_A")]
+[node name="BLD_Field_A" parent="Buildings" instance=ExtResource("12_BLD_Field_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172, 0, 142)
 metadata/footprint = Vector2(8, 8)
 
-[node name="BLD_Field_A_2" parent="Buildings" instance=ExtResource("11_BLD_Field_A")]
+[node name="BLD_Field_A_2" parent="Buildings" instance=ExtResource("12_BLD_Field_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 182, 0, 142)
 metadata/footprint = Vector2(8, 8)
 
-[node name="BLD_House_T1_A" parent="Buildings" instance=ExtResource("12_BLD_House_T1_A")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 122)
+[node name="BLD_House_T1_A" parent="Buildings" instance=ExtResource("13_BLD_House_T1_A")]
+transform = Transform3D(0.99419, 0, -0.10764, 0, 1, 0, 0.10764, 0, 0.99419, 92, 0, 122)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "tile"
 
-[node name="BLD_House_T1_B" parent="Buildings" instance=ExtResource("13_BLD_House_T1_B")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 0, 122)
+[node name="PROP_Barrel_A" parent="Props" instance=ExtResource("14_PROP_Barrel_A")]
+transform = Transform3D(0.95939, 0, -0.28208, 0, 1, 0, 0.28208, 0, 0.95939, 89.3102, 0, 121.311)
+
+[node name="PROP_Bench_A" parent="Props" instance=ExtResource("15_PROP_Bench_A")]
+transform = Transform3D(-0.10764, 0, -0.99419, 0, 1, 0, 0.99419, 0, -0.10764, 94.5675, 0, 121.56)
+
+[node name="BLD_House_T1_B" parent="Buildings" instance=ExtResource("16_BLD_House_T1_B")]
+transform = Transform3D(0.9783, 0, 0.2072, 0, 1, 0, -0.2072, 0, 0.9783, 160, 0, 122)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "thatch"
 
-[node name="BLD_House_T1_C" parent="Buildings" instance=ExtResource("14_BLD_House_T1_C")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 92, 0, 138)
+[node name="PROP_Bucket_A" parent="Props" instance=ExtResource("17_PROP_Bucket_A")]
+transform = Transform3D(0.99986, 0, 0.01651, 0, 1, 0, -0.01651, 0, 0.99986, 157.257, 0, 122.404)
+
+[node name="BLD_House_T1_C" parent="Buildings" instance=ExtResource("18_BLD_House_T1_C")]
+transform = Transform3D(-0.97994, 0, -0.19929, 0, 1, 0, 0.19929, 0, -0.97994, 92, 0, 138)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "thatch"
 
-[node name="BLD_House_T1_A_2" parent="Buildings" instance=ExtResource("12_BLD_House_T1_A")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 100, 0, 138)
+[node name="PROP_Bench_A_2" parent="Props" instance=ExtResource("15_PROP_Bench_A")]
+transform = Transform3D(-0.19929, 0, 0.97994, 0, 1, 0, -0.97994, 0, -0.19929, 94.5611, 0, 138.453)
+
+[node name="BLD_House_T1_A_2" parent="Buildings" instance=ExtResource("13_BLD_House_T1_A")]
+transform = Transform3D(-0.96862, 0, 0.24855, 0, 1, 0, -0.24855, 0, -0.96862, 100, 0, 139)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "tile"
 
-[node name="BLD_House_T1_B_2" parent="Buildings" instance=ExtResource("13_BLD_House_T1_B")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 108, 0, 138)
+[node name="PROP_Bench_A_3" parent="Props" instance=ExtResource("15_PROP_Bench_A")]
+transform = Transform3D(0.24855, 0, 0.96862, 0, 1, 0, -0.96862, 0, 0.24855, 97.2272, 0, 138.655)
+
+[node name="BLD_House_T1_B_2" parent="Buildings" instance=ExtResource("16_BLD_House_T1_B")]
+transform = Transform3D(-0.97287, 0, 0.23134, 0, 1, 0, -0.23134, 0, -0.97287, 108, 0, 138)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "tile"
 
-[node name="BLD_House_T1_C_2" parent="Buildings" instance=ExtResource("14_BLD_House_T1_C")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 116, 0, 138)
+[node name="PROP_Fence_A" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(-0.97287, 0, 0.23134, 0, 1, 0, -0.23134, 0, -0.97287, 110.271, 0, 143.011)
+
+[node name="PROP_Fence_A_2" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(-0.97287, 0, 0.23134, 0, 1, 0, -0.23134, 0, -0.97287, 108.228, 0, 143.496)
+
+[node name="PROP_Fence_A_3" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0.23134, 0, 0.97287, 0, 1, 0, -0.97287, 0, 0.23134, 111.038, 0, 141.698)
+
+[node name="PROP_Fence_A_4" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0.23134, 0, 0.97287, 0, 1, 0, -0.97287, 0, 0.23134, 106.952, 0, 142.669)
+
+[node name="PROP_ChoppingBlock_A" parent="Props" instance=ExtResource("20_PROP_ChoppingBlock_A")]
+transform = Transform3D(-0.04305, 0, 0.99907, 0, 1, 0, -0.99907, 0, -0.04305, 105.317, 0, 139.255)
+
+[node name="PROP_Crate_A" parent="Props" instance=ExtResource("21_PROP_Crate_A")]
+transform = Transform3D(0.79237, 0, 0.61005, 0, 1, 0, -0.61005, 0, 0.79237, 105.137, 0, 138.064)
+
+[node name="BLD_House_T1_C_2" parent="Buildings" instance=ExtResource("18_BLD_House_T1_C")]
+transform = Transform3D(-0.98457, 0, 0.17497, 0, 1, 0, -0.17497, 0, -0.98457, 116, 0, 139)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "slate"
 
-[node name="BLD_House_T1_A_3" parent="Buildings" instance=ExtResource("12_BLD_House_T1_A")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 140, 0, 138)
+[node name="PROP_ChoppingBlock_A_2" parent="Props" instance=ExtResource("20_PROP_ChoppingBlock_A")]
+transform = Transform3D(-0.21299, 0, -0.97706, 0, 1, 0, 0.97706, 0, -0.21299, 113.25, 0, 140.098)
+
+[node name="PROP_Crate_A_2" parent="Props" instance=ExtResource("21_PROP_Crate_A")]
+transform = Transform3D(0.98612, 0, 0.16604, 0, 1, 0, -0.16604, 0, 0.98612, 113.138, 0, 138.899)
+
+[node name="BLD_House_T1_A_3" parent="Buildings" instance=ExtResource("13_BLD_House_T1_A")]
+transform = Transform3D(-0.97252, 0, 0.2328, 0, 1, 0, -0.2328, 0, -0.97252, 140, 0, 138)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "tile"
 
-[node name="BLD_House_T1_B_3" parent="Buildings" instance=ExtResource("13_BLD_House_T1_B")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 148, 0, 138)
+[node name="PROP_Fence_A_5" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(-0.97252, 0, 0.2328, 0, 1, 0, -0.2328, 0, -0.97252, 142.278, 0, 143.007)
+
+[node name="PROP_Fence_A_6" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(-0.97252, 0, 0.2328, 0, 1, 0, -0.2328, 0, -0.97252, 140.236, 0, 143.496)
+
+[node name="PROP_Fence_A_7" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0.2328, 0, 0.97252, 0, 1, 0, -0.97252, 0, 0.2328, 143.043, 0, 141.693)
+
+[node name="PROP_Fence_A_8" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0.2328, 0, 0.97252, 0, 1, 0, -0.97252, 0, 0.2328, 138.959, 0, 142.671)
+
+[node name="PROP_Barrel_A_2" parent="Props" instance=ExtResource("14_PROP_Barrel_A")]
+transform = Transform3D(0.82538, 0, 0.56458, 0, 1, 0, -0.56458, 0, 0.82538, 137.379, 0, 138.221)
+
+[node name="BLD_House_T1_B_3" parent="Buildings" instance=ExtResource("16_BLD_House_T1_B")]
+transform = Transform3D(-0.99477, 0, 0.10218, 0, 1, 0, -0.10218, 0, -0.99477, 148, 0, 139)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "tile"
 
-[node name="BLD_House_T1_C_3" parent="Buildings" instance=ExtResource("14_BLD_House_T1_C")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 156, 0, 138)
+[node name="BLD_House_T1_C_3" parent="Buildings" instance=ExtResource("18_BLD_House_T1_C")]
+transform = Transform3D(-0.98512, 0, 0.17188, 0, 1, 0, -0.17188, 0, -0.98512, 156, 0, 138)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "thatch"
 
-[node name="BLD_House_T1_A_4" parent="Buildings" instance=ExtResource("12_BLD_House_T1_A")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 164, 0, 112)
+[node name="PROP_ChoppingBlock_A_3" parent="Props" instance=ExtResource("20_PROP_ChoppingBlock_A")]
+transform = Transform3D(-0.28874, 0, 0.95741, 0, 1, 0, -0.95741, 0, -0.28874, 153.246, 0, 139.09)
+
+[node name="PROP_Crate_A_3" parent="Props" instance=ExtResource("21_PROP_Crate_A")]
+transform = Transform3D(0.99443, 0, 0.10544, 0, 1, 0, -0.10544, 0, 0.99443, 153.139, 0, 137.89)
+
+[node name="BLD_House_T1_A_4" parent="Buildings" instance=ExtResource("13_BLD_House_T1_A")]
+transform = Transform3D(0.98002, 0, -0.19888, 0, 1, 0, 0.19888, 0, 0.98002, 164, 0, 112)
 metadata/footprint = Vector2(4, 4)
+metadata/roof = "thatch"
 
-[node name="Nature" type="Node3D" parent="."]
+[node name="PROP_Fence_A_9" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0.98002, 0, -0.19888, 0, 1, 0, 0.19888, 0, 0.98002, 161.897, 0, 106.917)
 
-[node name="ENV_Oak_B" parent="Nature" instance=ExtResource("15_ENV_Oak_B")]
-transform = Transform3D(-0.03344, 0, -1.04947, 0, 1.05, 0, 1.04947, 0, -0.03344, 59.22, 0, 157.02)
+[node name="PROP_Fence_A_10" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0.98002, 0, -0.19888, 0, 1, 0, 0.19888, 0, 0.98002, 163.955, 0, 106.499)
 
-[node name="ENV_Oak_D" parent="Nature" instance=ExtResource("16_ENV_Oak_D")]
-transform = Transform3D(0.67318, 0, -0.45048, 0, 0.81, 0, 0.45048, 0, 0.67318, 66.79, 0, 142.91)
+[node name="PROP_Fence_A_11" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(-0.19888, 0, -0.98002, 0, 1, 0, 0.98002, 0, -0.19888, 161.087, 0, 108.204)
 
-[node name="ENV_Pine_C" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(-0.12291, 0, -1.19369, 0, 1.2, 0, 1.19369, 0, -0.12291, 74.29, 0, 96.15)
+[node name="PROP_Fence_A_12" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(-0.19888, 0, -0.98002, 0, 1, 0, 0.98002, 0, -0.19888, 165.203, 0, 107.368)
 
-[node name="ENV_Pine_A" parent="Nature" instance=ExtResource("18_ENV_Pine_A")]
-transform = Transform3D(0.79508, 0, -0.15473, 0, 0.81, 0, 0.15473, 0, 0.79508, 70.19, 0, 103.36)
+[node name="PROP_Cart_A" parent="Props" instance=ExtResource("22_PROP_Cart_A")]
+transform = Transform3D(0.17365, 0, -0.98481, 0, 1, 0, 0.98481, 0, 0.17365, 123, 0, 126.2)
 
-[node name="ENV_Pine_B" parent="Nature" instance=ExtResource("19_ENV_Pine_B")]
-transform = Transform3D(-0.49738, 0, 1.17941, 0, 1.28, 0, -1.17941, 0, -0.49738, 68.99, 0, 163.62)
-
-[node name="ENV_Pine_D" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(0.0976, 0, -0.91481, 0, 0.92, 0, 0.91481, 0, 0.0976, 74.33, 0, 163.62)
-
-[node name="ENV_Pine_D_2" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(0.75042, 0, 0.39921, 0, 0.85, 0, -0.39921, 0, 0.75042, 62.95, 0, 97.55)
-
-[node name="ENV_Oak_E" parent="Nature" instance=ExtResource("21_ENV_Oak_E")]
-transform = Transform3D(0.70338, 0, -0.66795, 0, 0.97, 0, 0.66795, 0, 0.70338, 71.1, 0, 148.1)
-
-[node name="ENV_Oak_E_2" parent="Nature" instance=ExtResource("21_ENV_Oak_E")]
-transform = Transform3D(-0.27475, 0, -1.2604, 0, 1.29, 0, 1.2604, 0, -0.27475, 75.92, 0, 144.26)
-
-[node name="ENV_Pine_C_2" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(0.05472, 0, -1.19875, 0, 1.2, 0, 1.19875, 0, 0.05472, 65.44, 0, 157.44)
-
-[node name="ENV_Pine_D_3" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(0.88133, 0, 0.7996, 0, 1.19, 0, -0.7996, 0, 0.88133, 65.94, 0, 108.46)
-
-[node name="ENV_Pine_C_3" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(1.10734, 0, -0.31033, 0, 1.15, 0, 0.31033, 0, 1.10734, 64.89, 0, 148.76)
-
-[node name="ENV_Pine_D_4" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(-0.67828, 0, -1.01407, 0, 1.22, 0, 1.01407, 0, -0.67828, 76.65, 0, 112.72)
-
-[node name="ENV_Oak_Big_A" parent="Nature" instance=ExtResource("22_ENV_Oak_Big_A")]
-transform = Transform3D(1.18923, 0, -0.04268, 0, 1.19, 0, 0.04268, 0, 1.18923, 71.82, 0, 139.84)
-
-[node name="ENV_Pine_D_5" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(0.15416, 0, 0.8867, 0, 0.9, 0, -0.8867, 0, 0.15416, 73.77, 0, 154.26)
-
-[node name="ENV_Pine_D_6" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(-1.03525, 0, -0.62638, 0, 1.21, 0, 0.62638, 0, -1.03525, 64.75, 0, 135.92)
-
-[node name="ENV_Pine_A_2" parent="Nature" instance=ExtResource("18_ENV_Pine_A")]
-transform = Transform3D(-0.78215, 0, -0.21056, 0, 0.81, 0, 0.21056, 0, -0.78215, 68.96, 0, 152.62)
-
-[node name="ENV_Pine_E" parent="Nature" instance=ExtResource("23_ENV_Pine_E")]
-transform = Transform3D(0.35812, 0, -0.77088, 0, 0.85, 0, 0.77088, 0, 0.35812, 61.51, 0, 108.76)
-
-[node name="ENV_Pine_Big_A" parent="Nature" instance=ExtResource("24_ENV_Pine_Big_A")]
-transform = Transform3D(1.11144, 0, -0.52688, 0, 1.23, 0, 0.52688, 0, 1.11144, 78.34, 0, 98.34)
-
-[node name="ENV_Pine_E_2" parent="Nature" instance=ExtResource("23_ENV_Pine_E")]
-transform = Transform3D(0.37942, 0, -0.87094, 0, 0.95, 0, 0.87094, 0, 0.37942, 62.75, 0, 115.34)
-
-[node name="ENV_Oak_Big_A_2" parent="Nature" instance=ExtResource("22_ENV_Oak_Big_A")]
-transform = Transform3D(-0.45461, 0, -0.93538, 0, 1.04, 0, 0.93538, 0, -0.45461, 71.56, 0, 117.2)
-
-[node name="ENV_Pine_B_2" parent="Nature" instance=ExtResource("19_ENV_Pine_B")]
-transform = Transform3D(0.2662, 0, 0.89109, 0, 0.93, 0, -0.89109, 0, 0.2662, 56.57, 0, 123.83)
-
-[node name="ENV_Pine_B_3" parent="Nature" instance=ExtResource("19_ENV_Pine_B")]
-transform = Transform3D(0.33119, 0, 0.7392, 0, 0.81, 0, -0.7392, 0, 0.33119, 79.44, 0, 165.52)
-
-[node name="ENV_Oak_Big_A_3" parent="Nature" instance=ExtResource("22_ENV_Oak_Big_A")]
-transform = Transform3D(0.98778, 0, 0.25433, 0, 1.02, 0, -0.25433, 0, 0.98778, 56.43, 0, 106.55)
-
-[node name="ENV_Pine_A_3" parent="Nature" instance=ExtResource("18_ENV_Pine_A")]
-transform = Transform3D(-0.54213, 0, 0.85217, 0, 1.01, 0, -0.85217, 0, -0.54213, 56.74, 0, 144.59)
-
-[node name="ENV_Oak_E_3" parent="Nature" instance=ExtResource("21_ENV_Oak_E")]
-transform = Transform3D(-0.03907, 0, 1.00924, 0, 1.01, 0, -1.00924, 0, -0.03907, 57.7, 0, 101.5)
-
-[node name="ENV_Pine_A_4" parent="Nature" instance=ExtResource("18_ENV_Pine_A")]
-transform = Transform3D(-0.76654, 0, 0.49042, 0, 0.91, 0, -0.49042, 0, -0.76654, 110.28, 0, 94.08)
-
-[node name="ENV_Pine_Big_A_2" parent="Nature" instance=ExtResource("24_ENV_Pine_Big_A")]
-transform = Transform3D(-0.5872, 0, 0.57236, 0, 0.82, 0, -0.57236, 0, -0.5872, 188.1, 0, 98.61)
-
-[node name="ENV_Pine_E_3" parent="Nature" instance=ExtResource("23_ENV_Pine_E")]
-transform = Transform3D(-0.4679, 0, 0.90635, 0, 1.02, 0, -0.90635, 0, -0.4679, 104.05, 0, 94.99)
-
-[node name="ENV_Pine_D_7" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(1.10352, 0, -0.11973, 0, 1.11, 0, 0.11973, 0, 1.10352, 159.91, 0, 96.96)
-
-[node name="ENV_Pine_B_4" parent="Nature" instance=ExtResource("19_ENV_Pine_B")]
-transform = Transform3D(0.29176, 0, -0.91459, 0, 0.96, 0, 0.91459, 0, 0.29176, 128.28, 0, 96.81)
-
-[node name="ENV_Pine_C_4" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(-0.83959, 0, -0.39999, 0, 0.93, 0, 0.39999, 0, -0.83959, 198.45, 0, 101.83)
-
-[node name="ENV_Pine_E_4" parent="Nature" instance=ExtResource("23_ENV_Pine_E")]
-transform = Transform3D(-0.68955, 0, -1.03059, 0, 1.24, 0, 1.03059, 0, -0.68955, 91.57, 0, 97.79)
-
-[node name="ENV_Pine_Big_A_3" parent="Nature" instance=ExtResource("24_ENV_Pine_Big_A")]
-transform = Transform3D(0.84212, 0, -0.21848, 0, 0.87, 0, 0.21848, 0, 0.84212, 198.26, 0, 96.35)
-
-[node name="ENV_Pine_C_5" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(0.06297, 0, 1.0982, 0, 1.1, 0, -1.0982, 0, 0.06297, 99.99, 0, 99.38)
-
-[node name="ENV_Pine_C_6" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(0.69424, 0, -0.60368, 0, 0.92, 0, 0.60368, 0, 0.69424, 180.94, 0, 97.68)
-
-[node name="ENV_Pine_Big_A_4" parent="Nature" instance=ExtResource("24_ENV_Pine_Big_A")]
-transform = Transform3D(0.66072, 0, 0.566, 0, 0.87, 0, -0.566, 0, 0.66072, 193.28, 0, 101.8)
-
-[node name="ENV_Pine_A_5" parent="Nature" instance=ExtResource("18_ENV_Pine_A")]
-transform = Transform3D(-0.82436, 0, -0.54821, 0, 0.99, 0, 0.54821, 0, -0.82436, 146.14, 0, 95.04)
-
-[node name="ENV_Pine_A_6" parent="Nature" instance=ExtResource("18_ENV_Pine_A")]
-transform = Transform3D(-0.82148, 0, 0.3915, 0, 0.91, 0, -0.3915, 0, -0.82148, 150.49, 0, 103.26)
-
-[node name="ENV_Pine_C_7" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(1.13655, 0, -0.0886, 0, 1.14, 0, 0.0886, 0, 1.13655, 113.26, 0, 101.87)
-
-[node name="ENV_TwistedTree_A" parent="Nature" instance=ExtResource("25_ENV_TwistedTree_A")]
-transform = Transform3D(0.88138, 0, -0.22644, 0, 0.91, 0, 0.22644, 0, 0.88138, 188.02, 0, 107.83)
-
-[node name="ENV_Oak_A" parent="Nature" instance=ExtResource("26_ENV_Oak_A")]
-transform = Transform3D(-1.05761, 0, -0.33698, 0, 1.11, 0, 0.33698, 0, -1.05761, 207.74, 0, 128.63)
-
-[node name="ENV_Oak_D_2" parent="Nature" instance=ExtResource("16_ENV_Oak_D")]
-transform = Transform3D(0.82148, 0, 0.51581, 0, 0.97, 0, -0.51581, 0, 0.82148, 189.5, 0, 157.46)
-
-[node name="ENV_Oak_C" parent="Nature" instance=ExtResource("27_ENV_Oak_C")]
-transform = Transform3D(-1.06473, 0, 0.3475, 0, 1.12, 0, -0.3475, 0, -1.06473, 207.35, 0, 161.83)
-
-[node name="ENV_Oak_C_2" parent="Nature" instance=ExtResource("27_ENV_Oak_C")]
-transform = Transform3D(0.77534, 0, -0.1971, 0, 0.8, 0, 0.1971, 0, 0.77534, 192.92, 0, 114.12)
-
-[node name="ENV_Oak_E_4" parent="Nature" instance=ExtResource("21_ENV_Oak_E")]
-transform = Transform3D(-0.41866, 0, -0.88607, 0, 0.98, 0, 0.88607, 0, -0.41866, 207.62, 0, 120.1)
-
-[node name="ENV_Oak_D_3" parent="Nature" instance=ExtResource("16_ENV_Oak_D")]
-transform = Transform3D(0.68853, 0, -0.5796, 0, 0.9, 0, 0.5796, 0, 0.68853, 192.98, 0, 140.9)
-
-[node name="ENV_Oak_E_5" parent="Nature" instance=ExtResource("21_ENV_Oak_E")]
-transform = Transform3D(0.68028, 0, 0.74654, 0, 1.01, 0, -0.74654, 0, 0.68028, 199.59, 0, 166.64)
-
-[node name="ENV_Oak_A_2" parent="Nature" instance=ExtResource("26_ENV_Oak_A")]
-transform = Transform3D(-0.6295, 0, 0.88985, 0, 1.09, 0, -0.88985, 0, -0.6295, 187.97, 0, 151.22)
-
-[node name="ENV_Oak_C_3" parent="Nature" instance=ExtResource("27_ENV_Oak_C")]
-transform = Transform3D(0.28119, 0, 1.02202, 0, 1.06, 0, -1.02202, 0, 0.28119, 192.75, 0, 122.25)
-
-[node name="ENV_Oak_B_2" parent="Nature" instance=ExtResource("15_ENV_Oak_B")]
-transform = Transform3D(-1.00972, 0, 0.28803, 0, 1.05, 0, -0.28803, 0, -1.00972, 159.49, 0, 151.41)
-
-[node name="ENV_Oak_A_3" parent="Nature" instance=ExtResource("26_ENV_Oak_A")]
-transform = Transform3D(0.35438, 0, 0.9244, 0, 0.99, 0, -0.9244, 0, 0.35438, 136.72, 0, 151.39)
-
-[node name="ENV_Oak_B_3" parent="Nature" instance=ExtResource("15_ENV_Oak_B")]
-transform = Transform3D(0.84225, 0, -0.11455, 0, 0.85, 0, 0.11455, 0, 0.84225, 113.76, 0, 165.09)
-
-[node name="ENV_Pine_C_8" parent="Nature" instance=ExtResource("17_ENV_Pine_C")]
-transform = Transform3D(0.58514, 0, 0.68382, 0, 0.9, 0, -0.68382, 0, 0.58514, 147.55, 0, 153.9)
-
-[node name="ENV_Oak_B_4" parent="Nature" instance=ExtResource("15_ENV_Oak_B")]
-transform = Transform3D(-1.07817, 0, 0.06287, 0, 1.08, 0, -0.06287, 0, -1.07817, 130.1, 0, 163.49)
-
-[node name="ENV_Oak_C_4" parent="Nature" instance=ExtResource("27_ENV_Oak_C")]
-transform = Transform3D(0.41719, 0, 0.86461, 0, 0.96, 0, -0.86461, 0, 0.41719, 107.57, 0, 149.29)
-
-[node name="ENV_Pine_E_5" parent="Nature" instance=ExtResource("23_ENV_Pine_E")]
-transform = Transform3D(-0.31304, 0, -1.11696, 0, 1.16, 0, 1.11696, 0, -0.31304, 102.48, 0, 157.32)
-
-[node name="ENV_Oak_A_4" parent="Nature" instance=ExtResource("26_ENV_Oak_A")]
-transform = Transform3D(0.21181, 0, 1.12015, 0, 1.14, 0, -1.12015, 0, 0.21181, 104.92, 0, 166.03)
-
-[node name="ENV_Pine_D_8" parent="Nature" instance=ExtResource("20_ENV_Pine_D")]
-transform = Transform3D(0.59899, 0, 0.93451, 0, 1.11, 0, -0.93451, 0, 0.59899, 138.65, 0, 160.79)
-
-[node name="ENV_Oak_B_5" parent="Nature" instance=ExtResource("15_ENV_Oak_B")]
-transform = Transform3D(-0.89652, 0, -0.07908, 0, 0.9, 0, 0.07908, 0, -0.89652, 128.13, 0, 138.3)
-
-[node name="ENV_Oak_D_4" parent="Nature" instance=ExtResource("16_ENV_Oak_D")]
-transform = Transform3D(0.94132, 0, 0.44217, 0, 1.04, 0, -0.44217, 0, 0.94132, 118.07, 0, 154.01)
-
-[node name="ENV_Oak_E_6" parent="Nature" instance=ExtResource("21_ENV_Oak_E")]
-transform = Transform3D(0.98808, 0, 0.25317, 0, 1.02, 0, -0.25317, 0, 0.98808, 90.2, 0, 110.9)
-
-[node name="ENV_DeadTree_A" parent="Nature" instance=ExtResource("28_ENV_DeadTree_A")]
-transform = Transform3D(-0.02866, 0, -0.87953, 0, 0.88, 0, 0.87953, 0, -0.02866, 84.89, 0, 158.95)
-
-[node name="ENV_TwistedTree_B" parent="Nature" instance=ExtResource("29_ENV_TwistedTree_B")]
-transform = Transform3D(0.49923, 0, -0.91234, 0, 1.04, 0, 0.91234, 0, 0.49923, 165.46, 0, 159.3)
-
-[node name="ENV_Oak_D_5" parent="Nature" instance=ExtResource("16_ENV_Oak_D")]
-transform = Transform3D(0.93352, 0, 0.17618, 0, 0.95, 0, -0.17618, 0, 0.93352, 80.42, 0, 125.79)
-
-[node name="ENV_RockGroup_A" parent="Nature" instance=ExtResource("30_ENV_RockGroup_A")]
-transform = Transform3D(-1.06888, 0, -0.04905, 0, 1.07, 0, 0.04905, 0, -1.06888, 150.14, 0, 163.21)
-
-[node name="ENV_RockGroup_A_2" parent="Nature" instance=ExtResource("30_ENV_RockGroup_A")]
-transform = Transform3D(-0.75401, 0, 0.84165, 0, 1.13, 0, -0.84165, 0, -0.75401, 151.3, 0, 123.49)
-
-[node name="ENV_RockGroup_A_3" parent="Nature" instance=ExtResource("30_ENV_RockGroup_A")]
-transform = Transform3D(0.411, 0, 0.94445, 0, 1.03, 0, -0.94445, 0, 0.411, 173.46, 0, 154.24)
-
-[node name="ENV_RockGroup_B" parent="Nature" instance=ExtResource("31_ENV_RockGroup_B")]
-transform = Transform3D(0.70941, 0, 0.71891, 0, 1.01, 0, -0.71891, 0, 0.70941, 110.67, 0, 113.52)
-
-[node name="ENV_RockGroup_B_2" parent="Nature" instance=ExtResource("31_ENV_RockGroup_B")]
-transform = Transform3D(0.89444, 0, -0.40047, 0, 0.98, 0, 0.40047, 0, 0.89444, 167.99, 0, 124.58)
-
-[node name="ENV_RockGroup_A_4" parent="Nature" instance=ExtResource("30_ENV_RockGroup_A")]
-transform = Transform3D(-0.35454, 0, 0.90288, 0, 0.97, 0, -0.90288, 0, -0.35454, 83.8, 0, 144.72)
-
-[node name="ENV_RockGroup_A_5" parent="Nature" instance=ExtResource("30_ENV_RockGroup_A")]
-transform = Transform3D(-0.05671, 0, -1.02844, 0, 1.03, 0, 1.02844, 0, -0.05671, 185.67, 0, 118.08)
-
-[node name="ENV_RockGroup_B_3" parent="Nature" instance=ExtResource("31_ENV_RockGroup_B")]
-transform = Transform3D(-0.39783, 0, -0.89562, 0, 0.98, 0, 0.89562, 0, -0.39783, 183.51, 0, 155.79)
-
-[node name="ENV_RockGroup_B_4" parent="Nature" instance=ExtResource("31_ENV_RockGroup_B")]
-transform = Transform3D(-0.6941, 0, -0.82742, 0, 1.08, 0, 0.82742, 0, -0.6941, 80.1, 0, 104.67)
-
-[node name="ENV_RockGroup_B_5" parent="Nature" instance=ExtResource("31_ENV_RockGroup_B")]
-transform = Transform3D(0.83675, 0, -0.38242, 0, 0.92, 0, 0.38242, 0, 0.83675, 94.87, 0, 145.27)
-
-[node name="ENV_PathStone_C" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.96085, 0, 0.27705, 0, 1, 0, -0.27705, 0, 0.96085, 69.29, 0, 128.3)
-
-[node name="ENV_PathStone_C_2" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.76599, 0, 0.64285, 0, 1, 0, -0.64285, 0, 0.76599, 77.18, 0, 128.3)
-
-[node name="ENV_PathStone_C_3" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(-0.99939, 0, -0.0348, 0, 1, 0, 0.0348, 0, -0.99939, 86.87, 0, 128.3)
-
-[node name="ENV_PathStone_C_4" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(-0.54872, 0, -0.836, 0, 1, 0, 0.836, 0, -0.54872, 97.11, 0, 132.7)
-
-[node name="ENV_PathStone_C_5" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(-0.75737, 0, 0.65299, 0, 1, 0, -0.65299, 0, -0.75737, 107.35, 0, 128.3)
-
-[node name="ENV_PathStone_C_6" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(-0.80793, 0, -0.58928, 0, 1, 0, 0.58928, 0, -0.80793, 113.69, 0, 128.3)
-
-[node name="ENV_PathStone_C_7" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.00385, 0, 0.99999, 0, 1, 0, -0.99999, 0, 0.00385, 123.98, 0, 132.7)
-
-[node name="ENV_PathStone_C_8" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.42663, 0, 0.90443, 0, 1, 0, -0.90443, 0, 0.42663, 134.89, 0, 128.3)
-
-[node name="ENV_PathStone_C_9" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.23707, 0, -0.97149, 0, 1, 0, 0.97149, 0, 0.23707, 141.85, 0, 132.7)
-
-[node name="ENV_PathStone_C_10" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(-0.99973, 0, -0.02304, 0, 1, 0, 0.02304, 0, -0.99973, 151.86, 0, 132.7)
-
-[node name="ENV_PathStone_C_11" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.99938, 0, 0.03522, 0, 1, 0, -0.03522, 0, 0.99938, 158.44, 0, 128.3)
-
-[node name="ENV_PathStone_C_12" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.62567, 0, 0.78009, 0, 1, 0, -0.78009, 0, 0.62567, 167.18, 0, 128.3)
-
-[node name="ENV_PathStone_C_13" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(0.57713, 0, 0.81665, 0, 1, 0, -0.81665, 0, 0.57713, 177.28, 0, 132.7)
-
-[node name="ENV_PathStone_C_14" parent="Nature" instance=ExtResource("32_ENV_PathStone_C")]
-transform = Transform3D(-0.80875, 0, -0.58815, 0, 1, 0, 0.58815, 0, -0.80875, 186.15, 0, 128.3)
-
-[node name="Props" type="Node3D" parent="."]
-
-[node name="PROP_Cart_A" parent="Props" instance=ExtResource("33_PROP_Cart_A")]
-transform = Transform3D(0.17365, 0, -0.98481, 0, 1, 0, 0.98481, 0, 0.17365, 124, 0, 126)
-
-[node name="PROP_Barrel_A" parent="Props" instance=ExtResource("34_PROP_Barrel_A")]
+[node name="PROP_Barrel_A_3" parent="Props" instance=ExtResource("14_PROP_Barrel_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 133, 0, 126)
 
-[node name="PROP_Crate_A" parent="Props" instance=ExtResource("35_PROP_Crate_A")]
+[node name="PROP_Crate_A_4" parent="Props" instance=ExtResource("21_PROP_Crate_A")]
 transform = Transform3D(0.93969, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.93969, 145, 0, 127)
 
-[node name="PROP_Sack_A" parent="Props" instance=ExtResource("36_PROP_Sack_A")]
+[node name="PROP_Sack_A" parent="Props" instance=ExtResource("23_PROP_Sack_A")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 138, 0, 118)
 
-[node name="PROP_WoodPile_A" parent="Props" instance=ExtResource("37_PROP_WoodPile_A")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75, 0, 134)
+[node name="PROP_Fence_A_13" parent="Props" instance=ExtResource("19_PROP_Fence_A")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 186.5, 0, 121)
 
-[node name="PROP_Fence_A" parent="Props" instance=ExtResource("38_PROP_Fence_A")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 186, 0, 121)
+[node name="Rocks" type="Node3D" parent="."]
+
+[node name="ENV_RockGroup_A" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
+transform = Transform3D(-1.12722, 0, 0.17021, 0, 1.14, 0, -0.17021, 0, -1.12722, 155.72, -0.35, 104.32)
+
+[node name="ENV_RockGroup_A_2" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
+transform = Transform3D(0.54133, 0, -0.88801, 0, 1.04, 0, 0.88801, 0, 0.54133, 114.78, -0.35, 102.15)
+
+[node name="ENV_RockGroup_B" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
+transform = Transform3D(1.10167, 0, 0.44992, 0, 1.19, 0, -0.44992, 0, 1.10167, 79.73, -0.35, 122.82)
+
+[node name="ENV_RockGroup_A_3" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
+transform = Transform3D(0.73021, 0, 0.95225, 0, 1.2, 0, -0.95225, 0, 0.73021, 158.89, -0.35, 145.28)
+
+[node name="ENV_RockGroup_B_2" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
+transform = Transform3D(1.07314, 0, 0.28368, 0, 1.11, 0, -0.28368, 0, 1.07314, 110.41, -0.35, 113.19)
+
+[node name="ENV_RockGroup_A_4" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
+transform = Transform3D(1.04431, 0, -0.70499, 0, 1.26, 0, 0.70499, 0, 1.04431, 106.18, -0.35, 108.7)
+
+[node name="ENV_RockGroup_B_3" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
+transform = Transform3D(-0.5736, 0, 0.91508, 0, 1.08, 0, -0.91508, 0, -0.5736, 172.41, -0.35, 160.13)
+
+[node name="ENV_RockGroup_B_4" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
+transform = Transform3D(-1.0312, 0, -0.68864, 0, 1.24, 0, 0.68864, 0, -1.0312, 97.14, -0.35, 104.61)
+
+[node name="ENV_RockGroup_B_5" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
+transform = Transform3D(-1.28777, 0, 0.52321, 0, 1.39, 0, -0.52321, 0, -1.28777, 111.42, -0.35, 145.24)
+
+[node name="ENV_RockGroup_A_5" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
+transform = Transform3D(0.70948, 0, 0.81427, 0, 1.08, 0, -0.81427, 0, 0.70948, 148.16, -0.35, 124.7)
 
 [node name="Villagers" type="Node3D" parent="."]
 
 [node name="CameraRig" type="Node3D" parent="."]
-script = ExtResource("39_CameraRig")
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128, 0, 128)
+script = ExtResource("26_CameraRig")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 0, 128)

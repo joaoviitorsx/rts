@@ -68,6 +68,21 @@ func paint_blob(center: Vector2, size: Vector2, channel: int, value: float = 1.0
 			ch[channel][y * w + x] = maxf(ch[channel][y * w + x], v)
 
 
+## Rotated rectangle with soft edges (fields, plazas). Rotation in degrees (Y axis, like Node3D).
+func paint_rect(center: Vector2, size: Vector2, rot_deg: float, channel: int, value: float = 1.0, soft: float = 0.4) -> void:
+	var r := deg_to_rad(rot_deg)
+	var reach := size.length() * 0.5 + soft
+	var lo := _px(center - Vector2.ONE * reach)
+	var hi := _px(center + Vector2.ONE * reach)
+	for y in range(maxi(0, int(lo.y)), mini(h, int(hi.y) + 1)):
+		for x in range(maxi(0, int(lo.x)), mini(w, int(hi.x) + 1)):
+			var local := (_world(x, y) - center).rotated(r)
+			var q := local.abs() - size * 0.5
+			var d := maxf(q.x, q.y)
+			var v := (1.0 - smoothstep(-soft, soft, d)) * value
+			ch[channel][y * w + x] = maxf(ch[channel][y * w + x], v)
+
+
 ## Soft round shade (contact darkening under trees, rocks).
 func add_shade_disc(center: Vector2, radius: float, strength: float) -> void:
 	var lo := _px(center - Vector2.ONE * radius)

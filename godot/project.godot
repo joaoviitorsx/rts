@@ -54,35 +54,35 @@ anti_aliasing/quality/msaa_3d=2
 
 ground_base={
 "type": "color",
-"value": Color(0.36862746, 0.4392157, 0.27058825, 1)
+"value": Color(0.431373, 0.619608, 0.207843, 1)
 }
 ground_light={
 "type": "color",
-"value": Color(0.5254902, 0.627451, 0.30980393, 1)
+"value": Color(0.560784, 0.74902, 0.270588, 1)
 }
 ground_dark={
 "type": "color",
-"value": Color(0.20784314, 0.29411766, 0.20784314, 1)
+"value": Color(0.294118, 0.478431, 0.180392, 1)
 }
 ground_dirt={
 "type": "color",
-"value": Color(0.47058824, 0.33333334, 0.23137255, 1)
+"value": Color(0.627451, 0.478431, 0.313725, 1)
 }
 ground_path={
 "type": "color",
-"value": Color(0.64705884, 0.54509807, 0.4, 1)
+"value": Color(0.819608, 0.698039, 0.509804, 1)
 }
 ground_plowed={
 "type": "color",
-"value": Color(0.36862746, 0.25882354, 0.1882353, 1)
+"value": Color(0.431373, 0.294118, 0.2, 1)
 }
 veg_tip={
 "type": "color",
-"value": Color(0.6627451, 0.7529412, 0.3764706, 1)
+"value": Color(0.705882, 0.85098, 0.341176, 1)
 }
 veg_shadow={
 "type": "color",
-"value": Color(0.20784314, 0.29411766, 0.20784314, 1)
+"value": Color(0.231373, 0.380392, 0.156863, 1)
 }
 flower_a={
 "type": "color",
