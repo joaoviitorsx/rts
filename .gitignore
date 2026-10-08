@@ -16,3 +16,6 @@ TestResults/
 
 # Third-party pack formats we don't use (kept locally, ignored by Godot via .gdignore)
 assets/third_party/*/_unused/
+
+# Dev tooling addon (symlink to local godot-devpilot-mcp checkout)
+addons/godot_devpilot_mcp

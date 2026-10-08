@@ -1,0 +1,12 @@
+global using Ironvale.Sim.Core;
+global using Ironvale.Sim.Time;
+global using Ironvale.Sim.Content;
+global using Ironvale.Sim.Map;
+global using Ironvale.Sim.Economy;
+global using Ironvale.Sim.Population;
+global using Ironvale.Sim.Buildings;
+global using Ironvale.Sim.Logistics;
+global using Ironvale.Sim.Policies;
+global using Ironvale.Sim.Commands;
+global using Ironvale.Sim.Events;
+global using Ironvale.Sim.Telemetry;
