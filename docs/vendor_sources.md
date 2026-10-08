@@ -9,18 +9,18 @@ original folder name, then run the script.
 
 | pack_id | Pack (folder in `art/vendor_raw/`) | Author | URL | Version | Pack date¹ | Downloaded² | License |
 |---|---|---|---|---|---|---|---|
-| quaternius_stylized_nature | `Stylized Nature MegaKit[Standard]` | Quaternius | https://quaternius.com (página do pacote: confirmar) | Standard (68/116) | — | ≈2026-10-08 | CC0 1.0 |
-| quaternius_medieval_village | `Medieval Village MegaKit[Standard]` (from `Medieval Village MegaKit[Standard].zip`) | Quaternius | https://quaternius.com | Standard | 2025-01-21 | 2026-10-08 (zip) | CC0 1.0 |
-| quaternius_fantasy_props | `Fantasy Props MegaKit[Standard]` | Quaternius | https://quaternius.com | Standard | — | ≈2026-10-08 | CC0 1.0 |
-| quaternius_base_characters | `Universal Base Characters[Standard]` | Quaternius | https://quaternius.com | Standard | 2025-12-02 | ≈2026-10-08 | CC0 1.0 |
-| quaternius_outfits_fantasy | `Modular Character Outfits - Fantasy[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-01-29 | ≈2026-10-08 | CC0 1.0 |
-| quaternius_ual1 | `Universal Animation Library[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-06-16 | ≈2026-10-08 | CC0 1.0 |
-| quaternius_ual2 | `Universal Animation Library 2[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-06-16 | ≈2026-10-08 | CC0 1.0 |
+| quaternius_stylized_nature | `Stylized Nature MegaKit[Standard]` | Quaternius | https://quaternius.com (página do pacote: confirmar) | Standard (68/116) | — | 2026-10-08 | CC0 1.0 |
+| quaternius_medieval_village | `Medieval Village MegaKit[Standard]` (from `Medieval Village MegaKit[Standard].zip`) | Quaternius | https://quaternius.com | Standard | 2025-01-21 | 2026-10-08 | CC0 1.0 |
+| quaternius_fantasy_props | `Fantasy Props MegaKit[Standard]` | Quaternius | https://quaternius.com | Standard | — | 2026-10-08 | CC0 1.0 |
+| quaternius_base_characters | `Universal Base Characters[Standard]` | Quaternius | https://quaternius.com | Standard | 2025-12-02 | 2026-10-08 | CC0 1.0 |
+| quaternius_outfits_fantasy | `Modular Character Outfits - Fantasy[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-01-29 | 2026-10-08 | CC0 1.0 |
+| quaternius_ual1 | `Universal Animation Library[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-06-16 | 2026-10-08 | CC0 1.0 |
+| quaternius_ual2 | `Universal Animation Library 2[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-06-16 | 2026-10-08 | CC0 1.0 |
 | kaykit_resource_bits | *(pendente — matched by `*Resource*Bits*`)* | Kay Lousberg | https://kaylousberg.com | — | — | pendente | CC0 1.0 |
 | watercolor_terrain_textures | *(pendente — matched by `*atercolor*`)* | — | — | — | — | pendente | CC0 (informado) |
 
 ¹ Modification date of the pack's root folder as shipped (≈ release/build date).
-² The exact download date was not recorded for the packs copied into the repo on 2026-10-08; please confirm.
+² Confirmed by the project owner.
 
 ## Known issues in the originals (handled by the script, originals untouched)
 - `Universal Base Characters`: `Superhero_*_FullBody.gltf` reference `T_Eye_Normal_png.png` /
