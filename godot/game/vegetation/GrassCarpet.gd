@@ -8,10 +8,11 @@ const GroundMask := preload("res://game/terrain/GroundMask.gd")
 
 @export var spacing := 0.12             ## metres between clumps (jittered grid)
 @export var chunk_size := 8.0
-@export var blades_per_clump := 6
-@export var blade_height := Vector2(0.16, 0.32)
-@export var blade_width := 0.045
-@export var fade_end := 55.0
+@export var blades_per_clump := 7
+@export var near_range := 24.0          ## dense LOD until here; beyond, a sparse LOD (every 3rd clump)
+@export var blade_height := Vector2(0.2, 0.42)
+@export var blade_width := 0.05
+@export var fade_end := 65.0
 
 var instances := 0
 
@@ -34,7 +35,7 @@ func build(mask: GroundMask, area: Rect2, seed_value: int = 1) -> int:
 		while x < area.end.x:
 			var p := Vector3(x + rng.randf_range(-0.45, 0.45) * spacing, 0, y + rng.randf_range(-0.45, 0.45) * spacing)
 			var m := mask.sample(p)
-			if maxf(maxf(m.r, m.g), m.b) < 0.8:   # the shader shrinks the rest smoothly
+			if maxf(maxf(m.r, m.g), m.b) < 0.8:   # the shader shrinks the rest smoothly (baked grass amount)
 				var s := rng.randf_range(0.8, 1.2)
 				var t := Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, rng.randf_range(0.8, 1.25) * s, s)), p)
 				var key := Vector2i(floori(p.x / chunk_size), floori(p.z / chunk_size))
@@ -46,20 +47,30 @@ func build(mask: GroundMask, area: Rect2, seed_value: int = 1) -> int:
 		y += spacing
 	for key in chunks:
 		var list: Array = chunks[key]
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = mesh
-		mm.instance_count = list.size()
-		for i in list.size():
-			mm.set_instance_transform(i, list[i])
-		var node := MultiMeshInstance3D.new()
-		node.name = "Grass_%d_%d" % [key.x, key.y]
-		node.multimesh = mm
-		node.material_override = material
-		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		node.visibility_range_end = fade_end + 5.0
-		add_child(node)
+		_add_chunk(mesh, material, list, "Grass_%d_%d" % [key.x, key.y], 0.0, near_range)
+		var sparse: Array = []
+		for i in range(0, list.size(), 3):
+			var t: Transform3D = list[i]
+			sparse.append(Transform3D(t.basis.scaled(Vector3(1.35, 1.0, 1.35)), t.origin))
+		_add_chunk(mesh, material, sparse, "GrassFar_%d_%d" % [key.x, key.y], near_range, fade_end + 5.0)
 	return instances
+
+
+func _add_chunk(mesh: Mesh, material: Material, list: Array, node_name: String, begin: float, end: float) -> void:
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = mesh
+	mm.instance_count = list.size()
+	for i in list.size():
+		mm.set_instance_transform(i, list[i])
+	var node := MultiMeshInstance3D.new()
+	node.name = node_name
+	node.multimesh = mm
+	node.material_override = material
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	node.visibility_range_begin = begin
+	node.visibility_range_end = end
+	add_child(node)
 
 
 ## One clump: several tapered, slightly curved blades (3 triangles each). UV.y = 0 root … 1 tip.
@@ -74,10 +85,8 @@ func _clump_mesh(rng: RandomNumberGenerator) -> ArrayMesh:
 		var lean := Vector3(-sin(ang), 0, cos(ang)) * rng.randf_range(0.02, 0.08)
 		var b0 := off - side
 		var b1 := off + side
-		var m0 := off - side * 0.6 + lean * 0.35 + Vector3.UP * hgt * 0.55
-		var m1 := off + side * 0.6 + lean * 0.35 + Vector3.UP * hgt * 0.55
 		var tip := off + lean + Vector3.UP * hgt
-		for tri in [[b0, b1, m1], [b0, m1, m0], [m0, m1, tip]]:
+		for tri in [[b0, b1, tip]]:          # 1 triangle per blade (cheap; reads fine at RTS distance)
 			for v: Vector3 in tri:
 				st.set_normal(Vector3.UP)
 				st.set_uv(Vector2(0.5, (v.y - off.y) / hgt))

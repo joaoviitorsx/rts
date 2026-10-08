@@ -15,7 +15,7 @@ script = ExtResource("1_lookdev")
 
 [node name="VillageTerrain" type="Node3D" parent="."]
 script = ExtResource("2_terrain")
-origin = Vector3(-128, 0, -128)
+cover = Rect2(-40, -40, 100, 100)
 
 [node name="GrassCarpet" type="Node3D" parent="."]
 script = ExtResource("3_grass")

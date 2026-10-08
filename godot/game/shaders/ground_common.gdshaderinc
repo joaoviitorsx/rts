@@ -17,6 +17,7 @@ global uniform float ground_shade_strength;
 global uniform vec4 ground_mask_rect;
 global uniform sampler2D ground_mask : filter_linear, repeat_disable;
 
+
 float gc_hash(vec2 p) {
 	vec3 p3 = fract(vec3(p.xyx) * 0.1031);
 	p3 += dot(p3, p3.yzx + 33.33);
@@ -89,3 +90,4 @@ vec3 ground_color_from_mask(vec2 world, vec4 m) {
 vec3 ground_color(vec2 world) {
 	return ground_color_from_mask(world, ground_mask_at(world));
 }
+

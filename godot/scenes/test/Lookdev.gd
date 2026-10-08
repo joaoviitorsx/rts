@@ -2,6 +2,8 @@ extends Node3D
 
 const GroundMask := preload("res://game/terrain/GroundMask.gd")
 const PlantPalette := preload("res://game/vegetation/PlantPalette.gd")
+const GroundColorBaker := preload("res://game/terrain/GroundColorBaker.gd")
+const MaterialTint := preload("res://game/materials/MaterialTint.gd")
 ## LOOKDEV_GROUND (20×20 m): ground + grass carpet + vegetation integration look-dev, isolated from the village.
 ## Args after "--": --zoom=near|mid  --palette=moss|meadow  --no-grass  --perf=N (seconds; prints FPS then quits)
 ## Keys: Z zoom · G palette · H grass on/off.
@@ -13,6 +15,7 @@ const FOCUS := Vector3(10, 0, 10)
 
 var _zoom := "near"
 var _palette := "meadow"
+var _roof := "tile"
 var _walker: Node3D
 var _walk_t := 0.0
 var _road := PackedVector2Array([Vector2(-8, 14.2), Vector2(4, 14.7), Vector2(10, 13.8), Vector2(16, 14.5), Vector2(28, 14.0)])
@@ -20,6 +23,8 @@ var _perf_seconds := 0.0
 var _perf_frames: Array[float] = []
 var _elapsed := 0.0
 var _label: Label
+var _baker: Node
+var _mask_size := Vector2i.ZERO
 
 
 func _ready() -> void:
@@ -27,21 +32,32 @@ func _ready() -> void:
 	for a in args:
 		if a.begins_with("--zoom="): _zoom = a.substr(7)
 		if a.begins_with("--palette="): _palette = a.substr(10)
+		if a.begins_with("--roof="): _roof = a.substr(7)
 		if a.begins_with("--perf="): _perf_seconds = float(a.substr(7))
+		if a == "--vsync=off": DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	_setup_environment()
 	$VillageTerrain.apply_palette(_palette)
 
 	var mask := _build_mask()
+	_baker = GroundColorBaker.new()
+	add_child(_baker)
+	_baker.bake(Vector2i(mask.w, mask.h))
 	if not args.has("--no-grass"):
 		var t0 := Time.get_ticks_msec()
-		var n: int = $GrassCarpet.build(mask, Rect2(-6, -6, 32, 32), 7)
+		var n: int = $GrassCarpet.build(mask, MASK_RECT, 7)
 		print("LOOKDEV grass instances=%d build_ms=%d" % [n, Time.get_ticks_msec() - t0])
 	PlantPalette.apply($Nature)
+	MaterialTint.apply($Nature, _roof)
 	_scatter_clusters()
 	_spawn_villager()
 
 	$CameraRig.EdgePan = false
 	$CameraRig.FocusAt(FOCUS, ZOOMS.get(_zoom, 15.0))
+	# Captures (--write-movie) must not react to stray keyboard/mouse input on the popup window.
+	if OS.get_cmdline_args().has("--write-movie"):
+		$CameraRig.set_process_unhandled_input(false)
+		$CameraRig.set_process(false)
+		set_process_unhandled_key_input(false)
 	_label = Label.new()
 	var layer := CanvasLayer.new()
 	add_child(layer)
@@ -53,7 +69,7 @@ func _build_mask() -> GroundMask:
 	var m := GroundMask.new(MASK_RECT, 4)
 	m.paint_polyline(_road, 2.2, GroundMask.PATH)
 	# house (10,7) 4×4, door on the south side at x≈9: dirt only at the entrance + back yard, irregular edges
-	m.paint_blob(Vector2(9.1, 10.3), Vector2(2.0, 1.6), GroundMask.DIRT)
+	m.paint_blob(Vector2(9.1, 10.2), Vector2(1.6, 1.2), GroundMask.DIRT, 0.9)
 	m.paint_polyline(PackedVector2Array([Vector2(9.1, 10.6), Vector2(9.4, 13.4)]), 1.1, GroundMask.PATH, 0.85)
 	m.paint_blob(Vector2(13.4, 4.4), Vector2(2.4, 1.8), GroundMask.DIRT, 0.9)
 	m.blur(GroundMask.PATH, 0.9)
@@ -171,24 +187,25 @@ func _setup_environment() -> void:
 	# Warm, slightly green ambient (a blue sky ambient makes every shadow cyan)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color("b9c3a0")
-	env.ambient_light_energy = 0.55
+	env.ambient_light_energy = 0.6
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.tonemap_exposure = 0.95
+	env.tonemap_mode = Environment.TONE_MAPPER_ACES
+	env.tonemap_exposure = 0.9
 	env.ssao_enabled = true
 	env.ssao_radius = 1.2
 	env.ssao_intensity = 1.6
 	env.ssao_power = 1.4
 	env.fog_enabled = true
 	env.fog_light_color = Color("cfdbe0")
-	env.fog_density = 0.0015
+	env.fog_density = 0.0008
 	env.fog_sky_affect = 0.2
-	env.fog_aerial_perspective = 0.25
+	env.fog_aerial_perspective = 0.08
 	env.adjustment_enabled = true
-	env.adjustment_saturation = 1.1
+	env.adjustment_saturation = 1.15
+	env.adjustment_contrast = 1.08
 	var grad := Gradient.new()
 	grad.set_color(0, Color(0.02, 0.03, 0.05))
-	grad.set_color(1, Color(1.0, 0.96, 0.88))
+	grad.set_color(1, Color(1.0, 0.98, 0.94))
 	var lut := GradientTexture1D.new()
 	lut.gradient = grad
 	env.adjustment_color_correction = lut
@@ -199,8 +216,8 @@ func _setup_environment() -> void:
 	add_child(we)
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-36, -140, 0)       # lower, from the south-west
-	sun.light_color = Color(1.0, 0.88, 0.72)
-	sun.light_energy = 1.35
+	sun.light_color = Color(1.0, 0.92, 0.8)
+	sun.light_energy = 1.2
 	sun.shadow_enabled = true
 	sun.shadow_blur = 0.6
 	sun.directional_shadow_max_distance = 90.0
@@ -246,10 +263,14 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		KEY_G:
 			_palette = "moss" if _palette == "meadow" else "meadow"
 			$VillageTerrain.apply_palette(_palette)
+			_baker.bake(_baker._viewport.size)
 		KEY_H:
 			$GrassCarpet.visible = not $GrassCarpet.visible
+		KEY_R:
+			_roof = {"tile": "thatch", "thatch": "slate", "slate": "tile"}[_roof]
+			MaterialTint.apply($Nature, _roof)
 	_update_label()
 
 
 func _update_label() -> void:
-	_label.text = "LOOKDEV · paleta %s · zoom %s   [Z zoom · G paleta · H grama]" % [_palette, _zoom]
+	_label.text = "LOOKDEV · paleta %s · telhado %s · zoom %s   [Z zoom · G paleta · H grama · R telhado]" % [_palette, _roof, _zoom]

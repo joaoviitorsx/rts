@@ -17,17 +17,16 @@ const PALETTES := {
 	"moss": {   # V1 — Bible palette as-is
 		"ground_base": Color("5e7045"), "ground_light": Color("86a04f"), "ground_dark": Color("354b35"),
 		"ground_dirt": Color("78553b"), "ground_path": Color("a58b66"), "ground_plowed": Color("5e4230"),
-		"veg_tip": Color("a9c060"), "veg_shadow": Color("354b35"),
+		"veg_tip": Color("98b058"), "veg_shadow": Color("354b35"),
 	},
-	"meadow": { # V2 — brighter, warmer meadow (closer to the Koastalia reference)
-		"ground_base": Color("7a9a3e"), "ground_light": Color("a4bf55"), "ground_dark": Color("4a6a34"),
-		"ground_dirt": Color("8a6444"), "ground_path": Color("c2a47a"), "ground_plowed": Color("6e4b33"),
-		"veg_tip": Color("c8d66a"), "veg_shadow": Color("3f5a2e"),
+	"meadow": { # V2 — bright cozy meadow (Koastalia-like): saturated green, light patches, warm earth
+		"ground_base": Color("6e9e35"), "ground_light": Color("8fbf45"), "ground_dark": Color("4b7a2e"),
+		"ground_dirt": Color("a07a50"), "ground_path": Color("d1b282"), "ground_plowed": Color("6e4b33"),
+		"veg_tip": Color("b4d957"), "veg_shadow": Color("3b6128"),
 	},
 }
 
-@export var origin := Vector3.ZERO           ## world position of the first region corner
-@export var regions := Vector2i(1, 1)        ## number of 256 m regions on X/Z
+@export var cover := Rect2(0, 0, 256, 256)   ## world XZ rect that must have terrain (regions are added to cover it)
 @export var texture_paths: Dictionary = {"grass": "", "dirt": "", "path": ""}
 @export var uv_scale := 0.08
 @export var palette := "moss"
@@ -74,9 +73,15 @@ func build() -> bool:
 	for key in ["grass", "dirt", "path"]:
 		terrain.assets.set_texture(id, _texture_asset(key, colors[key]))
 		id += 1
-	for x in regions.x:
-		for z in regions.y:
-			terrain.data.add_region_blankp(origin + Vector3(x * 256 + 1, 0, z * 256 + 1))
+	# Add every region touched by `cover` (region grid is aligned to multiples of the region size).
+	var rs: float = terrain.get_region_size() * terrain.get_vertex_spacing()
+	var x := floorf(cover.position.x / rs) * rs
+	while x < cover.end.x:
+		var z := floorf(cover.position.y / rs) * rs
+		while z < cover.end.y:
+			terrain.data.add_region_blankp(Vector3(x + 1, 0, z + 1))
+			z += rs
+		x += rs
 	return true
 
 
@@ -279,7 +284,7 @@ func _placeholder_albedo(a: Color, b: Color, seed_value: int) -> Texture2D:
 func _build_fallback() -> void:
 	var plane := MeshInstance3D.new()
 	var mesh := PlaneMesh.new()
-	mesh.size = Vector2(regions.x * 256, regions.y * 256)
+	mesh.size = cover.size
 	plane.mesh = mesh
-	plane.position = origin + Vector3(mesh.size.x / 2, 0, mesh.size.y / 2)
+	plane.position = Vector3(cover.get_center().x, 0, cover.get_center().y)
 	add_child(plane)

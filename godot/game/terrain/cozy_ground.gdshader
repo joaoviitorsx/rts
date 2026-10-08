@@ -5,7 +5,7 @@
 shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_lambert_wrap,specular_disabled,skip_vertex_transform;
 
-#include "res://game/shaders/ground_common.gdshaderinc"
+#include "res://game/shaders/ground_sample.gdshaderinc"
 
 // Defined Constants
 #define SKIP_PASS 0
@@ -214,6 +214,6 @@ void fragment() {
 		BINORMAL = normalize(cross(NORMAL, TANGENT));
 	}
 
-	ALBEDO = ground_color(v_vertex.xz);
+	ALBEDO = ground_sample(v_vertex.xz).rgb * (1.0 + (gc_noise(v_vertex.xz * 0.8) - 0.5) * 0.06);
 	ROUGHNESS = 1.0;
 }

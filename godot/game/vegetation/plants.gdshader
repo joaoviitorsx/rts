@@ -22,10 +22,13 @@ uniform float ground_blend_height = 0.35;  // metres; 0 = no blend (tree crowns)
 uniform float variation = 0.18;            // per-plant brightness variation
 uniform float sway = 0.0;                  // wind on leaves (0 for rigid)
 uniform float lightness = 1.0;
+uniform float crown_height = 0.0;          // local units; > 0 = tree crown: spherical normals (soft blob shading)
+uniform float crown_normal_blend = 0.75;
 
 varying vec3 v_world;
 varying vec3 v_origin;
 varying float v_height;
+varying vec3 v_crown;
 
 void vertex() {
 	vec3 origin = MODEL_MATRIX[3].xyz;
@@ -37,6 +40,7 @@ void vertex() {
 	}
 	v_world = world;
 	v_origin = origin;
+	v_crown = origin + vec3(0.0, crown_height * length(MODEL_MATRIX[1].xyz), 0.0);
 	v_height = h;
 }
 
@@ -54,6 +58,10 @@ void fragment() {
 	c *= 1.0 + (gc_noise(o * 0.37) - 0.5) * 2.0 * variation;
 	if (ground_blend_height > 0.0) {
 		c = mix(ground_color(v_world.xz), c, smoothstep(0.0, ground_blend_height, v_height));
+	}
+	if (crown_height > 0.0) {
+		vec3 sphere = normalize((VIEW_MATRIX * vec4(normalize(v_world - v_crown), 0.0)).xyz);
+		NORMAL = normalize(mix(NORMAL, sphere, crown_normal_blend));
 	}
 	ALBEDO = c;
 	ALPHA = t.a;

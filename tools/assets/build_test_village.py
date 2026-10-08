@@ -75,7 +75,7 @@ def main():
                                           "light_color = Color(1, 0.96, 0.88, 1)", "light_energy = 1.15", "shadow_enabled = true",
                                           "directional_shadow_max_distance = 250.0"])
     terrain_script = s.ext_id("res://game/terrain/VillageTerrain.gd", "Script")
-    s.node("VillageTerrain", "Node3D", [f'script = ExtResource("{terrain_script}")', "regions = Vector2i(1, 1)"])
+    s.node("VillageTerrain", "Node3D", [f'script = ExtResource("{terrain_script}")', "cover = Rect2(40, 80, 180, 110)"])
 
     s.node("Road", "Path3D", [f'curve = SubResource("{curve(s, ROAD)}")'])
     s.node("RoadHall", "Path3D", [f'curve = SubResource("{curve(s, ROAD_HALL)}")'])

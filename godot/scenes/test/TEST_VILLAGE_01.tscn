@@ -87,7 +87,7 @@ directional_shadow_max_distance = 250.0
 
 [node name="VillageTerrain" type="Node3D" parent="."]
 script = ExtResource("2_VillageTerrain")
-regions = Vector2i(1, 1)
+cover = Rect2(40, 80, 180, 110)
 
 [node name="Road" type="Path3D" parent="."]
 curve = SubResource("Curve3D_4")

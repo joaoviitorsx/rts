@@ -7,6 +7,9 @@ const SHADER := preload("res://game/vegetation/plants.gdshader")
 const FOLIAGE := ["Grass", "Leaves", "Leaves_NormalTree", "Leaves_Pine", "Leaves_TwistedTree"]
 const TREE_LEAVES := ["Leaves_NormalTree", "Leaves_Pine", "Leaves_TwistedTree"]
 
+## Approximate crown centre height (model units) per tree leaf material, for spherical crown normals.
+const CROWN_HEIGHT := {"Leaves_NormalTree": 5.2, "Leaves_Pine": 4.6, "Leaves_TwistedTree": 9.0}
+
 static var _cache := {}
 
 
@@ -31,6 +34,8 @@ static func material_for(original: Material, flower_slot: int, is_tree: bool) ->
 	m.set_shader_parameter("sway", 1.0 if leaves else 0.4)
 	m.set_shader_parameter("variation", 0.14 if leaves else 0.1)
 	m.set_shader_parameter("lightness", 0.95 if name == "Leaves_Pine" else 1.0)
+	if is_tree and leaves:
+		m.set_shader_parameter("crown_height", CROWN_HEIGHT.get(name, 5.0))
 	_cache[key] = m
 	return m
 

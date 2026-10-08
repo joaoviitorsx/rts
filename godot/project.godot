@@ -94,11 +94,11 @@ flower_b={
 }
 ground_patch_scale={
 "type": "float",
-"value": 0.03
+"value": 0.06
 }
 ground_patch_strength={
 "type": "float",
-"value": 0.7
+"value": 0.85
 }
 ground_shade_strength={
 "type": "float",
@@ -115,6 +115,10 @@ wind_speed={
 ground_mask_rect={
 "type": "vec4",
 "value": Vector4(0, 0, 1, 1)
+}
+ground_color_tex={
+"type": "sampler2D",
+"value": ""
 }
 ground_mask={
 "type": "sampler2D",

@@ -16,3 +16,10 @@ Credit is not required; we record it anyway.
 Planned, not yet in the project: KayKit Resource Bits (Kay Lousberg, CC0), a watercolor terrain texture pack (TBD), Terrain3D (MIT, GDExtension).
 
 Quaternius: https://www.patreon.com/quaternius · Kay Lousberg: https://kaylousberg.com
+
+## Code / tools (MIT)
+
+| Tool | Author | License | Use |
+|---|---|---|---|
+| [Terrain3D](https://github.com/TokisanGames/Terrain3D) 1.0.2 | Cory Petkovsek, Roope Palmroos & contributors | MIT | Terrain relief, layer painting; `game/terrain/cozy_ground.gdshader` is based on its `extras/shaders/minimum.gdshader` |
+| [Stylized Cartoon Grass](https://godotshaders.com/shader/stylized-cartoon-grass/) | dip000 | MIT | Grass carpet shader approach (terrain-coloured root, root→tip gradient, wind) adapted in `game/vegetation/grass_carpet.gdshader` |
