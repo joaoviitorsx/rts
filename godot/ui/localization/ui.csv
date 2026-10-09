@@ -15,7 +15,7 @@ ui.load,Carregar,Load
 ui.save.tooltip,Salvar rápido (F5),Quick save (F5)
 ui.load.tooltip,Carregar rápido (F9),Quick load (F9)
 ui.bottom.families,Famílias,Families
-ui.bottom.policies,Políticas,Policies
+ui.bottom.policies,Decretos,Decrees
 ui.bottom.debug,Debug,Debug
 ui.bottom.build,Construir:,Build:
 ui.build.tooltip,"{0}
@@ -56,6 +56,19 @@ alert.firewood_winter,Pouca lenha ({0}) — inverno em {1} dias,Low firewood ({0
 alert.deadlock,Economia travada: nada é produzido nem transportado,Economy stalled: nothing produced or hauled
 alert.site_no_material,Obra de {0} parada: falta {1} no armazém,{0} site stopped: no {1} in storage
 alert.site_no_carriers,Obra de {0} parada: ninguém carregando material,{0} site stopped: nobody hauling materials
+alert.ca_over,"Reeve sobrecarregado ({0}/{1} de CA): decretos atrasam e falham — desligue um (P)","Reeve overloaded ({0}/{1} AC): decrees are late and fail — turn one off (P)"
+ui.top.ca,CA {0}/{1},AC {0}/{1}
+ui.top.ca.tooltip,"Capacidade Administrativa: quanto o reeve consegue governar (escrivães, pergaminhos, o salão do senhor).
+Cada decreto ativo usa CA. Acima do limite, ele atrasa e erra.","Administrative capacity: how much the reeve can govern (scribes, parchments, the lord's hall).
+Each active decree uses AC. Above the limit he is late and makes mistakes."
+suggestion.title,💡 O reeve sugere,💡 The reeve suggests
+suggestion.why,"Você colocou famílias para produzir {0} {1} vezes quando o estoque estava em ~{2}.","You put families to produce {0} {1} times when the stock was around {2}."
+suggestion.what,"Decreto: manter {0} entre {1} e {2}","Decree: keep {0} between {1} and {2}"
+suggestion.cost,"Custo: {0} de Capacidade Administrativa ({1}/{2} em uso hoje)","Cost: {0} administrative capacity ({1}/{2} in use today)"
+suggestion.lose,"Você deixa de: escolher quem produz {0}. O reeve move até {1} famílias; as que você designou ele não toca.","You give up: choosing who makes {0}. The reeve moves up to {1} families; he never touches the ones you assigned."
+suggestion.accept,Criar decreto,Issue decree
+suggestion.later,Agora não,Not now
+suggestion.never,Nunca,Never
 alert.hunger,Família {0} com fome há {1} dias,{0} family hungry for {1} days
 building.status.construction,● Em obra: {0}/{1} dias de trabalho,● Under construction: {0}/{1} work days
 building.materials,Material na obra:,Materials on site:
@@ -85,7 +98,7 @@ building.assign,Designar,Assign
 building.cancel,Cancelar obra (material volta ao armazém),Cancel construction (materials go back to storage)
 building.no_job,sem emprego,unemployed
 source.player,manual,manual
-source.policy,política,policy
+source.policy,decreto do reeve,reeve's decree
 source.free,livre,free
 families.title,Famílias,Families
 families.row,"{0} ({1}) — {2} · {3}","{0} ({1}) — {2} · {3}"
@@ -105,12 +118,12 @@ ui.build.road,Estrada,Road
 ui.build.road.tooltip,"Estrada: arraste para traçar (em L) · Ctrl+arrastar remove · {0} pedra por célula
 Na estrada anda-se mais rápido: menos tempo de trajeto e carregadores mais ágeis","Road: drag to lay (L-shaped) · Ctrl+drag removes · {0} stone per cell
 Walking is faster on roads: shorter commutes and quicker carriers"
-policies.title,Políticas,Policies
+policies.title,Decretos do reeve,The reeve's decrees
 policies.keep,Manter,Keep
 policies.between,entre,between
 policies.and,e,and
 policies.create,Criar,Create
-policies.row,#{0} Manter {1} entre,#{0} Keep {1} between
+policies.row,#{0} Manter {1} entre ({2} CA),#{0} Keep {1} between ({2} AC)
 policies.create.tooltip,"Abaixo do mínimo o reeve põe famílias para produzir; acima do máximo ele as libera; entre os dois não mexe em nada.","Below the minimum the reeve puts families to produce it; above the maximum he frees them; in between he does nothing."
 policies.min.tooltip,Mínimo: abaixo disso o reeve recruta uma família por dia,Minimum: below it the reeve recruits one family per day
 policies.max.tooltip,Máximo: acima disso o reeve libera uma família por dia,Maximum: above it the reeve frees one family per day
@@ -122,6 +135,9 @@ policies.state.in_band,"{0} {1} dentro da faixa ({2}–{3}): nada a fazer","{0} 
 policies.state.above_max,"{0} {1} acima do máximo {3}: nenhuma família minha para liberar","{0} {1} above the maximum {3}: no family of mine to free"
 policies.state.blocked_max,"{0} {1} abaixo do mínimo {2}, mas já uso o máximo de famílias","{0} {1} below the minimum {2}, but I already use the most families allowed"
 policies.state.blocked_no_slot,"{0} {1} abaixo do mínimo {2}, mas não há vaga produtiva — construa um produtor","{0} {1} below the minimum {2}, but there is no free job — build a producer"
+policies.state.overloaded,"{0} {1}: o reeve está sobrecarregado e deixou para depois","{0} {1}: the reeve is overloaded and put it off"
+policies.ca,"Capacidade Administrativa: {0}/{1} em uso{2}","Administrative capacity: {0}/{1} in use{2}"
+policies.ca.over," — sobrecarregado: ele atrasa e erra. Desligue um decreto."," — overloaded: he is late and makes mistakes. Turn a decree off."
 policies.state.blocked_no_household,"{0} {1} abaixo do mínimo {2}, mas não há família disponível","{0} {1} below the minimum {2}, but no family is available"
 log.created,Decreto criado: manter {0} entre {1} e {2},Decree issued: keep {0} between {1} and {2}
 log.band_changed,Decreto alterado: manter {0} entre {1} e {2},Decree changed: keep {0} between {1} and {2}
@@ -130,9 +146,10 @@ log.recruited,Família {0} → {1}{2}: {3} {4} abaixo do mínimo {5},{0} family 
 log.released,Família {0} liberada de {1}: {2} {3} acima do máximo {4},{0} family freed from {1}: {2} {3} above the maximum {4}
 log.blocked_max,"{0} {1} abaixo do mínimo {2}, mas já uso o máximo de {3} famílias","{0} {1} below the minimum {2}, but I already use the maximum of {3} families"
 log.blocked_no_slot,"{0} {1} abaixo do mínimo {2}, mas não há vaga produtiva para {0}","{0} {1} below the minimum {2}, but there is no free job for {0}"
+log.overloaded,"Sobrecarregado ({2}/{3} de CA): deixei {0} {1} para depois","Overloaded ({2}/{3} AC): I put off {0} {1}"
 log.blocked_no_household,"{0} {1} abaixo do mínimo {2}, mas não há família disponível","{0} {1} below the minimum {2}, but no family is available"
-policies.enabled,Ativa,Enabled
-policies.log,Registro do administrador,Administrator log
+policies.enabled,Ativo (desligado não usa CA),Active (off uses no AC)
+policies.log,Livro de contas do reeve,The reeve's account book
 debug.title,Debug (dev),Debug (dev)
 debug.flows,Fluxos por recurso (último dia · média 30 dias),Flows per resource (last day · 30-day average)
 debug.col.resource,Recurso,Resource

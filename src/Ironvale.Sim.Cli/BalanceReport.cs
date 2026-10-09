@@ -22,7 +22,7 @@ internal static class BalanceReport
 
     private sealed record Row(string Player, ulong Seed, int Pop, int MinPop, int Departures, long? FirstDeparture,
         long? Crisis1, long? Crisis2, long? Crisis3, bool Deadlock, double Commute, double FoodEnd, double FirewoodEnd,
-        long StartTick, long QuietDays);
+        long StartTick, long QuietDays, long? Suggestion);
 
     public static void Write(string path, ContentDb content, ScenarioDef scenario, int years)
     {
@@ -50,7 +50,7 @@ internal static class BalanceReport
             rows.Add(new Row(label, seed, w.Households.Count, watch.MinPopulation == int.MaxValue ? 0 : watch.MinPopulation,
                 watch.Departures, watch.FirstDepartureDay, watch.FirewoodDay, watch.ToolsDay, watch.WinterHungerDay,
                 w.Telemetry.Deadlocked, CommutePct(w), w.StorageStock(content.Resource("food").Index).AsDouble,
-                w.StorageStock(content.Resource("firewood").Index).AsDouble, w.StartTick, watch.LongestQuietDays));
+                w.StorageStock(content.Resource("firewood").Index).AsDouble, w.StartTick, watch.LongestQuietDays, watch.SuggestionDay));
             Console.WriteLine($"{label,-17} seed {seed,3}: pop {w.Households.Count} departures {watch.Departures} commute {CommutePct(w):0.0}%");
         }
 
@@ -76,8 +76,8 @@ internal static class BalanceReport
         md.AppendLine();
         md.AppendLine("## Por cenário (média das seeds; crises = primeira ocorrência entre as seeds)");
         md.AppendLine();
-        md.AppendLine("| Jogador | Sobreviveu (seeds) | Famílias no fim (mín.) | Partidas | Crise 1 lenha | Crise 2 ferramentas | Crise 3 fome no inverno | Deadlock | Trajeto médio | Maior trecho sem acontecimento |");
-        md.AppendLine("|---|---|---|---|---|---|---|---|---|---|");
+        md.AppendLine("| Jogador | Sobreviveu (seeds) | Famílias no fim (mín.) | Partidas | Crise 1 lenha | Crise 2 ferramentas | Crise 3 fome no inverno | 1ª sugestão de decreto | Deadlock | Trajeto médio | Maior trecho sem acontecimento |");
+        md.AppendLine("|---|---|---|---|---|---|---|---|---|---|---|");
         foreach (var g in rows.GroupBy(r => r.Player))
         {
             var list = g.ToList();
@@ -88,7 +88,7 @@ internal static class BalanceReport
             }
             md.AppendLine(string.Create(CultureInfo.InvariantCulture,
                 $"| {g.Key} | {list.Count(r => r.Pop > 0)}/{list.Count} | {list.Average(r => r.Pop):0.#} ({list.Min(r => r.MinPop)}) | " +
-                $"{list.Average(r => r.Departures):0.#} | {First(r => r.Crisis1)} | {First(r => r.Crisis2)} | {First(r => r.Crisis3)} | " +
+                $"{list.Average(r => r.Departures):0.#} | {First(r => r.Crisis1)} | {First(r => r.Crisis2)} | {First(r => r.Crisis3)} | {First(r => r.Suggestion)} | " +
                 $"{(list.Any(r => r.Deadlock) ? "sim" : "não")} | {list.Average(r => r.Commute):0.0}% | " +
                 $"{list.Max(r => r.QuietDays)} dias (~{CrisisWatch.Minutes(list.Max(r => r.QuietDays)):0.#} min) |"));
         }

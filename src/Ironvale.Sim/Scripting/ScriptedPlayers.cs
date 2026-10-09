@@ -68,18 +68,34 @@ public sealed class NaivePlayer : IScriptedPlayer
             if (idle is null) break;
             w.Enqueue(new AssignHousehold(idle.Id, b.Id));
         }
-        // Late reaction to the firewood alert: one woodcutter switches to firewood ~30 days before winter.
+        // Late reaction to the firewood alert (~30 days before winter): woodcutters switch to firewood and the field
+        // hands, idle in autumn, are moved there — the kind of repeated move the reeve learns from (GDD v0.2 §3.2).
         int daysToWinter = ((int)Season.Winter * SimTime.MonthsPerSeason - cal.MonthOfYear) * SimTime.DaysPerMonth - cal.DayOfMonth;
         var firewood = w.Content.Resource("firewood").Index;
         if (daysToWinter is > 0 and <= 30 && w.StorageStock(firewood) < Qty.Units(w.Households.Count * 60))
         {
-            var cutter = w.Buildings.FirstOrDefault(b => b.IsActive && b.Def.Id == "woodcutter" && b.Recipe?.Id == "chop_wood");
-            if (cutter is not null) w.Enqueue(new SetRecipe(cutter.Id, "split_firewood"));
+            foreach (var cutter in w.Buildings.Where(b => b.IsActive && b.Def.Id == "woodcutter" && b.Recipe?.Id == "chop_wood"))
+                w.Enqueue(new SetRecipe(cutter.Id, "split_firewood"));
+            var freeSlots = w.Buildings.Where(b => b.IsActive && b.Def.Id == "woodcutter")
+                .SelectMany(b => Enumerable.Repeat(b, b.Def.JobSlots - b.AssignedCount)).ToList();
+            var fieldHands = w.Households.Where(h => w.GetBuilding(h.JobBuildingId) is { Def.Id: "field" } f
+                                                     && !f.IsProductiveIn(cal.Season)).ToList();
+            for (int i = 0; i < Math.Min(freeSlots.Count, fieldHands.Count); i++)
+                w.Enqueue(new AssignHousehold(fieldHands[i].Id, freeSlots[i].Id));
         }
-        // Back to wood in spring.
+        // Back to the fields and to wood in spring.
         if (cal.Season == Season.Spring && cal.DayOfMonth == 0 && cal.MonthOfYear == 0)
+        {
             foreach (var b in w.Buildings.Where(b => b.IsActive && b.Def.Id == "woodcutter" && b.Recipe?.Id == "split_firewood"))
                 w.Enqueue(new SetRecipe(b.Id, "chop_wood"));
+            var fieldSlots = w.Buildings.Where(b => b.IsActive && b.Def.Id == "field")
+                .SelectMany(b => Enumerable.Repeat(b, b.Def.JobSlots - b.AssignedCount)).ToList();
+            var cutters = w.Households.Where(h => w.GetBuilding(h.JobBuildingId) is { Def.Id: "woodcutter" }).ToList();
+            // Keep one family per woodcutter; the rest go back to the fields.
+            var movable = cutters.GroupBy(h => h.JobBuildingId).SelectMany(g => g.Skip(1)).ToList();
+            for (int i = 0; i < Math.Min(fieldSlots.Count, movable.Count); i++)
+                w.Enqueue(new AssignHousehold(movable[i].Id, fieldSlots[i].Id));
+        }
     }
 }
 

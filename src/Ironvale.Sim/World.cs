@@ -613,7 +613,8 @@ public sealed class World
     // ---------------------------------------------------------------- decree suggestions (2A.6, GDD v0.2 §3.2)
 
     /// <summary>
-    /// The player moved a family toward producing <paramref name="r"/> (assignment or recipe switch). After
+    /// The player moved a family toward producing <paramref name="r"/> (moved it from another job, or switched a staffed
+    /// building's recipe — first hires don't count). After
     /// balance.suggestAfterActions such moves within the window, the reeve offers a decree for <paramref name="r"/>.
     /// </summary>
     internal void ObservePlayerAction(int r)

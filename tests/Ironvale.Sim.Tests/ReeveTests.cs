@@ -54,19 +54,38 @@ public class ReeveTests
         Assert.Equal(Run(), Run());
     }
 
+    /// <summary>Two woodcutters, and three families already employed at fields (moves, not first hires, count).</summary>
     private static (World w, Building cutter) ManualWoodcutting()
     {
         var w = TestKit.NewWorld();
         var cutter = TestKit.AddActive(w, "woodcutter", new Cell(26, 30));
         TestKit.AddActive(w, "woodcutter", new Cell(29, 26));
+        var f1 = TestKit.AddActive(w, "field", new Cell(36, 26));
+        var f2 = TestKit.AddActive(w, "field", new Cell(36, 31));
+        w.Assign(w.Households[0], f1, AssignmentSource.Player, 0);
+        w.Assign(w.Households[1], f1, AssignmentSource.Player, 0);
+        w.Assign(w.Households[2], f2, AssignmentSource.Player, 0);
         return (w, cutter);
+    }
+
+    [Fact]
+    public void First_hires_are_not_repetition()
+    {
+        var w = TestKit.NewWorld();
+        var cutter = TestKit.AddActive(w, "woodcutter", new Cell(26, 30));
+        var other = TestKit.AddActive(w, "woodcutter", new Cell(29, 26));
+        w.Enqueue(new AssignHousehold(w.Households[0].Id, cutter.Id));
+        w.Enqueue(new AssignHousehold(w.Households[1].Id, cutter.Id));
+        w.Enqueue(new AssignHousehold(w.Households[2].Id, other.Id));
+        w.Step();
+        Assert.Null(w.Suggestion);
     }
 
     [Fact]
     public void Three_manual_moves_toward_a_resource_make_the_reeve_offer_a_decree()
     {
         var (w, cutter) = ManualWoodcutting();
-        var second = w.Buildings.Last();
+        var second = w.Buildings.Last(b => b.Def.Id == "woodcutter");
         w.Enqueue(new AssignHousehold(w.Households[0].Id, cutter.Id));
         w.Enqueue(new AssignHousehold(w.Households[1].Id, cutter.Id));
         w.StepDays(1);
@@ -90,10 +109,11 @@ public class ReeveTests
     public void Not_now_snoozes_and_never_stops_suggestions_for_that_resource()
     {
         var (w, cutter) = ManualWoodcutting();
-        var second = w.Buildings.Last();
+        var second = w.Buildings.Last(b => b.Def.Id == "woodcutter");
+        var field = w.Buildings.First(b => b.Def.Id == "field");
         void ThreeMoves()
         {
-            foreach (var h in w.Households.Where(h => h.HasJob).ToList()) w.Enqueue(new UnassignHousehold(h.Id));
+            foreach (var h in w.Households.Take(3)) w.Assign(h, field.FreeSlotIndex() >= 0 ? field : w.Buildings.Last(b => b.Def.Id == "field"), AssignmentSource.Player, 0);
             w.Enqueue(new AssignHousehold(w.Households[0].Id, cutter.Id));
             w.Enqueue(new AssignHousehold(w.Households[1].Id, cutter.Id));
             w.Enqueue(new AssignHousehold(w.Households[2].Id, second.Id));
@@ -120,7 +140,7 @@ public class ReeveTests
         var (w, cutter) = ManualWoodcutting();
         w.Enqueue(new CreatePolicy("keep_above", "wood", 10, 20));
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, cutter.Id));
-        w.Enqueue(new AssignHousehold(w.Households[2].Id, w.Buildings.Last().Id));
+        w.Enqueue(new AssignHousehold(w.Households[2].Id, w.Buildings.Last(b => b.Def.Id == "woodcutter").Id));
         w.StepDays(1);
         Assert.Null(w.Suggestion);
     }
@@ -130,7 +150,7 @@ public class ReeveTests
     {
         var (w, cutter) = ManualWoodcutting();
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, cutter.Id));
-        w.Enqueue(new AssignHousehold(w.Households[2].Id, w.Buildings.Last().Id));
+        w.Enqueue(new AssignHousehold(w.Households[2].Id, w.Buildings.Last(b => b.Def.Id == "woodcutter").Id));
         w.Step();
         var copy = SaveSerializer.Load(SaveSerializer.Save(w), w.Content).World;
         Assert.Equal(w.Suggestion!.Id, copy.Suggestion!.Id);

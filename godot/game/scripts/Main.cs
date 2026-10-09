@@ -78,7 +78,7 @@ public partial class Main : Node3D
     }
 
     /// <summary>
-    /// Dev/smoke-test switches (after "--"): --opening (scripted MVP opening, with roads unless --no-roads), --speed=N, --days=N (pre-simulate), --debug (open debug panel), --panel=families|policies|building:ID,
+    /// Dev/smoke-test switches (after "--"): --opening (scripted MVP opening, with roads unless --no-roads), --player=passive|naive|optimal, --speed=N, --days=N (pre-simulate), --debug (open debug panel), --panel=families|policies|building:ID,
     /// --shot=PATH (save the real window image after ~1 s and quit), --smoke (input end-to-end check).
     /// Example: godot-mono --path godot -- --opening --days=60 --speed=8
     /// </summary>
@@ -86,6 +86,7 @@ public partial class Main : Node3D
     {
         var args = OS.GetCmdlineUserArgs();
         IScriptedPlayer? player = args.Contains("--opening") ? new OptimalPlayer(roads: !args.Contains("--no-roads")) : null;
+        if (args.FirstOrDefault(x => x.StartsWith("--player=")) is { } p) player = ScriptedPlayers.Create(p[9..], roads: !args.Contains("--no-roads"));
         player?.Start(host.World);
         foreach (var arg in args)
         {

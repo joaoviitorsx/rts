@@ -37,7 +37,11 @@ public sealed record BuildingSnap(int Id, string DefId, string Name, string Stat
 
 /// <summary>State: disabled · recruiting · releasing · in_band · above_max · blocked_* (why it can't act).</summary>
 public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, long Min, long Max, bool Enabled,
-    long Stock, string State, int DefaultBandPermille);
+    long Stock, string State, int DefaultBandPermille, int CaCost);
+
+/// <summary>The reeve's offer (guide §3.3): why, what, cost and what the player gives up.</summary>
+public sealed record SuggestionSnap(int Id, string ResourceName, long Min, long Max, int Actions, long AverageStock,
+    int CaCost, int MaxHouseholds);
 
 public enum AlertSeverity { Info, Warning, Critical }
 
@@ -70,13 +74,17 @@ public sealed class UiSnapshot
     public required int FrozenDays { get; init; }
     public required bool Deadlocked { get; init; }
     public required ObjectiveSnap? Objective { get; init; }
+    public required int AdminCapacity { get; init; }
+    public required int AdminUsed { get; init; }
+    public required SuggestionSnap? Suggestion { get; init; }
 
     public BuildingSnap? Building(int id) => Buildings.FirstOrDefault(b => b.Id == id);
 }
 
 public static class UiSnapshotBuilder
 {
-    public static UiSnapshot Build(World w, int speed, Func<string, string> tr)
+    /// <param name="objectiveFloor">Goals already reached this session never come back (the card only moves forward).</param>
+    public static UiSnapshot Build(World w, int speed, Func<string, string> tr, ref int objectiveFloor)
     {
         var cal = w.Calendar;
         var content = w.Content;
@@ -126,7 +134,12 @@ public static class UiSnapshotBuilder
             Shipments = w.Shipments.Count,
             FrozenDays = w.Telemetry.FrozenDays,
             Deadlocked = w.Telemetry.Deadlocked,
-            Objective = NextObjective(w, cal, tr),
+            Objective = NextObjective(w, cal, tr, ref objectiveFloor),
+            AdminCapacity = w.AdminCapacity,
+            AdminUsed = w.AdminUsed,
+            Suggestion = w.Suggestion is { } sg ? new SuggestionSnap(sg.Id, content.Resources[sg.Resource].Name, sg.Min.WholeUnits,
+                sg.Max.WholeUnits, sg.Actions, sg.AverageStockUnits, content.Policies[0].CaCostFor(sg.Resource),
+                content.Policies[0].MaxHouseholds) : null,
         };
     }
 
@@ -140,7 +153,7 @@ public static class UiSnapshotBuilder
             : stock > p.Max ? (owns ? "releasing" : "above_max")
             : "in_band";
         return new PolicySnap(p.Id, res.Id, res.Name, p.Min.WholeUnits, p.Max.WholeUnits, p.Enabled, stock.WholeUnits,
-            state, p.Def.HysteresisPermille);
+            state, p.Def.HysteresisPermille, p.Def.CaCostFor(p.Resource));
     }
 
     /// <summary>Account-book line in the UI language ("log.&lt;key&gt;"), falling back to the sim's Portuguese text.</summary>
@@ -249,7 +262,7 @@ public static class UiSnapshotBuilder
     /// First unmet goal of the opening (presentation-level, derived from the world like the alerts): carriers →
     /// houses → field → woodcutter → firewood for winter → a decree → granary → smithy + quarry → first winter.
     /// </summary>
-    private static ObjectiveSnap? NextObjective(World w, Calendar cal, Func<string, string> tr)
+    private static ObjectiveSnap? NextObjective(World w, Calendar cal, Func<string, string> tr, ref int floor)
     {
         int Active(string def) => w.Buildings.Count(b => b.IsActive && b.Def.Id == def);
         int Workers(string def) => w.Buildings.Where(b => b.IsActive && b.Def.Id == def).Sum(b => b.AssignedCount);
@@ -268,9 +281,9 @@ public static class UiSnapshotBuilder
             ("tools", Active("smithy") >= 1 && Active("quarry") >= 1, Array.Empty<object>()),
             ("winter", cal.Year > 1, Array.Empty<object>()),
         };
-        for (int i = 0; i < steps.Length; i++)
+        for (int i = floor; i < steps.Length; i++)
         {
-            if (steps[i].Done) continue;
+            if (steps[i].Done) { floor = i + 1; continue; }
             return new ObjectiveSnap(steps[i].Key, string.Format(tr("objective." + steps[i].Key), steps[i].Args), i + 1, steps.Length);
         }
         return new ObjectiveSnap("grow", tr("objective.grow"), steps.Length, steps.Length);
@@ -298,6 +311,8 @@ public static class UiSnapshotBuilder
                 break;
             }
         }
+        if (w.AdminOverload > 0)
+            list.Add(new AlertSnap("ca_over", AlertSeverity.Warning, string.Format(tr("alert.ca_over"), w.AdminUsed, w.AdminCapacity), 0));
         if (w.Telemetry.Deadlocked)
             list.Add(new AlertSnap("deadlock", AlertSeverity.Critical, tr("alert.deadlock"), 0));
         foreach (var h in w.Households.Where(h => h.FoodDeficitDays > 5).Take(1))

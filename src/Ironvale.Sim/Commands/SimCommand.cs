@@ -88,8 +88,9 @@ public sealed record AssignHousehold(int HouseholdId, int BuildingId) : SimComma
             return null;
         }
         if (b.FreeSlotIndex() < 0) return "sem vagas";
+        bool moved = h.HasJob;   // a reallocation, not a first hire: that is what the reeve learns from
         w.Assign(h, b, AssignmentSource.Player, 0);
-        if (b.IsProducer && b.Recipe is { } recipe) w.ObservePlayerAction(PrimaryOutput(recipe));
+        if (moved && b.IsProducer && b.Recipe is { } recipe) w.ObservePlayerAction(PrimaryOutput(recipe));
         return null;
     }
 

@@ -68,11 +68,15 @@ public partial class SimHost : Node
         World = World.Create(Content, Scenario, Seed);
         World.CollectEvents = true;
         _accumulator = 0;
+        _objectiveFloor = 0;
         WorldReplaced?.Invoke();
     }
 
     /// <summary>Read-only data for the HUD (the UI never touches the World directly).</summary>
-    public UiSnapshot BuildUiSnapshot() => UiSnapshotBuilder.Build(World, Speed, key => TranslationServer.Translate(key));
+    private int _objectiveFloor;
+
+    public UiSnapshot BuildUiSnapshot() =>
+        UiSnapshotBuilder.Build(World, Speed, key => TranslationServer.Translate(key), ref _objectiveFloor);
 
     public void Send(SimCommand command)
     {
@@ -128,6 +132,7 @@ public partial class SimHost : Node
         if (task.IsFaulted) Message?.Invoke($"Erro ao avançar: {task.Exception?.GetBaseException().Message}");
         else Message?.Invoke($"Avançou até {DateText(World.Calendar)}");
         _accumulator = 0;
+        _objectiveFloor = 0;
         WorldReplaced?.Invoke();
     }
 
@@ -161,7 +166,8 @@ public partial class SimHost : Node
             _accumulator = 0;
             foreach (var w in result.Warnings) Message?.Invoke(w);
             Message?.Invoke($"Jogo carregado ({DateText(World.Calendar)})");
-            WorldReplaced?.Invoke();
+            _objectiveFloor = 0;
+        WorldReplaced?.Invoke();
         }
         catch (Exception e) when (e is SaveException or ContentException)
         {

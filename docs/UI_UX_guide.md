@@ -27,7 +27,7 @@ Num jogo de simulação, **a interface é metade do jogo**. A tese do projeto, *
 | 3 | **Revelação progressiva** | Mostrar só o que o jogador já precisa; painéis surgem quando a mecânica é desbloqueada (GDD v0.2 §9) |
 | 4 | **O mundo antes do painel** | Se dá para mostrar no mapa (pilha vazia, forja apagada), mostre no mapa; o painel confirma |
 | 5 | **Consistência absoluta** | A mesma cor, ícone e posição significam sempre a mesma coisa |
-| 6 | **Feedback para toda ação** | Clique, construção, política aceita: tudo tem resposta visual e sonora em < 100 ms |
+| 6 | **Feedback para toda ação** | Clique, construção, decreto aceito: tudo tem resposta visual e sonora em < 100 ms |
 | 7 | **A interface encolhe com o jogo** | A delegação deve **reduzir** cliques e **aumentar** leitura (GDD v0.2 §8) |
 
 ### 1.2 Heurísticas de Nielsen aplicadas ao jogo
@@ -38,7 +38,7 @@ As 10 heurísticas de usabilidade de Jakob Nielsen são a base da avaliação de
 |---|---|
 | 1. Visibilidade do estado do sistema | Data, estação, velocidade, recursos e tendência (↑↓) sempre visíveis |
 | 2. Correspondência com o mundo real | Termos medievais claros ("celeiro", "lenha"), nunca jargão técnico ("buffer", "tick") |
-| 3. Controle e liberdade | Desfazer construção recém-posicionada; cancelar política; pausar a qualquer momento |
+| 3. Controle e liberdade | Desfazer construção recém-posicionada; revogar decreto; pausar a qualquer momento |
 | 4. Consistência e padrões | Botão fechar sempre no canto superior direito; ESC sempre fecha o painel do topo |
 | 5. Prevenção de erros | Fantasma de construção vermelho onde não pode construir; confirmação só para ações irreversíveis |
 | 6. Reconhecer em vez de lembrar | Ícones com rótulo no tooltip; custos mostrados antes de construir |
@@ -81,7 +81,7 @@ Nível 0 — Mundo 3D          → o que está acontecendo (sempre)
 Nível 1 — HUD fixo          → estado geral: recursos, data, velocidade, alertas
 Nível 2 — Painéis contextuais → detalhes do que foi selecionado
 Nível 3 — Tooltips          → causa, fórmula, histórico
-Nível 4 — Telas cheias      → administrador, sucessão, enciclopédia
+Nível 4 — Telas cheias      → reeve, sucessão, enciclopédia
 ```
 
 O jogador deve conseguir jogar **80% do tempo nos níveis 0 e 1**.
@@ -106,7 +106,7 @@ O jogador deve conseguir jogar **80% do tempo nos níveis 0 e 1**.
 | Zona | Conteúdo | Regra |
 |---|---|---|
 | Topo | Recursos (máx. ~7) com tendência, data/estação, velocidade | Sempre visível; nunca cobre o mundo |
-| Esquerda | Alertas e sugestões de política | Máximo 4 empilhados; os mais antigos se agrupam |
+| Esquerda | Próximo objetivo, sugestão do reeve e alertas | Máximo 4 empilhados; os mais antigos se agrupam |
 | Direita | Painel do que está selecionado (família, edifício, estoque) | Abre ao selecionar; fecha com ESC |
 | Base | Menu de construção, botões de overlay, medidor de Capacidade Administrativa | Categorias recolhidas por padrão |
 | Centro | Mundo 3D | **Nunca** coberto por painel fixo; no máximo 25% de cada lado |
@@ -120,9 +120,9 @@ O jogador deve conseguir jogar **80% do tempo nos níveis 0 e 1**.
 | Painel de família | 0 min | "Esta família está bem? O que faz?" |
 | Painel de edifício | 0 min | "Está produzindo? Por que não?" |
 | Menu de construção | 0 min | "O que posso construir e quanto custa?" |
-| Cartão de sugestão de política | ~15 min | "Quer automatizar o que você vem repetindo?" |
+| Cartão de sugestão de decreto | ~15 min | "Quer automatizar o que você vem repetindo?" |
 | Medidor de Capacidade Administrativa | ~1h | "Quanto ainda consigo governar?" |
-| Painel do Administrador + log | ~1h | "O que está automatizado e o que ele decidiu?" |
+| Painel do reeve + livro de contas | ~1h | "O que está automatizado e o que ele decidiu?" |
 | Overlay de fluxo | ~3h | "Para onde vão os recursos?" |
 | Painel de debug (só dev) | — | Telemetria; nunca aparece no build de jogador |
 
@@ -160,22 +160,27 @@ Tooltip:
 └──────────────────────────────────┘
 ```
 
-### 3.3 Cartão de sugestão de política (o momento-chave do jogo)
+### 3.3 Cartão de sugestão de decreto (o momento-chave do jogo)
 
 ```text
-┌─ 💡 Sugestão ────────────────────────────┐
-│ Você colocou famílias para cortar lenha   │
-│ 3 vezes quando o estoque caiu de ~80.    │
+┌─ 💡 O reeve sugere ──────────────────────┐
+│ Você colocou famílias para produzir lenha │
+│ 3 vezes quando o estoque estava em ~80.  │
 │                                          │
-│ Criar política:                          │
-│ "Manter lenha entre 80 e 200"            │
+│ Decreto: manter lenha entre 80 e 100     │
 │                                          │
-│ Custo: 1 Capacidade Administrativa       │
-│ Você deixa de: escolher quem corta lenha │
+│ Custo: 1 de Capacidade Administrativa    │
+│ Você deixa de: escolher quem produz lenha│
+│ (o reeve não toca nas famílias que você  │
+│ designou)                                │
 │                                          │
-│ [Criar política]   [Agora não]  [Nunca]  │
+│ [Criar decreto]   [Agora não]   [Nunca]  │
 └──────────────────────────────────────────┘
 ```
+
+Implementado no Marco 2A (cinza): só **remanejamentos** contam como repetição (tirar uma família de um emprego e pôr
+noutro, ou trocar a receita de um edifício com gente) — preencher vagas pela primeira vez não conta. 3 ações em 60 dias
+geram a oferta; "Agora não" adia 90 dias; "Nunca" silencia aquele recurso.
 
 Requisitos (GDD v0.2 §3.2): sempre mostrar **o que acontece**, **o custo** e **o que você perde de controle**.
 
@@ -282,7 +287,7 @@ Todos os atalhos **remapeáveis** (pós-MVP, mas estruturar o `InputMap` desde j
 | Clique | Afundar 1–2 px | "Toc" de madeira |
 | Construção posicionada | Poeira + pop de escala | Martelada |
 | Recurso entra no estoque | Número pisca na barra | Discreto, com limite de repetição |
-| Política criada | Cartão "voa" até o medidor de CA | Som de "carimbo" |
+| Decreto criado | Cartão "voa" até o medidor de CA | Som de "carimbo" |
 | Erro (sem recurso) | Tremida curta + custo em vermelho | Som abafado |
 
 **Tempo de resposta:** < 100 ms para feedback de clique; animações de UI entre 120 e 250 ms. Nada que faça o jogador **esperar**.
@@ -292,7 +297,7 @@ Todos os atalhos **remapeáveis** (pós-MVP, mas estruturar o `InputMap` desde j
 - Fantasma de construção: verde = pode, vermelho = não pode + motivo no tooltip.
 - Custos aparecem **antes** de clicar e ficam vermelhos se faltar recurso.
 - Desfazer a última construção enquanto ela ainda não começou (reembolso total).
-- Confirmação **somente** para ações destrutivas (demolir, desligar política com efeito grande).
+- Confirmação **somente** para ações destrutivas (demolir, desligar decreto com efeito grande).
 
 ---
 
@@ -314,15 +319,15 @@ Produtividade da fazenda: 72%
 
 Valor isolado não ajuda a decidir. Sempre que possível: **valor + tendência + previsão** ("dura ~17 dias").
 
-### 6.3 Log do Administrador (transparência da delegação)
+### 6.3 Livro de contas do reeve (transparência da delegação)
 
 ```text
 Primavera, Ano 3
-• Movi 2 famílias para o campo — comida abaixo de 90 dias (política "Reserva de comida")
-• Não construí celeiro — Capacidade Administrativa no limite
+• Família Roth → Campo #8: Comida 80 abaixo do mínimo 90 (decreto "Comida")
+• Sobrecarregado (5/4 de CA): deixei Lenha 120 para depois
 ```
 
-Frases curtas, sempre com **o quê + por quê + qual política**. Sem isso, a delegação parece o jogo jogando sozinho (risco nº 2 do GDD).
+Frases curtas, sempre com **o quê + por quê + qual decreto**. Sem isso, a delegação parece o jogo jogando sozinho (risco nº 2 do GDD).
 
 ### 6.4 Overlays
 
@@ -364,6 +369,9 @@ Baseado nas *Game Accessibility Guidelines* (nível básico):
 7. Componentes reutilizáveis como cenas (`ResourceChip.tscn`, `AlertCard.tscn`, `BuildingPanel.tscn`, `PolicyCard.tscn`, `RichTooltip.tscn`).
 8. Todos os textos via **chaves de tradução** (`tr("ui.resource.food")`), mesmo que o jogo comece só em português.
 9. Ícones referenciados por **ID lógico** num registro (`icon_registry.tres`), nunca pelo caminho do arquivo.
+10. **Termos na interface × no código** (decisão de 08/10/2026): o código usa nomes técnicos (`Policy`, `Administrator`);
+    o jogador só vê o tema medieval, via chaves do `ui.csv`: política → **decreto**, administrador → **reeve** (regional:
+    **bailio**; topo: **senescal**), log → **livro de contas do reeve**, CA → escrivães, pergaminhos, salão do senhor.
 
 ### 8.2 Estrutura de pastas
 
@@ -416,7 +424,7 @@ game-icons.net → recolorir no Studio → SVG → importar na Godot (escala con
 - **Teste dos 5 segundos:** mostre um painel por 5 s e pergunte o que ele diz. Se a pessoa não souber, o painel tem informação demais.
 - **Perguntas-chave após 20 min:**
   1. "Por que a vila ficou sem lenha?"
-  2. "O que o administrador está fazendo agora?"
+  2. "O que o reeve está fazendo agora?"
   3. "O que você faria em seguida?"
 - **5 pessoas** já revelam a maioria dos problemas graves (recomendação clássica de Nielsen).
 
@@ -427,7 +435,7 @@ game-icons.net → recolorir no Studio → SVG → importar na Godot (escala con
 | Tempo para encontrar "por que X caiu" | < 15 s |
 | Cliques por minuto | Deve **cair** ao longo da partida (GDD v0.2 §8) |
 | Alertas ignorados até virar crise | Medir: alto demais = alerta mal desenhado |
-| Sugestões de política aceitas | > 50% (senão, estão mal explicadas ou mal temporizadas) |
+| Sugestões de decreto aceitas | > 50% (senão, estão mal explicadas ou mal temporizadas) |
 
 ---
 
@@ -460,7 +468,7 @@ game-icons.net → recolorir no Studio → SVG → importar na Godot (escala con
 - ❌ Ícones de estilos diferentes misturados.
 - ❌ Texto em imagem (impossível traduzir e escalar).
 - ❌ Lógica de jogo dentro de scripts de UI.
-- ❌ Tutorial em texto longo; preferir ensinar pela sugestão de política e pelo contexto.
+- ❌ Tutorial em texto longo; preferir ensinar pela sugestão de decreto e pelo contexto.
 
 ---
 
@@ -493,4 +501,6 @@ game-icons.net → recolorir no Studio → SVG → importar na Godot (escala con
 ---
 
 ## Changelog
+- **v0.2 (09/10/2026)** — Marco 2A: termos decreto/reeve na interface (§8.1 regra 10), cartão de sugestão de decreto
+  (§3.3) e livro de contas do reeve (§6.3) como implementados em cinza; coluna esquerda com próximo objetivo.
 - **v0.1 (08/10/2026)** — Primeira versão: princípios, arquitetura da informação, wireframes, sistema visual com Kenney + game-icons, interação, acessibilidade, regras de implementação na Godot, metodologia de teste e checklists.

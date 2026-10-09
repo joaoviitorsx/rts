@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using Ironvale.Sim.Commands;
 using Ironvale.Sim.Events;
 using Ironvale.Sim.Save;
 
@@ -32,6 +33,13 @@ public partial class Hud : CanvasLayer
     private readonly List<Button> _speedButtons = new();
     private VBoxContainer _alerts = null!;
     private Label _objectiveTitle = null!;
+    private Label _ca = null!;
+    private PanelContainer _suggestionCard = null!;
+    private Label _suggestionWhy = null!;
+    private Label _suggestionWhat = null!;
+    private Label _suggestionCost = null!;
+    private Label _suggestionLose = null!;
+    private int _suggestionId;
     private Label _objective = null!;
     private BuildingPanel _buildingPanel = null!;
     private FamiliesPanel _families = null!;
@@ -73,6 +81,7 @@ public partial class Hud : CanvasLayer
         var leftColumn = new VBoxContainer { CustomMinimumSize = new Vector2(380, 0), MouseFilter = Control.MouseFilterEnum.Ignore };
         middle.AddChild(leftColumn);
         leftColumn.AddChild(BuildObjectiveCard());
+        leftColumn.AddChild(BuildSuggestionCard());
         _alerts = new VBoxContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
         leftColumn.AddChild(_alerts);
         middle.AddChild(UiNodes.Spacer());
@@ -118,6 +127,10 @@ public partial class Hud : CanvasLayer
         row.AddChild(UiNodes.Spacer());
         _population = UiNodes.Label("", "SecondaryLabel");
         row.AddChild(_population);
+        _ca = UiNodes.Label("", "SecondaryLabel");
+        _ca.TooltipText = UiText.T("ui.top.ca.tooltip");
+        _ca.MouseFilter = Control.MouseFilterEnum.Stop;
+        row.AddChild(_ca);
         _date = UiNodes.Label("");
         row.AddChild(_date);
         _winter = UiNodes.Label("", "SecondaryLabel");
@@ -146,6 +159,40 @@ public partial class Hud : CanvasLayer
         _objective = UiNodes.Label("", wrap: true);
         box.AddChild(_objective);
         return card;
+    }
+
+    /// <summary>The reeve's decree offer (guide §3.3): why · what · cost · what you give up · [Criar] [Agora não] [Nunca].</summary>
+    private Control BuildSuggestionCard()
+    {
+        _suggestionCard = new PanelContainer { ThemeTypeVariation = "AlertInfo", Visible = false };
+        var box = new VBoxContainer();
+        _suggestionCard.AddChild(box);
+        box.AddChild(UiNodes.Label(UiText.T("suggestion.title"), "HeaderLabel"));
+        _suggestionWhy = UiNodes.Label("", "SecondaryLabel", wrap: true);
+        box.AddChild(_suggestionWhy);
+        _suggestionWhat = UiNodes.Label("", wrap: true);
+        box.AddChild(_suggestionWhat);
+        _suggestionCost = UiNodes.Label("", "SecondaryLabel", wrap: true);
+        box.AddChild(_suggestionCost);
+        _suggestionLose = UiNodes.Label("", "SecondaryLabel", wrap: true);
+        box.AddChild(_suggestionLose);
+        var buttons = new HBoxContainer();
+        buttons.AddChild(UiNodes.Button(UiText.T("suggestion.accept"), () => _host.Send(new AcceptSuggestion(_suggestionId))));
+        buttons.AddChild(UiNodes.Button(UiText.T("suggestion.later"), () => _host.Send(new DismissSuggestion(_suggestionId, false))));
+        buttons.AddChild(UiNodes.Button(UiText.T("suggestion.never"), () => _host.Send(new DismissSuggestion(_suggestionId, true))));
+        box.AddChild(buttons);
+        return _suggestionCard;
+    }
+
+    private void BindSuggestion(UiSnapshot s)
+    {
+        _suggestionCard.Visible = s.Suggestion is not null;
+        if (s.Suggestion is not { } g || g.Id == _suggestionId) return;
+        _suggestionId = g.Id;
+        _suggestionWhy.Text = UiText.T("suggestion.why", g.ResourceName, g.Actions, g.AverageStock);
+        _suggestionWhat.Text = UiText.T("suggestion.what", g.ResourceName, g.Min, g.Max);
+        _suggestionCost.Text = UiText.T("suggestion.cost", g.CaCost, s.AdminUsed, s.AdminCapacity);
+        _suggestionLose.Text = UiText.T("suggestion.lose", g.ResourceName, g.MaxHouseholds);
     }
 
     private Control BuildBottomBar()
@@ -248,6 +295,9 @@ public partial class Hud : CanvasLayer
         for (int i = 0; i < s.Resources.Count; i++) ((ResourceChip)_chips.GetChild(i)).Bind(s.Resources[i]);
         _population.Text = UiText.T("ui.top.population", s.Population);
         _date.Text = UiText.T("ui.top.date", s.Year, UiText.T("ui.season." + s.Season), s.Month, s.Day);
+        _ca.Text = UiText.T("ui.top.ca", s.AdminUsed, s.AdminCapacity);
+        _ca.ThemeTypeVariation = s.AdminUsed > s.AdminCapacity ? "WarningLabel" : "SecondaryLabel";
+        BindSuggestion(s);
         if (s.Objective is { } o)
         {
             _objectiveTitle.Text = UiText.T("objective.title", o.Index, o.Count);

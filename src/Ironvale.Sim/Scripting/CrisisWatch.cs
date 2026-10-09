@@ -16,6 +16,8 @@ public sealed class CrisisWatch
     public int Departures { get; private set; }
     public long? FirstDepartureDay { get; private set; }
     public int MinPopulation { get; private set; } = int.MaxValue;
+    /// <summary>When the reeve first offered a decree (GDD v0.2 §4.2: the 1st delegation at ~15–25 min).</summary>
+    public long? SuggestionDay { get; private set; }
     /// <summary>
     /// Game-feel proxy: longest stretch (days) without a notable moment — a building finished, a family left, a crisis
     /// began or a season changed. GDD feel rule: never more than 2 min (30 days at 1x) without a relevant decision.
@@ -48,6 +50,7 @@ public sealed class CrisisWatch
         _lastSeason = cal.Season;
         MinPopulation = Math.Min(MinPopulation, pop);
         if (pop == 0) return;
+        if (SuggestionDay is null && w.Suggestion is not null) SuggestionDay = day;
         int crisesBefore = Crises;
 
         var bal = w.Content.Balance;

@@ -23,6 +23,7 @@ public partial class PoliciesPanel : PanelContainer
     private string _signature = "";
     private string _resourcesSig = "";
     private int _defaultBand = 250;
+    private Label _ca = null!;
     private readonly Dictionary<int, Label> _stateLabels = new();
 
     public override void _Ready()
@@ -32,6 +33,8 @@ public partial class PoliciesPanel : PanelContainer
         var box = new VBoxContainer();
         AddChild(box);
         box.AddChild(UiNodes.Header(UiText.T("policies.title"), () => Closed?.Invoke()));
+        _ca = UiNodes.Label("", "SecondaryLabel", wrap: true);
+        box.AddChild(_ca);
         var create = new HBoxContainer();
         create.AddChild(UiNodes.Label(UiText.T("policies.keep")));
         _resource = new OptionButton { FocusMode = FocusModeEnum.None };
@@ -77,6 +80,9 @@ public partial class PoliciesPanel : PanelContainer
             }
         }
         if (snap.Policies.Count > 0) _defaultBand = snap.Policies[0].DefaultBandPermille;
+        bool over = snap.AdminUsed > snap.AdminCapacity;
+        _ca.Text = UiText.T("policies.ca", snap.AdminUsed, snap.AdminCapacity, over ? UiText.T("policies.ca.over") : "");
+        _ca.ThemeTypeVariation = over ? "WarningLabel" : "SecondaryLabel";
 
         // Rows are rebuilt only when the decrees themselves change, so editing a SpinBox is never interrupted.
         string sig = string.Join('|', snap.Policies.Select(p => $"{p.Id}:{p.Enabled}:{p.Min}:{p.Max}"));
@@ -104,7 +110,7 @@ public partial class PoliciesPanel : PanelContainer
         var enabled = new CheckBox { ButtonPressed = p.Enabled, TooltipText = UiText.T("policies.enabled"), FocusMode = FocusModeEnum.None };
         enabled.Toggled += on => Send(new SetPolicyEnabled(id, on));
         row.AddChild(enabled);
-        row.AddChild(UiNodes.Label(UiText.T("policies.row", p.Id, p.ResourceName), expand: true));
+        row.AddChild(UiNodes.Label(UiText.T("policies.row", p.Id, p.ResourceName, p.CaCost), expand: true));
         var min = Spin(p.Min);
         var max = Spin(p.Max);
         min.TooltipText = UiText.T("policies.min.tooltip");
