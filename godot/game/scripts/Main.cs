@@ -14,6 +14,8 @@ public partial class Main : Node3D
         // Dev: --scenario=wild_start (RTS opening on a generated map, GDD v0.3); the flat 2A map stays the default for now.
         if (OS.GetCmdlineUserArgs().FirstOrDefault(a => a.StartsWith("--scenario=")) is { } scenarioArg)
             host.ScenarioId = scenarioArg[11..];
+        if (OS.GetCmdlineUserArgs().FirstOrDefault(a => a.StartsWith("--seed=")) is { } seedArg && ulong.TryParse(seedArg[7..], out ulong seedValue))
+            host.Seed = seedValue;   // dev: another generated map
         AddChild(host);   // _Ready loads content and creates the world
         Ground.Terrain = host.World.Terrain;
 
@@ -93,17 +95,22 @@ public partial class Main : Node3D
             if (arg.StartsWith("--head-scale=") && float.TryParse(arg[13..], System.Globalization.CultureInfo.InvariantCulture, out float headScale))
                 WorldView.HeadScale = headScale;   // dev: proportion study (not the default)
             if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
+            if (arg == "--no-hud") ui.Visible = false;   // dev: clean world captures
+            if (arg.StartsWith("--view=") && float.TryParse(arg[7..], System.Globalization.CultureInfo.InvariantCulture, out float viewDist)
+                && host.World.Terrain is { } tv)   // dev: the start seen from this distance (Koastalia framing ≈ 75)
+                camera.FocusOn(view.CellCenter(tv.Start), viewDist);
             if (arg == "--select-all")   // dev: selection rings and the selection panel in captures
                 units.SetSelection(host.World.Units.Where(u => u.Controllable).Select(u => u.Id), add: false);
             if (arg.StartsWith("--focus=") && arg[8..].Split(',') is [var fx, var fy] && int.TryParse(fx, out int cx) && int.TryParse(fy, out int cy))
                 camera.FocusOn(view.CellCenter(new Ironvale.Sim.Map.Cell(cx, cy)), 26);   // dev: look at a cell
-            if (arg == "--focus-cliff" && host.World.Terrain is { } tc)   // dev: nearest terrace edge to the start
+            if (arg.StartsWith("--focus-cliff") && host.World.Terrain is { } tc)   // dev: nearest terrace edge (…-south: facing the camera)
             {
+                bool south = arg == "--focus-cliff-south";
                 var near = Enumerable.Range(0, tc.Width * tc.Height).Select(i => new Ironvale.Sim.Map.Cell(i % tc.Width, i / tc.Width))
-                    .Where(c => !tc.IsWater(c) && Ironvale.Sim.Map.Terrain.Dirs.Any(d => tc.InBounds(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy))
+                    .Where(c => !tc.IsWater(c) && Ironvale.Sim.Map.Terrain.Dirs.Where(d => !south || d == (0, 1)).Any(d => tc.InBounds(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy))
                         && tc.LevelAt(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy)) < tc.LevelAt(c) && !tc.IsRamp(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy))))
                     .OrderBy(c => c.Manhattan(tc.Start)).First();
-                camera.FocusOn(view.CellCenter(near), 24);
+                camera.FocusOn(view.CellCenter(near), 42);
             }
             if (arg == "--focus-units" && host.World.Units.Count > 0)   // dev: look at the band wherever it went
                 camera.FocusOn(view.CellCenter(host.World.Units[0].Pos), 30);

@@ -547,13 +547,14 @@ public static class WorldGen
                 int roll2 = Noise.Roll(x, y, _s + 71) * 1000 / Noise.One;
                 int roll3 = Noise.Roll(x, y, _s + 72);
                 int t = 0;                                                        // ‰ depth into the patch
+                bool terraceEdge = AtTerraceEdge(x, y);                           // keep cliffs readable (v2)
                 if (f >= thr)
                 {
                     t = (int)((long)(f - thr) * 1000 / Math.Max(1, top - thr));
                     _t.Forest[i] = (byte)Math.Clamp(1 + t * 254 / 1000, 1, 255);
                 }
                 int pTree = f >= thr ? 420 + 530 * t / 1000 : (_t.Fertility[i] > 100 ? 12 : 4);
-                if (roll < pTree)
+                if (roll < pTree && !terraceEdge)
                 {
                     long planted = roll2 < 850
                         ? _startTick - mature - (long)(roll3 % 720) * SimTime.TicksPerDay
@@ -577,6 +578,19 @@ public static class WorldGen
             if (moist > Noise.One * 6 / 10 && _distWater![i] <= 14 && pick < 500) return TreeSpecies.Birch;
             if (moist < Noise.One * 4 / 10 && pick < 350) return TreeSpecies.Pine;
             return TreeSpecies.Oak;
+        }
+
+        /// <summary>A 4-neighbour on another level (top or foot of a cliff, not water): no trees there, so walls read.</summary>
+        private bool AtTerraceEdge(int x, int y)
+        {
+            int level = _t.Level[I(x, y)];
+            foreach (var (dx, dy) in Terrain.Dirs)
+            {
+                if (!In(x + dx, y + dy)) continue;
+                int j = I(x + dx, y + dy);
+                if (Land(j) && _t.Level[j] != level) return true;
+            }
+            return false;
         }
 
         /// <summary>A neighbour (8-way) on a higher level: the cell sits at the foot of a cliff.</summary>

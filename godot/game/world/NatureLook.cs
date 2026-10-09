@@ -9,28 +9,32 @@ using Noise = Ironvale.Sim.Map.Noise;
 namespace Ironvale.Game.World3D;
 
 /// <summary>
-/// Living nature of a generated map with the Stylized Nature MegaKit (CC0) through the approved look-dev pipeline
-/// (plant palette, impostors far away). Every tree of the sim is one instance — species, stage, a stump when felled, an
-/// autumn tint on some crowns (Koastalia mix) — and bushes (with fruit in season), mushrooms, loose stones, deposits and
-/// what lies on the ground use the kit's models too. Static dressing (rocks at cliff feet, ferns in the woods, tufts and
-/// flowers in the meadows) is scattered once. 64-m tiles are rebuilt only when their content changes.
+/// Living nature of a generated map with the whole Kenney Nature Kit 2.1 (CC0, art direction of 09/10/2026), recoloured
+/// to the cozy palette (KenneyPalette). Every tree of the sim is one instance — species, stage, a stump when felled,
+/// "_fall" crowns for the autumn mix and "_dark" ones for depth — and bushes (red berries in season), mushrooms, loose
+/// stones, deposits and what lies on the ground use the kits' models. Static dressing (rocks at cliff feet, lilies on
+/// lakes, logs, mushrooms and bushes in the woods, flower and grass patches in the meadows) is scattered once.
+/// 64-m tiles are rebuilt only when their content changes.
 /// </summary>
 public partial class NatureLook : Node3D
 {
     private const int TileCells = 32;
-    private const float ImpostorDistance = 110f;
-    private const float Hysteresis = 5f;
-    private const string E = "res://assets/environment/";
 
-    private static readonly string[] Oaks = { "ENV_Oak_A", "ENV_Oak_B", "ENV_Oak_C", "ENV_Oak_D", "ENV_Oak_E" };
-    private static readonly string[] Pines = { "ENV_Pine_A", "ENV_Pine_B", "ENV_Pine_C", "ENV_Pine_D", "ENV_Pine_E" };
-    private static readonly string[] Birches = { "ENV_TwistedTree_A", "ENV_TwistedTree_B" };
-    private static readonly string[] Rocks = { "ENV_Rock_A", "ENV_Rock_B", "ENV_Rock_C" };
-    private static readonly Color[] Autumn = { new("e0952c"), new("e6c142"), new("c4552f") };
+    private const string K = "res://assets/environment/kenney/K_";
+    private const string KS = "res://assets/props/kenney/KS_";
+    // Kenney Nature Kit 2.1 (whole kit, decision 09/10/2026): shapes per species; "_dark" adds depth, "_fall" is the
+    // autumn mix (≈ 25 % of broadleaf crowns, like the Koastalia reference).
+    private static readonly string[] Oaks = { "tree_default", "tree_oak", "tree_fat", "tree_detailed", "tree_simple", "tree_tall", "tree_plateau" };
+    private static readonly string[] Pines = { "tree_pineRoundA", "tree_pineRoundB", "tree_pineRoundC", "tree_pineRoundD", "tree_pineTallA",
+        "tree_pineTallB", "tree_pineDefaultA", "tree_pineDefaultB" };
+    private static readonly string[] Birches = { "tree_thin", "tree_cone" };
+    private static readonly string[] Stumps = { "stump_round", "stump_old", "stump_roundDetailed" };
+    private static readonly string[] SmallRocks = { "rock_smallA", "rock_smallB", "rock_smallC", "rock_smallD", "rock_smallE", "stone_smallA", "stone_smallC" };
+    private static readonly string[] TallRocks = { "rock_tallA", "rock_tallB", "rock_tallC", "rock_tallD", "rock_tallE", "rock_tallF" };
 
     private SimHost _host = null!;
     private float _cs;
-    private GDScript _clusters = null!, _palette = null!, _impostors = null!;
+    private GDScript _clusters = null!, _palette = null!;
     private readonly Dictionary<(int, int), Node3D> _tiles = new();
     private readonly Dictionary<(int, int), long> _signatures = new();
     private readonly Dictionary<string, (Mesh Mesh, Transform3D Xform)> _meshes = new();
@@ -41,8 +45,7 @@ public partial class NatureLook : Node3D
         _host = host;
         _cs = cellSize;
         _clusters = GD.Load<GDScript>("res://game/vegetation/Clusters.gd");
-        _palette = GD.Load<GDScript>("res://game/vegetation/PlantPalette.gd");
-        _impostors = GD.Load<GDScript>("res://game/vegetation/TreeImpostors.gd");
+        _palette = GD.Load<GDScript>("res://game/visual/KenneyPalette.gd");
         Name = "NatureLook";
     }
 
@@ -102,7 +105,6 @@ public partial class NatureLook : Node3D
     private sealed class Batch
     {
         public readonly List<Transform3D> Xforms = new();
-        public readonly List<Color> Tints = new();
     }
 
     private Node3D BuildTile(World w, int tx, int ty)
@@ -110,8 +112,6 @@ public partial class NatureLook : Node3D
         var tile = new Node3D { Name = $"Tile_{tx}_{ty}" };
         var nature = w.Nature!;
         var bal = w.Content.Balance;
-        var trees = new Dictionary<string, Batch>();
-        var plants = new Dictionary<(string Scene, int Slot), Batch>();
         var props = new Dictionary<string, Batch>();
 
         for (int y = ty * TileCells; y < Math.Min(w.Map.Height, (ty + 1) * TileCells); y++)
@@ -131,40 +131,44 @@ public partial class NatureLook : Node3D
                     var stage = Nature.StageOf(n, w.Tick, bal);
                     if (stage == TreeStage.Stump)
                     {
-                        Add(props, E + "ENV_Stump_A.tscn", new Transform3D(basis.Scaled(Vector3.One * 0.9f), pos));
+                        Add(props, K + Stumps[roll % Stumps.Length] + ".tscn", new Transform3D(basis.Scaled(Vector3.One * 0.9f), pos));
                         break;
                     }
                     string[] set = n.Species switch { TreeSpecies.Pine => Pines, TreeSpecies.Birch => Birches, _ => Oaks };
-                    string scene = E + set[roll / 7 % set.Length] + ".tscn";
-                    float s = stage switch { TreeStage.Mature => 0.85f + (roll % 30) / 100f, TreeStage.Young => 0.55f, _ => 0.28f };
+                    string model = stage == TreeStage.Sapling ? "tree_small" : set[roll / 7 % set.Length];
                     int r = roll % 100;
-                    var tint = n.Species == TreeSpecies.Pine || r >= 26 ? new Color(0, 0, 0, 0)
-                        : new Color(Autumn[r < 14 ? 0 : r < 24 ? 1 : 2], 0.85f);
-                    var batch = Get(trees, scene);
-                    batch.Xforms.Add(new Transform3D(basis.Scaled(Vector3.One * s), pos));
-                    batch.Tints.Add(tint);
+                    if (n.Species != TreeSpecies.Pine && model != "tree_cone" || model == "tree_cone")
+                        model += r < 25 ? "_fall" : r < 55 ? "_dark" : "";
+                    if (n.Species == TreeSpecies.Pine && model.EndsWith("_dark")) model = model[..^5];
+                    if (model == "tree_fat_dark") model = "tree_fat_darkh";   // the kit's own file name
+                    float s = stage switch { TreeStage.Mature => 0.85f + (roll % 30) / 100f, TreeStage.Young => 0.6f, _ => 0.7f };
+                    Add(props, K + model + ".tscn", new Transform3D(basis.Scaled(Vector3.One * s), pos));
                     break;
                 }
                 case NodeKind.Bush:
-                    if (w.Gatherable(c)) Add(plants, (E + "ENV_Bush_B.tscn", 1), new Transform3D(basis.Scaled(Vector3.One * 0.9f), pos));
-                    else Add(plants, (E + "ENV_Bush_A.tscn", 0), new Transform3D(basis.Scaled(Vector3.One * 0.85f), pos));
+                    Add(props, K + (roll % 3 == 0 ? "plant_bushDetailed" : "plant_bushLarge") + ".tscn", new Transform3D(basis.Scaled(Vector3.One * 0.9f), pos));
+                    if (w.Gatherable(c))   // berries in season: little red dots on the bush
+                        Add(props, K + "flower_redA.tscn", new Transform3D(basis.Scaled(Vector3.One * 1.2f), pos + new Vector3(0, 0.55f, 0)));
                     break;
                 case NodeKind.Mushroom:
-                    if (w.Gatherable(c)) Add(props, E + "ENV_Mushroom_A.tscn", new Transform3D(basis.Scaled(Vector3.One * 1.2f), pos));
+                    if (w.Gatherable(c)) Add(props, K + (roll % 2 == 0 ? "mushroom_redGroup" : "mushroom_tanGroup") + ".tscn", new Transform3D(basis, pos));
                     break;
                 case NodeKind.Stone:
-                    Add(props, E + Rocks[roll % Rocks.Length] + ".tscn", new Transform3D(basis.Scaled(Vector3.One * (0.32f + n.Amount * 0.03f)), pos));
+                    Add(props, K + SmallRocks[roll % SmallRocks.Length] + ".tscn", new Transform3D(basis.Scaled(Vector3.One * (0.8f + n.Amount * 0.06f)), pos));
                     break;
             }
         }
         foreach (var d in nature.Deposits.Where(d => d.Origin.X / TileCells == tx && d.Origin.Y / TileCells == ty))
         {
-            var center = new Vector3((d.Origin.X + 1.5f) * _cs, 0, (d.Origin.Y + 1.5f) * _cs);
-            center.Y = Ground.HeightAtWorld(center.X, center.Z) - 0.2f;
+            // A cluster of tall rocks over the 3×3 cells (lower as it is mined); coal and iron get a tinted stone.
             float k = d.InitialUnits > 0 ? Mathf.Clamp((float)d.Units / d.InitialUnits, 0.35f, 1f) : 1f;
-            string scene = E + (d.Index % 2 == 0 ? "ENV_RockGroup_A" : "ENV_RockGroup_B") + ".tscn";
-            string key = scene + "|" + d.Kind;
-            Add(props, key, new Transform3D(Basis.Identity.Rotated(Vector3.Up, d.Index).Scaled(new Vector3(1.6f, 1.6f * k, 1.6f)), center));
+            for (int i = 0; i < 5; i++)
+            {
+                var p = new Vector3((d.Origin.X + 0.6f + (i * 37 % 19) / 10f) * _cs, 0, (d.Origin.Y + 0.6f + (i * 53 % 17) / 9f) * _cs);
+                p.Y = Ground.HeightAtWorld(p.X, p.Z) - 0.2f;
+                string key = K + TallRocks[(d.Index + i) % TallRocks.Length] + ".tscn" + (d.Kind == DepositKind.Outcrop ? "" : "|" + d.Kind);
+                Add(props, key, new Transform3D(Basis.Identity.Rotated(Vector3.Up, d.Index + i).Scaled(new Vector3(1.4f, 1.6f * k, 1.4f)), p));
+            }
         }
         foreach (var g in w.GroundItems.Where(g => g.Cell.X / TileCells == tx && g.Cell.Y / TileCells == ty))
         {
@@ -173,18 +177,17 @@ public partial class NatureLook : Node3D
             string id = w.Content.Resources[g.Resource].Id;
             string scene = id switch
             {
-                "wood" => "res://assets/props/PROP_Carry_Log.tscn",
-                "stone" => E + "ENV_Pebble_A.tscn",
-                "hides" => "res://assets/props/PROP_Carry_Basket.tscn",
-                _ => "res://assets/props/PROP_Carry_Sack.tscn",
+                "wood" => K + "log_large.tscn",
+                "stone" => KS + "resource-stone.tscn",
+                "hides" => KS + "bedroll-packed.tscn",
+                "firewood" => K + "log_stack.tscn",
+                _ => KS + "box.tscn",
             };
-            float s = id == "wood" ? 4.5f : 1.6f;   // a felled log lies full length
-            var basis = id == "wood" ? new Basis(Vector3.Up, g.Id * 0.7f) * new Basis(Vector3.Forward, Mathf.Pi / 2) : Basis.Identity;
-            Add(props, scene, new Transform3D(basis.Scaled(Vector3.One * s), p + new Vector3(0, 0.15f, 0)));
+            float s = 1f;
+            var basis = new Basis(Vector3.Up, g.Id * 0.7f);
+            Add(props, scene, new Transform3D(basis.Scaled(Vector3.One * s), p));
         }
 
-        foreach (var (scene, batch) in trees) AddTrees(tile, scene, batch);
-        foreach (var ((scene, slot), batch) in plants) AddPlants(tile, scene, slot, batch.Xforms, false);
         foreach (var (key, batch) in props) AddProps(tile, key, batch.Xforms);
         return tile;
     }
@@ -199,15 +202,25 @@ public partial class NatureLook : Node3D
 
     // ------------------------------------------------------------------------------------------------ multimeshes
 
-    private (Mesh Mesh, Transform3D Xform) Source(string scene, int slot, bool tree, bool plant)
+    /// <summary>First mesh of an asset scene (with the scene's scale) as a copy recoloured to the cozy palette.</summary>
+    private (Mesh Mesh, Transform3D Xform) Source(string scene)
     {
-        string key = $"{scene}|{slot}|{tree}|{plant}";
-        if (_meshes.TryGetValue(key, out var cached)) return cached;
+        if (_meshes.TryGetValue(scene, out var cached)) return cached;
+        if (!ResourceLoader.Exists(scene))
+        {
+            GD.PushWarning($"NatureLook: missing {scene}");
+            return _meshes[scene] = (new BoxMesh(), Transform3D.Identity);
+        }
         var src = (Godot.Collections.Dictionary)_clusters.Call("first_mesh", scene);
-        if (src.Count == 0) return _meshes[key] = (new BoxMesh(), Transform3D.Identity);
-        var mesh = (Mesh)src["mesh"];
-        if (plant) mesh = (Mesh)_palette.Call("convert_mesh", mesh, slot, tree);
-        return _meshes[key] = (mesh, (Transform3D)src["xform"]);
+        if (src.Count == 0) return _meshes[scene] = (new BoxMesh(), Transform3D.Identity);
+        var mesh = (Mesh)((Mesh)src["mesh"]).Duplicate();
+        for (int i = 0; i < mesh.GetSurfaceCount(); i++)
+        {
+            var original = mesh.SurfaceGetMaterial(i);
+            var mapped = _palette.Call("material", original?.ResourceName ?? "").AsGodotObject() as Material;
+            if (mapped is not null) mesh.SurfaceSetMaterial(i, mapped);
+        }
+        return _meshes[scene] = (mesh, (Transform3D)src["xform"]);
     }
 
     private static MultiMeshInstance3D Instance(Mesh mesh, IReadOnlyList<Transform3D> xforms, Transform3D local, IReadOnlyList<Color>? tints)
@@ -225,45 +238,23 @@ public partial class NatureLook : Node3D
         return new MultiMeshInstance3D { Multimesh = mm };
     }
 
-    private void AddTrees(Node3D tile, string scene, Batch batch)
-    {
-        var (mesh, local) = Source(scene, 0, tree: true, plant: true);
-        var near = Instance(mesh, batch.Xforms, local, batch.Tints);
-        near.CastShadow = GeometryInstance3D.ShadowCastingSetting.On;
-        tile.AddChild(near);
-        if (!(bool)_impostors.Call("available", scene)) return;
-        var quad = (Mesh)_impostors.Call("_mesh", scene);
-        var far = Instance(quad, batch.Xforms, Transform3D.Identity, batch.Tints);
-        far.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
-        far.VisibilityRangeBegin = ImpostorDistance;
-        far.VisibilityRangeBeginMargin = Hysteresis;
-        near.VisibilityRangeEnd = ImpostorDistance;
-        near.VisibilityRangeEndMargin = Hysteresis;
-        tile.AddChild(far);
-    }
-
-    private void AddPlants(Node3D parent, string scene, int slot, IReadOnlyList<Transform3D> xforms, bool shadows, float fade = 140f)
+    private void AddProps(Node3D tile, string key, IReadOnlyList<Transform3D> xforms, float fade = 0f, bool shadows = true)
     {
         if (xforms.Count == 0) return;
-        var (mesh, local) = Source(scene, slot, tree: false, plant: true);
+        string scene = key.Split('|')[0];
+        var (mesh, local) = Source(scene);
         var node = Instance(mesh, xforms, local, null);
         node.CastShadow = shadows ? GeometryInstance3D.ShadowCastingSetting.On : GeometryInstance3D.ShadowCastingSetting.Off;
-        node.VisibilityRangeEnd = fade;
-        node.VisibilityRangeEndMargin = 10f;
-        node.VisibilityRangeFadeMode = GeometryInstance3D.VisibilityRangeFadeModeEnum.Self;
-        parent.AddChild(node);
-    }
-
-    private void AddProps(Node3D tile, string key, IReadOnlyList<Transform3D> xforms)
-    {
-        string scene = key.Split('|')[0];
-        var (mesh, local) = Source(scene, 0, tree: false, plant: false);
-        var node = Instance(mesh, xforms, local, null);
-        node.CastShadow = GeometryInstance3D.ShadowCastingSetting.On;
+        if (fade > 0)
+        {
+            node.VisibilityRangeEnd = fade;
+            node.VisibilityRangeEndMargin = 10f;
+            node.VisibilityRangeFadeMode = GeometryInstance3D.VisibilityRangeFadeModeEnum.Self;
+        }
         if (key.EndsWith("|Coal") || key.EndsWith("|Iron"))
             node.MaterialOverride = new StandardMaterial3D
             {
-                AlbedoColor = key.EndsWith("|Coal") ? new Color("3a3836") : new Color("9c5a3c"), Roughness = 0.9f,
+                AlbedoColor = key.EndsWith("|Coal") ? new Color("4a4744") : new Color("a8634a"), Roughness = 0.9f,
             };
         tile.AddChild(node);
     }
@@ -277,44 +268,60 @@ public partial class NatureLook : Node3D
     public void Dress(World w)
     {
         var t = w.Terrain!;
-        var cliffRocks = new Dictionary<string, List<Transform3D>>();
-        var plantsList = new Dictionary<(string, int), List<Transform3D>>();
-        void Put<TK>(Dictionary<TK, List<Transform3D>> d, TK k, Transform3D x) where TK : notnull
+        var dress = new Dictionary<string, List<Transform3D>>();
+        var small = new Dictionary<string, List<Transform3D>>();   // fades out at distance
+        void Put(Dictionary<string, List<Transform3D>> d, string k, Transform3D x)
         {
             if (!d.TryGetValue(k, out var l)) d[k] = l = new List<Transform3D>();
             l.Add(x);
         }
+        string[] flowers = { "flower_purpleA", "flower_purpleB", "flower_redA", "flower_redB", "flower_yellowA", "flower_yellowB", "flower_yellowC" };
+        string[] grass = { "grass", "grass_large", "grass_leafs", "grass_leafsLarge", "plant_flatShort" };
         for (int y = 0; y < t.Height; y++)
         for (int x = 0; x < t.Width; x++)
         {
             var c = new Cell(x, y);
-            if (t.IsWater(c)) continue;
             int roll = Noise.Roll(x, y, 0xD7E55u);
+            int k = roll % 100;
             var p = new Vector3((x + 0.2f + (roll % 60) / 100f) * _cs, 0, (y + 0.2f + (roll / 60 % 60) / 100f) * _cs);
             p.Y = Ground.HeightAtWorld(p.X, p.Z);
             var basis = Basis.Identity.Rotated(Vector3.Up, roll % 628 / 100f);
-            bool cliffFoot = Terrain.Dirs.Any(d => t.InBounds(new Cell(x + d.Dx, y + d.Dy))
-                && t.LevelAt(new Cell(x + d.Dx, y + d.Dy)) > t.LevelAt(c) && !t.IsRamp(c));
-            int k = roll % 100;
-            if (cliffFoot && k < 55)
-                Put(cliffRocks, E + Rocks[roll / 100 % Rocks.Length] + ".tscn", new Transform3D(basis.Scaled(Vector3.One * (0.55f + k / 100f)), p - new Vector3(0, 0.25f, 0)));
-            else if (t.GroundOf(c) == Sim.Map.Ground.Sand && k < 6)
-                Put(cliffRocks, E + "ENV_Pebble_B.tscn", new Transform3D(basis.Scaled(Vector3.One * 1.4f), p));
-            else if (t.ForestAt(c) > 60 && k < 18 && w.Nature!.At(c).Kind == NodeKind.None)
-                Put(plantsList, (E + (k < 9 ? "ENV_Fern_A" : "ENV_Grass_D") + ".tscn", 0), new Transform3D(basis.Scaled(Vector3.One * 0.8f), p));
-            else if (t.ForestAt(c) == 0 && t.GroundOf(c) == Sim.Map.Ground.Grass && !t.IsRamp(c))
+            if (t.IsWater(c))
+            {
+                if (t.DepthAt(c) <= 2 && k < 12 && t.LevelAt(c) > 0)   // lilies on lakes
+                    Put(small, K + (k < 6 ? "lily_large" : "lily_small") + ".tscn", new Transform3D(basis, new Vector3(p.X, Ground.CellHeight(x, y) + 0.03f, p.Z)));
+                continue;
+            }
+            bool cliffFoot = !t.IsRamp(c) && Terrain.Dirs.Any(d => t.InBounds(new Cell(x + d.Dx, y + d.Dy)) && t.LevelAt(new Cell(x + d.Dx, y + d.Dy)) > t.LevelAt(c));
+            bool cliffTop = Terrain.Dirs.Any(d => t.InBounds(new Cell(x + d.Dx, y + d.Dy)) && !t.IsWater(new Cell(x + d.Dx, y + d.Dy))
+                && t.LevelAt(new Cell(x + d.Dx, y + d.Dy)) < t.LevelAt(c) && !t.IsRamp(new Cell(x + d.Dx, y + d.Dy)));
+            bool free = w.Nature!.At(c).Kind == NodeKind.None && w.Nature.DepositAt(c) is null;
+            if (cliffFoot && k < 45)
+                Put(dress, K + SmallRocks[roll / 100 % SmallRocks.Length] + ".tscn", new Transform3D(basis.Scaled(Vector3.One * (0.9f + k / 60f)), p));
+            else if (cliffTop && k < 10 && free)
+                Put(small, K + grass[roll / 100 % grass.Length] + ".tscn", new Transform3D(basis, p));
+            else if (t.GroundOf(c) == Sim.Map.Ground.Sand)
+            {
+                if (k < 5) Put(dress, KS + (k < 3 ? "rock-sand-a" : "rock-sand-b") + ".tscn", new Transform3D(basis.Scaled(Vector3.One * 0.6f), p));
+            }
+            else if (t.ForestAt(c) > 40 && free)
+            {
+                if (k < 4) Put(dress, K + (k < 2 ? "log" : "stump_oldTall") + ".tscn", new Transform3D(basis, p));
+                else if (k < 14) Put(small, K + (k < 9 ? "plant_bushSmall" : "grass_leafsLarge") + ".tscn", new Transform3D(basis, p));
+                else if (k < 17) Put(small, K + (k < 16 ? "mushroom_tan" : "mushroom_red") + ".tscn", new Transform3D(basis, p));
+            }
+            else if (t.ForestAt(c) == 0 && free && !t.IsRamp(c))
             {
                 int patch = Noise.Fbm(x, y, 10, 2, 0x5EEDu);
-                if (patch > Noise.One * 62 / 100 && k < 22)
-                    Put(plantsList, (E + (k < 8 ? "ENV_FlowerSingle_A" : k < 12 ? "ENV_FlowerSingle_B" : "ENV_Grass_B") + ".tscn", k < 8 ? 0 : 1),
-                        new Transform3D(basis.Scaled(Vector3.One * (k < 12 ? 0.14f : 0.9f)), p));
-                else if (k < 3)
-                    Put(plantsList, (E + "ENV_Clover_A.tscn", 0), new Transform3D(basis.Scaled(Vector3.One * 0.9f), p));
+                if (patch > Noise.One * 60 / 100 && k < 30)
+                    Put(small, K + (k < 14 ? flowers[roll / 100 % flowers.Length] : grass[roll / 100 % grass.Length]) + ".tscn", new Transform3D(basis, p));
+                else if (k < 4)
+                    Put(small, K + grass[roll / 100 % grass.Length] + ".tscn", new Transform3D(basis, p));
             }
         }
-        var dressing = new Node3D { Name = "Dressing" };
-        AddChild(dressing);
-        foreach (var (scene, xs) in cliffRocks) AddProps(dressing, scene, xs);
-        foreach (var ((scene, slot), xs) in plantsList) AddPlants(dressing, scene, slot, xs, false, scene.Contains("Flower") ? 90f : 120f);
+        var node = new Node3D { Name = "Dressing" };
+        AddChild(node);
+        foreach (var (scene, xs) in dress) AddProps(node, scene, xs, 220f);
+        foreach (var (scene, xs) in small) AddProps(node, scene, xs, 110f, shadows: false);
     }
 }

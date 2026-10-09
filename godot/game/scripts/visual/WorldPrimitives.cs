@@ -34,6 +34,9 @@ public partial class WorldPrimitives : Node3D
     private static readonly Color WaterShallow = new("7dd8d4");
     private static readonly Color WaterDeep = new("1f87aa");
 
+    /// <summary>Off when the real look (NatureLook) draws trees, stones and items; animals and the ox stay here.</summary>
+    public bool NatureVisible { get; set; } = true;
+
     public void Init(SimHost host, VisualCatalog catalog)
     {
         _host = host;
@@ -117,6 +120,8 @@ public partial class WorldPrimitives : Node3D
         if (_host is null || _host.IsBusy || _host.World.Nature is not { } nature) return;
         var w = _host.World;
         UpdateCreatures(w);
+        foreach (var layer in _layers.Values) layer.Visible = NatureVisible;
+        if (!NatureVisible) return;
         _timer -= delta;
         if (_timer > 0) return;
         _timer = 0.5;

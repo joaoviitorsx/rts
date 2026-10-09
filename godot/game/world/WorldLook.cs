@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Ironvale.Sim;
 using Ironvale.Sim.Map;
@@ -23,6 +24,8 @@ namespace Ironvale.Game.World3D;
 public partial class WorldLook : Node3D
 {
     private const int MaskPixelsPerMeter = 2;
+    /// <summary>Dev fallback (--generated-cliffs): the faceted walls of step 4a instead of the Kenney cliff modules.</summary>
+    private static bool GeneratedCliffs => OS.GetCmdlineUserArgs().Contains("--generated-cliffs");
     private const float CliffMin = Ground.LevelHeight * 0.55f;
 
     private Node3D? _terrain;
@@ -40,7 +43,7 @@ public partial class WorldLook : Node3D
         ComputeHeights(t, cellSize);
         BuildTerrain();
         BuildMask(w, t, cellSize);
-        AddChild(BuildCliffs(t, cellSize));
+        AddChild(GeneratedCliffs ? BuildCliffs(t, cellSize) : BuildKenneyCliffs(t, cellSize));
         AddChild(BuildWater(t, cellSize));
     }
 
@@ -95,7 +98,9 @@ public partial class WorldLook : Node3D
                     sum += c;
                     n++;
                 }
-                h = max - min >= CliffMin ? min : sum / n;
+                // Kenney cliff modules stand in the lower cell: the plateau reaches the boundary and the 1-m slope
+                // falls into the lower cell, behind the module. The generated walls (fallback) want the opposite.
+                h = max - min >= CliffMin ? (GeneratedCliffs ? min : max) : sum / n;
             }
             _heights[vz * vw + vx] = h;
         }
@@ -239,6 +244,69 @@ public partial class WorldLook : Node3D
             st.AddVertex(p00); st.AddVertex(p01); st.AddVertex(p10);
             st.AddVertex(p10); st.AddVertex(p01); st.AddVertex(p11);
         }
+    }
+
+    /// <summary>
+    /// Terrace edges with the Kenney Nature Kit cliff modules (P38): per lower cell, a straight module on each side
+    /// that faces a higher terrace (stacked per level, the ramp's own climbing side left open), and an outer-corner
+    /// piece where only the diagonal is higher — the marching-squares cases of the cell grid. One MultiMesh per module.
+    /// </summary>
+    private Node3D BuildKenneyCliffs(Terrain t, float cs)
+    {
+        var straight = new List<Transform3D>();
+        var corner = new List<Transform3D>();
+        float[] dirAngle = { Mathf.Pi, Mathf.Pi / 2, 0f, -Mathf.Pi / 2 };   // N, E, S, W: rotate the kit's +Z wall to face the higher cell
+        for (int y = 0; y < t.Height; y++)
+        for (int x = 0; x < t.Width; x++)
+        {
+            var c = new Cell(x, y);
+            int level = t.LevelAt(c);
+            float baseY = level * Ground.LevelHeight;
+            var center = new Vector3((x + 0.5f) * cs, 0, (y + 0.5f) * cs);
+            bool[] up = new bool[4];
+            for (int d = 0; d < 4; d++)
+            {
+                var (dx, dy) = Terrain.Dirs[d];
+                var n = new Cell(x + dx, y + dy);
+                if (!t.InBounds(n) || t.IsWater(n)) continue;
+                int diff = t.LevelAt(n) - level;
+                if (diff <= 0) continue;
+                up[d] = true;
+                if (t.RampDir(c) == d && diff == 1) continue;   // the ramp climbs here
+                for (int k = 0; k < diff; k++)
+                    straight.Add(new Transform3D(new Basis(Vector3.Up, dirAngle[d]), center + new Vector3(0, baseY + k * Ground.LevelHeight, 0)));
+            }
+            // Outer corners of the higher region: the diagonal is higher, both sides next to it are not.
+            (int Dx, int Dy, int A, int B, float Angle)[] diagonals =
+            {
+                (-1, 1, 3, 2, 0f), (1, 1, 1, 2, Mathf.Pi / 2), (1, -1, 1, 0, Mathf.Pi), (-1, -1, 3, 0, -Mathf.Pi / 2),
+            };
+            foreach (var (ddx, ddy, a, b, angle) in diagonals)
+            {
+                var n = new Cell(x + ddx, y + ddy);
+                if (!t.InBounds(n) || t.IsWater(n) || up[a] || up[b]) continue;
+                int diff = t.LevelAt(n) - level;
+                for (int k = 0; k < diff; k++)
+                    corner.Add(new Transform3D(new Basis(Vector3.Up, angle), center + new Vector3(0, baseY + k * Ground.LevelHeight, 0)));
+            }
+        }
+        var root = new Node3D { Name = "CliffModules" };
+        var clusters = GD.Load<GDScript>("res://game/vegetation/Clusters.gd");
+        var palette = GD.Load<GDScript>("res://game/visual/KenneyPalette.gd");
+        foreach (var (scene, list) in new[] { ("res://assets/environment/kenney/K_cliff_rock.tscn", straight), ("res://assets/environment/kenney/K_cliff_corner_rock.tscn", corner) })
+        {
+            if (list.Count == 0) continue;
+            var src = (Godot.Collections.Dictionary)clusters.Call("first_mesh", scene);
+            if (src.Count == 0) continue;
+            var mesh = (Mesh)((Mesh)src["mesh"]).Duplicate();
+            for (int i = 0; i < mesh.GetSurfaceCount(); i++)
+                if (palette.Call("material", mesh.SurfaceGetMaterial(i)?.ResourceName ?? "").AsGodotObject() is Material m) mesh.SurfaceSetMaterial(i, m);
+            var local = (Transform3D)src["xform"];
+            var mm = new MultiMesh { TransformFormat = MultiMesh.TransformFormatEnum.Transform3D, Mesh = mesh, InstanceCount = list.Count };
+            for (int i = 0; i < list.Count; i++) mm.SetInstanceTransform(i, list[i] * local);
+            root.AddChild(new MultiMeshInstance3D { Multimesh = mm, CastShadow = GeometryInstance3D.ShadowCastingSetting.On });
+        }
+        return root;
     }
 
     // ------------------------------------------------------------------------------------------------ water

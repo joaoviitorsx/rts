@@ -12,7 +12,7 @@ public enum Ground : byte { Grass, Sand, Water }
 public sealed class Terrain
 {
     /// <summary>Bump whenever generation changes: older saves are then rejected (they would rebuild another map).</summary>
-    public const int GeneratorVersion = 1;
+    public const int GeneratorVersion = 2;   // 2: no trees on terrace edges
 
     /// <summary>N, E, S, W (index = ramp direction).</summary>
     public static readonly (int Dx, int Dy)[] Dirs = { (0, -1), (1, 0), (0, 1), (-1, 0) };

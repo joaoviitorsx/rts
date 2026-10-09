@@ -5,7 +5,7 @@ extends RefCounted
 ## files are never touched. Fantasy Town / Survival use a colormap texture and need no remap.
 
 const ROLES := {
-	"grass": Color("8fbf45"), "dirt": Color("9c7650"), "dirtDark": Color("7a5a3c"),
+	"grass": Color("8fbf45"), "dirt": Color("8d7356"), "dirtDark": Color("6e5640"),
 	"stone": Color("d9d6ca"), "stoneDark": Color("aaa79b"),
 	"leafsGreen": Color("5e9b34"), "leafsDark": Color("3f7a2b"), "leafsFall": Color("e0952c"),
 	"woodBark": Color("7a5434"), "woodBarkDark": Color("5e3f28"), "wood": Color("a8743f"), "woodDark": Color("7a5230"),

@@ -108,6 +108,7 @@ public partial class WorldView : Node3D
         _agentNodes.Clear();
         _ground?.QueueFree();
         Ground.Visual = null;
+        _primitives.NatureVisible = true;
         _look?.QueueFree();
         _look = null;
         if (_host.World.Terrain is not null && !OS.GetCmdlineUserArgs().Contains("--primitive-terrain"))
@@ -117,6 +118,12 @@ public partial class WorldView : Node3D
             AddChild(_look);
             _look.Build(_host.World, _catalog.CellSize);
             Ground.Visual = _look.HeightAt;
+            var nature = new World3D.NatureLook();
+            nature.Init(_host, _catalog.CellSize);
+            _look.AddChild(nature);
+            nature.Refresh(_host.World);
+            nature.Dress(_host.World);
+            _primitives.NatureVisible = false;
             _ground = new MeshInstance3D { Name = "NoFlatGround" };
         }
         else

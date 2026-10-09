@@ -12,7 +12,7 @@ namespace Ironvale.Game;
 /// </summary>
 public static class Ground
 {
-    public const float LevelHeight = 2.5f;
+    public const float LevelHeight = 3.0f;   // visual only: the sim counts levels
     public const float WaterDrop = 0.45f;
 
     public static Terrain? Terrain { get; set; }
