@@ -21,6 +21,9 @@ public partial class Hud : CanvasLayer
     private static readonly PackedScene ChipScene = GD.Load<PackedScene>("res://ui/components/ResourceChip.tscn");
     private static readonly PackedScene AlertScene = GD.Load<PackedScene>("res://ui/components/AlertCard.tscn");
 
+    /// <summary>RTS controls (set by Main before Init): the selection panel lists and stops the selected units.</summary>
+    public UnitController? Units { get; set; }
+    private UnitPanel _unitPanel = null!;
     private SimHost _host = null!;
     private BuildController _build = null!;
     private WorldView _view = null!;
@@ -88,6 +91,10 @@ public partial class Hud : CanvasLayer
         leftColumn.AddChild(BuildSuggestionCard());
         _alerts = new VBoxContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
         leftColumn.AddChild(_alerts);
+        _unitPanel = new UnitPanel { Visible = false };
+        _unitPanel.Stop += () => Units?.Stop();
+        leftColumn.AddChild(_unitPanel);
+        if (Units is not null) Units.SelectionChanged += Refresh;
         middle.AddChild(UiNodes.Spacer());
         var right = new VBoxContainer { CustomMinimumSize = new Vector2(440, 0), MouseFilter = Control.MouseFilterEnum.Ignore };
         middle.AddChild(right);
@@ -334,7 +341,9 @@ public partial class Hud : CanvasLayer
         var s = _snap;
         while (_chips.GetChildCount() < s.Resources.Count) _chips.AddChild(ChipScene.Instantiate<ResourceChip>());
         for (int i = 0; i < s.Resources.Count; i++) ((ResourceChip)_chips.GetChild(i)).Bind(s.Resources[i]);
-        _population.Text = UiText.T("ui.top.population", s.Population);
+        _population.Text = s.Population == 0 && s.Colonists > 0 ? UiText.T("ui.top.colonists", s.Colonists)
+            : UiText.T("ui.top.population", s.Population);
+        if (Units is not null) _unitPanel.Bind(s, Units.Selected);
         _date.Text = UiText.T("ui.top.date", s.Year, UiText.T("ui.season." + s.Season), s.Month, s.Day);
         _ca.Text = UiText.T("ui.top.ca", s.AdminUsed, s.AdminCapacity);
         _ca.ThemeTypeVariation = s.AdminUsed > s.AdminCapacity ? "WarningLabel" : "SecondaryLabel";

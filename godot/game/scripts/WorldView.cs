@@ -58,6 +58,10 @@ public partial class WorldView : Node3D
     private static readonly Color WindowColor = new(1f, 0.72f, 0.42f);
 
     public int SelectedBuildingId { get; set; }
+    /// <summary>Units selected by the RTS controls (rings under them; "?" over confused colonists).</summary>
+    public HashSet<int> SelectedUnits { get; } = new();
+    private Visual.WorldPrimitives _primitives = null!;
+    private readonly Dictionary<int, Node3D> _unitMarks = new();
 
     public void Init(SimHost host, VisualCatalog catalog)
     {
@@ -80,6 +84,10 @@ public partial class WorldView : Node3D
         };
         AddChild(_roads);
 
+        _primitives = new Visual.WorldPrimitives();
+        _primitives.Init(_host, _catalog);
+        AddChild(_primitives);
+
         _selection = _catalog.Primitive("box", new Vector3(1, 0.08f, 1), new Color(1, 0.9f, 0.3f, 0.6f), ghost: true);
         _selection.Visible = false;
         AddChild(_selection);
@@ -91,12 +99,15 @@ public partial class WorldView : Node3D
     private void Rebuild()
     {
         _rebuilding = true;
+        Ground.Terrain = _host.World.Terrain;
         foreach (var node in _buildings.Values) node.Root.QueueFree();
         _buildings.Clear();
         foreach (var agent in _agentNodes.Values) agent.Root.QueueFree();
         _agentNodes.Clear();
         _ground?.QueueFree();
-        _ground = CreateGround(_host.World.Map);
+        _ground = _host.World.Terrain is { } terrain
+            ? Visual.WorldPrimitives.BuildTerrain(terrain, _catalog.CellSize)   // generated map (primitive look, step 4 = real one)
+            : CreateGround(_host.World.Map);
         AddChild(_ground);
         _roadVersion = -1;
         Sync();
@@ -332,6 +343,7 @@ public partial class WorldView : Node3D
             }
             agent.Look.Carry("");
         }
+        UpdateColonists(w, alpha);
         UpdateEmotes(w);
         UpdateWindowLights(w, alpha);
         double now = Time.GetTicksMsec() / 1000.0;
@@ -344,6 +356,67 @@ public partial class WorldView : Node3D
             _agentNodes[id].Root.QueueFree();
             _agentNodes.Remove(id);
         }
+    }
+
+    /// <summary>
+    /// Colonists of the RTS opening (GDD v0.3 §4): villager models walking cell to cell, the load in their hands, a
+    /// work clip while chopping/gathering/building, a ring when selected and a "?" when they ran out of work nearby.
+    /// </summary>
+    private void UpdateColonists(World w, float alpha)
+    {
+        var seen = new HashSet<int>();
+        foreach (var u in w.Units)
+        {
+            if (!u.IsColonist || !u.Controllable) continue;
+            seen.Add(u.Id);
+            var agent = GetAgent(u.Id);
+            var pos = _primitives.Interpolate(u.Id, u.Pos, u.Next, u.StepTicks, alpha);
+            float dt = (float)GetProcessDeltaTime();
+            float speed = dt > 0 ? agent.LastPosition.DistanceTo(pos) / dt : 0;
+            Place(agent, pos, u.IsMoving ? pos - agent.LastPosition : null);
+            string carry = u.IsCarrying ? w.Content.Resources[u.CarryResource].Id : "";
+            agent.Look.Carry(carry);
+            string anim = u.IsMoving ? (u.IsCarrying ? "walk_carry" : speed > 2.5f ? "run" : "walk")
+                : u.Step == UnitStep.Working ? u.Order?.Kind switch
+                {
+                    OrderKind.Gather when w.Nature!.At(u.Order.Value.Cell).Kind is Ironvale.Sim.Map.NodeKind.Tree or Ironvale.Sim.Map.NodeKind.Stone => "chop",
+                    OrderKind.Build or OrderKind.Split => "chop",
+                    _ => "pickup",
+                }
+                : u.IsCarrying ? "idle_carry" : agent.Look.IdleClip(Time.GetTicksMsec() / 1000.0);
+            float rate = anim is "walk" or "walk_carry" ? Mathf.Clamp(speed / 1.0f, 0.6f, 3f) : 1f;
+            agent.Character.Play(anim, rate);
+            Mark(u.Id, pos, SelectedUnits.Contains(u.Id), u.Confused);
+        }
+        foreach (var id in _unitMarks.Keys.Where(id => !seen.Contains(id) && w.GetUnit(id)?.Kind != UnitKind.Ox).ToList())
+        {
+            _unitMarks[id].QueueFree();
+            _unitMarks.Remove(id);
+        }
+        foreach (var ox in w.Units.Where(u => u.Kind == UnitKind.Ox))
+            Mark(ox.Id, _primitives.Interpolate(ox.Id, ox.Pos, ox.Next, ox.StepTicks, alpha), SelectedUnits.Contains(ox.Id), false);
+    }
+
+    /// <summary>Selection ring and the "?" balloon (no work left nearby, GDD v0.3 D4).</summary>
+    private void Mark(int id, Vector3 pos, bool selected, bool confused)
+    {
+        if (!_unitMarks.TryGetValue(id, out var mark))
+        {
+            mark = new Node3D { Name = $"Mark{id}" };
+            var ring = _catalog.Primitive("cylinder", new Vector3(1.3f, 0.05f, 1.3f), new Color(0.95f, 0.82f, 0.45f, 0.75f), ghost: true);
+            ring.Name = "Ring";
+            mark.AddChild(ring);
+            mark.AddChild(new Label3D
+            {
+                Name = "Question", Text = "?", FontSize = 96, OutlineSize = 18, Billboard = BaseMaterial3D.BillboardModeEnum.Enabled,
+                Position = new Vector3(0, 2.9f, 0), NoDepthTest = true,
+            });
+            AddChild(mark);
+            _unitMarks[id] = mark;
+        }
+        mark.Position = pos + new Vector3(0, 0.03f, 0);
+        mark.GetNode<Node3D>("Ring").Visible = selected;
+        mark.GetNode<Node3D>("Question").Visible = confused;
     }
 
     /// <summary>
@@ -464,6 +537,20 @@ public partial class WorldView : Node3D
         }
         float t = Mathf.Clamp((c.StepTicks + alpha) / ticksPerCell, 0, 1);
         return from.Lerp(CellCenter(c.NextCell), t);
+    }
+
+    public float CellSize => _catalog.CellSize;
+
+    /// <summary>Order feedback: a ring that shrinks at the target cell (guide §5.3: answer in &lt; 100 ms).</summary>
+    public void FlashOrder(Cell c)
+    {
+        var ring = _catalog.Primitive("cylinder", new Vector3(1.8f, 0.06f, 1.8f), new Color(0.95f, 0.82f, 0.45f, 0.8f), ghost: true);
+        var holder = new Node3D { Position = CellCenter(c) + new Vector3(0, 0.05f, 0) };
+        holder.AddChild(ring);
+        AddChild(holder);
+        var tw = holder.CreateTween();
+        tw.TweenProperty(holder, "scale", new Vector3(0.2f, 1, 0.2f), 0.35f).From(new Vector3(1.3f, 1, 1.3f));
+        tw.TweenCallback(Callable.From(holder.QueueFree));
     }
 
     public Vector3 CellCenter(Cell c) =>

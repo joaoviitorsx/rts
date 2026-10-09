@@ -11,9 +11,14 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         var host = new SimHost { Name = "SimHost" };
+        // Dev: --scenario=wild_start (RTS opening on a generated map, GDD v0.3); the flat 2A map stays the default for now.
+        if (OS.GetCmdlineUserArgs().FirstOrDefault(a => a.StartsWith("--scenario=")) is { } scenarioArg)
+            host.ScenarioId = scenarioArg[11..];
         AddChild(host);   // _Ready loads content and creates the world
+        Ground.Terrain = host.World.Terrain;
 
         var catalog = new VisualCatalog();
+        Ground.CellSize = catalog.CellSize;
 
         AddChild(new WorldEnvironment
         {
@@ -52,10 +57,15 @@ public partial class Main : Node3D
         var map = host.World.Map;
         camera.SetBounds(new Rect2(0, 0, map.Width * catalog.CellSize, map.Height * catalog.CellSize));
         if (host.World.SeatBuilding is { } seat) camera.FocusOn(view.FootprintCenter(seat), 40);
+        else if (host.World.Terrain is { } terrain) camera.FocusOn(view.CellCenter(terrain.Start), 55);   // the band's clearing
 
         var build = new BuildController { Name = "BuildController" };
         AddChild(build);
         build.Init(host, catalog, camera, view);
+        // After the build tool: unhandled input reaches later siblings first, so unit clicks win over building selection.
+        var units = new UnitController { Name = "UnitController" };
+        AddChild(units);
+        units.Init(host, camera, view, build);
 
         if (OS.GetCmdlineUserArgs().FirstOrDefault(x => x.StartsWith("--locale=")) is { } locale)
             TranslationServer.SetLocale(locale[9..]);   // dev: check translations (e.g. --locale=en)
@@ -63,6 +73,7 @@ public partial class Main : Node3D
         UiJuice.Attach(GetTree());
         var ui = GD.Load<PackedScene>("res://ui/screens/hud.tscn").Instantiate<Hud>();
         AddChild(ui);
+        ui.Units = units;
         ui.Init(host, build, view, camera);
 
         ApplyCommandLine(host);
@@ -80,6 +91,10 @@ public partial class Main : Node3D
             if (arg.StartsWith("--head-scale=") && float.TryParse(arg[13..], System.Globalization.CultureInfo.InvariantCulture, out float headScale))
                 WorldView.HeadScale = headScale;   // dev: proportion study (not the default)
             if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
+            if (arg == "--select-all")   // dev: selection rings and the selection panel in captures
+                units.SetSelection(host.World.Units.Where(u => u.Controllable).Select(u => u.Id), add: false);
+            if (arg == "--focus-units" && host.World.Units.Count > 0)   // dev: look at the band wherever it went
+                camera.FocusOn(view.CellCenter(host.World.Units[0].Pos), 30);
         }
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
         {
@@ -94,12 +109,34 @@ public partial class Main : Node3D
     /// --shot=PATH (save the real window image after ~1 s and quit), --smoke (input end-to-end check).
     /// Example: godot-mono --path godot -- --opening --days=60 --speed=8
     /// </summary>
+    /// <summary>
+    /// Dev (--rts-demo, with --scenario=wild_start): the band busy for captures and checks — three chop, two hunt the
+    /// nearest deer, two gather stone, the ox heads for the trees; one stays by the pile.
+    /// </summary>
+    private static void RtsDemo(Ironvale.Sim.World w)
+    {
+        var colonists = w.Units.Where(u => u.IsColonist).Select(u => u.Id).ToArray();
+        if (w.Terrain is not { } t || colonists.Length < 7) return;
+        var any = w.Units[0];
+        if (w.NearestNode(Ironvale.Sim.Map.NodeKind.Tree, t.Start, 30, any) is { } tree)
+        {
+            w.Enqueue(new Ironvale.Sim.Commands.OrderUnits(colonists[..3], Ironvale.Sim.Population.OrderKind.Gather, tree));
+            var ox = w.Units.First(u => u.Kind == Ironvale.Sim.Population.UnitKind.Ox);
+            w.Enqueue(new Ironvale.Sim.Commands.OrderUnits(new[] { ox.Id }, Ironvale.Sim.Population.OrderKind.Move, tree));
+        }
+        if (w.Animals.Where(a => a.Huntable).OrderBy(a => a.Pos.Manhattan(t.Start)).FirstOrDefault() is { } deer)
+            w.Enqueue(new Ironvale.Sim.Commands.OrderUnits(colonists[3..5], Ironvale.Sim.Population.OrderKind.Hunt, deer.Pos, deer.Id));
+        if (w.NearestNode(Ironvale.Sim.Map.NodeKind.Stone, t.Start, 30, any) is { } stone)
+            w.Enqueue(new Ironvale.Sim.Commands.OrderUnits(colonists[5..7], Ironvale.Sim.Population.OrderKind.Gather, stone));
+    }
+
     private static void ApplyCommandLine(SimHost host)
     {
         var args = OS.GetCmdlineUserArgs();
         IScriptedPlayer? player = args.Contains("--opening") ? new OptimalPlayer(roads: !args.Contains("--no-roads")) : null;
         if (args.FirstOrDefault(x => x.StartsWith("--player=")) is { } p) player = ScriptedPlayers.Create(p[9..], roads: !args.Contains("--no-roads"));
         player?.Start(host.World);
+        if (args.Contains("--rts-demo")) RtsDemo(host.World);
         foreach (var arg in args)
         {
             if (arg.StartsWith("--speed=") && int.TryParse(arg[8..], out int speed)) host.SetSpeed(speed);

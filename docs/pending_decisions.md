@@ -224,3 +224,18 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
 - D10: merge na `main`;
 - D11: boi;
 - D12: chuva estraga a pilha ao relento.
+
+## v0.3 — etapa 2 do briefing (09/10/2026)
+
+### P33. Teclas dos grupos de controle × velocidade (prioridade baixa)
+- **Conflito:** o GDD v0.3 D6 pôs grupos em Ctrl+1–5 / 1–5 e a velocidade em F1–F4; a spec do HUD v2 (§5.1, a
+  referência de interface pelo briefing D5) usa **1–4 para velocidade** e **F1–F5 para os mapas**.
+- **Escolha:** vale a spec do HUD (1–4 velocidade, F1–F5 mapas). Grupos de controle **ficam para depois** (sem tecla
+  livre óbvia; propostas: Ctrl+5–9 / 5–9, ou Ctrl+Q/W/E). Seleção por clique, retângulo, Shift e duplo clique já funciona.
+
+### P34. Visual primitivo do mundo na etapa 2 (prioridade baixa)
+- **Escolha:** "jogável com primitivas" = terraços como degraus com paredões claros, água por profundidade, árvores
+  esfera+tronco (cores de outono), arbustos/pedras/jazidas como caixas e esferas, cervos/coelhos/lobos como cápsulas,
+  boi como caixa; colonos já usam o modelo de aldeão. O visual de verdade (Terrain3D, penhascos por contorno, Stylized
+  Nature, animais Quaternius) é a etapa 4. Cenário RTS no jogo por `--scenario=wild_start` (o 2A segue como padrão até a
+  etapa 3 fechar a abertura); demonstração: `--rts-demo`.

@@ -51,6 +51,10 @@ public sealed record AlertSnap(string Key, AlertSeverity Severity, string Text, 
 /// <summary>The next goal shown in the objective card (GDD v0.2 §4.1: always a visible next step).</summary>
 public sealed record ObjectiveSnap(string Key, string Text, int Index, int Count);
 
+/// <summary>RTS opening: a unit under direct control (task key for "units.task.*", load, needs).</summary>
+public sealed record UnitSnap(int Id, string Name, bool IsOx, string Task, string CarryName, long CarryUnits, bool Confused,
+    int FoodDeficitDays, int ColdDeficitDays);
+
 public sealed record DailySnap(long[] Produced, long[] Consumed, long[] Stored, long[] Local, long[] Transit);
 
 public sealed class UiSnapshot
@@ -77,6 +81,11 @@ public sealed class UiSnapshot
     public required int AdminCapacity { get; init; }
     public required int AdminUsed { get; init; }
     public required SuggestionSnap? Suggestion { get; init; }
+    public required IReadOnlyList<UnitSnap> Units { get; init; }
+    public int Colonists => Units.Count(u => !u.IsOx);
+    /// <summary>"Clear" | "Cloudy" | "Rain" | "Snow" — empty on the flat map.</summary>
+    public required string WeatherToday { get; init; }
+    public required string WeatherTomorrow { get; init; }
 
     public BuildingSnap? Building(int id) => Buildings.FirstOrDefault(b => b.Id == id);
 }
@@ -137,9 +146,33 @@ public static class UiSnapshotBuilder
             Objective = NextObjective(w, cal, tr, ref objectiveFloor),
             AdminCapacity = w.AdminCapacity,
             AdminUsed = w.AdminUsed,
+            Units = w.Units.Where(u => u.Controllable).Select(u => new UnitSnap(u.Id, u.Name, u.Kind == UnitKind.Ox, TaskOf(w, u),
+                u.IsCarrying ? UiText.Res(content.Resources[u.CarryResource]) : "", u.CarryAmount.WholeUnits, u.Confused,
+                u.FoodDeficitDays, u.ColdDeficitDays)).ToList(),
+            WeatherToday = w.Terrain is null ? "" : w.WeatherToday.ToString(),
+            WeatherTomorrow = w.Terrain is null ? "" : w.WeatherTomorrow.ToString(),
             Suggestion = w.Suggestion is { } sg ? new SuggestionSnap(sg.Id, UiText.Res(content.Resources[sg.Resource]), sg.Min.WholeUnits,
                 sg.Max.WholeUnits, sg.Actions, sg.AverageStockUnits, content.Policies[0].CaCostFor(sg.Resource),
                 content.Policies[0].MaxHouseholds, sg.WinterAdjusted) : null,
+        };
+    }
+
+    /// <summary>Key of what a unit is doing ("units.task.&lt;key&gt;").</summary>
+    private static string TaskOf(World w, Unit u)
+    {
+        if (u.Step == UnitStep.Fleeing) return "fleeing";
+        if (u.Step == UnitStep.Delivering) return "delivering";
+        if (u.Order is not { } o) return u.Confused ? "confused" : "idle";
+        return o.Kind switch
+        {
+            OrderKind.Gather => w.Nature?.At(o.Cell).Kind switch
+            {
+                Ironvale.Sim.Map.NodeKind.Tree => "chop",
+                Ironvale.Sim.Map.NodeKind.Stone => "stone",
+                _ => "forage",
+            },
+            OrderKind.Build when u.Step == UnitStep.Fetching => "fetch",
+            _ => o.Kind.ToString().ToLowerInvariant(),
         };
     }
 
@@ -264,6 +297,7 @@ public static class UiSnapshotBuilder
     /// </summary>
     private static ObjectiveSnap? NextObjective(World w, Calendar cal, Func<string, string> tr, ref int floor)
     {
+        if (w.Households.Count == 0 && w.Units.Any(u => u.IsColonist)) return RtsObjective(w, tr, ref floor);
         int Active(string def) => w.Buildings.Count(b => b.IsActive && b.Def.Id == def);
         int Workers(string def) => w.Buildings.Where(b => b.IsActive && b.Def.Id == def).Sum(b => b.AssignedCount);
         int carriers = w.Carriers.Count(c => !c.Retiring);
@@ -289,10 +323,39 @@ public static class UiSnapshotBuilder
         return new ObjectiveSnap("grow", tr("objective.grow"), steps.Length, steps.Length);
     }
 
+    /// <summary>
+    /// RTS opening (briefing step 2, until step 3 adds fire, tents and the covered storehouse): fetch logs, get food from
+    /// the wild, split firewood for the cold, then keep the band fed and warm.
+    /// </summary>
+    private static ObjectiveSnap RtsObjective(World w, Func<string, string> tr, ref int floor)
+    {
+        long Stock(string id) => w.StorageStock(w.Content.Resource(id).Index).WholeUnits;
+        long foodGathered = w.Ledger.ProducedOf(w.Content.Resource("food").Index).WholeUnits;
+        var steps = new (string Key, bool Done, object[] Args)[]
+        {
+            ("rts_wood", Stock("wood") >= 12, new object[] { Stock("wood") }),
+            ("rts_food", foodGathered >= 20, new object[] { foodGathered }),
+            ("rts_firewood", Stock("firewood") >= 60, new object[] { Stock("firewood") }),
+        };
+        for (int i = floor; i < steps.Length; i++)
+        {
+            if (steps[i].Done) { floor = i + 1; continue; }
+            return new ObjectiveSnap(steps[i].Key, string.Format(tr("objective." + steps[i].Key), steps[i].Args), i + 1, steps.Length + 1);
+        }
+        return new ObjectiveSnap("rts_survive", tr("objective.rts_survive"), steps.Length + 1, steps.Length + 1);
+    }
+
     /// <summary>Presentation-level warnings derived from the snapshot numbers (no game rules live here).</summary>
     private static List<AlertSnap> Alerts(World w, List<ResourceSnap> res, int daysToWinter, Func<string, string> tr)
     {
         var list = new List<AlertSnap>();
+        // RTS opening: the weather comes a day ahead; an uncovered pile with food or firewood loses some on rainy days.
+        int foodIdx = w.Content.Resource("food").Index, fireIdx = w.Content.Resource("firewood").Index;
+        bool exposed = w.Buildings.Any(b => b.IsActive && b.Def.Uncovered && (b.Stock.Get(foodIdx).IsPositive || b.Stock.Get(fireIdx).IsPositive));
+        if (exposed && w.WeatherToday == Weather.Rain)
+            list.Add(new AlertSnap("rain_now", AlertSeverity.Warning, tr("alert.rain_now"), 0));
+        else if (exposed && w.WeatherTomorrow == Weather.Rain)
+            list.Add(new AlertSnap("rain_tomorrow", AlertSeverity.Info, tr("alert.rain_tomorrow"), 0));
         var food = res.First(r => r.Id == "food");
         var firewood = res.First(r => r.Id == "firewood");
         if (food.DaysLeft < 10)

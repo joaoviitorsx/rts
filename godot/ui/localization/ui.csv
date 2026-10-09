@@ -223,3 +223,32 @@ chronicle.reeve_busy,o reeve remanejou famílias {0} vezes para manter os decret
 chronicle.overloaded,o reeve ficou sobrecarregado por {0} dias (decretos demais para a capacidade),the reeve was overloaded for {0} days (too many decrees for the capacity)
 chronicle.harvest,colheita farta: o estoque de comida chegou a {0},bumper harvest: food stock reached {0}
 chronicle.suggestion,o reeve deixou uma sugestão de decreto esperando por você,the reeve left a decree suggestion waiting for you
+ui.top.colonists,{0} colonos,{0} colonists
+units.title,{0} selecionado(s),{0} selected
+units.task.idle,parado,idle
+units.task.confused,? nada por perto,? nothing left nearby
+units.task.move,andando,walking
+units.task.chop,cortando árvore,chopping a tree
+units.task.stone,coletando pedra,gathering stone
+units.task.forage,colhendo,foraging
+units.task.pickup,carregando do chão,picking up
+units.task.hunt,caçando,hunting
+units.task.build,construindo,building
+units.task.fetch,buscando material,fetching material
+units.task.deposit,levando ao depósito,storing
+units.task.delivering,levando ao depósito,storing
+units.task.scare,espantando lobo,scaring a wolf
+units.task.split,rachando lenha,splitting firewood
+units.task.fleeing,fugindo de um lobo!,fleeing a wolf!
+units.carry,leva {0} {1},carries {0} {1}
+units.hungry,com fome há {0} dias,hungry for {0} days
+units.cold,com frio há {0} dias,cold for {0} days
+units.more,e mais {0},and {0} more
+units.hint,"Clique direito: árvore/pedra/arbusto = coletar · cervo = caçar · lobo = espantar · obra = construir · pilha = depositar (Ctrl: rachar lenha) · chão = andar. Shift enfileira.","Right click: tree/stone/bush = gather · deer = hunt · wolf = scare · site = build · pile = store (Ctrl: split firewood) · ground = move. Shift queues."
+units.stop,Parar,Stop
+alert.rain_tomorrow,Chuva amanhã: a pilha ao relento vai estragar comida e lenha,Rain tomorrow: the open pile will spoil food and firewood
+alert.rain_now,Chovendo: a pilha ao relento está perdendo comida e lenha,Raining: the open pile is losing food and firewood
+objective.rts_wood,"Selecione colonos (clique ou arraste) e clique com o botão direito numa árvore: eles cortam e trazem as toras para a pilha ({0}/12). O boi arrasta a tora inteira.","Select colonists (click or drag) and right-click a tree: they chop it and bring the logs to the pile ({0}/12). The ox drags a whole log."
+objective.rts_food,"Comida do mundo: clique direito num cervo para caçar (carne e couro) ou, no verão, em arbustos de frutas ({0}/20).","Food from the land: right-click a deer to hunt (meat and hides) or, in summer, berry bushes ({0}/20)."
+objective.rts_firewood,"Lenha para o frio: com colonos selecionados, Ctrl + clique direito na pilha racha toras em lenha ({0}/60).","Firewood for the cold: with colonists selected, Ctrl + right-click the pile to split logs into firewood ({0}/60)."
+objective.rts_survive,"Mantenha o bando alimentado e aquecido até o inverno.","Keep the band fed and warm until winter."

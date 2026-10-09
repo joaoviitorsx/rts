@@ -62,7 +62,8 @@ public sealed class VisualCatalog
         }
     }
 
-    public Vector3 CellToWorld(int x, int y) => new(x * CellSize, 0, y * CellSize);
+    /// <summary>World position of a cell's corner, at the ground's height (terraces on generated maps, see <see cref="Ground"/>).</summary>
+    public Vector3 CellToWorld(int x, int y) => new(x * CellSize, Ground.CellHeight(x, y), y * CellSize);
 
     public Color ResourceColor(string resourceId) =>
         _resourceColors.TryGetValue(resourceId, out var c) ? new Color(c.AsString()) : Colors.White;

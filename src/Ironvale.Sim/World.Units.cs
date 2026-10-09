@@ -235,7 +235,7 @@ public sealed partial class World
     /// Nearest gatherable node of <paramref name="kind"/> within <paramref name="radius"/> (Chebyshev) of
     /// <paramref name="from"/>, not taken by another unit (Manhattan, ties by cell index).
     /// </summary>
-    internal Cell? NearestNode(NodeKind kind, Cell from, int radius, Unit except, HashSet<Cell>? taken = null)
+    public Cell? NearestNode(NodeKind kind, Cell from, int radius, Unit except, HashSet<Cell>? taken = null)
     {
         if (Nature is not { } nature) return null;
         Cell? best = null;

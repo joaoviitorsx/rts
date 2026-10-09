@@ -145,14 +145,10 @@ public partial class CameraRig : Node3D
         _camera.LookAt(GlobalPosition, Vector3.Up);
     }
 
-    /// <summary>Mouse ray hit on the ground plane (Y = 0).</summary>
+    /// <summary>Mouse ray hit on the ground (Y = 0 on the flat map, the terraces on a generated one).</summary>
     public Vector3? GroundUnderMouse(Vector2? screenPosition = null)
     {
         var mouse = screenPosition ?? GetViewport().GetMousePosition();
-        var from = _camera.ProjectRayOrigin(mouse);
-        var dir = _camera.ProjectRayNormal(mouse);
-        if (Mathf.Abs(dir.Y) < 1e-4f) return null;
-        float t = -from.Y / dir.Y;
-        return t < 0 ? null : from + dir * t;
+        return Ground.Raycast(_camera.ProjectRayOrigin(mouse), _camera.ProjectRayNormal(mouse));
     }
 }
