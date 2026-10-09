@@ -11,7 +11,8 @@ Usage:
     python3 scripts/setup_vendor.py            # copy/update
     python3 scripts/setup_vendor.py --dry-run  # show what would change
     python3 scripts/setup_vendor.py --clean    # also delete files in vendor/ that no source produces
-    python3 scripts/setup_vendor.py --derive   # also (re)build derived files with Blender (head-only bodies)
+    python3 scripts/setup_vendor.py --derive   # also (re)build derived files: Blender (head-only bodies) and
+                                               # Godot (tree impostor atlases; needs a GPU window, not headless)
 
 Sources and versions of each pack: docs/vendor_sources.md
 """
@@ -207,7 +208,33 @@ def derive(force: bool) -> int:
         if not ok:
             print(result.stdout[-2000:], result.stderr[-2000:], file=sys.stderr)
             return 1
-    return 0
+    return bake_impostors(force)
+
+
+# Tree impostor atlases rendered by Godot from the tree scenes (needs a real GPU render, so not --headless).
+IMPOSTORS = "godot/assets/environment/impostors/impostors.json"
+
+
+def bake_impostors(force: bool) -> int:
+    if (ROOT / IMPOSTORS).exists() and not force:
+        print(f"- derived {IMPOSTORS}: up to date")
+        return 0
+    godot = next((g for g in ("godot-mono", "godot") if _sh.which(g)), None)
+    if godot is None:
+        print("error: godot-mono not found (needed for tree impostors)", file=sys.stderr)
+        return 1
+    project = str(ROOT / "godot")
+    steps = [[godot, "--headless", "--path", project, "--import"],                       # meshes the baker loads
+             [godot, "--path", project, "res://scenes/tools/ImpostorBaker.tscn"],
+             [godot, "--headless", "--path", project, "--import"]]                       # the new atlases
+    for cmd in steps:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(result.stdout[-2000:], result.stderr[-2000:], file=sys.stderr)
+            break
+    ok = (ROOT / IMPOSTORS).exists()
+    print(f"- derived {IMPOSTORS}: {'built' if ok else 'FAILED'}")
+    return 0 if ok else 1
 
 
 # Godot import presets per pack, written as <file>.import only if Godot hasn't imported the file yet.

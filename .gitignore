@@ -24,6 +24,9 @@ TestResults/
 # derived from vendor by Blender (scripts/setup_vendor.py --derive); import settings versioned
 /godot/assets/characters/source/*
 !/godot/assets/characters/source/*.import
+# tree impostor atlases baked by Godot from vendor meshes (scripts/setup_vendor.py --derive); import settings versioned
+/godot/assets/environment/impostors/*
+!/godot/assets/environment/impostors/*.import
 
 # Dev tooling addon (symlink to local godot-devpilot-mcp checkout)
 /godot/addons/godot_devpilot_mcp

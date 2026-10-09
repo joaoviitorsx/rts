@@ -3611,6 +3611,950 @@
 ],
 "radius": 2.4,
 "strength": 0.6
+},
+{
+"center": [
+68.73,
+108.18
+],
+"radius": 3.8080000000000003,
+"strength": 0.75
+},
+{
+"center": [
+38.15,
+163.7
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+39.14,
+126.56
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+64.56,
+119.52
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+69.64,
+111.55
+],
+"radius": 2.924,
+"strength": 0.75
+},
+{
+"center": [
+45.53,
+116.6
+],
+"radius": 2.9579999999999997,
+"strength": 0.75
+},
+{
+"center": [
+69.41,
+139.39
+],
+"radius": 3.8080000000000003,
+"strength": 0.75
+},
+{
+"center": [
+63.46,
+135.45
+],
+"radius": 3.1959999999999997,
+"strength": 0.75
+},
+{
+"center": [
+44.83,
+108.22
+],
+"radius": 3.332,
+"strength": 0.75
+},
+{
+"center": [
+66.28,
+150.08
+],
+"radius": 3.332,
+"strength": 0.75
+},
+{
+"center": [
+53.35,
+160.78
+],
+"radius": 3.366,
+"strength": 0.75
+},
+{
+"center": [
+40.49,
+111.75
+],
+"radius": 4.1819999999999995,
+"strength": 0.75
+},
+{
+"center": [
+36.26,
+191.49
+],
+"radius": 3.128,
+"strength": 0.75
+},
+{
+"center": [
+57.2,
+160.4
+],
+"radius": 3.8759999999999994,
+"strength": 0.75
+},
+{
+"center": [
+71.84,
+177.65
+],
+"radius": 3.06,
+"strength": 0.75
+},
+{
+"center": [
+73.97,
+154.0
+],
+"radius": 4.045999999999999,
+"strength": 0.75
+},
+{
+"center": [
+49.22,
+142.29
+],
+"radius": 3.536,
+"strength": 0.75
+},
+{
+"center": [
+65.88,
+191.9
+],
+"radius": 4.1819999999999995,
+"strength": 0.75
+},
+{
+"center": [
+39.68,
+155.41
+],
+"radius": 3.366,
+"strength": 0.75
+},
+{
+"center": [
+59.6,
+110.83
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+68.08,
+95.22
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+56.09,
+110.47
+],
+"radius": 3.74,
+"strength": 0.75
+},
+{
+"center": [
+66.51,
+99.03
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+37.59,
+84.81
+],
+"radius": 3.094,
+"strength": 0.75
+},
+{
+"center": [
+36.41,
+170.48
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+38.32,
+147.76
+],
+"radius": 3.468,
+"strength": 0.75
+},
+{
+"center": [
+63.52,
+122.94
+],
+"radius": 3.4339999999999997,
+"strength": 0.75
+},
+{
+"center": [
+62.46,
+163.11
+],
+"radius": 3.128,
+"strength": 0.75
+},
+{
+"center": [
+165.16,
+84.09
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+85.28,
+77.03
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+156.03,
+93.66
+],
+"radius": 3.4339999999999997,
+"strength": 0.75
+},
+{
+"center": [
+99.08,
+85.38
+],
+"radius": 3.468,
+"strength": 0.75
+},
+{
+"center": [
+175.65,
+89.41
+],
+"radius": 3.094,
+"strength": 0.75
+},
+{
+"center": [
+83.2,
+86.21
+],
+"radius": 3.8080000000000003,
+"strength": 0.75
+},
+{
+"center": [
+151.11,
+87.33
+],
+"radius": 3.298,
+"strength": 0.75
+},
+{
+"center": [
+168.16,
+94.26
+],
+"radius": 3.298,
+"strength": 0.75
+},
+{
+"center": [
+162.59,
+86.83
+],
+"radius": 3.638,
+"strength": 0.75
+},
+{
+"center": [
+170.42,
+76.82
+],
+"radius": 3.128,
+"strength": 0.75
+},
+{
+"center": [
+78.09,
+84.89
+],
+"radius": 3.332,
+"strength": 0.75
+},
+{
+"center": [
+208.53,
+89.07
+],
+"radius": 2.8899999999999997,
+"strength": 0.75
+},
+{
+"center": [
+151.23,
+97.66
+],
+"radius": 3.366,
+"strength": 0.75
+},
+{
+"center": [
+159.71,
+97.13
+],
+"radius": 3.638,
+"strength": 0.75
+},
+{
+"center": [
+216.91,
+88.03
+],
+"radius": 3.706,
+"strength": 0.75
+},
+{
+"center": [
+136.95,
+92.75
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+176.47,
+94.85
+],
+"radius": 3.604,
+"strength": 0.75
+},
+{
+"center": [
+107.1,
+83.91
+],
+"radius": 3.638,
+"strength": 0.75
+},
+{
+"center": [
+99.56,
+97.83
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+91.73,
+80.92
+],
+"radius": 2.992,
+"strength": 0.75
+},
+{
+"center": [
+90.42,
+95.33
+],
+"radius": 4.114,
+"strength": 0.75
+},
+{
+"center": [
+206.8,
+83.39
+],
+"radius": 3.57,
+"strength": 0.75
+},
+{
+"center": [
+155.42,
+76.65
+],
+"radius": 4.216,
+"strength": 0.75
+},
+{
+"center": [
+172.32,
+86.81
+],
+"radius": 4.25,
+"strength": 0.75
+},
+{
+"center": [
+208.44,
+76.16
+],
+"radius": 4.114,
+"strength": 0.75
+},
+{
+"center": [
+107.99,
+96.55
+],
+"radius": 3.298,
+"strength": 0.75
+},
+{
+"center": [
+141.79,
+81.63
+],
+"radius": 3.4,
+"strength": 0.75
+},
+{
+"center": [
+236.24,
+164.91
+],
+"radius": 2.924,
+"strength": 0.75
+},
+{
+"center": [
+231.26,
+167.78
+],
+"radius": 3.026,
+"strength": 0.75
+},
+{
+"center": [
+204.12,
+143.93
+],
+"radius": 3.536,
+"strength": 0.75
+},
+{
+"center": [
+202.66,
+149.03
+],
+"radius": 3.162,
+"strength": 0.75
+},
+{
+"center": [
+201.34,
+115.19
+],
+"radius": 3.774,
+"strength": 0.75
+},
+{
+"center": [
+203.42,
+118.96
+],
+"radius": 2.924,
+"strength": 0.75
+},
+{
+"center": [
+207.42,
+117.71
+],
+"radius": 4.148,
+"strength": 0.75
+},
+{
+"center": [
+207.32,
+125.6
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+207.21,
+186.84
+],
+"radius": 2.9579999999999997,
+"strength": 0.75
+},
+{
+"center": [
+238.27,
+114.37
+],
+"radius": 3.366,
+"strength": 0.75
+},
+{
+"center": [
+220.77,
+109.42
+],
+"radius": 2.9579999999999997,
+"strength": 0.75
+},
+{
+"center": [
+235.65,
+98.31
+],
+"radius": 4.08,
+"strength": 0.75
+},
+{
+"center": [
+221.82,
+185.6
+],
+"radius": 3.536,
+"strength": 0.75
+},
+{
+"center": [
+237.27,
+155.0
+],
+"radius": 3.536,
+"strength": 0.75
+},
+{
+"center": [
+222.27,
+180.89
+],
+"radius": 3.1959999999999997,
+"strength": 0.75
+},
+{
+"center": [
+230.56,
+162.27
+],
+"radius": 4.1819999999999995,
+"strength": 0.75
+},
+{
+"center": [
+237.54,
+151.35
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+231.72,
+114.97
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+232.35,
+181.96
+],
+"radius": 3.264,
+"strength": 0.75
+},
+{
+"center": [
+202.81,
+162.35
+],
+"radius": 3.4339999999999997,
+"strength": 0.75
+},
+{
+"center": [
+215.21,
+163.99
+],
+"radius": 4.08,
+"strength": 0.75
+},
+{
+"center": [
+198.03,
+120.72
+],
+"radius": 3.264,
+"strength": 0.75
+},
+{
+"center": [
+223.36,
+170.86
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+220.64,
+155.66
+],
+"radius": 4.25,
+"strength": 0.75
+},
+{
+"center": [
+238.44,
+106.95
+],
+"radius": 3.672,
+"strength": 0.75
+},
+{
+"center": [
+222.99,
+163.31
+],
+"radius": 3.8759999999999994,
+"strength": 0.75
+},
+{
+"center": [
+211.88,
+117.96
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+220.23,
+190.98
+],
+"radius": 3.094,
+"strength": 0.75
+},
+{
+"center": [
+232.92,
+174.79
+],
+"radius": 3.536,
+"strength": 0.75
+},
+{
+"center": [
+238.05,
+184.17
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+213.07,
+176.4
+],
+"radius": 3.774,
+"strength": 0.75
+},
+{
+"center": [
+233.92,
+108.39
+],
+"radius": 3.57,
+"strength": 0.75
+},
+{
+"center": [
+198.35,
+135.27
+],
+"radius": 3.74,
+"strength": 0.75
+},
+{
+"center": [
+232.13,
+101.56
+],
+"radius": 3.332,
+"strength": 0.75
+},
+{
+"center": [
+204.25,
+158.34
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+147.75,
+191.45
+],
+"radius": 4.114,
+"strength": 0.75
+},
+{
+"center": [
+179.35,
+191.63
+],
+"radius": 3.57,
+"strength": 0.75
+},
+{
+"center": [
+77.64,
+182.02
+],
+"radius": 3.162,
+"strength": 0.75
+},
+{
+"center": [
+175.05,
+189.23
+],
+"radius": 3.4339999999999997,
+"strength": 0.75
+},
+{
+"center": [
+99.38,
+185.67
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+79.6,
+186.65
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+144.36,
+167.36
+],
+"radius": 3.774,
+"strength": 0.75
+},
+{
+"center": [
+84.68,
+175.96
+],
+"radius": 4.1819999999999995,
+"strength": 0.75
+},
+{
+"center": [
+94.9,
+185.88
+],
+"radius": 3.026,
+"strength": 0.75
+},
+{
+"center": [
+88.61,
+177.68
+],
+"radius": 3.74,
+"strength": 0.75
+},
+{
+"center": [
+161.06,
+173.38
+],
+"radius": 3.8080000000000003,
+"strength": 0.75
+},
+{
+"center": [
+145.0,
+183.84
+],
+"radius": 3.57,
+"strength": 0.75
+},
+{
+"center": [
+82.34,
+167.32
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+106.46,
+171.29
+],
+"radius": 2.992,
+"strength": 0.75
+},
+{
+"center": [
+158.94,
+181.47
+],
+"radius": 3.9779999999999998,
+"strength": 0.75
+},
+{
+"center": [
+165.29,
+166.85
+],
+"radius": 3.4,
+"strength": 0.75
+},
+{
+"center": [
+140.19,
+191.64
+],
+"radius": 3.264,
+"strength": 0.75
+},
+{
+"center": [
+95.36,
+172.47
+],
+"radius": 3.094,
+"strength": 0.75
+},
+{
+"center": [
+149.27,
+176.29
+],
+"radius": 4.012,
+"strength": 0.75
+},
+{
+"center": [
+174.76,
+182.88
+],
+"radius": 3.026,
+"strength": 0.75
+},
+{
+"center": [
+135.83,
+167.84
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+93.71,
+190.97
+],
+"radius": 3.23,
+"strength": 0.75
+},
+{
+"center": [
+84.87,
+185.41
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+107.19,
+191.13
+],
+"radius": 3.9439999999999995,
+"strength": 0.75
+},
+{
+"center": [
+146.44,
+171.22
+],
+"radius": 3.162,
+"strength": 0.75
+},
+{
+"center": [
+162.65,
+169.86
+],
+"radius": 4.148,
+"strength": 0.75
+},
+{
+"center": [
+144.62,
+178.9
+],
+"radius": 4.25,
+"strength": 0.75
+},
+{
+"center": [
+136.85,
+184.85
+],
+"radius": 3.4,
+"strength": 0.75
 }
 ],
 "trees": [
@@ -6953,6 +7897,7336 @@
 "rot": 244.9,
 "scale": 0.91,
 "shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+15.58,
+103.74
+],
+"rot": 158.3,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+11.09,
+81.82
+],
+"rot": 280.8,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+21.55,
+161.49
+],
+"rot": 292.3,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+6.46,
+187.96
+],
+"rot": 104.4,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+26.92,
+79.64
+],
+"rot": 273.7,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+35.91,
+220.31
+],
+"rot": 52.4,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+12.61,
+86.22
+],
+"rot": 55.9,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+15.19,
+164.0
+],
+"rot": 167.8,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+8.81,
+163.9
+],
+"rot": 222.3,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+20.88,
+178.98
+],
+"rot": 243.1,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+19.67,
+187.27
+],
+"rot": 23.9,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+32.0,
+197.41
+],
+"rot": 248.4,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+17.68,
+180.46
+],
+"rot": 73.7,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+22.48,
+167.46
+],
+"rot": 132.2,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+19.35,
+97.67
+],
+"rot": 292.2,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+7.56,
+86.57
+],
+"rot": 303.0,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+29.37,
+176.72
+],
+"rot": 123.1,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+25.15,
+74.5
+],
+"rot": 324.7,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+23.36,
+183.29
+],
+"rot": 113.2,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+17.74,
+75.71
+],
+"rot": 294.5,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+24.26,
+175.93
+],
+"rot": 186.8,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+22.98,
+81.09
+],
+"rot": 260.2,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+5.53,
+159.66
+],
+"rot": 62.5,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+34.88,
+226.57
+],
+"rot": 334.5,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+10.9,
+73.39
+],
+"rot": 296.8,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+18.09,
+155.62
+],
+"rot": 220.5,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+19.7,
+84.5
+],
+"rot": 126.1,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+8.91,
+177.72
+],
+"rot": 175.2,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+29.89,
+181.97
+],
+"rot": 130.0,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+30.37,
+203.21
+],
+"rot": 8.7,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+26.4,
+95.11
+],
+"rot": 245.8,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+19.44,
+106.24
+],
+"rot": 128.5,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+8.3,
+64.07
+],
+"rot": 0.6,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+5.74,
+100.08
+],
+"rot": 116.2,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+20.99,
+190.89
+],
+"rot": 130.7,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+4.16,
+78.87
+],
+"rot": 47.0,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+26.68,
+186.66
+],
+"rot": 212.4,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+14.39,
+169.03
+],
+"rot": 261.4,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+27.28,
+173.55
+],
+"rot": 317.9,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+25.67,
+160.52
+],
+"rot": 194.5,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+11.81,
+197.01
+],
+"rot": 77.7,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+29.37,
+92.4
+],
+"rot": 71.0,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+5.9,
+166.31
+],
+"rot": 129.8,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+11.16,
+174.2
+],
+"rot": 183.7,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+13.34,
+158.92
+],
+"rot": 298.2,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+22.05,
+89.24
+],
+"rot": 354.5,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+28.67,
+103.53
+],
+"rot": 172.8,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+14.82,
+174.99
+],
+"rot": 26.3,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+35.2,
+79.46
+],
+"rot": 5.1,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+34.07,
+167.04
+],
+"rot": 343.6,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+7.88,
+90.74
+],
+"rot": 295.3,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+12.81,
+201.35
+],
+"rot": 130.0,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+27.52,
+154.46
+],
+"rot": 143.1,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+7.82,
+155.43
+],
+"rot": 25.7,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+33.15,
+47.02
+],
+"rot": 311.3,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+4.04,
+180.83
+],
+"rot": 188.1,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+34.98,
+174.08
+],
+"rot": 53.1,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+9.06,
+171.18
+],
+"rot": 63.4,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+30.0,
+164.8
+],
+"rot": 218.0,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+4.07,
+116.24
+],
+"rot": 147.5,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+23.29,
+111.95
+],
+"rot": 269.5,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+34.41,
+215.22
+],
+"rot": 0.7,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+25.79,
+88.68
+],
+"rot": 332.3,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+23.71,
+156.7
+],
+"rot": 211.4,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+13.38,
+107.12
+],
+"rot": 232.9,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+18.0,
+193.06
+],
+"rot": 80.0,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+24.99,
+84.37
+],
+"rot": 261.2,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+10.14,
+95.99
+],
+"rot": 103.2,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+30.73,
+118.28
+],
+"rot": 42.6,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+26.71,
+112.43
+],
+"rot": 356.0,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+26.89,
+196.51
+],
+"rot": 112.8,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+4.03,
+203.42
+],
+"rot": 28.9,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+30.19,
+112.21
+],
+"rot": 56.8,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+13.31,
+97.76
+],
+"rot": 238.2,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+5.85,
+95.81
+],
+"rot": 205.4,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+32.24,
+63.48
+],
+"rot": 225.7,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+27.7,
+99.19
+],
+"rot": 224.3,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+7.51,
+109.71
+],
+"rot": 76.6,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+14.2,
+74.39
+],
+"rot": 336.4,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+33.64,
+126.06
+],
+"rot": 118.6,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+9.77,
+101.26
+],
+"rot": 241.8,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+15.57,
+78.65
+],
+"rot": 51.4,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+34.52,
+42.3
+],
+"rot": 193.2,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+7.13,
+75.78
+],
+"rot": 67.5,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+31.54,
+234.28
+],
+"rot": 127.8,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+12.92,
+68.52
+],
+"rot": 208.8,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+32.66,
+88.3
+],
+"rot": 319.9,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+28.93,
+76.48
+],
+"rot": 224.7,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+14.54,
+193.52
+],
+"rot": 78.8,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+34.29,
+163.22
+],
+"rot": 193.5,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+35.56,
+60.01
+],
+"rot": 262.4,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+8.47,
+191.32
+],
+"rot": 250.8,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+22.05,
+203.92
+],
+"rot": 298.1,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+32.38,
+106.18
+],
+"rot": 131.9,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+32.26,
+210.97
+],
+"rot": 198.7,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+34.62,
+56.46
+],
+"rot": 1.5,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+7.62,
+113.23
+],
+"rot": 183.2,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+13.27,
+91.65
+],
+"rot": 343.0,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+22.25,
+67.41
+],
+"rot": 290.3,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+20.86,
+197.6
+],
+"rot": 241.4,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+11.95,
+191.11
+],
+"rot": 5.9,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+28.29,
+107.04
+],
+"rot": 37.9,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+35.12,
+73.78
+],
+"rot": 324.7,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+29.23,
+82.5
+],
+"rot": 12.7,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+16.53,
+86.92
+],
+"rot": 131.4,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+34.58,
+51.4
+],
+"rot": 140.1,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+15.13,
+113.58
+],
+"rot": 96.8,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+33.26,
+222.53
+],
+"rot": 327.9,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+27.74,
+191.04
+],
+"rot": 57.2,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+18.72,
+110.06
+],
+"rot": 279.3,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+4.12,
+190.52
+],
+"rot": 162.6,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+31.91,
+218.09
+],
+"rot": 125.0,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+34.42,
+101.75
+],
+"rot": 35.7,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+27.76,
+69.74
+],
+"rot": 109.5,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+32.25,
+185.55
+],
+"rot": 36.6,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+7.26,
+198.98
+],
+"rot": 256.6,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+14.61,
+65.16
+],
+"rot": 134.0,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+4.09,
+175.32
+],
+"rot": 226.0,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+22.01,
+71.21
+],
+"rot": 19.6,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+11.77,
+166.09
+],
+"rot": 312.3,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+32.41,
+130.4
+],
+"rot": 79.4,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+31.91,
+171.4
+],
+"rot": 105.4,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+32.83,
+193.01
+],
+"rot": 148.9,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+18.76,
+172.94
+],
+"rot": 316.8,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+34.42,
+147.43
+],
+"rot": 234.5,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+26.29,
+170.01
+],
+"rot": 54.7,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+25.05,
+165.09
+],
+"rot": 311.1,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+11.57,
+111.77
+],
+"rot": 83.5,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+35.64,
+202.9
+],
+"rot": 121.2,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+34.68,
+181.02
+],
+"rot": 87.0,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+17.69,
+92.78
+],
+"rot": 58.3,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+35.21,
+157.75
+],
+"rot": 13.6,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+23.65,
+200.24
+],
+"rot": 88.8,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+34.96,
+65.97
+],
+"rot": 113.6,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+24.27,
+107.54
+],
+"rot": 207.8,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+4.49,
+58.63
+],
+"rot": 240.7,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+15.78,
+198.63
+],
+"rot": 344.3,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+29.5,
+159.55
+],
+"rot": 322.5,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+13.04,
+183.41
+],
+"rot": 87.5,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+26.38,
+204.47
+],
+"rot": 182.9,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+32.93,
+143.54
+],
+"rot": 58.1,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+19.93,
+102.52
+],
+"rot": 244.2,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+34.93,
+139.51
+],
+"rot": 103.1,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+24.31,
+191.68
+],
+"rot": 180.6,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+33.76,
+152.68
+],
+"rot": 296.0,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+35.99,
+209.92
+],
+"rot": 63.1,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+9.29,
+181.44
+],
+"rot": 234.2,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+5.27,
+171.38
+],
+"rot": 95.0,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+12.72,
+204.76
+],
+"rot": 356.1,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+27.63,
+66.08
+],
+"rot": 82.2,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+21.4,
+94.45
+],
+"rot": 356.7,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+10.98,
+187.11
+],
+"rot": 29.0,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+24.83,
+62.41
+],
+"rot": 212.1,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+8.24,
+202.84
+],
+"rot": 71.5,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+19.67,
+78.99
+],
+"rot": 140.8,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+9.82,
+78.32
+],
+"rot": 50.2,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+19.3,
+166.22
+],
+"rot": 170.9,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+8.14,
+68.99
+],
+"rot": 173.1,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+5.54,
+194.9
+],
+"rot": 13.1,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+33.84,
+110.35
+],
+"rot": 160.1,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+24.3,
+92.23
+],
+"rot": 337.2,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+34.79,
+233.23
+],
+"rot": 169.5,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+5.06,
+65.99
+],
+"rot": 34.3,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+14.53,
+186.69
+],
+"rot": 297.3,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+32.75,
+135.72
+],
+"rot": 48.8,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+18.1,
+65.24
+],
+"rot": 159.5,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+34.33,
+117.97
+],
+"rot": 323.9,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+31.61,
+73.31
+],
+"rot": 113.0,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+5.07,
+83.01
+],
+"rot": 283.5,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+31.38,
+189.43
+],
+"rot": 85.4,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+177.5,
+57.5
+],
+"rot": 182.4,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+214.56,
+70.04
+],
+"rot": 209.1,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+135.88,
+31.6
+],
+"rot": 78.2,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+127.58,
+29.85
+],
+"rot": 92.7,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+245.51,
+28.09
+],
+"rot": 215.5,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+48.99,
+29.58
+],
+"rot": 251.3,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+113.02,
+42.39
+],
+"rot": 227.2,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+57.02,
+44.16
+],
+"rot": 50.7,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+69.06,
+34.04
+],
+"rot": 29.3,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+56.89,
+34.1
+],
+"rot": 142.6,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+183.15,
+39.9
+],
+"rot": 154.9,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+111.9,
+71.17
+],
+"rot": 270.1,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+121.17,
+64.53
+],
+"rot": 332.0,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+187.42,
+50.93
+],
+"rot": 349.4,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+93.02,
+72.26
+],
+"rot": 64.8,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+211.57,
+67.23
+],
+"rot": 257.7,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+126.57,
+35.43
+],
+"rot": 300.5,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+183.19,
+64.31
+],
+"rot": 358.0,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+117.35,
+39.06
+],
+"rot": 98.0,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+191.19,
+33.14
+],
+"rot": 230.9,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+55.47,
+66.46
+],
+"rot": 259.0,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+198.77,
+36.87
+],
+"rot": 138.3,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+154.88,
+66.22
+],
+"rot": 355.4,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+39.25,
+39.6
+],
+"rot": 32.5,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+203.17,
+63.0
+],
+"rot": 169.8,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+56.01,
+56.07
+],
+"rot": 355.0,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+152.3,
+70.9
+],
+"rot": 35.5,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+112.69,
+28.05
+],
+"rot": 218.3,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+58.76,
+61.31
+],
+"rot": 318.6,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+250.43,
+70.89
+],
+"rot": 101.8,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+134.79,
+73.31
+],
+"rot": 325.9,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+181.13,
+35.7
+],
+"rot": 149.5,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+57.52,
+48.32
+],
+"rot": 271.6,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+250.32,
+37.27
+],
+"rot": 300.4,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+125.47,
+41.86
+],
+"rot": 8.4,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+50.58,
+61.1
+],
+"rot": 197.1,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+198.73,
+47.25
+],
+"rot": 8.7,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+67.1,
+26.51
+],
+"rot": 59.2,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+62.45,
+28.55
+],
+"rot": 38.9,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+62.22,
+43.6
+],
+"rot": 205.6,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+106.93,
+39.55
+],
+"rot": 215.5,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+158.71,
+68.14
+],
+"rot": 273.8,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+105.19,
+34.28
+],
+"rot": 299.5,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+189.0,
+46.71
+],
+"rot": 44.0,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+130.65,
+34.26
+],
+"rot": 15.4,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+174.32,
+35.08
+],
+"rot": 220.6,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+196.3,
+51.84
+],
+"rot": 317.7,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+166.01,
+70.36
+],
+"rot": 241.4,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+64.6,
+62.74
+],
+"rot": 167.0,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+104.07,
+43.26
+],
+"rot": 20.7,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+45.77,
+27.27
+],
+"rot": 10.9,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+46.14,
+46.15
+],
+"rot": 324.8,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+227.87,
+66.68
+],
+"rot": 297.7,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+174.05,
+55.94
+],
+"rot": 79.3,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+198.08,
+33.24
+],
+"rot": 262.5,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+43.59,
+58.6
+],
+"rot": 312.6,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+192.78,
+59.58
+],
+"rot": 12.2,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+208.26,
+38.06
+],
+"rot": 273.9,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+143.11,
+70.63
+],
+"rot": 64.2,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+41.61,
+32.88
+],
+"rot": 41.3,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+140.89,
+37.49
+],
+"rot": 217.5,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+41.34,
+46.04
+],
+"rot": 280.4,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+201.02,
+56.91
+],
+"rot": 207.7,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+114.54,
+31.25
+],
+"rot": 348.0,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+224.75,
+74.95
+],
+"rot": 219.0,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+212.13,
+36.23
+],
+"rot": 8.3,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+40.16,
+51.29
+],
+"rot": 33.7,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+94.32,
+66.13
+],
+"rot": 98.2,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+111.5,
+62.41
+],
+"rot": 219.5,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+107.71,
+26.14
+],
+"rot": 108.7,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+48.85,
+42.82
+],
+"rot": 304.5,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+170.5,
+31.6
+],
+"rot": 228.7,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+40.19,
+58.39
+],
+"rot": 156.0,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+67.92,
+44.57
+],
+"rot": 207.9,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+86.05,
+66.13
+],
+"rot": 135.9,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+247.44,
+33.21
+],
+"rot": 106.8,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+53.61,
+50.17
+],
+"rot": 346.5,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+130.25,
+66.13
+],
+"rot": 179.9,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+72.43,
+39.55
+],
+"rot": 181.0,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+173.04,
+38.88
+],
+"rot": 25.9,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+106.04,
+59.1
+],
+"rot": 22.9,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+251.31,
+52.74
+],
+"rot": 71.2,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+39.19,
+28.44
+],
+"rot": 44.3,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+172.53,
+69.55
+],
+"rot": 290.6,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+88.35,
+72.05
+],
+"rot": 158.6,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+244.53,
+66.24
+],
+"rot": 62.6,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+134.08,
+43.48
+],
+"rot": 28.0,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+98.55,
+72.71
+],
+"rot": 18.7,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+104.62,
+62.33
+],
+"rot": 16.0,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+50.79,
+26.2
+],
+"rot": 193.4,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+129.54,
+55.74
+],
+"rot": 122.8,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+118.92,
+29.38
+],
+"rot": 120.6,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+103.51,
+38.64
+],
+"rot": 260.4,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+149.92,
+64.78
+],
+"rot": 208.4,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+244.4,
+49.85
+],
+"rot": 239.0,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+122.32,
+48.64
+],
+"rot": 304.7,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+208.63,
+28.76
+],
+"rot": 127.8,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+117.35,
+56.97
+],
+"rot": 108.6,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+134.38,
+60.49
+],
+"rot": 153.4,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+245.41,
+59.37
+],
+"rot": 127.8,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+206.37,
+43.35
+],
+"rot": 113.7,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+69.47,
+64.26
+],
+"rot": 310.9,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+243.55,
+69.89
+],
+"rot": 123.4,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+208.9,
+45.94
+],
+"rot": 69.2,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+180.31,
+44.46
+],
+"rot": 250.2,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+177.69,
+30.05
+],
+"rot": 184.3,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+175.27,
+45.15
+],
+"rot": 130.2,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+141.25,
+65.77
+],
+"rot": 355.2,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+73.72,
+28.53
+],
+"rot": 111.4,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+249.94,
+48.24
+],
+"rot": 294.9,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+182.46,
+55.14
+],
+"rot": 75.2,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+136.24,
+63.48
+],
+"rot": 293.0,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+136.85,
+40.64
+],
+"rot": 97.7,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+186.94,
+54.44
+],
+"rot": 113.4,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+72.74,
+35.5
+],
+"rot": 224.3,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+133.24,
+53.21
+],
+"rot": 91.8,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+103.37,
+29.37
+],
+"rot": 89.3,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+134.14,
+56.86
+],
+"rot": 345.9,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+63.88,
+46.77
+],
+"rot": 143.2,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+109.77,
+52.52
+],
+"rot": 354.5,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+237.06,
+71.37
+],
+"rot": 347.1,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+107.3,
+30.27
+],
+"rot": 37.8,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+234.47,
+68.08
+],
+"rot": 214.8,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+77.65,
+74.25
+],
+"rot": 56.3,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+156.95,
+73.14
+],
+"rot": 45.0,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+203.98,
+51.48
+],
+"rot": 163.2,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+84.62,
+73.52
+],
+"rot": 232.4,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+184.69,
+67.71
+],
+"rot": 332.9,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+71.05,
+46.88
+],
+"rot": 39.6,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+200.44,
+41.8
+],
+"rot": 172.8,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+177.28,
+70.42
+],
+"rot": 131.4,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+187.24,
+40.58
+],
+"rot": 42.0,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+111.72,
+47.26
+],
+"rot": 197.1,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+183.05,
+48.14
+],
+"rot": 208.1,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+208.65,
+53.42
+],
+"rot": 171.6,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+124.62,
+57.95
+],
+"rot": 139.9,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+194.49,
+44.86
+],
+"rot": 5.3,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+108.15,
+47.23
+],
+"rot": 92.4,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+186.4,
+29.27
+],
+"rot": 46.0,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+174.83,
+74.88
+],
+"rot": 100.1,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+251.81,
+45.19
+],
+"rot": 34.9,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+63.15,
+53.59
+],
+"rot": 343.3,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+51.07,
+55.83
+],
+"rot": 53.2,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+209.18,
+72.38
+],
+"rot": 152.0,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+241.43,
+57.87
+],
+"rot": 46.2,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+231.0,
+75.46
+],
+"rot": 117.4,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+138.36,
+54.87
+],
+"rot": 131.2,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+106.56,
+72.05
+],
+"rot": 4.2,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+78.03,
+70.69
+],
+"rot": 183.0,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+73.46,
+70.36
+],
+"rot": 129.5,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+37.93,
+67.79
+],
+"rot": 303.8,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+66.13,
+73.02
+],
+"rot": 41.8,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+113.17,
+35.98
+],
+"rot": 223.9,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+46.66,
+33.28
+],
+"rot": 298.7,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+244.86,
+54.28
+],
+"rot": 155.6,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+72.02,
+58.31
+],
+"rot": 286.6,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+196.73,
+27.4
+],
+"rot": 252.8,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+52.55,
+42.69
+],
+"rot": 77.0,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+207.21,
+49.89
+],
+"rot": 334.0,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+239.91,
+74.55
+],
+"rot": 281.4,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+133.75,
+66.19
+],
+"rot": 123.0,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+244.07,
+32.71
+],
+"rot": 354.6,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+101.38,
+59.15
+],
+"rot": 337.6,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+117.45,
+48.99
+],
+"rot": 319.7,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+47.57,
+38.29
+],
+"rot": 120.2,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+46.75,
+51.73
+],
+"rot": 299.2,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+69.87,
+53.65
+],
+"rot": 17.8,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+180.2,
+61.17
+],
+"rot": 39.5,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+142.13,
+58.57
+],
+"rot": 128.5,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+90.79,
+69.33
+],
+"rot": 1.9,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+128.8,
+51.51
+],
+"rot": 352.9,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+204.84,
+31.31
+],
+"rot": 307.7,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+138.97,
+43.38
+],
+"rot": 238.7,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+102.52,
+54.66
+],
+"rot": 162.1,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+61.47,
+67.67
+],
+"rot": 9.8,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+190.22,
+66.86
+],
+"rot": 120.6,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+204.36,
+27.34
+],
+"rot": 358.8,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+182.3,
+26.05
+],
+"rot": 279.4,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+138.51,
+60.65
+],
+"rot": 296.8,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+244.19,
+46.02
+],
+"rot": 228.6,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+56.7,
+29.74
+],
+"rot": 112.1,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+192.2,
+40.82
+],
+"rot": 35.6,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+229.28,
+70.84
+],
+"rot": 289.3,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+171.25,
+53.33
+],
+"rot": 98.4,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+99.37,
+27.64
+],
+"rot": 331.5,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+130.94,
+41.45
+],
+"rot": 254.0,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+194.17,
+65.57
+],
+"rot": 229.0,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+64.19,
+57.3
+],
+"rot": 175.3,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+204.29,
+74.02
+],
+"rot": 151.6,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+140.19,
+50.3
+],
+"rot": 218.5,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+188.16,
+63.61
+],
+"rot": 67.0,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+84.84,
+69.38
+],
+"rot": 129.2,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+123.41,
+67.86
+],
+"rot": 231.9,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+44.58,
+62.85
+],
+"rot": 118.6,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+172.07,
+62.16
+],
+"rot": 356.9,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+233.36,
+71.57
+],
+"rot": 82.3,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+202.33,
+36.62
+],
+"rot": 350.7,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+74.5,
+65.21
+],
+"rot": 343.3,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+197.0,
+63.45
+],
+"rot": 183.8,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+146.9,
+66.35
+],
+"rot": 27.2,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+192.37,
+52.7
+],
+"rot": 307.8,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+131.97,
+26.75
+],
+"rot": 144.4,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+120.49,
+58.38
+],
+"rot": 191.7,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+59.69,
+57.11
+],
+"rot": 79.2,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+110.56,
+65.93
+],
+"rot": 46.3,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+195.59,
+30.75
+],
+"rot": 307.7,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+61.7,
+72.34
+],
+"rot": 71.0,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+47.1,
+60.05
+],
+"rot": 283.4,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+248.95,
+75.55
+],
+"rot": 37.0,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+120.72,
+45.55
+],
+"rot": 10.8,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+251.92,
+33.17
+],
+"rot": 283.7,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+204.64,
+39.74
+],
+"rot": 313.1,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+199.32,
+60.01
+],
+"rot": 48.1,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+48.89,
+69.11
+],
+"rot": 246.5,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+68.9,
+75.79
+],
+"rot": 128.1,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+211.39,
+41.19
+],
+"rot": 85.5,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+158.15,
+64.02
+],
+"rot": 303.5,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+137.4,
+68.92
+],
+"rot": 82.4,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+146.12,
+73.84
+],
+"rot": 274.8,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+197.12,
+56.81
+],
+"rot": 332.5,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+126.64,
+65.25
+],
+"rot": 263.4,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+121.79,
+40.64
+],
+"rot": 153.6,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+44.58,
+66.61
+],
+"rot": 4.7,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+43.86,
+41.46
+],
+"rot": 262.5,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+44.29,
+36.3
+],
+"rot": 133.9,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+218.98,
+74.68
+],
+"rot": 45.0,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+250.19,
+58.46
+],
+"rot": 65.2,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+208.1,
+67.31
+],
+"rot": 91.8,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+185.09,
+34.95
+],
+"rot": 185.0,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+191.28,
+28.8
+],
+"rot": 37.5,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+115.04,
+211.74
+],
+"rot": 265.5,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+123.69,
+203.12
+],
+"rot": 205.8,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+176.79,
+237.9
+],
+"rot": 315.9,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+130.85,
+222.78
+],
+"rot": 180.7,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+125.33,
+209.09
+],
+"rot": 345.6,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+55.06,
+228.11
+],
+"rot": 213.0,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+213.6,
+212.54
+],
+"rot": 324.1,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+136.85,
+219.61
+],
+"rot": 154.1,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+115.06,
+222.67
+],
+"rot": 152.9,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+130.89,
+217.97
+],
+"rot": 210.9,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+207.17,
+217.16
+],
+"rot": 61.3,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+122.16,
+198.13
+],
+"rot": 155.9,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+194.3,
+231.75
+],
+"rot": 63.1,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+216.9,
+204.13
+],
+"rot": 20.9,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+205.7,
+203.69
+],
+"rot": 287.8,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+205.42,
+225.81
+],
+"rot": 31.2,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+84.72,
+199.27
+],
+"rot": 130.3,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+102.57,
+192.97
+],
+"rot": 44.2,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+172.01,
+204.44
+],
+"rot": 166.4,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+90.55,
+196.64
+],
+"rot": 162.8,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+152.27,
+200.36
+],
+"rot": 175.1,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+174.41,
+194.26
+],
+"rot": 243.0,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+129.62,
+212.12
+],
+"rot": 40.6,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+71.17,
+216.78
+],
+"rot": 17.0,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+122.15,
+224.6
+],
+"rot": 46.7,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+139.93,
+217.6
+],
+"rot": 25.6,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+200.7,
+233.75
+],
+"rot": 27.6,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+143.18,
+204.01
+],
+"rot": 195.5,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+49.27,
+221.44
+],
+"rot": 108.7,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+184.89,
+224.19
+],
+"rot": 31.7,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+43.02,
+216.6
+],
+"rot": 177.8,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+116.07,
+207.22
+],
+"rot": 23.9,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+109.89,
+221.66
+],
+"rot": 85.1,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+104.86,
+201.16
+],
+"rot": 271.7,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+106.21,
+195.05
+],
+"rot": 88.9,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+50.63,
+226.42
+],
+"rot": 16.8,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+91.85,
+203.73
+],
+"rot": 41.2,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+179.77,
+216.12
+],
+"rot": 335.1,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+67.84,
+234.58
+],
+"rot": 54.7,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+106.25,
+232.68
+],
+"rot": 142.4,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+137.46,
+208.1
+],
+"rot": 109.2,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+201.4,
+198.34
+],
+"rot": 316.9,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+235.51,
+206.73
+],
+"rot": 243.6,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+208.93,
+226.97
+],
+"rot": 178.5,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+174.71,
+214.02
+],
+"rot": 184.7,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+205.24,
+197.5
+],
+"rot": 60.6,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+120.99,
+235.03
+],
+"rot": 0.9,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+189.55,
+224.02
+],
+"rot": 261.9,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+60.66,
+199.08
+],
+"rot": 237.1,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+189.38,
+204.25
+],
+"rot": 235.5,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+165.73,
+198.21
+],
+"rot": 355.3,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+104.21,
+237.81
+],
+"rot": 132.1,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+60.65,
+217.59
+],
+"rot": 153.7,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+127.86,
+224.8
+],
+"rot": 318.4,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+186.67,
+230.28
+],
+"rot": 86.9,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+43.41,
+206.96
+],
+"rot": 11.7,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+47.04,
+213.49
+],
+"rot": 13.0,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+192.47,
+235.69
+],
+"rot": 322.9,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+117.55,
+229.96
+],
+"rot": 169.5,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+79.21,
+200.62
+],
+"rot": 12.7,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+43.45,
+234.32
+],
+"rot": 104.8,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+40.39,
+214.13
+],
+"rot": 234.2,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+68.43,
+206.51
+],
+"rot": 297.9,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+200.61,
+225.23
+],
+"rot": 317.0,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+176.26,
+219.57
+],
+"rot": 48.3,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+185.31,
+220.53
+],
+"rot": 347.9,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+110.91,
+207.8
+],
+"rot": 23.8,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+86.82,
+195.71
+],
+"rot": 16.9,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+193.06,
+214.84
+],
+"rot": 299.9,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+136.25,
+223.32
+],
+"rot": 207.9,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+249.73,
+224.65
+],
+"rot": 318.5,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+251.31,
+228.35
+],
+"rot": 90.3,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+107.67,
+216.37
+],
+"rot": 52.3,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+50.03,
+216.45
+],
+"rot": 302.7,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+38.58,
+232.81
+],
+"rot": 298.9,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+187.73,
+236.01
+],
+"rot": 342.7,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+52.3,
+200.1
+],
+"rot": 64.4,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+41.49,
+221.84
+],
+"rot": 349.8,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+199.03,
+215.68
+],
+"rot": 281.2,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+127.54,
+230.2
+],
+"rot": 45.4,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+120.12,
+212.86
+],
+"rot": 222.1,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+48.8,
+236.7
+],
+"rot": 193.9,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+65.45,
+215.54
+],
+"rot": 6.5,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+66.59,
+221.07
+],
+"rot": 274.7,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+212.63,
+193.32
+],
+"rot": 53.8,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+180.07,
+196.52
+],
+"rot": 339.5,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+132.08,
+235.47
+],
+"rot": 171.3,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+230.79,
+202.9
+],
+"rot": 249.2,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+119.77,
+206.91
+],
+"rot": 354.3,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+56.24,
+236.77
+],
+"rot": 308.1,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+61.41,
+213.26
+],
+"rot": 184.1,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+110.08,
+231.44
+],
+"rot": 56.6,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+120.66,
+217.54
+],
+"rot": 100.2,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+194.9,
+206.2
+],
+"rot": 116.2,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+99.02,
+207.77
+],
+"rot": 242.3,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+223.65,
+202.89
+],
+"rot": 31.7,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+98.8,
+202.45
+],
+"rot": 350.6,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+148.79,
+199.12
+],
+"rot": 145.5,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+143.35,
+212.48
+],
+"rot": 358.8,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+189.39,
+211.26
+],
+"rot": 141.7,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+248.49,
+203.01
+],
+"rot": 302.4,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+180.38,
+236.9
+],
+"rot": 212.2,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+107.32,
+204.49
+],
+"rot": 261.1,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+63.91,
+230.29
+],
+"rot": 247.1,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+215.28,
+198.6
+],
+"rot": 217.1,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+242.0,
+197.86
+],
+"rot": 89.9,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+42.52,
+211.05
+],
+"rot": 332.2,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+202.88,
+208.76
+],
+"rot": 283.3,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+173.58,
+199.28
+],
+"rot": 25.1,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+207.7,
+232.62
+],
+"rot": 94.5,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+57.06,
+211.73
+],
+"rot": 32.6,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+117.47,
+215.62
+],
+"rot": 57.7,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+108.07,
+211.39
+],
+"rot": 304.7,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+77.52,
+197.25
+],
+"rot": 352.9,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+210.62,
+197.77
+],
+"rot": 42.1,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+39.47,
+200.82
+],
+"rot": 329.7,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+174.43,
+222.8
+],
+"rot": 62.9,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+197.01,
+198.62
+],
+"rot": 289.6,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+185.42,
+203.93
+],
+"rot": 230.0,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+109.21,
+236.88
+],
+"rot": 227.4,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+173.83,
+210.29
+],
+"rot": 239.9,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+55.12,
+203.0
+],
+"rot": 98.7,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+211.62,
+206.83
+],
+"rot": 123.3,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+60.0,
+228.52
+],
+"rot": 285.9,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+44.9,
+226.21
+],
+"rot": 353.4,
+"scale": 1.15,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+246.89,
+231.7
+],
+"rot": 279.6,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+110.4,
+201.27
+],
+"rot": 254.6,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+63.84,
+209.93
+],
+"rot": 283.7,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+161.11,
+202.06
+],
+"rot": 9.5,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+46.94,
+205.87
+],
+"rot": 120.3,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+61.68,
+222.42
+],
+"rot": 145.4,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+113.73,
+228.51
+],
+"rot": 89.9,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+67.99,
+210.99
+],
+"rot": 355.2,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+230.48,
+197.47
+],
+"rot": 122.1,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+243.25,
+206.42
+],
+"rot": 3.9,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+246.61,
+218.77
+],
+"rot": 231.8,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+229.49,
+193.82
+],
+"rot": 228.2,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+57.73,
+206.2
+],
+"rot": 198.9,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+157.9,
+196.18
+],
+"rot": 110.4,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+187.33,
+216.08
+],
+"rot": 240.7,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+250.18,
+235.15
+],
+"rot": 328.5,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+234.29,
+196.92
+],
+"rot": 103.1,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+247.93,
+197.45
+],
+"rot": 112.3,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+203.33,
+221.75
+],
+"rot": 120.2,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+207.91,
+193.58
+],
+"rot": 116.8,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+217.49,
+193.77
+],
+"rot": 218.8,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+72.83,
+199.66
+],
+"rot": 136.2,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+182.39,
+208.22
+],
+"rot": 203.3,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+133.48,
+205.89
+],
+"rot": 72.2,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+134.83,
+216.08
+],
+"rot": 132.5,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+60.72,
+236.84
+],
+"rot": 247.7,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+170.75,
+195.21
+],
+"rot": 290.2,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+207.66,
+210.68
+],
+"rot": 183.2,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+74.04,
+195.92
+],
+"rot": 192.8,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+185.9,
+200.11
+],
+"rot": 170.4,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+200.06,
+237.56
+],
+"rot": 323.3,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+103.56,
+218.22
+],
+"rot": 64.9,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+136.95,
+193.58
+],
+"rot": 58.7,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+128.17,
+235.44
+],
+"rot": 348.8,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+153.79,
+196.09
+],
+"rot": 270.2,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+134.7,
+232.94
+],
+"rot": 145.9,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+241.78,
+215.13
+],
+"rot": 200.2,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+41.0,
+228.13
+],
+"rot": 148.4,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+207.14,
+207.01
+],
+"rot": 268.2,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+144.51,
+197.58
+],
+"rot": 231.6,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+197.27,
+211.38
+],
+"rot": 136.6,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+165.97,
+193.49
+],
+"rot": 4.2,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+39.56,
+236.93
+],
+"rot": 93.9,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+102.33,
+224.33
+],
+"rot": 311.3,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+57.6,
+220.12
+],
+"rot": 112.6,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+240.15,
+176.17
+],
+"rot": 2.8,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+243.08,
+96.55
+],
+"rot": 2.9,
+"scale": 1.13,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+247.32,
+166.95
+],
+"rot": 353.6,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+249.83,
+133.48
+],
+"rot": 315.3,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+251.47,
+144.15
+],
+"rot": 118.7,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+252.31,
+136.84
+],
+"rot": 170.9,
+"scale": 1.19,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+242.84,
+180.2
+],
+"rot": 182.0,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+242.8,
+114.41
+],
+"rot": 132.5,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+250.85,
+152.53
+],
+"rot": 117.4,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+245.37,
+136.76
+],
+"rot": 149.4,
+"scale": 1.03,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+247.53,
+117.32
+],
+"rot": 94.9,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+253.01,
+129.81
+],
+"rot": 140.0,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+243.46,
+77.59
+],
+"rot": 329.6,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+244.24,
+131.96
+],
+"rot": 30.6,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+244.07,
+125.73
+],
+"rot": 174.5,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+253.44,
+123.59
+],
+"rot": 236.5,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+240.57,
+92.25
+],
+"rot": 226.9,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+240.55,
+171.84
+],
+"rot": 171.8,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+244.38,
+101.37
+],
+"rot": 177.9,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+241.55,
+83.81
+],
+"rot": 191.9,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+242.85,
+155.65
+],
+"rot": 87.5,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+246.12,
+153.83
+],
+"rot": 171.2,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+244.25,
+164.71
+],
+"rot": 175.0,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+248.22,
+149.05
+],
+"rot": 309.9,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+241.27,
+151.55
+],
+"rot": 344.6,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+246.26,
+143.02
+],
+"rot": 359.1,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+246.25,
+84.94
+],
+"rot": 221.1,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+247.3,
+186.34
+],
+"rot": 20.6,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+243.08,
+106.83
+],
+"rot": 3.4,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+246.94,
+107.34
+],
+"rot": 333.5,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+247.04,
+113.5
+],
+"rot": 185.1,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+249.24,
+156.92
+],
+"rot": 107.3,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+245.01,
+160.82
+],
+"rot": 333.8,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+244.7,
+169.45
+],
+"rot": 144.3,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+249.2,
+103.57
+],
+"rot": 358.1,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+240.09,
+125.03
+],
+"rot": 99.0,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+240.22,
+87.5
+],
+"rot": 173.2,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+251.59,
+115.05
+],
+"rot": 288.5,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+253.65,
+160.07
+],
+"rot": 81.9,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+245.93,
+91.76
+],
+"rot": 163.8,
+"scale": 1.06,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+248.54,
+128.96
+],
+"rot": 335.5,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+244.64,
+189.73
+],
+"rot": 240.9,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+249.49,
+140.77
+],
+"rot": 55.9,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+241.69,
+183.95
+],
+"rot": 290.7,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+250.14,
+120.05
+],
+"rot": 24.0,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+68.73,
+108.18
+],
+"rot": 242.2,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+38.15,
+163.7
+],
+"rot": 270.0,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+39.14,
+126.56
+],
+"rot": 9.3,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+64.56,
+119.52
+],
+"rot": 258.8,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+69.64,
+111.55
+],
+"rot": 167.0,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+45.53,
+116.6
+],
+"rot": 301.5,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+69.41,
+139.39
+],
+"rot": 346.9,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+63.46,
+135.45
+],
+"rot": 119.5,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+44.83,
+108.22
+],
+"rot": 238.5,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+66.28,
+150.08
+],
+"rot": 212.6,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+53.35,
+160.78
+],
+"rot": 243.7,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+40.49,
+111.75
+],
+"rot": 85.6,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+36.26,
+191.49
+],
+"rot": 29.6,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+57.2,
+160.4
+],
+"rot": 198.6,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+71.84,
+177.65
+],
+"rot": 66.6,
+"scale": 0.9,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+73.97,
+154.0
+],
+"rot": 82.9,
+"scale": 1.19,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+49.22,
+142.29
+],
+"rot": 126.9,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+65.88,
+191.9
+],
+"rot": 34.0,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+39.68,
+155.41
+],
+"rot": 198.2,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+59.6,
+110.83
+],
+"rot": 201.9,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+68.08,
+95.22
+],
+"rot": 266.3,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+56.09,
+110.47
+],
+"rot": 55.8,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+66.51,
+99.03
+],
+"rot": 302.8,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+37.59,
+84.81
+],
+"rot": 42.1,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+36.41,
+170.48
+],
+"rot": 153.8,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+38.32,
+147.76
+],
+"rot": 73.5,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+63.52,
+122.94
+],
+"rot": 283.1,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+62.46,
+163.11
+],
+"rot": 349.8,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+165.16,
+84.09
+],
+"rot": 229.9,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+85.28,
+77.03
+],
+"rot": 52.3,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+156.03,
+93.66
+],
+"rot": 311.3,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+99.08,
+85.38
+],
+"rot": 109.0,
+"scale": 1.02,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+175.65,
+89.41
+],
+"rot": 79.0,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+83.2,
+86.21
+],
+"rot": 4.5,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+151.11,
+87.33
+],
+"rot": 273.7,
+"scale": 0.97,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+168.16,
+94.26
+],
+"rot": 67.2,
+"scale": 0.97,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+162.59,
+86.83
+],
+"rot": 282.0,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+170.42,
+76.82
+],
+"rot": 253.3,
+"scale": 0.92,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+78.09,
+84.89
+],
+"rot": 132.3,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+208.53,
+89.07
+],
+"rot": 196.1,
+"scale": 0.85,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+151.23,
+97.66
+],
+"rot": 192.3,
+"scale": 0.99,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+159.71,
+97.13
+],
+"rot": 49.6,
+"scale": 1.07,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+216.91,
+88.03
+],
+"rot": 70.4,
+"scale": 1.09,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+136.95,
+92.75
+],
+"rot": 177.9,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+176.47,
+94.85
+],
+"rot": 231.8,
+"scale": 1.06,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+107.1,
+83.91
+],
+"rot": 325.2,
+"scale": 1.07,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+99.56,
+97.83
+],
+"rot": 322.1,
+"scale": 1.16,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+91.73,
+80.92
+],
+"rot": 110.5,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+90.42,
+95.33
+],
+"rot": 127.8,
+"scale": 1.21,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+206.8,
+83.39
+],
+"rot": 252.4,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+155.42,
+76.65
+],
+"rot": 111.6,
+"scale": 1.24,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+172.32,
+86.81
+],
+"rot": 193.9,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+208.44,
+76.16
+],
+"rot": 183.3,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+107.99,
+96.55
+],
+"rot": 316.6,
+"scale": 0.97,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+141.79,
+81.63
+],
+"rot": 237.2,
+"scale": 1.0,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+236.24,
+164.91
+],
+"rot": 0.9,
+"scale": 0.86,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+231.26,
+167.78
+],
+"rot": 82.3,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+204.12,
+143.93
+],
+"rot": 324.8,
+"scale": 1.04,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+202.66,
+149.03
+],
+"rot": 16.1,
+"scale": 0.93,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+201.34,
+115.19
+],
+"rot": 122.0,
+"scale": 1.11,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+203.42,
+118.96
+],
+"rot": 65.9,
+"scale": 0.86,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+207.42,
+117.71
+],
+"rot": 316.0,
+"scale": 1.22,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+207.32,
+125.6
+],
+"rot": 326.6,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+207.21,
+186.84
+],
+"rot": 144.9,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+238.27,
+114.37
+],
+"rot": 192.1,
+"scale": 0.99,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+220.77,
+109.42
+],
+"rot": 251.3,
+"scale": 0.87,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+235.65,
+98.31
+],
+"rot": 307.4,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+221.82,
+185.6
+],
+"rot": 311.6,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+237.27,
+155.0
+],
+"rot": 154.6,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+222.27,
+180.89
+],
+"rot": 117.7,
+"scale": 0.94,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+230.56,
+162.27
+],
+"rot": 182.2,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+237.54,
+151.35
+],
+"rot": 111.3,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+231.72,
+114.97
+],
+"rot": 335.2,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+232.35,
+181.96
+],
+"rot": 90.2,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+202.81,
+162.35
+],
+"rot": 245.3,
+"scale": 1.01,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+215.21,
+163.99
+],
+"rot": 33.1,
+"scale": 1.2,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+198.03,
+120.72
+],
+"rot": 83.8,
+"scale": 0.96,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+223.36,
+170.86
+],
+"rot": 79.5,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+220.64,
+155.66
+],
+"rot": 254.8,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_C.tscn",
+"pos": [
+238.44,
+106.95
+],
+"rot": 55.6,
+"scale": 1.08,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+222.99,
+163.31
+],
+"rot": 241.1,
+"scale": 1.14,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+211.88,
+117.96
+],
+"rot": 344.7,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+220.23,
+190.98
+],
+"rot": 119.6,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+232.92,
+174.79
+],
+"rot": 140.0,
+"scale": 1.04,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+238.05,
+184.17
+],
+"rot": 84.3,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+213.07,
+176.4
+],
+"rot": 80.9,
+"scale": 1.11,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+233.92,
+108.39
+],
+"rot": 82.1,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+198.35,
+135.27
+],
+"rot": 36.6,
+"scale": 1.1,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+232.13,
+101.56
+],
+"rot": 318.6,
+"scale": 0.98,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+204.25,
+158.34
+],
+"rot": 186.4,
+"scale": 1.17,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+147.75,
+191.45
+],
+"rot": 297.0,
+"scale": 1.21,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+179.35,
+191.63
+],
+"rot": 64.5,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+77.64,
+182.02
+],
+"rot": 160.2,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_C.tscn",
+"pos": [
+175.05,
+189.23
+],
+"rot": 102.3,
+"scale": 1.01,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+99.38,
+185.67
+],
+"rot": 139.8,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+79.6,
+186.65
+],
+"rot": 124.0,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+144.36,
+167.36
+],
+"rot": 222.0,
+"scale": 1.11,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+84.68,
+175.96
+],
+"rot": 142.5,
+"scale": 1.23,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+94.9,
+185.88
+],
+"rot": 148.3,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+88.61,
+177.68
+],
+"rot": 298.3,
+"scale": 1.1,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+161.06,
+173.38
+],
+"rot": 335.0,
+"scale": 1.12,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_E.tscn",
+"pos": [
+145.0,
+183.84
+],
+"rot": 160.0,
+"scale": 1.05,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+82.34,
+167.32
+],
+"rot": 18.6,
+"scale": 0.95,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+106.46,
+171.29
+],
+"rot": 119.8,
+"scale": 0.88,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+158.94,
+181.47
+],
+"rot": 345.9,
+"scale": 1.17,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_E.tscn",
+"pos": [
+165.29,
+166.85
+],
+"rot": 186.9,
+"scale": 1.0,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+140.19,
+191.64
+],
+"rot": 0.3,
+"scale": 0.96,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+95.36,
+172.47
+],
+"rot": 97.8,
+"scale": 0.91,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+149.27,
+176.29
+],
+"rot": 103.0,
+"scale": 1.18,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_Big_A.tscn",
+"pos": [
+174.76,
+182.88
+],
+"rot": 225.7,
+"scale": 0.89,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_A.tscn",
+"pos": [
+135.83,
+167.84
+],
+"rot": 299.8,
+"scale": 1.16,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+93.71,
+190.97
+],
+"rot": 176.3,
+"scale": 0.95,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_D.tscn",
+"pos": [
+84.87,
+185.41
+],
+"rot": 180.6,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_A.tscn",
+"pos": [
+107.19,
+191.13
+],
+"rot": 305.7,
+"scale": 1.16,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_B.tscn",
+"pos": [
+146.44,
+171.22
+],
+"rot": 291.4,
+"scale": 0.93,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Pine_D.tscn",
+"pos": [
+162.65,
+169.86
+],
+"rot": 268.4,
+"scale": 1.22,
+"shadow": true
+},
+{
+"scene": "res://assets/environment/ENV_Pine_Big_A.tscn",
+"pos": [
+144.62,
+178.9
+],
+"rot": 280.9,
+"scale": 1.25,
+"shadow": false
+},
+{
+"scene": "res://assets/environment/ENV_Oak_B.tscn",
+"pos": [
+136.85,
+184.85
+],
+"rot": 311.6,
+"scale": 1.0,
+"shadow": false
 }
 ],
 "rocks": [

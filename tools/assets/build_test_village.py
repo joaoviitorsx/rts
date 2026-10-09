@@ -228,6 +228,21 @@ def main():
         layout["shade"].append({"center": [px, pz], "radius": 2.4, "strength": 0.6})
         placed += 1
 
+    # Deep forest beyond the painted ground (after the rocks so the approved village layout keeps its RNG draws).
+    # Always far from the camera bounds, so at play distances it renders as impostors (TreeImpostors.gd).
+    belt((4, 36, 40, 236), 170, oaks + pines, 1.7, clump=0.35)       # deep west
+    belt((36, 252, 26, 76), 230, pines + oaks, 1.7, clump=0.35)      # deep north
+    belt((36, 252, 192, 238), 170, oaks + pines, 1.8, clump=0.45)    # deep south
+    belt((240, 254, 76, 192), 45, oaks + pines, 1.8, clump=0.35)     # deep east
+    # Fill the framing belts on the painted ground (appended, so earlier placements stay where they were).
+    n_before = len(layout["trees"])
+    belt((36, 74, 76, 192), 55, oaks + pines, 1.7, clump=0.4)        # west wood
+    belt((74, 218, 76, 98), 60, pines + oaks, 1.7, clump=0.4)        # north belt
+    belt((198, 240, 96, 192), 35, oaks + pines, 1.8, clump=0.45)     # east grove
+    belt((74, 198, 166, 192), 30, oaks + pines, 1.9, clump=0.6)      # south edge
+    for t in layout["trees"][n_before:]:
+        layout["shade"].append({"center": t["pos"], "radius": 3.4 * t["scale"], "strength": 0.75})
+
     s.node("Villagers", "Node3D", [])
     rig = s.ext_id("res://game/scripts/CameraRig.cs", "Script")
     s.node("CameraRig", "Node3D", [f'script = ExtResource("{rig}")', "transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130, 0, 128)"])

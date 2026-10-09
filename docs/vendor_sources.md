@@ -40,6 +40,12 @@ godot-landscaper (licence not stated — scattering is done by our own scripts).
   as subtle detail on bare ground (`ground_detail_*` shader globals).
 - The `__MACOSX/` folder and `._*` files in the watercolor zip are skipped.
 
+## Derived in Godot
+- Tree impostor atlases (`godot/assets/environment/impostors/`, not versioned except `*.import`): rendered from the
+  Stylized Nature tree scenes by `scenes/tools/ImpostorBaker.tscn` (`setup_vendor.py --derive` runs it; needs a GPU
+  window). Import: VRAM + mipmaps, never a normal map (alpha carries the palette param). Rebake after changing tree
+  scenes, tree materials or `impostor_bake.gdshader` / `tree_impostor.gdshader`.
+
 ## Known issues in the originals (handled by the script, originals untouched)
 - `Universal Base Characters`: `Superhero_*_FullBody.gltf` reference `T_Eye_Normal_png.png` /
   `T_Hair_1_Normal_png.png`, which don't exist; the script copies `T_Eye_Normal.png` / `T_Hair_1_Normal.png`

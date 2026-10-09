@@ -3,7 +3,7 @@ extends Node3D
 ## ground mask → baked ground colour → streamed grass carpet, single plant palette, roof/stone re-grade,
 ## MultiMesh forests framing the village, tuft/flower clusters at path edges, fences, trunks and rocks,
 ## 20 animated villagers, official camera, cozy environment.
-## Args after "--": --zoom=near|mid|far  --no-grass  --perf=N  --vsync=off     Keys: Z zoom · H grass
+## Args after "--": --zoom=near|mid|far  --no-grass  --no-impostors  --impostor-dist=M  --perf=N  --vsync=off     Keys: Z zoom · H grass
 
 const GroundMask := preload("res://game/terrain/GroundMask.gd")
 const GroundColorBaker := preload("res://game/terrain/GroundColorBaker.gd")
@@ -12,7 +12,10 @@ const Clusters := preload("res://game/vegetation/Clusters.gd")
 const MaterialTint := preload("res://game/materials/MaterialTint.gd")
 const CozyEnvironment := preload("res://game/visual/CozyEnvironment.gd")
 const StaticMerge := preload("res://game/visual/StaticMerge.gd")
+const TreeImpostors := preload("res://game/vegetation/TreeImpostors.gd")
 const FOREST_CHUNK := 64.0
+const IMPOSTOR_DIST := 120.0   # forest tiles farther than this (tile centre → camera) swap meshes for impostors
+const IMPOSTOR_HYSTERESIS := 5.0   # hard swap: Godot's dithered fades leave both halves see-through
 
 const LAYOUT := "res://scenes/test/TEST_VILLAGE_01_layout.json"
 const ZOOMS := {"near": 22.0, "mid": 45.0, "far": 95.0}
@@ -27,6 +30,7 @@ var _perf_seconds := 0.0
 var _perf_frames: Array[float] = []
 var _elapsed := 0.0
 var _rng := RandomNumberGenerator.new()
+var _impostor_dist := IMPOSTOR_DIST
 
 
 func _ready() -> void:
@@ -35,6 +39,7 @@ func _ready() -> void:
 	for a in args:
 		if a.begins_with("--zoom="): _zoom = a.substr(7)
 		if a.begins_with("--perf="): _perf_seconds = float(a.substr(7))
+		if a.begins_with("--impostor-dist="): _impostor_dist = float(a.substr(16))
 		if a == "--vsync=off": DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	CozyEnvironment.build(self)
 	$VillageTerrain.apply_palette("meadow")
@@ -115,8 +120,15 @@ func _build_forest() -> void:
 	var forest := Node3D.new()
 	forest.name = "Forest"
 	add_child(forest)
+	var impostors := not OS.get_cmdline_user_args().has("--no-impostors")
 	for key in groups:
-		Clusters.add(forest, key.get_slice("|", 0), groups[key], 0, true, key.get_slice("|", 3) == "1")
+		var scene: String = key.get_slice("|", 0)
+		var shadows: bool = key.get_slice("|", 3) == "1"
+		var mesh := Clusters.add(forest, scene, groups[key], 0, true, shadows)
+		# Shadow casters ring the village core and stay real; the rest swap to impostors far from the camera.
+		if impostors and not shadows and TreeImpostors.add(forest, scene, groups[key], _impostor_dist, IMPOSTOR_HYSTERESIS):
+			mesh.visibility_range_end = _impostor_dist
+			mesh.visibility_range_end_margin = IMPOSTOR_HYSTERESIS
 
 
 ## Integration clusters: tall tufts at rocks/fences/trunks, bushes at the forest/field transition,
@@ -129,8 +141,12 @@ func _build_clusters() -> void:
 	for p in _layout["rocks"]: rocks.append(Vector3(p[0], 0, p[1]))
 	var fences: Array = []
 	for p in _layout["fences"]: fences.append(Vector3(p[0], 0, p[1]))
-	var trunks: Array = []
-	for t in _layout["trees"]: trunks.append(Vector3(t["pos"][0], 0, t["pos"][1]))
+	var trunks: Array = []   # only trees on the painted ground: the deep forest is seen from far, as impostors
+	var r: Array = _layout["mask_rect"]
+	var painted := Rect2(r[0], r[1], r[2], r[3])
+	for t in _layout["trees"]:
+		if painted.has_point(Vector2(t["pos"][0], t["pos"][1])):
+			trunks.append(Vector3(t["pos"][0], 0, t["pos"][1]))
 	var edge_trees: Array = trunks.filter(func(v): return _rng.randf() < 0.35)
 	var road_edge: Array = []
 	for road in _layout["roads"]:

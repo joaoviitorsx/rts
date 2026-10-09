@@ -62,7 +62,12 @@ Cada tela passa por: 1 objetivo → 2 informações → 3 wireframe → 4 cinza 
   Capturas finais: `docs/lookdev/test_village_{near,mid,far,3zooms}.jpg`.
   Perf (sem vsync): 6–7 ms (~140–160 FPS) com a GPU já aquecida por muitas medições.
 - **Próximas pendências:**
-  1. Florestas ainda pouco densas na borda; densidade alta custa caro → impostores/billboards para árvores distantes.
+  1. ~~Florestas pouco densas na borda~~ — feito: impostores de árvore (8 vistas a 50°, normal em espaço-mundo, folha
+     recolorida pela paleta global; `scenes/tools/ImpostorBaker.tscn`, `game/vegetation/TreeImpostors.gd`). Tiles de
+     floresta a mais de 120 m da câmera trocam malha por impostor (troca seca com histerese de 5 m: o fade com dither do
+     Godot deixava as duas metades vazadas). Floresta profunda fora do chão pintado + preenchimento das bordas:
+     334 → 1067 árvores. Perf (sem vsync, na tomada): near 5,3 ms · mid 5,8 ms · far 4,7 ms (antes, 334 árvores:
+     mid 5,4 · far 4,4). Tufos/arbustos de borda só nas árvores do chão pintado.
   2. ~~Integrar `UIpack_RPG` (Kenney) e watercolor~~ — feito (watercolor = detalhe sutil na terra/caminho).
   3. ~~HUD/debug do Marco 1 nas regras §8.1~~ — feito em cinza (`godot/ui/`); telas §2.3 no plano do Marco 2 acima.
      Pendências de UI: nomes de conteúdo, motivos de rejeição e textos do log ainda vêm do sim em português (não são
