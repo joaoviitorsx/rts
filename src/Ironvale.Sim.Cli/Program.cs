@@ -55,7 +55,7 @@ IScriptedPlayer? player = opts.ContainsKey("no-opening") ? null
 SessionRecorder? session = null;
 if (opts.GetValueOrDefault("session-log") is { } sessionPath)
 {
-    // Scripted session in the playtest CSV format; "real" seconds = game time at 1x (1 day = 4 s).
+    // Scripted session in the playtest CSV format; "real" seconds = game time at 1x (1 day = 10 s).
     Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(sessionPath))!);
     session = new SessionRecorder(new StreamWriter(sessionPath), () => world.ElapsedTicks / (double)SimTime.TicksPerSecondAt1x);
     world.CollectEvents = true;

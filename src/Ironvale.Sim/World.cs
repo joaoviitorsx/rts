@@ -69,7 +69,8 @@ public sealed partial class World
 
     public Calendar Calendar => new(Tick);
     public long ElapsedTicks => Tick - StartTick;
-    public bool IsCollapsed => _households.Count == 0;
+    /// <summary>No family left and no colonist of the band either.</summary>
+    public bool IsCollapsed => _households.Count == 0 && !_units.Any(u => u.IsColonist);
 
     internal World(ContentDb content, ulong seed, string scenarioId, int mapW, int mapH, long startTick)
     {
@@ -90,14 +91,18 @@ public sealed partial class World
     private static Scheduler CreateScheduler()
     {
         var s = new Scheduler();
+        s.Register(new WeatherSystem());          // Production, Daily (generated maps only)
         s.Register(new HouseholdStateSystem());   // Production, Hourly (first: who works this hour)
         s.Register(new ConstructionSystem());     // Production, Daily
         s.Register(new HarvestSystem());          // Production, Seasonal
         s.Register(new ProductionSystem());       // Production, Hourly
         s.Register(new TransportSystem());        // Transport, Tick
+        s.Register(new UnitSystem());             // Transport, Tick (RTS opening: units under direct control)
+        s.Register(new FaunaSystem());            // Transport, Tick (wild animals)
         s.Register(new ConsumptionSystem());      // Consumption, Daily (+ subsistence)
         s.Register(new ToolWearSystem());         // Consumption, Daily
         s.Register(new NeedsSystem());            // Needs, Daily
+        s.Register(new UnitNeedsSystem());        // Needs, Daily (colonists, fires, tents)
         s.Register(new PolicySystem());           // Decisions, Daily
         return s;
     }
@@ -140,6 +145,7 @@ public sealed partial class World
                 ToolCondition = scenario.HouseholdToolCondition,
             });
         }
+        w.SpawnOpening(scenario);
         return w;
     }
 

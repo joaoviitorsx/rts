@@ -1,11 +1,14 @@
 {
   // Order defines resource indices for a given content hash. Saves store ids, not indices.
+  // carryPerTrip: carriers (families). colonistCarry / oxCarry: the RTS opening (GDD v0.3 §4.3) — logs are heavy,
+  // a colonist takes 3 per trip; the ox drags a whole felled tree (12) or a load of stone. 0 = cannot carry it.
   "resources": [
-    { "id": "wood",     "name": "Madeira",     "carryPerTrip": 15 },
-    { "id": "firewood", "name": "Lenha",       "carryPerTrip": 15 },
-    { "id": "food",     "name": "Comida",      "carryPerTrip": 25 },
-    { "id": "stone",    "name": "Pedra",       "carryPerTrip": 8 },
-    { "id": "tools",    "name": "Ferramentas", "carryPerTrip": 5 },
-    { "id": "coins",    "name": "Moedas",      "carryPerTrip": 50 }
+    { "id": "wood",     "name": "Madeira",     "carryPerTrip": 15, "colonistCarry": 3,  "oxCarry": 12 },
+    { "id": "firewood", "name": "Lenha",       "carryPerTrip": 15, "colonistCarry": 6 },
+    { "id": "food",     "name": "Comida",      "carryPerTrip": 25, "colonistCarry": 10 },
+    { "id": "stone",    "name": "Pedra",       "carryPerTrip": 8,  "colonistCarry": 3,  "oxCarry": 12 },
+    { "id": "tools",    "name": "Ferramentas", "carryPerTrip": 5,  "colonistCarry": 3 },
+    { "id": "coins",    "name": "Moedas",      "carryPerTrip": 50, "colonistCarry": 20 },
+    { "id": "hides",    "name": "Couro",       "carryPerTrip": 10, "colonistCarry": 2 }
   ]
 }

@@ -1,0 +1,246 @@
+namespace Ironvale.Sim.Tests;
+
+/// <summary>RTS opening, briefing step 2 (GDD v0.3 §3–§9): units, orders, gathering, hunting, the ox, rain, wolves.</summary>
+public class OpeningUnitsTests
+{
+    private static readonly Lazy<ScenarioDef> Wild =
+        new(() => DataPaths.LoadWithScenario(DataPaths.FindDataDirectory(), "wild_start").Scenario);
+
+    private static World NewWild(ulong seed = 42, ContentDb? content = null)
+    {
+        content ??= TestKit.Content;
+        var scenario = content == TestKit.Content ? Wild.Value
+            : ContentLoader.LoadScenario(File.ReadAllText(Path.Combine(DataPaths.FindDataDirectory(), DataPaths.ScenarioDir, "wild_start.json")), content);
+        var w = World.Create(content, scenario, seed);
+        w.CollectEvents = true;
+        return w;
+    }
+
+    /// <summary>Colonists never leave (tests that need summer or autumn without feeding the band).</summary>
+    private static readonly Lazy<ContentDb> Patient = new(() => TestKit.ContentWith(("leaveAfterDeficitDays", "100000")));
+
+    private static int Res(World w, string id) => w.Content.Resource(id).Index;
+    private static Building Pile(World w) => w.Buildings.First(b => b.Def.Id == "pile");
+    private static List<Unit> Colonists(World w) => w.Units.Where(u => u.IsColonist).ToList();
+    private static Unit Ox(World w) => w.Units.Single(u => u.Kind == UnitKind.Ox);
+
+    private static bool StepUntil(World w, Func<bool> done, int maxTicks)
+    {
+        for (int i = 0; i < maxTicks; i++)
+        {
+            if (done()) return true;
+            w.Step();
+        }
+        return done();
+    }
+
+    private static Cell NearestTree(World w, Cell from) =>
+        w.NearestNode(NodeKind.Tree, from, 40, Colonists(w)[0]) ?? throw new InvalidOperationException("no tree");
+
+    [Fact]
+    public void The_band_starts_in_the_clearing_with_a_pile_on_the_ground()
+    {
+        var w = NewWild();
+        Assert.Equal(8, Colonists(w).Count);
+        Assert.Single(w.Units, u => u.Kind == UnitKind.Ox);
+        Assert.All(w.Units, u => Assert.True(World.Chebyshev(u.Pos, w.Terrain!.Start) <= 4));
+        Assert.True(Pile(w).Def.Uncovered);
+        Assert.Equal(80_000, Pile(w).Stock.Get(Res(w, "food")).Milli);
+        Assert.Empty(w.Households);
+        Assert.NotEmpty(w.Animals);
+        Assert.False(w.IsCollapsed);
+    }
+
+    [Fact]
+    public void A_colonist_fells_a_tree_carries_the_log_home_and_keeps_going_nearby()
+    {
+        var w = NewWild();
+        var c = Colonists(w)[0];
+        var tree = NearestTree(w, c.Pos);
+        w.Enqueue(new OrderUnits(new[] { c.Id }, OrderKind.Gather, tree));
+        int wood = Res(w, "wood");
+        Assert.True(StepUntil(w, () => Pile(w).Stock.Get(wood).Milli >= 12_000, 4000), "log not brought home");
+        w.StepTicks(2);   // the next order is chosen on the following tick
+        Assert.Equal(TreeStage.Stump, Nature.StageOf(w.Nature!.At(tree), w.Tick, w.Content.Balance));
+        Assert.Contains(w.DrainEvents(), e => e is TreeFelled f && f.Cell == tree);
+        // Auto-continue: another tree close to the first, or "?" when there is none.
+        Assert.True(c.Order is { Kind: OrderKind.Gather } o && World.Chebyshev(o.Cell, tree) <= w.Content.Balance.AutoContinueCells
+                    || c.Confused);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void The_ox_drags_a_whole_log_in_one_trip()
+    {
+        var w = NewWild();
+        var c = Colonists(w)[0];
+        var tree = NearestTree(w, c.Pos);
+        w.Enqueue(new OrderUnits(new[] { c.Id }, OrderKind.Gather, tree));
+        Assert.True(StepUntil(w, () => w.GroundItems.Any(g => g.Cell == tree), 400));
+        w.Enqueue(new StopUnits(new[] { c.Id }));
+        var log = w.GroundItems.Single(g => g.Cell == tree);
+        var ox = Ox(w);
+        w.Enqueue(new OrderUnits(new[] { ox.Id }, OrderKind.Pickup, tree, log.Id));
+        Assert.True(StepUntil(w, () => ox.IsCarrying, 2000));
+        Assert.Equal(12_000, ox.CarryAmount.Milli);
+        Assert.True(StepUntil(w, () => !ox.IsCarrying && ox.Order is null, 2000));
+        Assert.Equal(12_000, Pile(w).Stock.Get(Res(w, "wood")).Milli);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void The_ox_does_not_chop_hunt_or_build()
+    {
+        var w = NewWild();
+        var ox = Ox(w);
+        w.Enqueue(new OrderUnits(new[] { ox.Id }, OrderKind.Gather, NearestTree(w, ox.Pos)));
+        w.ApplyPendingCommands();
+        Assert.Contains(w.DrainEvents(), e => e is CommandRejected);
+        Assert.Null(ox.Order);
+    }
+
+    [Fact]
+    public void A_group_sent_to_one_tree_spreads_over_the_nearest_trees()
+    {
+        var w = NewWild();
+        var group = Colonists(w).Take(3).Select(u => u.Id).ToArray();
+        var tree = NearestTree(w, w.Terrain!.Start);
+        w.Enqueue(new OrderUnits(group, OrderKind.Gather, tree));
+        w.ApplyPendingCommands();
+        var targets = group.Select(id => w.GetUnit(id)!.Order!.Value.Cell).ToList();
+        Assert.Equal(3, targets.Distinct().Count());
+        Assert.Contains(tree, targets);
+    }
+
+    [Fact]
+    public void Bushes_give_food_only_in_summer_and_autumn()
+    {
+        var w = NewWild(content: Patient.Value);
+        var c = Colonists(w)[0];
+        var bush = w.NearestNode(NodeKind.Bush, c.Pos, 60, c);
+        Assert.Null(bush);   // spring: no fruit, so no gatherable bush
+        w.StepDays(SimTime.DaysPerMonth * SimTime.MonthsPerSeason);   // summer
+        bush = w.NearestNode(NodeKind.Bush, c.Pos, 60, c);
+        Assert.NotNull(bush);
+        int food = Res(w, "food");
+        long before = w.Ledger.ProducedOf(food).Milli;
+        w.Enqueue(new OrderUnits(new[] { c.Id }, OrderKind.Gather, bush!.Value));
+        Assert.True(StepUntil(w, () => w.Ledger.ProducedOf(food).Milli > before, 2000));
+        Assert.False(w.Gatherable(bush.Value));   // picked for this season
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void Hunting_a_deer_brings_meat_and_hides()
+    {
+        var w = NewWild(content: Patient.Value);
+        var hunters = Colonists(w).Take(2).Select(u => u.Id).ToArray();
+        var deer = w.Animals.Where(a => a.Kind == FaunaKind.Deer).OrderBy(a => a.Pos.Manhattan(w.Terrain!.Start)).First();
+        int deerCount = w.Animals.Count(a => a.Kind == FaunaKind.Deer);
+        w.Enqueue(new OrderUnits(hunters, OrderKind.Hunt, deer.Pos, deer.Id));
+        int hides = Res(w, "hides");
+        Assert.True(StepUntil(w, () => Pile(w).Stock.Get(hides).IsPositive, 90 * SimTime.TicksPerDay), "no hides home");   // 4 trips of meat first
+        Assert.Equal(deerCount - 1, w.Animals.Count(a => a.Kind == FaunaKind.Deer));
+        Assert.Contains(w.DrainEvents(), e => e is AnimalKilled k && k.AnimalId == deer.Id);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void Rain_is_forecast_and_spoils_the_uncovered_pile()
+    {
+        var w = NewWild();
+        int food = Res(w, "food");
+        bool forecast = false;
+        Assert.True(StepUntil(w, () =>
+        {
+            if (w.WeatherTomorrow == Weather.Rain) forecast = true;
+            return w.WeatherToday == Weather.Rain;
+        }, (w.Content.Balance.FirstRainDay + 2) * SimTime.TicksPerDay), "no rain by the guaranteed day");
+        Assert.True(forecast, "rain came without the day-ahead warning");
+        w.StepTicks(SimTime.TicksPerDay);
+        Assert.Contains(w.DrainEvents(), e => e is Spoiled s && s.Resource == food);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void Colonists_fetch_material_and_build()
+    {
+        var w = NewWild();
+        int wood = Res(w, "wood");
+        Pile(w).Stock.AddUpTo(wood, Qty.Units(20));
+        w.Ledger.Initial[wood] += 20_000;
+        var house = w.Content.Building("house");
+        var spot = w.FreeCellsAround(new Cell(w.Terrain!.Start.X + 4, w.Terrain.Start.Y), 60)
+            .First(c => w.CanPlace(house, c, 0));
+        w.Enqueue(new PlaceBuilding("house", spot, 0));
+        w.ApplyPendingCommands();
+        var site = w.Buildings.Single(b => b.Def.Id == "house");
+        w.Enqueue(new OrderUnits(Colonists(w).Take(2).Select(u => u.Id).ToArray(), OrderKind.Build, site.Center, site.Id));
+        Assert.True(StepUntil(w, () => site.IsActive, 20 * SimTime.TicksPerDay), "house not built");
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void A_wolf_scares_a_lone_colonist_and_backs_off_from_a_group()
+    {
+        var w = NewWild(content: Patient.Value);
+        w.StepDays(SimTime.DaysPerMonth * SimTime.MonthsPerSeason * 2);   // autumn
+        var colonists = Colonists(w);
+        var lone = colonists[0];
+        var wolf = w.Animals.First(a => a.Kind == FaunaKind.Wolf);
+        // Put the lone colonist far from the others, carrying stone, with the wolf next to them.
+        var far = w.FreeCellsAround(new Cell(w.Terrain!.Start.X + 25, w.Terrain.Start.Y + 25), 3);
+        lone.Pos = lone.Next = far[0];
+        lone.CarryResource = Res(w, "stone");
+        lone.CarryAmount = Qty.Units(3);
+        w.Ledger.Initial[Res(w, "stone")] += 3_000;
+        wolf.Pos = wolf.Next = far[1];
+        wolf.State = AnimalState.Grazing;
+        Assert.True(StepUntil(w, () => lone.Step == UnitStep.Fleeing, 40));
+        Assert.False(lone.IsCarrying);
+        Assert.Contains(w.GroundItems, g => g.Resource == Res(w, "stone"));
+        Assert.Equal(AnimalState.Retreating, wolf.State);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void Hungry_colonists_leave_and_their_load_stays_on_the_ground()
+    {
+        var content = TestKit.ContentWith(("leaveAfterDeficitDays", "3"));
+        var w = NewWild(content: content);
+        var food = content.Resource("food").Index;
+        Pile(w).Stock.RemoveUpTo(food, Pile(w).Stock.Get(food));
+        w.Ledger.Initial[food] -= 80_000;
+        w.StepDays(6);
+        Assert.Empty(Colonists(w));
+        Assert.True(w.IsCollapsed);
+        Assert.Equal(8, w.DrainEvents().Count(e => e is UnitLeft));
+    }
+
+    [Fact]
+    public void The_opening_is_deterministic_through_save_and_load()
+    {
+        static void Drive(World w, int days, int salt)
+        {
+            var rng = new Random(salt);
+            for (int d = 0; d < days; d++)
+            {
+                var ids = w.Units.Select(u => u.Id).ToArray();
+                if (ids.Length > 0 && w.NearestNode(NodeKind.Tree, w.Terrain!.Start, 30, w.Units[0]) is { } tree)
+                    w.Enqueue(new OrderUnits(ids.Where((_, i) => rng.Next(2) == 0).ToArray(), OrderKind.Gather, tree, 0, rng.Next(2) == 0));
+                w.StepDays(1);
+            }
+        }
+        var a = NewWild(7);
+        var b = NewWild(7);
+        Drive(a, 20, 1);
+        Drive(b, 20, 1);
+        Assert.Equal(SaveSerializer.StateHashHex(a), SaveSerializer.StateHashHex(b));
+        var c = SaveSerializer.Load(SaveSerializer.Save(a), TestKit.Content).World;
+        Assert.Equal(SaveSerializer.StateHashHex(a), SaveSerializer.StateHashHex(c));
+        Drive(a, 20, 2);
+        Drive(c, 20, 2);
+        Assert.Equal(SaveSerializer.StateHashHex(a), SaveSerializer.StateHashHex(c));
+        TestKit.AssertInvariants(a);
+    }
+}

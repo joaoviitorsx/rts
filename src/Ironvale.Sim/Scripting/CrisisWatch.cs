@@ -69,6 +69,6 @@ public sealed class CrisisWatch
         LongestQuietDays = Math.Max(LongestQuietDays, day - _lastNotable);
     }
 
-    /// <summary>Minutes of play at 1x for a sim day count (1 day = 4 s).</summary>
+    /// <summary>Minutes of play at 1x for a sim day count (1 day = 10 s at 4 ticks/s, GDD v0.3 D1).</summary>
     public static double Minutes(long day) => day * SimTime.TicksPerDay / (double)SimTime.TicksPerSecondAt1x / 60.0;
 }

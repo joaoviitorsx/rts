@@ -69,6 +69,13 @@ internal static class TestKit
                 Assert.True(s.Amount.IsPositive, "empty shipment");
                 if (s.Resource == r) actual += s.Amount.Milli;
             }
+            foreach (var u in w.Units)
+                if (u.CarryResource == r) actual += u.CarryAmount.Milli;   // RTS opening: loads in the hands
+            foreach (var g in w.GroundItems)
+            {
+                Assert.True(g.Amount.IsPositive, "empty ground item");
+                if (g.Resource == r) actual += g.Amount.Milli;
+            }
             Assert.True(w.Ledger.ExpectedOf(r).Milli == actual,
                 $"conservation broken for {w.Content.Resources[r].Id} at {w.Calendar}: ledger {w.Ledger.ExpectedOf(r)} vs world {new Qty(actual)}");
         }

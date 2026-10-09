@@ -43,6 +43,85 @@ public sealed class StateDto
     /// saves and hashes stay byte-identical.</summary>
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public GeneratedMapDto? Generated { get; set; }
+    /// <summary>RTS opening (GDD v0.3): units, animals, things on the ground, weather. Absent on the flat map.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<UnitDto>? Units { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<AnimalDto>? Animals { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<GroundItemDto>? Ground { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public WeatherDto? Weather { get; set; }
+}
+
+public sealed class OrderDto
+{
+    public string Kind { get; set; } = "";
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int Target { get; set; }
+}
+
+public sealed class UnitDto
+{
+    public int Id { get; set; }
+    public string Kind { get; set; } = "";
+    public string Name { get; set; } = "";
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int NextX { get; set; }
+    public int NextY { get; set; }
+    public int StepTicks { get; set; }
+    public OrderDto? Order { get; set; }
+    public List<OrderDto> Queue { get; set; } = new();
+    public string Step { get; set; } = "";
+    public int WorkTicks { get; set; }
+    public int HelperId { get; set; }
+    public string? Carry { get; set; }
+    public long CarryAmount { get; set; }
+    public bool Confused { get; set; }
+    public int FoodDeficitDays { get; set; }
+    public int ColdDeficitDays { get; set; }
+    public int ShelterId { get; set; }
+    public int HouseholdId { get; set; }
+    public int LastX { get; set; }
+    public int LastY { get; set; }
+    public string ContinueKind { get; set; } = "";
+}
+
+public sealed class AnimalDto
+{
+    public int Id { get; set; }
+    public string Kind { get; set; } = "";
+    public int Herd { get; set; }
+    public int HomeX { get; set; }
+    public int HomeY { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int NextX { get; set; }
+    public int NextY { get; set; }
+    public int StepTicks { get; set; }
+    public int GoalX { get; set; }
+    public int GoalY { get; set; }
+    public string State { get; set; } = "";
+    public int Timer { get; set; }
+    public int OtherId { get; set; }
+}
+
+public sealed class GroundItemDto
+{
+    public int Id { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public string Resource { get; set; } = "";
+    public long Amount { get; set; }
+}
+
+public sealed class WeatherDto
+{
+    public string Today { get; set; } = "";
+    public string Tomorrow { get; set; } = "";
+    public bool RainSeen { get; set; }
 }
 
 public sealed class GeneratedMapDto
@@ -129,6 +208,8 @@ public sealed class BuildingDto
     public bool HarvestExhausted { get; set; }
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
     public long ClearWorkMilli { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
+    public bool Burning { get; set; }
 }
 
 public sealed class CarrierDto

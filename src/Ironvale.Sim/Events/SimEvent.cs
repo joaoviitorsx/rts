@@ -14,3 +14,12 @@ public sealed record PolicyActed(long Tick, int PolicyId, string Text) : SimEven
 public sealed record CommandRejected(long Tick, string Command, string Reason) : SimEvent(Tick);
 public sealed record SimAlert(long Tick, string Text) : SimEvent(Tick);
 public sealed record SuggestionOffered(long Tick, int SuggestionId) : SimEvent(Tick);
+
+// ---- RTS opening (GDD v0.3): generated maps only
+public sealed record UnitLeft(long Tick, int UnitId, string Name, string Reason) : SimEvent(Tick);
+/// <summary>A wolf scared a lone colonist: the load fell where they stood.</summary>
+public sealed record UnitScared(long Tick, int UnitId, int WolfId) : SimEvent(Tick);
+public sealed record AnimalKilled(long Tick, int AnimalId, int UnitId, Cell Cell) : SimEvent(Tick);
+/// <summary>Rain spoiled part of an uncovered pile.</summary>
+public sealed record Spoiled(long Tick, int BuildingId, int Resource, Qty Amount) : SimEvent(Tick);
+

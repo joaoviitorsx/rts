@@ -99,6 +99,18 @@ public static class ContentLoader
             });
         }
 
+        var units = new List<ScenarioUnit>();
+        if (root.TryGetProperty("units", out var unitsEl))
+        {
+            foreach (var (el, i) in unitsEl.EnumerateArray().Select((e, i) => (e, i)))
+            {
+                var c = ctx.At($"units[{i}]");
+                string kind = c.Str(el, "kind");
+                if (kind is not ("colonist" or "ox")) throw c.Error($"unknown unit kind '{kind}'");
+                units.Add(new ScenarioUnit { Kind = kind, Name = c.Str(el, "name") });
+            }
+        }
+
         int startMonth = ctx.OptInt(root, "startMonth", 0);
         if (startMonth is < 0 or >= SimTime.MonthsPerYear) throw ctx.Error("startMonth must be 0..11");
 
@@ -114,6 +126,7 @@ public static class ContentLoader
             Buildings = buildings,
             Stock = ctx.QtyMap(root, "stock", resIndex),
             Households = households,
+            Units = units,
             HouseholdToolCondition = Permille.Clamp(ctx.OptInt(root, "householdToolCondition", Permille.One)),
         };
     }
@@ -131,7 +144,12 @@ public static class ContentLoader
             if (!seen.Add(id)) throw c.Error($"duplicate id '{id}'");
             var carry = Qty.FromDouble(c.Num(el, "carryPerTrip"));
             if (!carry.IsPositive) throw c.Error("carryPerTrip must be > 0");
-            list.Add(new ResourceDef { Index = list.Count, Id = id, Name = c.Str(el, "name"), CarryPerTrip = carry });
+            list.Add(new ResourceDef
+            {
+                Index = list.Count, Id = id, Name = c.Str(el, "name"), CarryPerTrip = carry,
+                ColonistCarry = Qty.FromDouble(c.OptNum(el, "colonistCarry", 0)),
+                OxCarry = Qty.FromDouble(c.OptNum(el, "oxCarry", 0)),
+            });
         }
         if (list.Count == 0) throw ctx.Error("no resources defined");
         return list;
@@ -204,6 +222,8 @@ public static class ContentLoader
                     "housing" => BuildingRole.Housing,
                     "producer" => BuildingRole.Producer,
                     "storage" => BuildingRole.Storage,
+                    "shelter" => BuildingRole.Shelter,
+                    "fire" => BuildingRole.Fire,
                     var other => throw c.Error($"unknown role '{other}'"),
                 };
             }
@@ -251,6 +271,8 @@ public static class ContentLoader
                     var other => throw c.Error($"unknown harvest source '{other}'"),
                 },
                 WorkRadius = c.OptInt(el, "radius", 0),
+                Uncovered = c.OptBool(el, "uncovered", false),
+                ShelterCapacity = c.OptInt(el, "shelterCapacity", 0),
             });
         }
         return list;
@@ -344,6 +366,32 @@ public static class ContentLoader
             ClearNodeHours = c.OptInt(el, "clearNodeHours", 1),
             HarvestWalkPermillePerCell = c.OptInt(el, "harvestWalkPermillePerCell", 20),
             HarvestWalkMaxPermille = Permille.Clamp(c.OptInt(el, "harvestWalkMaxPermille", 500)),
+            ColonistStepPermille = Math.Max(100, c.OptInt(el, "colonistStepPermille", 1667)),
+            OxStepPermille = Math.Max(100, c.OptInt(el, "oxStepPermille", 2333)),
+            ChopTicks = Math.Max(1, c.OptInt(el, "chopTicks", 24)),
+            GatherTicks = Math.Max(1, c.OptInt(el, "gatherTicks", 10)),
+            HandleTicks = Math.Max(1, c.OptInt(el, "handleTicks", 4)),
+            AutoContinueCells = c.OptInt(el, "autoContinueCells", 4),
+            ColonistBuildPermille = c.OptInt(el, "colonistBuildPermille", 500),
+            SplitTicksPerUnit = Math.Max(1, c.OptInt(el, "splitTicksPerUnit", 8)),
+            HuntRangeCells = Math.Max(1, c.OptInt(el, "huntRangeCells", 4)),
+            HuntShotTicks = Math.Max(1, c.OptInt(el, "huntShotTicks", 8)),
+            HuntHitPermille = Permille.Clamp(c.OptInt(el, "huntHitPermille", 550)),
+            DeerFood = c.OptInt(el, "deerFood", 40),
+            DeerHides = c.OptInt(el, "deerHides", 2),
+            RabbitFood = c.OptInt(el, "rabbitFood", 8),
+            DeerFleeCells = c.OptInt(el, "deerFleeCells", 6),
+            RabbitFleeCells = c.OptInt(el, "rabbitFleeCells", 4),
+            WolfThreatCells = c.OptInt(el, "wolfThreatCells", 5),
+            WolfScareGroup = Math.Max(1, c.OptInt(el, "wolfScareGroup", 3)),
+            RainPermille = new[]
+            {
+                c.OptInt(el, "rainSpringPermille", 350), c.OptInt(el, "rainSummerPermille", 200),
+                c.OptInt(el, "rainAutumnPermille", 400), c.OptInt(el, "snowWinterPermille", 400),
+            },
+            FirstRainDay = c.OptInt(el, "firstRainDay", 24),
+            OpenPileSpoilPermille = Permille.Clamp(c.OptInt(el, "openPileSpoilPermille", 20)),
+            CampfireFirewoodPerDay = c.OptInt(el, "campfireFirewoodPerDay", 1),
         };
     }
 

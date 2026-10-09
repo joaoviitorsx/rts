@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 8;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4) · 7: decree suggestions (2A.6) · 8: generated maps (v0.3)
+    public const int CurrentVersion = 9;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4) · 7: decree suggestions (2A.6) · 8: generated maps (v0.3) · 9: units, animals, ground items, weather
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -90,7 +90,7 @@ public static class SaveSerializer
                 Slots = b.Slots.ToArray(), Recipe = b.Recipe?.Id, SeasonalWorkMilli = b.SeasonalWorkMilli,
                 RemainderMicro = Map(b.RemainderMicro),
                 HarvestBudgetMilli = b.HarvestBudgetMilli, HarvestTarget = b.HarvestTarget,
-                HarvestExhausted = b.HarvestExhausted, ClearWorkMilli = b.ClearWorkMilli,
+                HarvestExhausted = b.HarvestExhausted, ClearWorkMilli = b.ClearWorkMilli, Burning = b.Burning,
             }).ToList(),
             Carriers = w.Carriers.Select(c => new CarrierDto
             {
@@ -129,8 +129,34 @@ public static class SaveSerializer
                 ChangeTicks = nature.Changes.Select(kv => kv.Value.Tick).ToList(),
                 Deposits = nature.Deposits.Select(d => d.Units).ToList(),
             } : null,
+            Units = w.Units.Count == 0 ? null : w.Units.Select(u => new UnitDto
+            {
+                Id = u.Id, Kind = u.Kind.ToString(), Name = u.Name, X = u.Pos.X, Y = u.Pos.Y, NextX = u.Next.X, NextY = u.Next.Y,
+                StepTicks = u.StepTicks, Order = u.Order is { } o ? OrderOf(o) : null, Queue = u.Queued.Select(OrderOf).ToList(),
+                Step = u.Step.ToString(), WorkTicks = u.WorkTicks, HelperId = u.HelperId,
+                Carry = u.CarryResource >= 0 ? Res(u.CarryResource) : null, CarryAmount = u.CarryAmount.Milli,
+                Confused = u.Confused, FoodDeficitDays = u.FoodDeficitDays, ColdDeficitDays = u.ColdDeficitDays,
+                ShelterId = u.ShelterId, HouseholdId = u.HouseholdId, LastX = u.LastNode.X, LastY = u.LastNode.Y,
+                ContinueKind = u.ContinueKind.ToString(),
+            }).ToList(),
+            Animals = w.Animals.Count == 0 ? null : w.Animals.Select(a => new AnimalDto
+            {
+                Id = a.Id, Kind = a.Kind.ToString(), Herd = a.Herd, HomeX = a.Home.X, HomeY = a.Home.Y, X = a.Pos.X, Y = a.Pos.Y,
+                NextX = a.Next.X, NextY = a.Next.Y, StepTicks = a.StepTicks, GoalX = a.Goal.X, GoalY = a.Goal.Y,
+                State = a.State.ToString(), Timer = a.Timer, OtherId = a.OtherId,
+            }).ToList(),
+            Ground = w.GroundItems.Count == 0 ? null : w.GroundItems.Select(g => new GroundItemDto
+            {
+                Id = g.Id, X = g.Cell.X, Y = g.Cell.Y, Resource = Res(g.Resource), Amount = g.Amount.Milli,
+            }).ToList(),
+            Weather = w.Terrain is null ? null : new WeatherDto
+            {
+                Today = w.WeatherToday.ToString(), Tomorrow = w.WeatherTomorrow.ToString(), RainSeen = w.RainSeen,
+            },
         };
     }
+
+    private static OrderDto OrderOf(UnitOrder o) => new() { Kind = o.Kind.ToString(), X = o.Cell.X, Y = o.Cell.Y, Target = o.TargetId };
 
     private static TelemetryDto ToDto(TelemetryRecorder t, ContentDb content) => new()
     {
@@ -234,7 +260,7 @@ public static class SaveSerializer
                 SeasonalWorkMilli = d.SeasonalWorkMilli,
                 RemainderMicro = Arr(d.RemainderMicro),
                 HarvestBudgetMilli = d.HarvestBudgetMilli, HarvestTarget = d.HarvestTarget,
-                HarvestExhausted = d.HarvestExhausted, ClearWorkMilli = d.ClearWorkMilli,
+                HarvestExhausted = d.HarvestExhausted, ClearWorkMilli = d.ClearWorkMilli, Burning = d.Burning,
             };
             b.Stock.Restore(Arr(d.Stock), Arr(d.Reserved), d.Incoming);
             b.InputStock.Restore(Arr(d.InStock), Arr(d.InReserved), d.InIncoming);
@@ -299,6 +325,39 @@ public static class SaveSerializer
             };
         foreach (var (id, until) in s.SuggestionMuted) w.InsertSuggestionMute(Res(id), until);
         foreach (var e in s.PolicyLog) w.InsertPolicyLog(new PolicyLogEntry(e.Tick, e.PolicyId, e.Key, e.Args));
+
+        UnitOrder OrderFrom(OrderDto o) => new(Enum<OrderKind>(o.Kind), new Cell(o.X, o.Y), o.Target);
+        foreach (var d in s.Units ?? new List<UnitDto>())
+        {
+            var u = new Unit
+            {
+                Id = d.Id, Kind = Enum<UnitKind>(d.Kind), Name = d.Name, Pos = new Cell(d.X, d.Y), Next = new Cell(d.NextX, d.NextY),
+                StepTicks = d.StepTicks, Order = d.Order is null ? null : OrderFrom(d.Order), Step = Enum<UnitStep>(d.Step),
+                WorkTicks = d.WorkTicks, HelperId = d.HelperId, CarryResource = d.Carry is null ? -1 : Res(d.Carry),
+                CarryAmount = new Qty(d.CarryAmount), Confused = d.Confused, FoodDeficitDays = d.FoodDeficitDays,
+                ColdDeficitDays = d.ColdDeficitDays, ShelterId = d.ShelterId, HouseholdId = d.HouseholdId,
+                LastNode = new Cell(d.LastX, d.LastY), ContinueKind = Enum<NodeKind>(d.ContinueKind),
+            };
+            foreach (var q in d.Queue) u.Queue.Add(OrderFrom(q));
+            w.AddUnit(u);
+        }
+        foreach (var d in s.Animals ?? new List<AnimalDto>())
+        {
+            w.InsertAnimal(new Animal
+            {
+                Id = d.Id, Kind = Enum<FaunaKind>(d.Kind), Herd = d.Herd, Home = new Cell(d.HomeX, d.HomeY), Pos = new Cell(d.X, d.Y),
+                Next = new Cell(d.NextX, d.NextY), StepTicks = d.StepTicks, Goal = new Cell(d.GoalX, d.GoalY),
+                State = Enum<AnimalState>(d.State), Timer = d.Timer, OtherId = d.OtherId,
+            });
+        }
+        foreach (var d in s.Ground ?? new List<GroundItemDto>())
+            w.InsertGroundItem(new GroundItem { Id = d.Id, Cell = new Cell(d.X, d.Y), Resource = Res(d.Resource), Amount = new Qty(d.Amount) });
+        if (s.Weather is { } weather)
+        {
+            w.WeatherToday = Enum<Weather>(weather.Today);
+            w.WeatherTomorrow = Enum<Weather>(weather.Tomorrow);
+            w.RainSeen = weather.RainSeen;
+        }
         return w;
     }
 

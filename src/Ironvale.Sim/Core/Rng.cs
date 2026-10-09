@@ -68,6 +68,10 @@ public sealed class RngStreams
 {
     public const string Harvest = "harvest";
     public const string Admin = "admin";
+    // RTS opening (generated maps only, so flat-map hashes never see these streams).
+    public const string Hunt = "hunt";
+    public const string Fauna = "fauna";
+    public const string Weather = "weather";
 
     private readonly SortedDictionary<string, Pcg32> _streams = new(StringComparer.Ordinal);
 

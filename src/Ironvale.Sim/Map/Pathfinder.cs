@@ -17,7 +17,10 @@ public sealed class Pathfinder
     private readonly GridMap _map;
     private readonly int _road;
     private readonly int _offroad;
+    /// <summary>Distance fields kept (oldest dropped first): units chasing trees ask for many targets. Pure cache.</summary>
+    public const int MaxFields = 96;
     private readonly Dictionary<int, int[]> _fields = new();
+    private readonly Queue<int> _fieldOrder = new();
     private int _version = -1;
 
     public Pathfinder(GridMap map, BalanceDef balance)
@@ -84,6 +87,7 @@ public sealed class Pathfinder
         if (_version != _map.Version)
         {
             _fields.Clear();
+            _fieldOrder.Clear();
             _version = _map.Version;
         }
         target = Clamp(target);
@@ -114,6 +118,8 @@ public sealed class Pathfinder
             }
         }
         _fields[key] = dist;
+        _fieldOrder.Enqueue(key);
+        if (_fieldOrder.Count > MaxFields) _fields.Remove(_fieldOrder.Dequeue());
         return dist;
     }
 }

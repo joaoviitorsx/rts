@@ -17,6 +17,9 @@
     { "id": "quarry", "name": "Pedreira", "footprint": [3, 3], "cost": { "wood": 15 }, "buildDays": 3,
       "roles": ["producer"], "jobSlots": 2, "recipes": ["quarry_stone"], "outputCapacity": 60,
       "harvests": "outcrop" },
+    // RTS opening (GDD v0.3 §10): the ground pile is free and open to the rain (food and firewood spoil).
+    { "id": "pile", "name": "Pilha", "footprint": [2, 2], "buildDays": 0,
+      "roles": ["storage"], "storageCapacity": 400, "uncovered": true },
     { "id": "granary", "name": "Celeiro", "footprint": [3, 2], "cost": { "wood": 30, "stone": 5 }, "buildDays": 5,
       "roles": ["storage"], "storageCapacity": 4000, "jobSlots": 2 }
   ]

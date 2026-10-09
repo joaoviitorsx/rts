@@ -86,7 +86,7 @@ internal static class BalanceReport
         md.AppendLine();
         md.AppendLine($"> `dotnet run --project src/Ironvale.Sim.Cli -- --balance-report docs/balance_report.md --years {years}`");
         md.AppendLine($"> Conteúdo `{content.Hash}` · cenário `{scenario.Id}` · {years} anos · seeds {string.Join(", ", Seeds)}.");
-        md.AppendLine("> Minutos = tempo de jogo a 1x (1 dia = 4 s). Crises (GDD v0.2 §6): **1** lenha abaixo da demanda do inverno no");
+        md.AppendLine("> Minutos = tempo de jogo a 1x (1 dia = 10 s, GDD v0.3 D1). Crises (GDD v0.2 §6): **1** lenha abaixo da demanda do inverno no");
         md.AppendLine("> outono · **2** sem ferramentas de reserva e condição média < 50% · **3** família com fome no inverno.");
         md.AppendLine("> Trajeto = % das horas de turno dos produtores gastas andando (ida e volta).");
         md.AppendLine();

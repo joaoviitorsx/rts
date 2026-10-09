@@ -62,5 +62,34 @@
   "clearTreeHours": 4,
   "clearNodeHours": 1,
   "harvestWalkPermillePerCell": 20,
-  "harvestWalkMaxPermille": 500
+  "harvestWalkMaxPermille": 500,
+  // RTS opening (GDD v0.3 §4–§10), generated maps only. Ticks: 4 per second at 1x (1 day = 10 s).
+  // Speed vs. carriers' step costs: 1667 ‰ = 5 ticks per off-road cell (≈ 1.5 m/s); the ox is slower.
+  "colonistStepPermille": 1667,
+  "oxStepPermille": 2333,
+  "chopTicks": 24,
+  "gatherTicks": 10,
+  "handleTicks": 4,
+  // After a node is used up, a colonist only looks for the same kind this close (the friction delegation removes).
+  "autoContinueCells": 4,
+  "colonistBuildPermille": 500,
+  "splitTicksPerUnit": 8,
+  "huntRangeCells": 4,
+  "huntShotTicks": 8,
+  "huntHitPermille": 550,
+  "deerFood": 40,
+  "deerHides": 2,
+  "rabbitFood": 8,
+  "deerFleeCells": 6,
+  "rabbitFleeCells": 4,
+  "wolfThreatCells": 5,
+  "wolfScareGroup": 3,
+  // Weather: daily chance of rain (snow in winter); the first rain comes by firstRainDay at the latest.
+  "rainSpringPermille": 350,
+  "rainSummerPermille": 200,
+  "rainAutumnPermille": 400,
+  "snowWinterPermille": 400,
+  "firstRainDay": 24,
+  "openPileSpoilPermille": 20,
+  "campfireFirewoodPerDay": 1
 }

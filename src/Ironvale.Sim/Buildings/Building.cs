@@ -40,6 +40,8 @@ public sealed class Building
     public bool HarvestExhausted { get; internal set; }
     /// <summary>Generated maps: work (milli household-hours) still needed to clear trees/bushes/stones off the site.</summary>
     public long ClearWorkMilli { get; internal set; }
+    /// <summary>Fire (campfire): burning today (it had firewood). Warms colonists and keeps wolves away.</summary>
+    public bool Burning { get; internal set; }
     /// <summary>Sub-milli production remainder per resource (micro units), so fractions are not lost.</summary>
     internal long[] RemainderMicro { get; set; } = Array.Empty<long>();
 

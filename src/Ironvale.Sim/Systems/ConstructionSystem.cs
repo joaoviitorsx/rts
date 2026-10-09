@@ -25,6 +25,11 @@ public sealed class ConstructionSystem : ISimSystem
                 work += (long)h.ProductivityPermille * onSite / Permille.One;
                 h.ToolHoursToday++;
             }
+            // RTS opening: colonists ordered to build count as a share of a household each (GDD v0.3 §4.2).
+            foreach (var u in w.Units)
+                if (u.Order is { Kind: OrderKind.Build } o && o.TargetId == b.Id && u.Step == UnitStep.Working
+                    && w.Map.BuildingAt(u.Pos) == b.Id)
+                    work += w.Content.Balance.ColonistBuildPermille;
             if (work == 0) continue;
             if (b.ClearWorkMilli > 0)
             {

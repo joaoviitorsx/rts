@@ -6,6 +6,10 @@ public sealed class ResourceDef
     public required string Id { get; init; }
     public required string Name { get; init; }
     public required Qty CarryPerTrip { get; init; }
+    /// <summary>What one colonist carries per trip (GDD v0.3 §4.3: logs are heavy). Zero = cannot carry it.</summary>
+    public Qty ColonistCarry { get; init; }
+    /// <summary>What the ox drags per trip (logs and stone only). Zero = the ox does not take it.</summary>
+    public Qty OxCarry { get; init; }
 }
 
 [Flags]
@@ -16,6 +20,8 @@ public enum BuildingRole
     Housing = 2,    // casa
     Producer = 4,   // lenhador, campo
     Storage = 8,    // celeiro, Salão (pilha da carroça); vagas = carregadores
+    Shelter = 16,   // tenda (abrigo de colonos sem família) — GDD v0.3 §10
+    Fire = 32,      // fogueira: calor nas estações frias, afasta lobos
 }
 
 public sealed class BuildingDef
@@ -41,6 +47,10 @@ public sealed class BuildingDef
     public required int HousingCapacity { get; init; }
     /// <summary>Generated maps (GDD v0.3 §9): what the workers take from the world. None on the flat map's rules.</summary>
     public HarvestSource Harvests { get; init; }
+    /// <summary>Storage open to the weather (ground pile): food and firewood spoil on rainy days (GDD v0.3 §5).</summary>
+    public bool Uncovered { get; init; }
+    /// <summary>Colonists this shelter houses (tent).</summary>
+    public int ShelterCapacity { get; init; }
     /// <summary>Cells (Chebyshev) around the building the workers reach for <see cref="Harvests"/> = trees.</summary>
     public int WorkRadius { get; init; }
 
@@ -171,6 +181,34 @@ public sealed class BalanceDef
     /// <summary>Harvest walk: output lost per cell between the building and the tree being felled (‰), and its cap.</summary>
     public required int HarvestWalkPermillePerCell { get; init; }
     public required int HarvestWalkMaxPermille { get; init; }
+
+    // ---- RTS opening (GDD v0.3 §4–§10): units, gathering, fauna, weather. Generated maps only.
+    /// <summary>Walking speed vs. the carriers' step costs (‰): 1667 = a colonist needs 5 ticks per off-road cell.</summary>
+    public required int ColonistStepPermille { get; init; }
+    public required int OxStepPermille { get; init; }
+    public required int ChopTicks { get; init; }
+    public required int GatherTicks { get; init; }
+    public required int HandleTicks { get; init; }
+    public required int AutoContinueCells { get; init; }
+    /// <summary>Construction work of one colonist per hour, in ‰ of a household's (1000).</summary>
+    public required int ColonistBuildPermille { get; init; }
+    public required int SplitTicksPerUnit { get; init; }
+    public required int HuntRangeCells { get; init; }
+    public required int HuntShotTicks { get; init; }
+    public required int HuntHitPermille { get; init; }
+    public required int DeerFood { get; init; }
+    public required int DeerHides { get; init; }
+    public required int RabbitFood { get; init; }
+    public required int DeerFleeCells { get; init; }
+    public required int RabbitFleeCells { get; init; }
+    public required int WolfThreatCells { get; init; }
+    public required int WolfScareGroup { get; init; }
+    /// <summary>Chance of rain per day by season (spring, summer, autumn, winter — snow in winter), ‰.</summary>
+    public required int[] RainPermille { get; init; }
+    /// <summary>Day (from the start) by which the first rain is guaranteed if none fell yet.</summary>
+    public required int FirstRainDay { get; init; }
+    public required int OpenPileSpoilPermille { get; init; }
+    public required int CampfireFirewoodPerDay { get; init; }
 }
 
 public sealed class ScenarioBuilding
@@ -194,6 +232,12 @@ public enum HarvestSource
     Outcrop,
 }
 
+public sealed class ScenarioUnit
+{
+    public required string Kind { get; init; }   // "colonist" | "ox"
+    public required string Name { get; init; }
+}
+
 public sealed class ScenarioHousehold
 {
     public required string Name { get; init; }
@@ -213,5 +257,7 @@ public sealed class ScenarioDef
     public required IReadOnlyList<ScenarioBuilding> Buildings { get; init; }
     public required Qty[] Stock { get; init; }                 // placed in the first storage building
     public required IReadOnlyList<ScenarioHousehold> Households { get; init; }
+    /// <summary>Colonists and the ox of the RTS opening (GDD v0.3 §3), placed around the start.</summary>
+    public IReadOnlyList<ScenarioUnit> Units { get; init; } = Array.Empty<ScenarioUnit>();
     public required int HouseholdToolCondition { get; init; }
 }

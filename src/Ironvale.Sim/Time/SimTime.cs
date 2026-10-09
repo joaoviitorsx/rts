@@ -3,10 +3,11 @@ namespace Ironvale.Sim.Time;
 /// <summary>Time constants (GDD v0.2 §1 + TDD §3.4). The sim only knows ticks, never seconds.</summary>
 public static class SimTime
 {
-    public const int TicksPerSecondAt1x = 10;
+    /// <summary>Real-time pace only (the sim counts ticks): 4/s since GDD v0.3 D1 — 1 day = 10 s, 1 year = 60 min at 1x.</summary>
+    public const int TicksPerSecondAt1x = 4;
     public const int TicksPerHour = 4;
     public const int HoursPerDay = 10;
-    public const int TicksPerDay = TicksPerHour * HoursPerDay;          // 40  = 4 s at 1x
+    public const int TicksPerDay = TicksPerHour * HoursPerDay;          // 40  = 10 s at 1x
     public const int DaysPerWeek = 7;
     public const int DaysPerMonth = 30;
     public const int MonthsPerSeason = 3;
@@ -15,7 +16,7 @@ public static class SimTime
     public const int DaysPerYear = DaysPerMonth * MonthsPerYear;        // 360
     public const int TicksPerMonth = TicksPerDay * DaysPerMonth;        // 1 200
     public const int TicksPerSeason = TicksPerMonth * MonthsPerSeason;  // 3 600
-    public const int TicksPerYear = TicksPerMonth * MonthsPerYear;      // 14 400 = 24 min at 1x
+    public const int TicksPerYear = TicksPerMonth * MonthsPerYear;      // 14 400 = 60 min at 1x
 }
 
 public enum Season { Spring, Summer, Autumn, Winter }
