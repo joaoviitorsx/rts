@@ -28,6 +28,32 @@ var _chunks := {}          # Vector2i -> Array[Node]
 var _tick := 0.0
 var _mesh: ArrayMesh
 var _material: ShaderMaterial
+# Relief (generated maps): heights per 1-m vertex, (w+1)·(h+1), origin at 0,0. Empty = flat ground at y 0.
+var _heights := PackedFloat32Array()
+var _hw := 0
+var _hh := 0
+@export var max_rise := 1.1             ## metres of rise per metre above which no grass grows (cliff faces)
+
+
+func set_heights(heights: PackedFloat32Array, width: int, height: int) -> void:
+	_heights = heights
+	_hw = width
+	_hh = height
+
+
+func height_at(x: float, z: float) -> float:
+	if _heights.is_empty():
+		return 0.0
+	x = clampf(x, 0.0, _hw - 0.001)
+	z = clampf(z, 0.0, _hh - 0.001)
+	var x0 := int(x)
+	var z0 := int(z)
+	var fx := x - x0
+	var fz := z - z0
+	var row := _hw + 1
+	var a := lerpf(_heights[z0 * row + x0], _heights[z0 * row + x0 + 1], fx)
+	var b := lerpf(_heights[(z0 + 1) * row + x0], _heights[(z0 + 1) * row + x0 + 1], fx)
+	return lerpf(a, b, fz)
 
 
 func stream(mask, area: Rect2, focus: Node3D, seed_value: int = 1) -> void:
@@ -63,7 +89,8 @@ func _process(_delta: float) -> void:
 	# Grass is only visible where the camera distance < fade_end: stream just that disc around the point
 	# under the camera (zero grass when zoomed far out — the baked ground colour carries the look).
 	var eye := cam.global_position
-	var radius := sqrt(maxf(fade_end * fade_end - eye.y * eye.y, 0.0))
+	var lift := eye.y - height_at(eye.x, eye.z)
+	var radius := sqrt(maxf(fade_end * fade_end - lift * lift, 0.0))
 	var ground := Vector2(eye.x, eye.z)
 	var center := Vector2i(floori(ground.x / chunk_size), floori(ground.y / chunk_size))
 	_tick -= _delta
@@ -103,7 +130,7 @@ func _process(_delta: float) -> void:
 func _in_view(cam: Camera3D, key: Vector2i) -> bool:
 	var o := Vector2(key) * chunk_size
 	for c in [Vector2(0, 0), Vector2(chunk_size, 0), Vector2(0, chunk_size), Vector2(chunk_size, chunk_size), Vector2.ONE * chunk_size * 0.5]:
-		if cam.is_position_in_frustum(Vector3(o.x + c.x, 0.2, o.y + c.y)):
+		if cam.is_position_in_frustum(Vector3(o.x + c.x, height_at(o.x + c.x, o.y + c.y) + 0.2, o.y + c.y)):
 			return true
 	return false
 
@@ -127,7 +154,8 @@ func _step_chunk(start: int) -> bool:
 			var p := Vector3(x + rng.randf_range(-0.45, 0.45) * spacing, 0, y + rng.randf_range(-0.45, 0.45) * spacing)
 			if _area.has_point(Vector2(p.x, p.z)):
 				var m: Color = _mask.sample(p)
-				if maxf(maxf(m.r, m.g), m.b) < 0.8:
+				if maxf(maxf(m.r, m.g), m.b) < 0.8 and _flat_enough(p):
+					p.y = height_at(p.x, p.z)
 					var sc := rng.randf_range(0.8, 1.2)
 					list.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(sc, rng.randf_range(0.8, 1.25) * sc, sc)), p))
 			x += spacing
@@ -145,6 +173,14 @@ func _step_chunk(start: int) -> bool:
 	_chunks[key] = nodes
 	_building = {}
 	return true
+
+
+func _flat_enough(p: Vector3) -> bool:
+	if _heights.is_empty():
+		return true
+	var dx := absf(height_at(p.x + 0.5, p.z) - height_at(p.x - 0.5, p.z))
+	var dz := absf(height_at(p.x, p.z + 0.5) - height_at(p.x, p.z - 0.5))
+	return maxf(dx, dz) < max_rise
 
 
 func _add_chunk(mesh: Mesh, material: Material, list: Array, node_name: String, begin: float, end: float) -> Node:

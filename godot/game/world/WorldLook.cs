@@ -45,6 +45,19 @@ public partial class WorldLook : Node3D
         BuildMask(w, t, cellSize);
         AddChild(GeneratedCliffs ? BuildCliffs(t, cellSize) : BuildKenneyCliffs(t, cellSize));
         AddChild(BuildWater(t, cellSize));
+        BuildGrass();
+    }
+
+    /// <summary>The cartoon grass carpet (same as the village) on the relief: streamed around the camera, no blades
+    /// on paths, sand, fields, water or cliff faces.</summary>
+    private void BuildGrass()
+    {
+        if (_mask is null || OS.GetCmdlineUserArgs().Contains("--no-grass")) return;
+        var grass = (Node3D)GD.Load<GDScript>("res://game/vegetation/GrassCarpet.gd").New();
+        grass.Name = "Grass";
+        AddChild(grass);
+        grass.Call("set_heights", _heights, _width, _height);
+        grass.Call("stream", _mask, new Rect2(0, 0, _width, _height), this, 7);
     }
 
     /// <summary>Ground height at a world point (bilinear over the 1-m vertex grid) — what the eye sees.</summary>
