@@ -8,7 +8,10 @@ using Ironvale.Sim.Scripting;
 using Ironvale.Sim.Time;
 
 // Headless runner: simulates N years without rendering and prints a yearly summary.
-//   dotnet run --project src/Ironvale.Sim.Cli -- --years 50 --seed 42 [--csv out/] [--save out/run.ivsave] [--no-opening]
+//   dotnet run --project src/Ironvale.Sim.Cli -- --years 50 --seed 42 [--player passive|naive|optimal] [--no-roads]
+//       [--csv out/] [--save out/run.ivsave] [--no-opening]
+//   dotnet run --project src/Ironvale.Sim.Cli -- --balance-report docs/balance_report.md [--years 3]
+//       (every scripted player × seeds 42/7/123: survival, crises 1–3, deadlock, commute; GDD v0.2 §4/§6)
 
 var opts = ParseArgs(args);
 string dataDir = opts.GetValueOrDefault("data") ?? DataPaths.FindDataDirectory(Directory.GetCurrentDirectory());
@@ -17,8 +20,16 @@ ulong seed = ulong.Parse(opts.GetValueOrDefault("seed") ?? "42", CultureInfo.Inv
 int years = int.Parse(opts.GetValueOrDefault("years") ?? "50", CultureInfo.InvariantCulture);
 
 var (content, scenario) = DataPaths.LoadWithScenario(dataDir, scenarioId);
+if (opts.GetValueOrDefault("balance-report") is { } reportPath)
+{
+    BalanceReport.Write(reportPath, content, scenario, int.Parse(opts.GetValueOrDefault("years") ?? "3", CultureInfo.InvariantCulture));
+    return 0;
+}
 var world = World.Create(content, scenario, seed);
-if (!opts.ContainsKey("no-opening")) MvpOpening.Apply(world);
+IScriptedPlayer? player = opts.ContainsKey("no-opening") ? null
+    : ScriptedPlayers.Create(opts.GetValueOrDefault("player") ?? "optimal", roads: !opts.ContainsKey("no-roads"));
+player?.Start(world);
+var watch = new CrisisWatch();
 
 var resources = content.Resources;
 Console.WriteLine($"Ironvale sim — scenario={scenarioId} seed={seed} years={years} content={content.Hash}");
@@ -34,7 +45,12 @@ long[] lastConsumed = new long[resources.Count];
 
 for (int y = 1; y <= years; y++)
 {
-    world.StepYears(1);
+    for (int d = 0; d < SimTime.DaysPerYear; d++)
+    {
+        world.StepDays(1);
+        player?.Daily(world);
+        watch.Observe(world);
+    }
     var line = new StringBuilder($"{world.Calendar.Year - 1,4}  {world.Households.Count,3} ");
     var row = new StringBuilder($"{y},{world.Households.Count}");
     for (int r = 0; r < resources.Count; r++)
@@ -62,6 +78,9 @@ Console.WriteLine();
 Console.WriteLine($"ticks: {world.ElapsedTicks:N0} in {sw.Elapsed.TotalSeconds:0.00}s " +
                   $"({world.ElapsedTicks / Math.Max(sw.Elapsed.TotalSeconds, 1e-9):N0} ticks/s)");
 Console.WriteLine($"population: {world.Households.Count}  deadlock: {(world.Telemetry.Deadlocked ? $"YES (day {world.Telemetry.DeadlockDay})" : "no")}");
+Console.WriteLine($"player: {player?.Id ?? "none"}  departures: {watch.Departures}  " +
+                  $"crisis1 firewood: {BalanceReport.When(watch.FirewoodDay)}  crisis2 tools: {BalanceReport.When(watch.ToolsDay)}  " +
+                  $"crisis3 winter hunger: {BalanceReport.When(watch.WinterHungerDay)}  commute: {BalanceReport.CommutePct(world):0.0}% of shifts");
 Console.WriteLine($"state hash: {SaveSerializer.StateHashHex(world)}");
 Console.WriteLine("last policy log:");
 foreach (var e in world.PolicyLog.TakeLast(8)) Console.WriteLine($"  [{new Ironvale.Sim.Time.Calendar(e.Tick)}] {e.Text}");

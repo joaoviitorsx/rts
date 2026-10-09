@@ -24,6 +24,10 @@ public partial class WorldView : Node3D
     private readonly Dictionary<int, Agent> _agentNodes = new();
     private MeshInstance3D _ground = null!;
     private Node3D _selection = null!;
+    private MultiMeshInstance3D _roads = null!;
+    private int _roadVersion = -1;
+    private readonly Dictionary<(Cell From, Cell To, int Version), (List<Cell> Cells, int[] Cost)> _routes = new();
+    private static readonly Color RoadColor = new(0.66f, 0.55f, 0.38f);
 
     private sealed class BuildingNode
     {
@@ -54,6 +58,18 @@ public partial class WorldView : Node3D
         _agents = new Node3D { Name = "Agents" };
         AddChild(_agents);
 
+        _roads = new MultiMeshInstance3D
+        {
+            Name = "Roads",
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+            Multimesh = new MultiMesh
+            {
+                TransformFormat = MultiMesh.TransformFormatEnum.Transform3D,
+                Mesh = new BoxMesh { Size = new Vector3(_catalog.CellSize, 0.04f, _catalog.CellSize), Material = _catalog.Material(RoadColor) },
+            },
+        };
+        AddChild(_roads);
+
         _selection = _catalog.Primitive("box", new Vector3(1, 0.08f, 1), new Color(1, 0.9f, 0.3f, 0.6f), ghost: true);
         _selection.Visible = false;
         AddChild(_selection);
@@ -69,6 +85,7 @@ public partial class WorldView : Node3D
         _ground?.QueueFree();
         _ground = CreateGround(_host.World.Map);
         AddChild(_ground);
+        _roadVersion = -1;
         Sync();
     }
 
@@ -98,7 +115,59 @@ public partial class WorldView : Node3D
             _buildings.Remove(id);
         }
         UpdateSelection(w);
+        UpdateRoads(w);
         UpdateAgents(w);
+    }
+
+    /// <summary>Road cells as one MultiMesh, rebuilt only when the map changes.</summary>
+    private void UpdateRoads(World w)
+    {
+        if (_roadVersion == w.Map.Version) return;
+        _roadVersion = w.Map.Version;
+        _routes.Clear();
+        var cells = w.Map.Roads.ToList();
+        var mm = _roads.Multimesh;
+        mm.InstanceCount = cells.Count;
+        for (int i = 0; i < cells.Count; i++)
+            mm.SetInstanceTransform(i, new Transform3D(Basis.Identity, CellCenter(cells[i]) + new Vector3(0, 0.02f, 0)));
+    }
+
+    /// <summary>
+    /// Where a worker is during its commute (null when on site or at home): it walks the sim's route home → work in
+    /// the morning window and back in the evening one. The day is 4 s at 1x, so commuters move fast (2B adds routines).
+    /// </summary>
+    private (Vector3 Pos, Vector3 Dir)? CommutePosition(World w, Household h, Building work, float alpha)
+    {
+        int c = w.CommuteMilliTicks(h);
+        if (c <= 0) return null;
+        float day = SimTime.TicksPerDay * 1000f;
+        float t = (w.Tick % SimTime.TicksPerDay + alpha) * 1000f;
+        var home = w.HomeCellOf(h);
+        float f;
+        Cell from, to;
+        if (t < c) { f = t / c; from = home; to = work.Center; }
+        else if (t >= day - c) { f = (t - (day - c)) / c; from = work.Center; to = home; }
+        else return null;
+
+        var key = (from, to, w.Map.Version);
+        if (!_routes.TryGetValue(key, out var route))
+        {
+            var cells = w.Paths.Route(from, to);
+            var cost = new int[cells.Count];
+            int sum = 0, target = w.Map.BuildingAt(to);
+            for (int i = 0; i < cells.Count; i++) cost[i] = sum += w.Paths.EnterCost(cells[i], target);
+            route = (cells, cost);
+            _routes[key] = route;
+        }
+        if (route.Cells.Count == 0) return null;
+        float goal = Mathf.Clamp(f, 0, 1) * route.Cost[^1];
+        int k = 0;
+        while (k < route.Cost.Length - 1 && route.Cost[k] < goal) k++;
+        float prevCost = k == 0 ? 0 : route.Cost[k - 1];
+        var a = k == 0 ? CellCenter(from) : CellCenter(route.Cells[k - 1]);
+        var b = CellCenter(route.Cells[k]);
+        float s = route.Cost[k] > prevCost ? (goal - prevCost) / (route.Cost[k] - prevCost) : 1;
+        return (a.Lerp(b, Mathf.Clamp(s, 0, 1)), b - a);
     }
 
     private BuildingNode CreateBuildingNode(Building b)
@@ -206,11 +275,17 @@ public partial class WorldView : Node3D
                 continue;
             }
             var agent = GetAgent(h.Id);
-            if (h.State == HouseholdState.Working && w.GetBuilding(h.JobBuildingId) is { } job)
+            var work = w.WorkplaceOf(h);
+            if (work is not null && CommutePosition(w, h, work, alpha) is { } walk)
             {
-                var pos = AroundBuilding(job, h.Id);
-                Place(agent, pos, FootprintCenter(job) - pos);
-                agent.Character.Play(WorkAnimation(job, season));
+                Place(agent, walk.Pos, walk.Dir);
+                agent.Character.Play("run");
+            }
+            else if (work is not null)
+            {
+                var pos = AroundBuilding(work, h.Id);
+                Place(agent, pos, FootprintCenter(work) - pos);
+                agent.Character.Play(work.IsActive ? WorkAnimation(work, season) : "interact");
             }
             else
             {

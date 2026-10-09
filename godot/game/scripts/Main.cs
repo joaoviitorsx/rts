@@ -78,14 +78,14 @@ public partial class Main : Node3D
     }
 
     /// <summary>
-    /// Dev/smoke-test switches (after "--"): --opening (scripted MVP opening), --speed=N, --days=N (pre-simulate), --debug (open debug panel), --panel=families|policies|building:ID,
+    /// Dev/smoke-test switches (after "--"): --opening (scripted MVP opening, with roads unless --no-roads), --speed=N, --days=N (pre-simulate), --debug (open debug panel), --panel=families|policies|building:ID,
     /// --shot=PATH (save the real window image after ~1 s and quit), --smoke (input end-to-end check).
     /// Example: godot-mono --path godot -- --opening --days=60 --speed=8
     /// </summary>
     private static void ApplyCommandLine(SimHost host)
     {
         var args = OS.GetCmdlineUserArgs();
-        if (args.Contains("--opening")) MvpOpening.Apply(host.World);
+        if (args.Contains("--opening")) MvpOpening.Apply(host.World, roads: !args.Contains("--no-roads"));
         foreach (var arg in args)
         {
             if (arg.StartsWith("--speed=") && int.TryParse(arg[8..], out int speed)) host.SetSpeed(speed);

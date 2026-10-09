@@ -18,7 +18,8 @@ public sealed record ResourceSnap(string Id, string Name, long Stock, long Produ
 }
 
 public sealed record HouseholdSnap(int Id, string Name, int Members, int JobBuildingId, string JobName, string State,
-    int ToolPercent, int ProductivityPercent, int FoodDeficitDays, int ColdDeficitDays, bool Homeless);
+    int ToolPercent, int ProductivityPercent, int FoodDeficitDays, int ColdDeficitDays, bool Homeless,
+    int CommutePercent, double FreeHours, double GardenFood);
 
 public sealed record SlotSnap(int HouseholdId, string Name, string Source);
 
@@ -31,7 +32,8 @@ public sealed record BuildingSnap(int Id, string DefId, string Name, string Stat
     int BuildDays, bool IsStorage, bool IsProducer, bool IsHousing, string? RecipeId, IReadOnlyList<RecipeSnap> Recipes,
     IReadOnlyList<(string Name, long Amount)> Stock, long StockTotal, long Capacity, IReadOnlyList<SlotSnap> Slots,
     IReadOnlyList<string> Residents, int HousingCapacity, long ExpectedHarvest, bool SeasonalRecipe,
-    IReadOnlyList<MaterialSnap> Materials, int Builders, int MaxBuilders, string SiteIssue, string SiteIssueArg);
+    IReadOnlyList<MaterialSnap> Materials, int Builders, int MaxBuilders, string SiteIssue, string SiteIssueArg,
+    int CommutePercent);
 
 /// <summary>State: disabled · recruiting · releasing · in_band · above_max · blocked_* (why it can't act).</summary>
 public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, long Min, long Max, bool Enabled,
@@ -92,7 +94,7 @@ public static class UiSnapshotBuilder
             var job = w.GetBuilding(h.JobBuildingId);
             return new HouseholdSnap(h.Id, h.Name, h.Members, h.JobBuildingId, job is null ? "" : w.DescribeBuilding(job),
                 h.State.ToString(), h.ToolCondition / 10, h.ProductivityPermille / 10, h.FoodDeficitDays, h.ColdDeficitDays,
-                h.HomeId == 0);
+                h.HomeId == 0, w.CommutePermille(h) / 10, w.FreeMilliHours(h) / 1000.0, h.GardenFoodToday.AsDouble);
         }).ToList();
 
         var buildings = w.Buildings.Select(b => BuildingSnapOf(w, b, cal)).ToList();
@@ -180,7 +182,15 @@ public static class UiSnapshotBuilder
             b.Stock.Capacity.WholeUnits, slots,
             w.Households.Where(h => h.HomeId == b.Id).Select(h => h.Name).ToList(), def.HousingCapacity,
             b.SeasonalWorkMilli / 1000, b.Recipe?.Kind == RecipeKind.Seasonal,
-            materials, b.IsActive ? 0 : w.BuildersAt(b), w.Content.Balance.MaxBuildersPerSite, issue, issueArg);
+            materials, b.IsActive ? 0 : w.BuildersAt(b), w.Content.Balance.MaxBuildersPerSite, issue, issueArg,
+            CommutePercentAt(w, b));
+    }
+
+    /// <summary>Average share of the shift the people working here spend walking (0 when nobody works here).</summary>
+    private static int CommutePercentAt(World w, Building b)
+    {
+        var workers = w.Households.Where(h => w.WorkplaceOf(h) == b).ToList();
+        return workers.Count == 0 ? 0 : (int)workers.Average(h => w.CommutePermille(h)) / 10;
     }
 
     /// <summary>

@@ -37,3 +37,40 @@
 - **Termos:** o painel ainda se chama "Políticas"; a troca para decreto/reeve é feita no item 6 junto com o `UI_UX_guide.md`
   (decisão registrada). As linhas novas do log já dizem "Decreto".
 
+## 2A.3 — Trajeto, estrada, horta, cenários
+
+### P6. Pedra não tem fonte no jogo (prioridade ALTA)
+- **Contexto:** a carroça traz 30 pedras e nada produz pedra. Estrada (1 pedra/célula), lenhador (2), celeiro (5) e o
+  ferreiro do item 4 (madeira + pedra → ferramentas) disputam um estoque finito.
+- **Opções:** (a) adicionar uma Pedreira (produtora de pedra) no item 4; (b) ferramentas só de madeira; (c) estrada grátis.
+- **Escolha:** (a) no item 4 — mínimo necessário para o ferreiro funcionar e dar uso à estrada. Fica fora do escopo
+  de "features novas"? É pré-requisito do ferreiro (receita aprovada); registrado aqui para o dono confirmar.
+
+### P7. Estrada paga na hora, sem obra (prioridade média)
+- **Escolha:** a estrada desconta pedra do armazém ao ser traçada (abstrato) e aparece na hora. Diferente das obras
+  (material carregado), mas simples e legível. `roadStonePerCell` em `balance.json`.
+- **Reverter:** transformar estrada em obra com material carregado (sistema da 2A.1 já existe).
+
+### P8. Escala do trajeto (prioridade média)
+- **Contexto:** o andar dos carregadores é comprimido com o dia (1 dia = 40 ticks; 1 célula fora da estrada = 3 ticks).
+  Usado direto no trajeto, 13 células comeriam o turno inteiro.
+- **Escolha:** trajeto = ticks de caminhada da rota × `commuteTicksPermille` (70‰): 20 células fora da estrada ≈ 20% do
+  turno, ≈ 14% na estrada. Carregadores não têm trajeto separado (andar é o trabalho deles).
+- **Efeito duplo de propósito:** quem mora longe perde turno **e** tempo livre (horta), como pedido pelo playtester.
+
+### P9. Mudança automática de casa e ajuda na obra (prioridade baixa)
+- **Escolha:** `autoRehome` (1): família com emprego muda para casa livre que economize ≥ `rehomeMinGainTicks` (12) de
+  caminhada. Famílias ociosas **no momento** (sem emprego ou com emprego fora de estação) ajudam obras — sem isso, os
+  campos prendiam as famílias no outono e nada era construído.
+
+### P10. Jogadores roteirizados da CLI (prioridade média)
+- **passive:** não faz nada. **naive:** casas longe do trabalho, sem estrada, sem decretos, preenche vagas e só reage à
+  lenha ~30 dias antes do inverno. **optimal:** abertura roteirizada (comida primeiro, decretos, carregadores) + estradas.
+  `optimal_no_roads` mede o efeito da estrada. São proxies; o dono pode querer outra definição de "ingênuo".
+- **Ritmo:** `CrisisWatch.LongestQuietDays` (dias sem obra concluída, partida, crise ou troca de estação) é uma
+  aproximação de "> 2 min sem decisão".
+
+### P11. Comandos aplicados na hora (prioridade baixa)
+- **Escolha:** a view aplica o comando no mesmo tick (`World.ApplyPendingCommands`), inclusive pausado. Resultado idêntico
+  ao de esperar o próximo passo (teste). Corrige "posicionar pausado não faz nada".
+

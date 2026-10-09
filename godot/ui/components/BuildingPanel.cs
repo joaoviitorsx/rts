@@ -27,7 +27,7 @@ public partial class BuildingPanel : PanelContainer
 
     public void Bind(BuildingSnap b, UiSnapshot snap)
     {
-        string sig = $"{b.Id}|{b.Status}|{b.BuildProgressDays}|{b.SiteIssue}|{b.Builders}|" +
+        string sig = $"{b.Id}|{b.Status}|{b.BuildProgressDays}|{b.SiteIssue}|{b.Builders}|{b.CommutePercent}|" +
                      $"{string.Join(',', b.Materials.Select(m => $"{m.OnSite}/{m.Incoming}"))}|{b.RecipeId}|{string.Join(',', b.Slots.Select(s => s.HouseholdId))}|" +
                      $"{b.StockTotal}|{b.ExpectedHarvest}|{snap.Households.Count}|{string.Join(',', snap.Households.Select(h => h.JobBuildingId))}";
         if (sig == _signature) return;
@@ -50,6 +50,13 @@ public partial class BuildingPanel : PanelContainer
             _body.AddChild(UiNodes.Label(UiText.T("building.builders", b.Builders, b.MaxBuilders), "SecondaryLabel"));
             _body.AddChild(UiNodes.Button(UiText.T("building.cancel"), () => Send(new CancelConstruction(b.Id))));
             return;
+        }
+        if (b.CommutePercent > 0)
+        {
+            _body.AddChild(UiNodes.Label(UiText.T("building.commute", b.CommutePercent),
+                b.CommutePercent >= 20 ? "WarningLabel" : "SecondaryLabel"));
+            if (b.CommutePercent >= 10)
+                _body.AddChild(UiNodes.Label(UiText.T("building.commute.hint"), "SecondaryLabel", wrap: true));
         }
         if (b.IsHousing)
             _body.AddChild(UiNodes.Label(UiText.T("building.residents", b.Residents.Count, b.HousingCapacity,

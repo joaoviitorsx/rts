@@ -120,6 +120,13 @@ public sealed class World
 
     public void Enqueue(SimCommand command) => _pending.Add(command);
 
+    /// <summary>
+    /// Applies queued commands now, at the current tick, without advancing time. Same result as letting the next
+    /// <see cref="Step"/> apply them (it would, before this tick's systems), so the view can answer instantly even
+    /// while paused (game feel: response &lt; 100 ms).
+    /// </summary>
+    public void ApplyPendingCommands() => ApplyCommands();
+
     public void Step()
     {
         ApplyCommands();

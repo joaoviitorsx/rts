@@ -78,6 +78,7 @@ public partial class SimHost : Node
     {
         if (IsBusy) return;
         World.Enqueue(command);
+        World.ApplyPendingCommands();   // instant feedback, also while paused (same tick: deterministic)
     }
 
     public void SetSpeed(int speed)

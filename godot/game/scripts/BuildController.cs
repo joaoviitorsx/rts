@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using Ironvale.Sim.Commands;
 using Ironvale.Sim.Content;
@@ -8,8 +9,8 @@ using GridMap = Ironvale.Sim.Map.GridMap;
 namespace Ironvale.Game;
 
 /// <summary>
-/// Build mode (ghost on the grid, R to rotate, left click to place, right click/Esc to cancel)
-/// and building selection when not building. Sends commands; never edits the world.
+/// Build mode (ghost on the grid, R to rotate, left click to place, right click/Esc to cancel), road mode
+/// (drag an L-shaped line; Ctrl+drag removes) and building selection otherwise. Sends commands; never edits the world.
 /// </summary>
 public partial class BuildController : Node3D
 {
@@ -24,6 +25,9 @@ public partial class BuildController : Node3D
     private bool _valid;
 
     public BuildingDef? Selected { get; private set; }
+    public bool RoadMode { get; private set; }
+    private Cell? _roadStart;
+    private MultiMeshInstance3D? _roadGhost;
 
     public event Action<int>? BuildingSelected;
     public event Action? BuildModeChanged;
@@ -36,8 +40,68 @@ public partial class BuildController : Node3D
         _view = view;
     }
 
+    public void BeginRoad()
+    {
+        Cancel();
+        RoadMode = true;
+        _roadGhost = new MultiMeshInstance3D
+        {
+            Name = "RoadGhost",
+            Multimesh = new MultiMesh
+            {
+                TransformFormat = MultiMesh.TransformFormatEnum.Transform3D,
+                UseColors = true,
+                Mesh = new BoxMesh { Size = new Vector3(_catalog.CellSize * 0.9f, 0.08f, _catalog.CellSize * 0.9f),
+                    Material = new StandardMaterial3D { VertexColorUseAsAlbedo = true, Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
+                        ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded } },
+            },
+        };
+        AddChild(_roadGhost);
+        BuildModeChanged?.Invoke();
+    }
+
+    /// <summary>Cells of an L-shaped road from a to b (horizontal first, then vertical).</summary>
+    public static Cell[] RoadLine(Cell a, Cell b)
+    {
+        var cells = new List<Cell>();
+        int sx = Math.Sign(b.X - a.X), sy = Math.Sign(b.Y - a.Y);
+        for (int x = a.X; ; x += sx) { cells.Add(new Cell(x, a.Y)); if (x == b.X) break; }
+        for (int y = a.Y + sy; sy != 0; y += sy) { cells.Add(new Cell(b.X, y)); if (y == b.Y) break; }
+        return cells.ToArray();
+    }
+
+    private Cell? CellUnder(Vector2? screen)
+    {
+        if (_camera.GroundUnderMouse(screen) is not { } hit) return null;
+        float cs = _catalog.CellSize;
+        return new Cell(Mathf.FloorToInt(hit.X / cs), Mathf.FloorToInt(hit.Z / cs));
+    }
+
+    private void UpdateRoadGhost()
+    {
+        if (_roadGhost is null) return;
+        var mm = _roadGhost.Multimesh;
+        var end = CellUnder(null);
+        if (end is null) { mm.InstanceCount = 0; return; }
+        var cells = _roadStart is { } s ? RoadLine(s, end.Value) : new[] { end.Value };
+        bool removing = Input.IsKeyPressed(Key.Ctrl);
+        var map = _host.World.Map;
+        mm.InstanceCount = cells.Length;
+        for (int i = 0; i < cells.Length; i++)
+        {
+            var c = cells[i];
+            bool free = map.InBounds(c) && map.BuildingAt(c) == 0;
+            var color = removing ? new Color(1f, 0.5f, 0.3f, 0.6f)
+                : !free ? new Color(1f, 0.3f, 0.3f, 0.5f)
+                : map.IsRoad(c) ? new Color(1f, 1f, 1f, 0.25f) : new Color(0.95f, 0.85f, 0.5f, 0.7f);
+            mm.SetInstanceTransform(i, new Transform3D(Basis.Identity, _view.CellCenter(c) + new Vector3(0, 0.06f, 0)));
+            mm.SetInstanceColor(i, color);
+        }
+    }
+
     public void Begin(BuildingDef def)
     {
+        if (RoadMode) Cancel();
         Selected = def;
         _rotation = 0;
         RebuildGhost();
@@ -46,6 +110,10 @@ public partial class BuildController : Node3D
 
     public void Cancel()
     {
+        RoadMode = false;
+        _roadStart = null;
+        _roadGhost?.QueueFree();
+        _roadGhost = null;
         Selected = null;
         _ghost?.QueueFree();
         _ghost = null;
@@ -69,6 +137,7 @@ public partial class BuildController : Node3D
 
     public override void _Process(double delta)
     {
+        if (RoadMode && !_host.IsBusy) UpdateRoadGhost();
         if (Selected is null || _ghost is null || _host.IsBusy) return;
         UpdateGhost(null);
     }
@@ -95,6 +164,31 @@ public partial class BuildController : Node3D
     public override void _UnhandledInput(InputEvent e)
     {
         if (_host.IsBusy) return;
+        if (RoadMode)
+        {
+            switch (e)
+            {
+                case InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: true } down:
+                    _roadStart = CellUnder(down.Position);
+                    GetViewport().SetInputAsHandled();
+                    break;
+                case InputEventMouseButton { ButtonIndex: MouseButton.Left, Pressed: false } up when _roadStart is { } start:
+                    if (CellUnder(up.Position) is { } end)
+                    {
+                        var cells = RoadLine(start, end);
+                        _host.Send(Input.IsKeyPressed(Key.Ctrl) ? new RemoveRoad(cells) : new PlaceRoad(cells));
+                    }
+                    _roadStart = null;   // stay in road mode for the next segment
+                    GetViewport().SetInputAsHandled();
+                    break;
+                case InputEventMouseButton { ButtonIndex: MouseButton.Right, Pressed: true }:
+                case InputEventKey { Pressed: true, Keycode: Key.Escape }:
+                    Cancel();
+                    GetViewport().SetInputAsHandled();
+                    break;
+            }
+            return;
+        }
         if (Selected is not null)
         {
             switch (e)

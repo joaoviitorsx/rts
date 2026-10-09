@@ -155,6 +155,9 @@ public partial class Hud : CanvasLayer
             var d = def;
             buildRow.AddChild(UiNodes.Button(def.Name, () => _build.Begin(d), UiText.T("ui.build.tooltip", def.Name, cost, def.BuildDays)));
         }
+        buildRow.AddChild(new VSeparator());
+        buildRow.AddChild(UiNodes.Button(UiText.T("ui.build.road"), _build.BeginRoad,
+            UiText.T("ui.build.road.tooltip", _host.Content.Balance.RoadStonePerCell)));
         row.AddChild(buildPanel);
         row.AddChild(UiNodes.Spacer());
         if (OS.IsDebugBuild())
@@ -307,7 +310,7 @@ public partial class Hud : CanvasLayer
             case Key.F12 when _debug is not null: TogglePanel(_debug); break;
             case Key.F5: _host.QuickSave(); break;
             case Key.F9: _host.QuickLoad(); break;
-            case Key.Escape when _build.Selected is null && _activePanel is not null: CloseActivePanel(); break;
+            case Key.Escape when _build.Selected is null && !_build.RoadMode && _activePanel is not null: CloseActivePanel(); break;
             default: return;
         }
         GetViewport().SetInputAsHandled();

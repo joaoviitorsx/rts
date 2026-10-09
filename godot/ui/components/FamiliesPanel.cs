@@ -29,7 +29,8 @@ public partial class FamiliesPanel : PanelContainer
     public void Bind(UiSnapshot snap)
     {
         string sig = string.Join('|', snap.Households.Select(h =>
-            $"{h.Id}:{h.JobBuildingId}:{h.State}:{h.ToolPercent / 5}:{h.ProductivityPercent / 5}:{h.FoodDeficitDays}:{h.ColdDeficitDays}:{h.Homeless}"));
+            $"{h.Id}:{h.JobBuildingId}:{h.State}:{h.ToolPercent / 5}:{h.ProductivityPercent / 5}:{h.FoodDeficitDays}:{h.ColdDeficitDays}:{h.Homeless}:" +
+            $"{h.CommutePercent}:{h.FreeHours:0.0}:{h.GardenFood:0.0}"));
         if (sig == _signature) return;
         _signature = sig;
         UiNodes.Clear(_list);
@@ -50,6 +51,11 @@ public partial class FamiliesPanel : PanelContainer
             row.AddChild(title);
             row.AddChild(UiNodes.Label(UiText.T("families.detail", h.ToolPercent, h.ProductivityPercent, warn),
                 warn.Length > 0 ? "WarningLabel" : "SecondaryLabel"));
+            var time = UiNodes.Label(UiText.T("families.time", h.CommutePercent, h.FreeHours.ToString("0.0"), h.GardenFood.ToString("0.0")),
+                h.CommutePercent >= 20 ? "WarningLabel" : "SecondaryLabel");
+            time.TooltipText = UiText.T("families.time.tooltip");
+            time.MouseFilter = MouseFilterEnum.Stop;
+            row.AddChild(time);
             _list.AddChild(row);
         }
     }

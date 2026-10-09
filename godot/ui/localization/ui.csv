@@ -84,6 +84,14 @@ state.Working,trabalhando,working
 state.Hauling,carregando,hauling
 state.Subsisting,subsistência,subsisting
 state.Building,construindo,building
+families.time,trajeto {0}% do turno · tempo livre {1} h · horta +{2} comida/dia,commute {0}% of the shift · free time {1} h · garden +{2} food/day
+families.time.tooltip,"Quem mora longe do trabalho perde parte do turno andando e tem menos tempo livre para a horta. Casa mais perto ou estrada resolvem.","Living far from work costs part of the shift walking and leaves less free time for the garden. A closer house or a road fixes it."
+building.commute,Trajeto: {0}% do turno andando (ida e volta),Commute: {0}% of the shift walking (round trip)
+building.commute.hint,"Famílias que moram longe produzem menos aqui. Construa casas perto ou uma estrada até aqui.","Families living far away produce less here. Build houses nearby or a road to here."
+ui.build.road,Estrada,Road
+ui.build.road.tooltip,"Estrada: arraste para traçar (em L) · Ctrl+arrastar remove · {0} pedra por célula
+Na estrada anda-se mais rápido: menos tempo de trajeto e carregadores mais ágeis","Road: drag to lay (L-shaped) · Ctrl+drag removes · {0} stone per cell
+Walking is faster on roads: shorter commutes and quicker carriers"
 policies.title,Políticas,Policies
 policies.keep,Manter,Keep
 policies.between,entre,between

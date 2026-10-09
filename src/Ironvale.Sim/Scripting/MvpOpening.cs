@@ -20,9 +20,16 @@ public static class MvpOpening
         ("granary", new Cell(30, 35)),
     };
 
-    public static void Apply(World w, long foodThreshold = 1500, long firewoodThreshold = 300, long woodThreshold = 40)
+    /// <summary>Roads of the optimal opening: west of the hall (houses, woodcutters, granary) and east to the fields.</summary>
+    public static readonly Cell[] Roads =
+        Enumerable.Range(27, 10).Select(y => new Cell(29, y))
+            .Concat(Enumerable.Range(30, 9).Select(x => new Cell(x, 33))).ToArray();
+
+    public static void Apply(World w, long foodThreshold = 1500, long firewoodThreshold = 300, long woodThreshold = 40,
+        bool roads = false)
     {
         foreach (var (def, origin) in Layout) w.Enqueue(new PlaceBuilding(def, origin, 0));
+        if (roads) w.Enqueue(new PlaceRoad(Roads));
 
         var hall = w.SeatBuilding ?? throw new InvalidOperationException("scenario has no seat building");
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, hall.Id));
