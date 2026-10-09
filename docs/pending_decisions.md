@@ -262,10 +262,14 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
 - Ver `asset_manifest.md` §9.2. Recomendação: testar KayKit Adventurers ou Kenney Mini Characters lado a lado antes de trocar.
 
 
-### RECADO para a sessão da `feature/worldgen` (09/10/2026, da sessão de personagens)
-- A **`main` (commit `9b7c039`) tem os documentos novos**: `docs/briefing_2026-10-09.md`,
-  `docs/asset_production_bible_mvp.md` (o adendo do topo prevalece), `docs/ui/HUD_v2_spec.md` + mockup e
-  `docs/reference/koastalia_ref.png`. **Trazer a `main` para a `feature/worldgen`** (`git merge origin/main`); o merge é limpo:
-  os HUD v2 são idênticos aos da `feature/hud-v2`, e `research/*.md`, `koastalia_world.png` e `UI_UX_guide.md` **não**
-  foram para a `main` (as versões curadas desta branch continuam valendo).
+### ~~RECADO para a sessão da `feature/worldgen`~~ — feito: `origin/main` (9b7c039) mesclada em `55e71da` (10/10/2026).
 - Personagens: worktree `../rts-characters`, branch `feature/characters-kenney`. Não trocar branch neste diretório.
+
+### P40. Benchmark de design (10/10/2026): itens que tocam decisões já registradas
+- Fonte: `docs/research/benchmark_design_rts.md` §6 (C1–C10). Nada foi aplicado; cada item espera o dono.
+- C1 chão menos saturado que os interativos (A/B) · C2 construtor busca o próprio material sem carregador (P1) ·
+  C3 zona sem penhasco no início e colocação por regra (muda gerador/hash) · C4 "convocar" famílias e boi sempre
+  selecionável · C5 trilhas por uso só visuais · C6 overlay de fluxo mínimo antes do playtest · C7 atalho de colono
+  ocioso (P33/D6) · C8 velocidade 0,5× · C9 telemetria opt-in (privacidade) · C10 outono em manchas.
+- Recomendação: só a C7 (atalho de ocioso, baixo custo, reversível) entra agora na etapa 3; o resto fica para depois do
+  balanceamento da etapa 5.
