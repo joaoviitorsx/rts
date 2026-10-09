@@ -224,9 +224,9 @@ public partial class Hud : CanvasLayer
         foreach (var def in _host.Content.Buildings.Where(d => d.Buildable))
         {
             string cost = string.Join(", ", def.Cost.Select((q, r) => (q, r)).Where(x => x.q.IsPositive)
-                .Select(x => $"{x.q} {_host.Content.Resources[x.r].Name}"));
+                .Select(x => $"{x.q} {UiText.Res(_host.Content.Resources[x.r])}"));
             var d = def;
-            buildRow.AddChild(UiNodes.Button(def.Name, () => _build.Begin(d), UiText.T("ui.build.tooltip", def.Name, cost, def.BuildDays)));
+            buildRow.AddChild(UiNodes.Button(UiText.Bld(def), () => _build.Begin(d), UiText.T("ui.build.tooltip", UiText.Bld(def), cost, def.BuildDays)));
         }
         buildRow.AddChild(new VSeparator());
         buildRow.AddChild(UiNodes.Button(UiText.T("ui.build.road"), _build.BeginRoad,
@@ -368,7 +368,7 @@ public partial class Hud : CanvasLayer
                 case CommandRejected r: PushTransient(AlertSeverity.Warning, UiText.T("event.rejected", r.Reason)); break;
                 case HouseholdLeft l: PushTransient(AlertSeverity.Critical, UiText.T("event.left", l.Name, l.Reason)); break;
                 case BuildingCompleted c:
-                    PushTransient(AlertSeverity.Info, UiText.T("event.completed", _host.World.GetBuilding(c.BuildingId)?.Def.Name ?? "?"));
+                    PushTransient(AlertSeverity.Info, UiText.T("event.completed", _host.World.GetBuilding(c.BuildingId) is { } done ? UiText.Bld(done.Def) : "?"));
                     break;
                 case SimAlert a: PushTransient(AlertSeverity.Warning, a.Text); break;
             }

@@ -98,13 +98,13 @@ public static class UiSnapshotBuilder
             long cons = last?.Consumed[r.Index] ?? 0;
             double avgNet = month.Count == 0 ? 0 : month.Average(d => (double)(d.Produced[r.Index] - d.Consumed[r.Index]));
             double daysLeft = avgNet < 0 ? stock / -avgNet : double.PositiveInfinity;
-            return new ResourceSnap(r.Id, r.Name, stock, prod, cons, daysLeft);
+            return new ResourceSnap(r.Id, UiText.Res(r), stock, prod, cons, daysLeft);
         }).ToList();
 
         var households = w.Households.Select(h =>
         {
             var job = w.GetBuilding(h.JobBuildingId);
-            return new HouseholdSnap(h.Id, h.Name, h.Members, h.JobBuildingId, job is null ? "" : w.DescribeBuilding(job),
+            return new HouseholdSnap(h.Id, h.Name, h.Members, h.JobBuildingId, job is null ? "" : $"{UiText.Bld(job.Def)} #{job.Id}",
                 h.State.ToString(), h.ToolCondition / 10, h.ProductivityPermille / 10, h.FoodDeficitDays, h.ColdDeficitDays,
                 h.HomeId == 0, w.CommutePermille(h) / 10, w.FreeMilliHours(h) / 1000.0, h.GardenFoodToday.AsDouble);
         }).ToList();
@@ -137,7 +137,7 @@ public static class UiSnapshotBuilder
             Objective = NextObjective(w, cal, tr, ref objectiveFloor),
             AdminCapacity = w.AdminCapacity,
             AdminUsed = w.AdminUsed,
-            Suggestion = w.Suggestion is { } sg ? new SuggestionSnap(sg.Id, content.Resources[sg.Resource].Name, sg.Min.WholeUnits,
+            Suggestion = w.Suggestion is { } sg ? new SuggestionSnap(sg.Id, UiText.Res(content.Resources[sg.Resource]), sg.Min.WholeUnits,
                 sg.Max.WholeUnits, sg.Actions, sg.AverageStockUnits, content.Policies[0].CaCostFor(sg.Resource),
                 content.Policies[0].MaxHouseholds, sg.WinterAdjusted) : null,
         };
@@ -152,7 +152,7 @@ public static class UiSnapshotBuilder
             : stock < p.Min ? (p.BlockedReason.Length > 0 ? p.BlockedReason : "recruiting")
             : stock > p.Max ? (owns ? "releasing" : "above_max")
             : "in_band";
-        return new PolicySnap(p.Id, res.Id, res.Name, p.Min.WholeUnits, p.Max.WholeUnits, p.Enabled, stock.WholeUnits,
+        return new PolicySnap(p.Id, res.Id, UiText.Res(res), p.Min.WholeUnits, p.Max.WholeUnits, p.Enabled, stock.WholeUnits,
             state, p.Def.HysteresisPermille, p.Def.CaCostFor(p.Resource));
     }
 
@@ -183,7 +183,7 @@ public static class UiSnapshotBuilder
 
         var stock = new List<(string, long)>();
         for (int r = 0; r < w.Content.ResourceCount; r++)
-            if (b.Stock.Get(r).IsPositive) stock.Add((w.Content.Resources[r].Name, b.Stock.Get(r).WholeUnits));
+            if (b.Stock.Get(r).IsPositive) stock.Add((UiText.Res(w.Content.Resources[r]), b.Stock.Get(r).WholeUnits));
 
         var slots = b.SlotHouseholds.Select(id =>
         {
@@ -203,12 +203,12 @@ public static class UiSnapshotBuilder
         if (b.IsActive && b.Recipe is { HasInputs: true })
             for (int r = 0; r < w.Content.ResourceCount; r++)
                 if (b.InputTarget(r).IsPositive)
-                    inputs.Add(new MaterialSnap(w.Content.Resources[r].Name, b.InputStock.Get(r).WholeUnits,
+                    inputs.Add(new MaterialSnap(UiText.Res(w.Content.Resources[r]), b.InputStock.Get(r).WholeUnits,
                         w.SiteIncoming(b, r).WholeUnits, b.InputTarget(r).WholeUnits));
 
-        return new BuildingSnap(b.Id, def.Id, def.Name, status, b.IsActive, b.BuildProgressDays, def.BuildDays,
+        return new BuildingSnap(b.Id, def.Id, UiText.Bld(def), status, b.IsActive, b.BuildProgressDays, def.BuildDays,
             b.IsStorage, b.IsProducer, def.Has(BuildingRole.Housing), b.Recipe?.Id,
-            def.Recipes.Select(r => new RecipeSnap(r.Id, r.Name)).ToList(), stock, b.Stock.Total.WholeUnits,
+            def.Recipes.Select(r => new RecipeSnap(r.Id, UiText.Rcp(r))).ToList(), stock, b.Stock.Total.WholeUnits,
             b.Stock.Capacity.WholeUnits, slots,
             w.Households.Where(h => h.HomeId == b.Id).Select(h => h.Name).ToList(), def.HousingCapacity,
             b.SeasonalWorkMilli / 1000, b.Recipe?.Kind == RecipeKind.Seasonal,
@@ -221,7 +221,7 @@ public static class UiSnapshotBuilder
     {
         for (int r = 0; r < recipe.InputPerOutput.Length; r++)
             if (recipe.InputPerOutput[r].IsPositive && b.InputStock.Get(r) < recipe.InputPerOutput[r])
-                return w.Content.Resources[r].Name;
+                return UiText.Res(w.Content.Resources[r]);
         return null;
     }
 
@@ -245,10 +245,10 @@ public static class UiSnapshotBuilder
             var cost = b.Def.Cost[r];
             if (!cost.IsPositive) continue;
             var res = w.Content.Resources[r];
-            materials.Add(new MaterialSnap(res.Name, b.Stock.Get(r).WholeUnits, w.SiteIncoming(b, r).WholeUnits, cost.WholeUnits));
+            materials.Add(new MaterialSnap(UiText.Res(res), b.Stock.Get(r).WholeUnits, w.SiteIncoming(b, r).WholeUnits, cost.WholeUnits));
             var need = w.SiteNeed(b, r);
             if (!need.IsPositive) continue;
-            if (w.StorageFree(r) < need && missing.Length == 0) missing = res.Name;
+            if (w.StorageFree(r) < need && missing.Length == 0) missing = UiText.Res(res);
             needsHauling = true;
         }
         if (missing.Length > 0) return ("no_material", missing);
@@ -307,7 +307,7 @@ public static class UiSnapshotBuilder
             var (issue, arg) = SiteIssueOf(w, b, new List<MaterialSnap>());
             if (issue is "no_carriers" or "no_material")
             {
-                list.Add(new AlertSnap($"site_{issue}", AlertSeverity.Warning, string.Format(tr("alert.site_" + issue), b.Def.Name, arg), b.Id));
+                list.Add(new AlertSnap($"site_{issue}", AlertSeverity.Warning, string.Format(tr("alert.site_" + issue), UiText.Bld(b.Def), arg), b.Id));
                 break;
             }
         }

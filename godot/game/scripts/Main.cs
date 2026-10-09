@@ -57,6 +57,8 @@ public partial class Main : Node3D
         AddChild(build);
         build.Init(host, catalog, camera, view);
 
+        if (OS.GetCmdlineUserArgs().FirstOrDefault(x => x.StartsWith("--locale=")) is { } locale)
+            TranslationServer.SetLocale(locale[9..]);   // dev: check translations (e.g. --locale=en)
         var ui = GD.Load<PackedScene>("res://ui/screens/hud.tscn").Instantiate<Hud>();
         AddChild(ui);
         ui.Init(host, build, view, camera);

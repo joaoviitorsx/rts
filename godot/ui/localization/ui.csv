@@ -185,3 +185,21 @@ debug.max,máx {0},max {0}
 event.rejected,Não foi possível: {0},Not possible: {0}
 event.left,A família {0} foi embora ({1}),The {0} family left ({1})
 event.completed,{0} concluído,{0} finished
+res.wood,Madeira,Wood
+res.firewood,Lenha,Firewood
+res.food,Comida,Food
+res.stone,Pedra,Stone
+res.tools,Ferramentas,Tools
+res.coins,Moedas,Coins
+bld.hall,Salão,Hall
+bld.house,Casa,House
+bld.woodcutter,Lenhador,Woodcutter
+bld.field,Campo,Field
+bld.smithy,Ferreiro,Smithy
+bld.quarry,Pedreira,Quarry
+bld.granary,Celeiro,Granary
+rcp.chop_wood,Cortar madeira,Chop wood
+rcp.split_firewood,Rachar lenha,Split firewood
+rcp.forge_tools,Forjar ferramentas,Forge tools
+rcp.quarry_stone,Extrair pedra,Quarry stone
+rcp.grow_food,Cultivar,Grow food

@@ -210,7 +210,7 @@ public partial class WorldView : Node3D
         {
             float progress = b.Def.BuildDays == 0 ? 1 : (float)b.BuildProgressDays / b.Def.BuildDays;
             node.Visual.Scale = new Vector3(1, Mathf.Lerp(0.15f, 0.9f, progress), 1);
-            node.Label.Text = $"🔨 {b.Def.Name} {b.BuildProgressDays}/{b.Def.BuildDays}d";
+            node.Label.Text = $"🔨 {Ironvale.Game.UI.UiText.Bld(b.Def)} {b.BuildProgressDays}/{b.Def.BuildDays}d";
             node.Label.Visible = true;
         }
         else
@@ -224,8 +224,8 @@ public partial class WorldView : Node3D
             bool isProducer = b.IsProducer;
             node.Label.Visible = isProducer || b.IsStorage;
             node.Label.Text = isProducer
-                ? $"{b.Def.Name} {b.AssignedCount}/{b.Def.JobSlots}"
-                : b.IsStorage ? $"{b.Def.Name} {b.Stock.Total.WholeUnits}/{b.Stock.Capacity.WholeUnits}" : "";
+                ? $"{Ironvale.Game.UI.UiText.Bld(b.Def)} {b.AssignedCount}/{b.Def.JobSlots}"
+                : b.IsStorage ? $"{Ironvale.Game.UI.UiText.Bld(b.Def)} {b.Stock.Total.WholeUnits}/{b.Stock.Capacity.WholeUnits}" : "";
         }
         node.WasActive = b.IsActive;
 

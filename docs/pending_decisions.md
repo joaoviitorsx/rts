@@ -38,6 +38,9 @@
   nomes do conteúdo em português (recurso, edifício) e o trecho "(saiu de X)" vem pronto do sim.
 - **Escolha:** manter assim até os nomes de conteúdo virarem chaves `tr()` (pendência de UI já registrada no roadmap).
 - **Termos:** feito no item 6 — o painel é "Decretos do reeve" e o livro de contas usa "decreto".
+- **Atualização (09/10):** nomes de recursos, edifícios e receitas agora vêm do `ui.csv` (`res.*`, `bld.*`, `rcp.*`) em toda a
+  UI e nos rótulos 3D, com o nome do sim como reserva (conferido com `--locale=en`). **Falta:** os argumentos do livro de
+  contas (nomes e o trecho "(saiu de X)") ainda saem do sim em português — exige mudar o log para ids; fica para depois do playtest.
 
 ## 2A.3 — Trajeto, estrada, horta, cenários
 
