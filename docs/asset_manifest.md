@@ -252,3 +252,56 @@ Medido aplicando as transformações dos nós às caixas delimitadoras das malha
 | BLD_Campfire / BLD_Tent / BLD_Stockpile | Fogueira, tenda, depósito | Kitbash com Fantasy Props + Medieval Village (validar); tenda pode precisar do Meshy (decidir na etapa e) |
 | Água | Superfície | Shader próprio (sem asset) |
 | Anim. caçar | Arco ou lança | UAL: verificar arco/arremesso; senão, Mixamo "Throw" com retarget (não CC0, só uso) |
+
+## 9. Direção de arte Kenney (09/10/2026, troca aguardando aprovação)
+
+> Decisão do dono: o **mundo** migra para a família **Kenney (CC0)** por coesão visual. Pacotes em `art/vendor_raw/`
+> (originais intocados; Quaternius continua lá). Look-dev: `scenes/test/LOOKDEV_KENNEY.tscn`
+> (`docs/reports/img_kenney/`). Escalas medidas: módulo do Fantasy Town 1 u = 2 m (uma célula); Nature/Survival ×4;
+> animais Quaternius ×0,33. O Nature Kit 2.1 vem em turquesa/laranja **de propósito**; `game/visual/KenneyPalette.gd`
+> recolore por nome de material para a paleta cozy (sem tocar nos arquivos). Fantasy Town e Survival usam uma textura
+> de paleta (`colormap.png`).
+
+### 9.1 O que cada kit cobre da lista P0 (§3)
+
+| Item P0 | Kit Kenney | Peças | Status |
+|---|---|---|---|
+| Casas `house` (3 variações) | Fantasy Town | `wall`/`wall-wood` + `wall-door`/`wall-window-*` + `roof`/`roof-gable-end` + `chimney` | **montar** (montadas no look-dev; telhado verde-água do colormap → recolorir, P37) |
+| Salão `hall` | Fantasy Town | paredes de pedra (`wall`, `wall-arch`, `pillar-stone`), `roof-high-*`, `banner-red/green` | montar |
+| Celeiro / armazém | Fantasy Town + Survival | `wall-wood*`, `roof-high`, `planks`; `box-large`, `barrel` | montar |
+| Mercado | Fantasy Town | `stall`, `stall-red/green`, `stall-bench`, `cart` | **pronto** |
+| Ferreiro / forja | Survival + Fantasy Town | `workbench-anvil`, `workbench-grind`, `chimney*` | montar (forja **resolvida**: L7) |
+| Lenhador | Nature + Survival | `log_stack`, `log_stackLarge`, `stump_*`, `tool-axe`, `resource-wood` | montar (pilha de toras **resolvida**: L5) |
+| Campo `field` | Nature | `crops_dirtRow*` (solo arado), `crops_wheatStageA/B`, `crops_cornStage*` | **pronto** (L3/L4 **resolvidas**; trigo só 2 estágios) |
+| Pedreira `quarry` | Nature + Survival | `rock_tall*`, `stone_tall*`, `cliff_*_stone`, `resource-stone(-large)`, `tool-pickaxe` | montar (sem modelo dedicado; melhor que o kitbash atual) |
+| Poço | — | — | **falta** (montar com `wall-curved` + `roof-point` + `bucket` do Survival) |
+| Obra (site) | Fantasy Town + Survival | `poles`, `planks`, `structure`/`structure-floor` | montar |
+| Árvores (carvalho, pinheiro, bétula, outono) | Nature | `tree_default/oak/fat/detailed/simple/tall` (+ `_dark`, **`_fall`**), `tree_pine*` (~20), `woodBirch` em `tree_thin` | **pronto** (outono nativo) |
+| Toco | Nature | `stump_old/round/square(*Detailed)` | **pronto** (L6 **resolvida**) |
+| Arbustos, flores, grama | Nature | `plant_bush*`, `flower_*` (3 cores × 3), `grass*` | **pronto** |
+| Rochas soltas, pedreira, praia | Nature + Survival | `rock_small*`, `rock_large*`, `stone_*`, `rock-sand-a/b/c`, `rock-flat-grass` | **pronto** (pedras de praia: Survival `rock-sand-*`) |
+| **Penhascos** | Nature | `cliff_block/large/corner/cornerInner/half/steps/slope/top/waterfall` (`_rock`/`_stone`) | **pronto como módulos** — alternativa aos paredões gerados (ver 9.3) |
+| Água / rio | Nature | `ground_river*` (tiles), `water` | parcial (fica o shader de água) |
+| Cercas | Fantasy Town + Nature | `fence`, `fence-gate`, `fence-curved`, `hedge*`; `fence_simple/planks/gate` | **pronto** |
+| Abertura RTS: fogueira, tendas, depósito, pilhas | Nature + Survival | `campfire_logs/stones/bricks/planks`, `campfire-pit/stand`; `tent_detailedOpen/smallClosed`; `bedroll*`; `box*`, `barrel*`, `resource-*`, `chest` | **pronto** (tenda do Survival é só armação: usar as do Nature) |
+| Ferramentas na mão | Survival | `tool-axe/hammer/hoe/pickaxe/shovel` (+ `-upgraded`) | **pronto** (L9 **resolvida**, enxada e martelo inclusive) |
+| Carroça | Fantasy Town | `cart`, `cart-high`, `wheel` | pronto |
+| Moinho / roda d'água | Fantasy Town | `windmill`, `watermill(-wide)` | pronto (futuro) |
+| Pontes, caminhos | Nature + Fantasy Town | `bridge_*`, `path_stone*`, `road*` | pronto (futuro) |
+
+**Ainda falta:** poço dedicado; trigo com 4 estágios (há 2 + milho com 4); afloramento de pedreira com cara de jazida;
+jazidas de carvão/ferro (tingir `rock_tall*`); `kenney_building_kit` e `kenney_castle_kit` **não estão nos Downloads**
+(P35).
+
+### 9.2 Personagens e animais ao lado do Kenney (avaliação)
+
+| Item | Combina? | Observação | Proposta |
+|---|---|---|---|
+| Aldeões Quaternius (UBC + Outfits) | **parcialmente** | Proporções realistas e roupas com textura; ao lado de casas "de brinquedo" chapadas, parecem de outro jogo de perto (de longe passam) | Avaliar **KayKit Adventurers/Character pack** (Kay Lousberg, CC0, proporção chibi, já citado no GDD) ou **Kenney Mini Characters** (CC0). Até decidir, manter Quaternius (animações UAL prontas) com cores mais chapadas no material |
+| Animais Quaternius Ultimate (cervo, lobo, raposa, cavalo, vaca, touro…) | **sim** | Low-poly flat-shaded com animações (Idle, Walk, Gallop, Eating, Death) — conversam bem com o Kenney | Usar. **Farm Animals** (porco, ovelha, vaca…) só vêm em FBX/Blend: precisam de export glTF pelo Blender (P36) |
+
+### 9.3 Penhascos: módulos Kenney × paredões gerados
+O Nature Kit traz módulos de penhasco em grade (retos, cantos internos/externos, degraus, cachoeira). Para os terraços
+do mapa gerado (contornos de célula), duas opções: (a) **módulos Kenney** escolhidos por marching squares célula a
+célula (mais "Kenney", encaixe exato na grade de 2 m); (b) os **paredões facetados gerados** (etapa 4a, mais orgânicos).
+Recomendo (a) pela coesão com a nova direção de arte; decidir junto com a troca (P38).

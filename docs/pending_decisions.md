@@ -239,3 +239,25 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
   boi como caixa; colonos já usam o modelo de aldeão. O visual de verdade (Terrain3D, penhascos por contorno, Stylized
   Nature, animais Quaternius) é a etapa 4. Cenário RTS no jogo por `--scenario=wild_start` (o 2A segue como padrão até a
   etapa 3 fechar a abertura); demonstração: `--rts-demo`.
+
+## Direção de arte Kenney (09/10/2026)
+
+### P35. Building Kit e Castle Kit não chegaram (prioridade baixa)
+- A lista do dono cita `kenney_building_kit` e `kenney_castle_kit`, mas eles não estão nos Downloads. Registrados como
+  pendentes em `vendor_sources.md`. O Fantasy Town sozinho já monta casas, salão e celeiro.
+
+### P36. Farm Animals (Quaternius) só em FBX/Blend (prioridade média)
+- Regra do projeto: só glTF/GLB. Precisa de export pelo Blender (MCP em safe mode ou linha de comando, P28). Para a
+  abertura (cervo, coelho, lobo) bastam os do Ultimate Animated Animals (já em glTF; coelho não há — usar raposa
+  pequena ou esperar a conversão).
+
+### P37. Telhados verde-água do Fantasy Town (prioridade média)
+- O `colormap.png` do kit pinta os telhados de verde-água. Para o tom Koastalia (telhados marrom/vermelho), proposta:
+  uma cópia derivada do colormap em `godot/assets/` com as células do telhado recoloridas (o original fica intocado).
+
+### P38. Penhascos: módulos Kenney ou paredões gerados (prioridade média)
+- Ver `asset_manifest.md` §9.3. Recomendação: módulos Kenney por marching squares (coesão).
+
+### P39. Aldeões: Quaternius × alternativa chibi (prioridade alta para a coesão)
+- Ver `asset_manifest.md` §9.2. Recomendação: testar KayKit Adventurers ou Kenney Mini Characters lado a lado antes de trocar.
+

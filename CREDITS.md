@@ -19,6 +19,12 @@ Credit is not required; we record it anyway.
 | Impact Sounds | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/impact-sounds | `art/vendor_raw/kenney_impact-sounds/` |
 | RPG Audio | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/rpg-audio | `art/vendor_raw/kenney_rpg-audio/` |
 
+| Nature Kit | Kenney (www.kenney.nl) | 2.1 | CC0 1.0 | https://kenney.nl/assets/nature-kit | `art/vendor_raw/kenney_nature_kit/` |
+| Fantasy Town Kit | Kenney (www.kenney.nl) | 2.0 | CC0 1.0 | https://kenney.nl/assets/fantasy-town-kit | `art/vendor_raw/kenney_fantasy_town_kit/` |
+| Survival Kit | Kenney (www.kenney.nl) | — | CC0 1.0 | https://kenney.nl/assets/survival-kit | `art/vendor_raw/kenney_survival_kit/` |
+| Ultimate Animated Animals | Quaternius | July 2021 | CC0 1.0 | https://quaternius.com | `art/vendor_raw/quaternius_ultimate_animals/` |
+| Farm Animals Animated | Quaternius | — | CC0 1.0 | https://quaternius.com | `art/vendor_raw/quaternius_farm_animals/` |
+
 Planned, not yet in the project: KayKit Resource Bits (Kay Lousberg, CC0); game-icons.net icons (CC BY 3.0, per-icon credit in `docs/icon_credits.csv`).
 
 Quaternius: https://www.patreon.com/quaternius · Kay Lousberg: https://kaylousberg.com

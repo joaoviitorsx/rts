@@ -67,6 +67,13 @@ PACKS: dict[str, tuple[str, list[tuple[str, str, str]]]] = {
     "kenney_interface_sounds": ("kenney_interface-sounds", [("Audio", "", "audio_recursive")]),
     "kenney_impact_sounds": ("kenney_impact-sounds", [("Audio", "", "audio_recursive")]),
     "kenney_rpg_audio": ("kenney_rpg-audio", [("Audio", "", "audio_recursive")]),
+    # Art direction 09/10/2026: the world moves to the Kenney family (CC0) — glTF/GLB only.
+    "kenney_nature_kit": ("kenney_nature_kit", [("Models/GLTF format", "", "models")]),
+    "kenney_fantasy_town_kit": ("kenney_fantasy_town_kit", [("Models/GLB format", "", "models")]),
+    "kenney_survival_kit": ("kenney_survival_kit", [("Models/GLB format", "", "models")]),
+    # Animals (Quaternius, CC0): Ultimate Animated Animals ships glTF; Farm Animals only FBX/Blend (needs Blender export).
+    "quaternius_ultimate_animals": ("quaternius_ultimate_animals", [("Ultimate Animated Animals - July 2021/glTF", "", "models")]),
+
     # Layout unknown until downloaded: discovered recursively.
     "kaykit_resource_bits": ("*Resource*Bits*", [("", "", "models_recursive")]),
     "watercolor_terrain_textures": ("*atercolor*", [("", "", "images_recursive")]),

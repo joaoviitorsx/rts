@@ -29,6 +29,8 @@ varying vec3 v_world;
 varying vec3 v_origin;
 varying float v_height;
 varying vec3 v_crown;
+// Per-tree autumn tint (GDD v0.3 §12): MultiMesh custom data rgb = leaf colour, a = how much (0 = palette only).
+varying vec4 v_tint;
 
 void vertex() {
 	vec3 origin = MODEL_MATRIX[3].xyz;
@@ -42,6 +44,7 @@ void vertex() {
 	v_origin = origin;
 	v_crown = origin + vec3(0.0, crown_height * length(MODEL_MATRIX[1].xyz), 0.0);
 	v_height = h;
+	v_tint = INSTANCE_CUSTOM;
 }
 
 void fragment() {
@@ -53,6 +56,7 @@ void fragment() {
 		c = fc * (0.75 + 0.45 * l);
 	} else {
 		c = mix(veg_shadow.rgb, veg_tip.rgb, smoothstep(0.08, 0.75, l)) * lightness;
+		c = mix(c, v_tint.rgb * (0.55 + 0.6 * smoothstep(0.08, 0.75, l)), v_tint.a);
 	}
 	vec2 o = v_origin.xz + v_world.xz * 0.02;
 	c *= 1.0 + (gc_noise(o * 0.37) - 0.5) * 2.0 * variation;

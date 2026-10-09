@@ -22,6 +22,12 @@ original folder name, then run the script.
 | kenney_interface_sounds | `kenney_interface-sounds` (Interface Sounds 1.0) | Kenney Vleugels | https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip | `kenney_interface-sounds.zip` | sha256 `f2193d07…81232` | 2026-10-09 | CC0 1.0 |
 | kenney_impact_sounds | `kenney_impact-sounds` (Impact Sounds 1.0) | Kenney Vleugels | https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip | `kenney_impact-sounds.zip` | sha256 `029d734a…77f8` | 2026-10-09 | CC0 1.0 |
 | kenney_rpg_audio | `kenney_rpg-audio` (RPG Audio 1.0) | Kenney Vleugels | https://kenney.nl/media/pages/assets/rpg-audio/8e99002d76-1677590336/kenney_rpg-audio.zip | `kenney_rpg-audio.zip` | sha256 `6dbeaf85…f38b` | 2026-10-09 | CC0 1.0 |
+| kenney_nature_kit | `kenney_nature_kit` (Nature Kit 2.1) | Kenney Vleugels | https://kenney.nl/assets/nature-kit | 2.1 | — | 2026-10-09 | CC0 1.0 (`Nature Kit (2.1).zip`, sha256 `fa7974a0d342bfe6…`) |
+| kenney_fantasy_town_kit | `kenney_fantasy_town_kit` | Kenney Vleugels | https://kenney.nl/assets/fantasy-town-kit | 2.0 | — | 2026-10-09 | CC0 1.0 (`kenney_fantasy-town-kit_2.0.zip`, sha256 `1a7530c09f4d2fa2…`) |
+| kenney_survival_kit | `kenney_survival_kit` | Kenney Vleugels | https://kenney.nl/assets/survival-kit | — | — | 2026-10-09 | CC0 1.0 (`kenney_survival-kit.zip`, sha256 `c3586341b5932c87…`) |
+| quaternius_ultimate_animals | `quaternius_ultimate_animals` (Ultimate Animated Animals, July 2021) | Quaternius | https://quaternius.com | July 2021 | 2021-07 | 2026-10-09 | CC0 1.0 (sha256 `c0060caf388fd03a…`) |
+| (só FBX/Blend) | `quaternius_farm_animals` (Farm Animals Animated) | Quaternius | https://quaternius.com | — | — | 2026-10-09 | CC0 1.0 (sha256 `b4bc5f209368cafc…`); sem glTF — precisa de export no Blender (P36) |
+| (pendente) | `kenney_building_kit`, `kenney_castle_kit` | Kenney Vleugels | https://kenney.nl/assets | — | — | — | CC0 1.0 — **não estão nos Downloads** (P35) |
 
 ¹ Modification date of the pack's root folder as shipped (≈ release/build date).
 ² Confirmed by the project owner.

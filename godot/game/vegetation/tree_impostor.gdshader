@@ -26,8 +26,10 @@ varying vec2 v_frames;   // the two yaw frames to blend
 varying float v_blend;
 varying float v_phi;     // camera yaw: rotates baked normals into the world
 varying vec3 v_origin;
+varying vec4 v_tint;   // per-tree autumn tint (MultiMesh custom data), same as plants.gdshader
 
 void vertex() {
+	v_tint = INSTANCE_CUSTOM;
 	vec3 center = (MODEL_MATRIX * vec4(0.0, center_y, 0.0, 1.0)).xyz;
 	float s = length(MODEL_MATRIX[1].xyz);
 	vec2 corner = vec2(UV.x - 0.5, 0.5 - UV.y);
@@ -59,7 +61,9 @@ void fragment() {
 	// Param is stored un-premultiplied in a 0-alpha background, so divide by coverage after filtering.
 	float param = n.a / max(a.a, 0.01);
 	float leaf = smoothstep(0.27, 0.33, param);
-	vec3 leaf_c = mix(veg_shadow.rgb, veg_tip.rgb, clamp((param - 0.35) / 0.65, 0.0, 1.0)) * lightness;
+	float tone = clamp((param - 0.35) / 0.65, 0.0, 1.0);
+	vec3 leaf_c = mix(veg_shadow.rgb, veg_tip.rgb, tone) * lightness;
+	leaf_c = mix(leaf_c, v_tint.rgb * (0.55 + 0.6 * tone), v_tint.a);
 	vec3 c = mix(a.rgb, leaf_c, leaf);
 	c *= 1.0 + (gc_noise(v_origin.xz * 0.37) - 0.5) * 2.0 * variation * leaf;
 
