@@ -1,6 +1,6 @@
 # GDD v0.3 — Abertura RTS e mundo como recurso
 
-> **Status:** rascunho para aprovação (09/10/2026).
+> **Status:** aprovado em 09/10/2026 com as recomendações D1–D12 (D10, merge na `main`, aguarda ordem explícita).
 > - **Substitui** a abertura do GDD v0.2 §4.1–4.2 e do Marco 2A (6 famílias + carroça + construção por menu).
 > - **Continuam valendo**, a partir do momento em que existem famílias: o GDD v0.2 (CA, sugestão, crises, ritmo macro)
 >   e as mecânicas do 2A.

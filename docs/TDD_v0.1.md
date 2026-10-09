@@ -510,7 +510,7 @@ Números do balanceamento são placeholders em `godot/data/balance.json` até ex
 
 ## Adendo — Marco 2A (09/10/2026)
 
-Sistemas novos na simulação (C# puro, determinística), na ordem do plano `docs/plan_2A.md`:
+Sistemas novos na simulação (C# puro, determinística), na ordem do plano `docs/archive/plan_2A.md`:
 
 | Área | O que mudou | Onde |
 |---|---|---|

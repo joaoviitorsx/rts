@@ -1,4 +1,4 @@
-# Plano v0.3 — mundo gerado + abertura RTS (aguardando aprovação, 09/10/2026)
+# Plano v0.3 — mundo gerado + abertura RTS (aprovado em 09/10/2026)
 
 > Design em `docs/GDD_v0.3_abertura_rts.md` (decisões D1–D12 no §15); referência da abertura em
 > `docs/reference/pesquisa_manor_lords.md`. Branch `feature/worldgen`. Regras de sempre:
