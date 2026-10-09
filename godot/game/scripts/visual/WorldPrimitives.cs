@@ -314,11 +314,11 @@ public partial class WorldPrimitives : Node3D
     public Vector3 Interpolate(int id, Cell pos, Cell next, int stepTicks, float alpha)
     {
         float cs = _catalog.CellSize;
-        var from = _catalog.CellToWorld(pos.X, pos.Y) + new Vector3(cs / 2, 0, cs / 2);
+        var from = _catalog.CellToWorld(pos.X, pos.Y) + new Vector3(cs / 2, 0, cs / 2) + Ground.StandOffset(pos.X, pos.Y);
         if (next == pos) return from;
         if (!_steps.TryGetValue(id, out var s) || s.Next != next) _steps[id] = s = (next, Mathf.Max(stepTicks, 1));
         float t = Mathf.Clamp(1f - (stepTicks - alpha) / s.Total, 0f, 1f);
-        var to = _catalog.CellToWorld(next.X, next.Y) + new Vector3(cs / 2, 0, cs / 2);
+        var to = _catalog.CellToWorld(next.X, next.Y) + new Vector3(cs / 2, 0, cs / 2) + Ground.StandOffset(next.X, next.Y);
         return from.Lerp(to, t);
     }
 }

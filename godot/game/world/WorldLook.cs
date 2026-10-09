@@ -33,6 +33,7 @@ public partial class WorldLook : Node3D
     private Node? _baker;
     private int _width, _height;   // metres
     private float[] _heights = Array.Empty<float>();   // per 1-m vertex, (w+1)·(h+1)
+    private readonly Dictionary<Cell, (int A, int B, int Drop, Vector2 Stand)> _chamfers = new();
 
     public void Build(World w, float cellSize)
     {
@@ -40,6 +41,7 @@ public partial class WorldLook : Node3D
         var t = w.Terrain!;
         _width = Mathf.RoundToInt(t.Width * cellSize);
         _height = Mathf.RoundToInt(t.Height * cellSize);
+        FindChamfers(t, cellSize);
         ComputeHeights(t, cellSize);
         BuildTerrain();
         BuildMask(w, t, cellSize);
@@ -117,6 +119,62 @@ public partial class WorldLook : Node3D
             }
             _heights[vz * vw + vx] = h;
         }
+        // A diagonal module crosses the cell corner to corner: the high triangle (and the centre, on the wall line)
+        // belongs to the plateau, so no dent shows behind the wall.
+        foreach (var (c, ch) in _chamfers)
+        {
+            var (dx, dy) = Terrain.Dirs[ch.A];
+            float top = CellGround(t, c.X + dx, c.Y + dy);
+            for (int lz = 0; lz <= per; lz++)
+            for (int lx = 0; lx <= per; lx++)
+            {
+                // Signed side of the diagonal towards the two higher neighbours (A, B): ≥ 0 = wall line or high side.
+                var (ax, ay) = Terrain.Dirs[ch.A];
+                var (bx, by) = Terrain.Dirs[ch.B];
+                float u = lx - per / 2f, v = lz - per / 2f;
+                if ((ax + bx) * u + (ay + by) * v < -0.01f) continue;
+                int i = (c.Y * per + lz) * vw + c.X * per + lx;
+                _heights[i] = Mathf.Max(_heights[i], top);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Staircase contours (a lower cell with higher neighbours on two adjacent sides and on the diagonal between them,
+    /// same drop on both): one diagonal cliff module instead of two straight walls, cutting the cell corner to corner.
+    /// </summary>
+    private void FindChamfers(Terrain t, float cs)
+    {
+        _chamfers.Clear();
+        if (GeneratedCliffs) return;
+        for (int y = 0; y < t.Height; y++)
+        for (int x = 0; x < t.Width; x++)
+        {
+            var c = new Cell(x, y);
+            if (t.IsWater(c) || t.IsRamp(c)) continue;
+            int level = t.LevelAt(c);
+            int[] diff = new int[4];
+            for (int d = 0; d < 4; d++)
+            {
+                var (dx, dy) = Terrain.Dirs[d];
+                var n = new Cell(x + dx, y + dy);
+                diff[d] = t.InBounds(n) && !t.IsWater(n) && !t.IsRamp(n) ? t.LevelAt(n) - level : 0;
+            }
+            for (int a = 0; a < 4; a++)
+            {
+                int b = (a + 1) % 4, oa = (a + 2) % 4, ob = (a + 3) % 4;
+                if (diff[a] <= 0 || diff[a] != diff[b] || diff[oa] > 0 || diff[ob] > 0) continue;
+                var (ax, ay) = Terrain.Dirs[a];
+                var (bx, by) = Terrain.Dirs[b];
+                var diag = new Cell(x + ax + bx, y + ay + by);
+                if (!t.InBounds(diag) || t.LevelAt(diag) < level + diff[a]) continue;
+                // Stand in the low triangle, 0.3 of a cell from the centre, away from the higher sides.
+                var off = new Vector2(-(ax + bx), -(ay + by)) * (cs * 0.3f);
+                _chamfers[c] = (a, b, diff[a], off);
+                break;
+            }
+        }
+        Ground.Chamfered = _chamfers.ToDictionary(kv => kv.Key, kv => kv.Value.Stand);
     }
 
     private void BuildTerrain()
@@ -268,6 +326,12 @@ public partial class WorldLook : Node3D
     {
         var straight = new List<Transform3D>();
         var corner = new List<Transform3D>();
+        var diagonal = new List<Transform3D>();
+        // Unrotated, the kit's diagonal wall has its high side on W and S (dirs 3, 2) — the outer-corner angles below.
+        float DiagAngle(int a, int b) => (Math.Min(a, b), Math.Max(a, b)) switch
+        {
+            (2, 3) => 0f, (1, 2) => Mathf.Pi / 2, (0, 1) => Mathf.Pi, _ => -Mathf.Pi / 2,
+        };
         float[] dirAngle = { Mathf.Pi, Mathf.Pi / 2, 0f, -Mathf.Pi / 2 };   // N, E, S, W: rotate the kit's +Z wall to face the higher cell
         for (int y = 0; y < t.Height; y++)
         for (int x = 0; x < t.Width; x++)
@@ -276,6 +340,9 @@ public partial class WorldLook : Node3D
             int level = t.LevelAt(c);
             float baseY = level * Ground.LevelHeight;
             var center = new Vector3((x + 0.5f) * cs, 0, (y + 0.5f) * cs);
+            if (_chamfers.TryGetValue(c, out var ch))
+                for (int k = 0; k < ch.Drop; k++)
+                    diagonal.Add(new Transform3D(new Basis(Vector3.Up, DiagAngle(ch.A, ch.B)), center + new Vector3(0, baseY + k * Ground.LevelHeight, 0)));
             bool[] up = new bool[4];
             for (int d = 0; d < 4; d++)
             {
@@ -286,6 +353,7 @@ public partial class WorldLook : Node3D
                 if (diff <= 0) continue;
                 up[d] = true;
                 if (t.RampDir(c) == d && diff == 1) continue;   // the ramp climbs here
+                if (_chamfers.TryGetValue(c, out var cc) && (cc.A == d || cc.B == d)) continue;   // the diagonal wall
                 for (int k = 0; k < diff; k++)
                     straight.Add(new Transform3D(new Basis(Vector3.Up, dirAngle[d]), center + new Vector3(0, baseY + k * Ground.LevelHeight, 0)));
             }
@@ -298,6 +366,7 @@ public partial class WorldLook : Node3D
             {
                 var n = new Cell(x + ddx, y + ddy);
                 if (!t.InBounds(n) || t.IsWater(n) || up[a] || up[b]) continue;
+                if (_chamfers.ContainsKey(new Cell(x + ddx, y)) || _chamfers.ContainsKey(new Cell(x, y + ddy))) continue;   // the diagonal reaches this corner
                 int diff = t.LevelAt(n) - level;
                 for (int k = 0; k < diff; k++)
                     corner.Add(new Transform3D(new Basis(Vector3.Up, angle), center + new Vector3(0, baseY + k * Ground.LevelHeight, 0)));
@@ -306,7 +375,8 @@ public partial class WorldLook : Node3D
         var root = new Node3D { Name = "CliffModules" };
         var clusters = GD.Load<GDScript>("res://game/vegetation/Clusters.gd");
         var palette = GD.Load<GDScript>("res://game/visual/KenneyPalette.gd");
-        foreach (var (scene, list) in new[] { ("res://assets/environment/kenney/K_cliff_rock.tscn", straight), ("res://assets/environment/kenney/K_cliff_corner_rock.tscn", corner) })
+        foreach (var (scene, list) in new[] { ("res://assets/environment/kenney/K_cliff_rock.tscn", straight), ("res://assets/environment/kenney/K_cliff_corner_rock.tscn", corner),
+                     ("res://assets/environment/kenney/K_cliff_diagonal_rock.tscn", diagonal) })
         {
             if (list.Count == 0) continue;
             var src = (Godot.Collections.Dictionary)clusters.Call("first_mesh", scene);

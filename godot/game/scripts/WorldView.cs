@@ -108,6 +108,7 @@ public partial class WorldView : Node3D
         _agentNodes.Clear();
         _ground?.QueueFree();
         Ground.Visual = null;
+        Ground.Chamfered = null;
         _primitives.NatureVisible = true;
         _look?.QueueFree();
         _look = null;
@@ -576,7 +577,7 @@ public partial class WorldView : Node3D
     }
 
     public Vector3 CellCenter(Cell c) =>
-        _catalog.CellToWorld(c.X, c.Y) + new Vector3(_catalog.CellSize / 2, 0, _catalog.CellSize / 2);
+        _catalog.CellToWorld(c.X, c.Y) + new Vector3(_catalog.CellSize / 2, 0, _catalog.CellSize / 2) + Ground.StandOffset(c.X, c.Y);
 
     public Vector3 FootprintCenter(Building b)
     {

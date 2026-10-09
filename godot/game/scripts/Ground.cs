@@ -19,6 +19,13 @@ public static class Ground
     /// <summary>Height of the drawn ground (smooth ramps, cliff slopes), when a generated map's look is built.</summary>
     public static Func<float, float, float>? Visual { get; set; }
     public static float CellSize { get; set; } = 2f;
+    /// <summary>Cells crossed by a diagonal cliff module (world look): where things stand is moved off the wall into
+    /// the cell's low triangle (metres, from the centre). Set by WorldLook; null on flat maps.</summary>
+    public static System.Collections.Generic.Dictionary<Cell, Vector2>? Chamfered { get; set; }
+
+    /// <summary>Offset of the standing point from the cell centre (zero except on chamfered cells).</summary>
+    public static Vector3 StandOffset(int x, int y) =>
+        Chamfered is { } ch && ch.TryGetValue(new Cell(x, y), out var o) ? new Vector3(o.X, 0, o.Y) : Vector3.Zero;
 
     /// <summary>Walkable surface height of a cell (water: its surface).</summary>
     public static float CellHeight(int x, int y)
@@ -40,7 +47,8 @@ public static class Ground
 
     /// <summary>Height at the centre of a cell (where things stand): the drawn ground when there is one.</summary>
     public static float CellCenterHeight(int x, int y) =>
-        Visual?.Invoke((x + 0.5f) * CellSize, (y + 0.5f) * CellSize) ?? CellHeight(x, y);
+        Chamfered?.ContainsKey(new Cell(x, y)) == true ? CellHeight(x, y)   // the drawn centre is on the cliff's crest
+        : Visual?.Invoke((x + 0.5f) * CellSize, (y + 0.5f) * CellSize) ?? CellHeight(x, y);
 
     /// <summary>First ground hit along a ray (terraces: marched in 0.5 m steps, then refined).</summary>
     public static Vector3? Raycast(Vector3 from, Vector3 dir)
