@@ -172,7 +172,7 @@ public partial class BuildController : Node3D
         _lastCell = _cell;
 
         var world = _host.World;
-        _valid = world.Map.CanPlace(Selected, _cell, _rotation);   // materials come later, carried to the site
+        _valid = world.CanPlace(Selected, _cell, _rotation);   // materials come later; generated maps: terrain, deposits
 
         var tint = _valid ? new Color(0.5f, 1f, 0.5f) : new Color(1f, 0.4f, 0.4f);
         _ghost.GetChild<MeshInstance3D>(1).MaterialOverride = _catalog.Material(tint, ghost: true);

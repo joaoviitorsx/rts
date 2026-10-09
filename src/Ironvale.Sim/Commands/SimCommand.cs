@@ -17,7 +17,7 @@ public sealed record PlaceBuilding(string DefId, Cell Origin, int Rotation) : Si
         if (!w.Content.TryBuilding(DefId, out var def)) return $"edifício desconhecido '{DefId}'";
         if (!def.Buildable) return $"{def.Name} não pode ser construído";
         int rot = ((Rotation % 4) + 4) % 4;
-        if (!w.Map.CanPlace(def, Origin, rot)) return "local ocupado ou fora do mapa";
+        if (w.PlacementError(def, Origin, rot) is { } error) return error;
         // Nothing is paid here: carriers bring the materials to the site and builders use them (Marco 2A.1).
         w.AddBuilding(def, Origin, rot, active: false);
         return null;
@@ -29,7 +29,8 @@ public sealed record PlaceRoad(Cell[] Cells) : SimCommand
 {
     internal override string? Apply(World w)
     {
-        var cells = Cells.Distinct().Where(c => w.Map.InBounds(c) && w.Map.BuildingAt(c) == 0 && !w.Map.IsRoad(c)).ToList();
+        var cells = Cells.Distinct().Where(c => w.Map.InBounds(c) && w.Map.BuildingAt(c) == 0 && !w.Map.IsRoad(c)
+                                                && w.RoadAllowed(c)).ToList();
         if (cells.Count == 0) return "nenhuma célula livre para estrada";
         int stone = w.Content.Resource("stone").Index;
         var cost = w.Content.Balance.RoadStonePerCell * cells.Count;

@@ -39,6 +39,10 @@ public sealed class BuildingDef
     /// <summary>Input buffer of a producer whose recipes consume inputs (smithy), refilled by carriers.</summary>
     public required Qty InputCapacity { get; init; }
     public required int HousingCapacity { get; init; }
+    /// <summary>Generated maps (GDD v0.3 §9): what the workers take from the world. None on the flat map's rules.</summary>
+    public HarvestSource Harvests { get; init; }
+    /// <summary>Cells (Chebyshev) around the building the workers reach for <see cref="Harvests"/> = trees.</summary>
+    public int WorkRadius { get; init; }
 
     public bool Has(BuildingRole role) => (Roles & role) != 0;
 
@@ -161,6 +165,12 @@ public sealed class BalanceDef
     public required int OreUnits { get; init; }
     /// <summary>Units multiplier of the map's rich deposit.</summary>
     public required int RichDepositFactor { get; init; }
+    /// <summary>Site clearing: household-hours to fell a tree / remove a bush or stone under a new building.</summary>
+    public required int ClearTreeHours { get; init; }
+    public required int ClearNodeHours { get; init; }
+    /// <summary>Harvest walk: output lost per cell between the building and the tree being felled (‰), and its cap.</summary>
+    public required int HarvestWalkPermillePerCell { get; init; }
+    public required int HarvestWalkMaxPermille { get; init; }
 }
 
 public sealed class ScenarioBuilding
@@ -173,6 +183,16 @@ public sealed class ScenarioBuilding
 }
 
 public enum TerrainKind { Flat, Generated }
+
+/// <summary>Where a producer's output comes from on a generated map.</summary>
+public enum HarvestSource
+{
+    None,
+    /// <summary>Mature trees within the work radius (woodcutter): felled one by one, they grow back slowly.</summary>
+    Trees,
+    /// <summary>The outcrop the building stands on (quarry): finite.</summary>
+    Outcrop,
+}
 
 public sealed class ScenarioHousehold
 {

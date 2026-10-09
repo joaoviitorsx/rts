@@ -52,6 +52,8 @@ public sealed class ProductionSystem : ISimSystem
                 if (recipe.UsesTools) h.ToolHoursToday++;
             }
             if (workerPermille == 0) continue;
+            // Generated maps: woodcutters walk to their tree and back (GDD v0.3 §9).
+            workerPermille = workerPermille * w.HarvestEfficiencyPermille(b) / Permille.One;
 
             for (int r = 0; r < recipe.OutputPerWorkerHour.Length; r++)
             {
@@ -73,8 +75,15 @@ public sealed class ProductionSystem : ISimSystem
                     long cap = InputLimitMilli(b, recipe);
                     if (milli > cap) { milli = cap; remainder = 0; }   // short of inputs: make what they allow
                 }
+                // Generated maps: only what was felled / broken off can be produced (flat map: no harvest source).
+                if (w.Nature is not null && b.Def.Harvests != HarvestSource.None)
+                {
+                    long harvest = w.HarvestAvailable(b, Math.Min(milli, b.Stock.Space.Milli));
+                    if (milli > harvest) { milli = harvest; remainder = 0; }
+                }
                 var added = b.Stock.AddUpTo(r, new Qty(milli));
                 b.RemainderMicro[r] = added.Milli == milli ? remainder : 0;
+                w.SpendHarvest(b, added.Milli);
                 w.RecordProduced(r, added, economic: true);
                 if (recipe.HasInputs) ConsumeInputs(w, b, recipe, added);
             }

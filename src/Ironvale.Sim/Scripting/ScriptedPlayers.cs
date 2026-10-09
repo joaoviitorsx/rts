@@ -52,7 +52,7 @@ public sealed class NaivePlayer : IScriptedPlayer
 
     public void Start(World w)
     {
-        foreach (var (def, origin) in Layout) w.Enqueue(new PlaceBuilding(def, origin, 0));
+        foreach (var (def, origin) in Layout) Placement.Place(w, def, origin);
         var hall = w.SeatBuilding!;
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, hall.Id));
     }
@@ -119,8 +119,8 @@ public sealed class OptimalPlayer(bool roads) : IScriptedPlayer
         if (!_industry && w.Calendar.Season == Season.Winter)
         {
             _industry = true;
-            w.Enqueue(new PlaceBuilding("quarry", QuarryAt, 0));
-            w.Enqueue(new PlaceBuilding("smithy", SmithyAt, 0));
+            Placement.Place(w, "quarry", QuarryAt);   // generated maps: the nearest outcrop
+            Placement.Place(w, "smithy", SmithyAt);
         }
         Manage(w, "quarry", "stone", low: 20, high: 60);
         Manage(w, "smithy", "tools", low: 8, high: 14);

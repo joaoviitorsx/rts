@@ -89,6 +89,8 @@ public static class SaveSerializer
                 InStock = Map(b.InputStock.AmountsRaw), InReserved = Map(b.InputStock.ReservedRaw), InIncoming = b.InputStock.Incoming.Milli,
                 Slots = b.Slots.ToArray(), Recipe = b.Recipe?.Id, SeasonalWorkMilli = b.SeasonalWorkMilli,
                 RemainderMicro = Map(b.RemainderMicro),
+                HarvestBudgetMilli = b.HarvestBudgetMilli, HarvestTarget = b.HarvestTarget,
+                HarvestExhausted = b.HarvestExhausted, ClearWorkMilli = b.ClearWorkMilli,
             }).ToList(),
             Carriers = w.Carriers.Select(c => new CarrierDto
             {
@@ -231,6 +233,8 @@ public static class SaveSerializer
                     ?? throw new SaveException($"{d.Def} has no recipe '{d.Recipe}'"),
                 SeasonalWorkMilli = d.SeasonalWorkMilli,
                 RemainderMicro = Arr(d.RemainderMicro),
+                HarvestBudgetMilli = d.HarvestBudgetMilli, HarvestTarget = d.HarvestTarget,
+                HarvestExhausted = d.HarvestExhausted, ClearWorkMilli = d.ClearWorkMilli,
             };
             b.Stock.Restore(Arr(d.Stock), Arr(d.Reserved), d.Incoming);
             b.InputStock.Restore(Arr(d.InStock), Arr(d.InReserved), d.InIncoming);

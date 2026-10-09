@@ -1,19 +1,22 @@
 {
   // footprint in grid cells (1 cell = 2 m). roles: seat | housing | producer | storage.
   // Storage buildings' jobSlots are carriers; producers' jobSlots are workers.
+  // Generated maps (GDD v0.3 §9): harvests = "trees" (fells real trees within radius) | "outcrop" (only on an outcrop).
   "buildings": [
     { "id": "hall", "name": "Salão", "footprint": [3, 3], "buildable": false,
       "roles": ["seat", "storage"], "storageCapacity": 800, "jobSlots": 2, "adminCapacity": 4 },
     { "id": "house", "name": "Casa", "footprint": [2, 2], "cost": { "wood": 15 }, "buildDays": 4,
       "roles": ["housing"], "housingCapacity": 2 },
     { "id": "woodcutter", "name": "Lenhador", "footprint": [2, 2], "cost": { "wood": 10, "stone": 2 }, "buildDays": 3,
-      "roles": ["producer"], "jobSlots": 2, "recipes": ["chop_wood", "split_firewood"], "outputCapacity": 60 },
+      "roles": ["producer"], "jobSlots": 2, "recipes": ["chop_wood", "split_firewood"], "outputCapacity": 60,
+      "harvests": "trees", "radius": 12 },
     { "id": "field", "name": "Campo", "footprint": [4, 4], "cost": { "wood": 5 }, "buildDays": 2,
       "roles": ["producer"], "jobSlots": 2, "recipes": ["grow_food"], "outputCapacity": 5000 },
     { "id": "smithy", "name": "Ferreiro", "footprint": [2, 2], "cost": { "wood": 20, "stone": 4 }, "buildDays": 4,
       "roles": ["producer"], "jobSlots": 2, "recipes": ["forge_tools"], "outputCapacity": 20, "inputCapacity": 20 },
     { "id": "quarry", "name": "Pedreira", "footprint": [3, 3], "cost": { "wood": 15 }, "buildDays": 3,
-      "roles": ["producer"], "jobSlots": 2, "recipes": ["quarry_stone"], "outputCapacity": 60 },
+      "roles": ["producer"], "jobSlots": 2, "recipes": ["quarry_stone"], "outputCapacity": 60,
+      "harvests": "outcrop" },
     { "id": "granary", "name": "Celeiro", "footprint": [3, 2], "cost": { "wood": 30, "stone": 5 }, "buildDays": 5,
       "roles": ["storage"], "storageCapacity": 4000, "jobSlots": 2 }
   ]

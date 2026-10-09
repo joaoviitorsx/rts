@@ -23,7 +23,9 @@ int years = int.Parse(opts.GetValueOrDefault("years") ?? "50", CultureInfo.Invar
 var (content, scenario) = DataPaths.LoadWithScenario(dataDir, scenarioId);
 if (opts.GetValueOrDefault("balance-report") is { } reportPath)
 {
-    BalanceReport.Write(reportPath, content, scenario, int.Parse(opts.GetValueOrDefault("years") ?? "3", CultureInfo.InvariantCulture));
+    // Flat map (the given scenario) and, unless --no-generated, the same opening on generated maps (GDD v0.3).
+    var generated = opts.ContainsKey("no-generated") ? null : DataPaths.LoadWithScenario(dataDir, "mvp_generated").Scenario;
+    BalanceReport.Write(reportPath, content, scenario, int.Parse(opts.GetValueOrDefault("years") ?? "3", CultureInfo.InvariantCulture), generated);
     return 0;
 }
 if (opts.GetValueOrDefault("map-png") is { } mapPng)
@@ -59,7 +61,16 @@ if (opts.GetValueOrDefault("session-log") is { } sessionPath)
     world.CollectEvents = true;
     world.CommandEnqueued += c => session.Command(world, c);
 }
+if (opts.ContainsKey("list-buildings")) world.CollectEvents = true;
 player?.Start(world);
+if (opts.ContainsKey("list-buildings"))
+{
+    // Debug: what the scripted opening placed (and what was refused) — applying now is what the first step does.
+    world.ApplyPendingCommands();
+    foreach (var e in world.DrainEvents())
+        if (e is Ironvale.Sim.Events.CommandRejected rej) Console.WriteLine($"  rejected at start: {rej}");
+    foreach (var b in world.Buildings) Console.WriteLine($"  {b.Def.Id} at {b.Origin} active={b.IsActive}");
+}
 var watch = new CrisisWatch();
 
 var resources = content.Resources;
@@ -85,6 +96,12 @@ for (int y = 1; y <= years; y++)
             session.Tick(world);
         }
         player?.Daily(world);
+        if (opts.GetValueOrDefault("trace") is { } traceDef && d % 10 == 0)
+            foreach (var b in world.Buildings.Where(b => b.Def.Id == traceDef))
+                Console.WriteLine($"  day {world.Calendar.TotalDays} {b.Def.Id}#{b.Id} active={b.IsActive} clear={b.ClearWorkMilli} " +
+                                  $"work={b.BuildWorkMilli}/{b.RequiredBuildWorkMilli} mat={b.MaterialPermille} workers={b.AssignedCount} " +
+                                  $"stock={b.Stock.Total} budget={b.HarvestBudgetMilli} exhausted={b.HarvestExhausted} eff={world.HarvestEfficiencyPermille(b)} " +
+                                  $"pop={world.Households.Count}");
         watch.Observe(world);
     }
     var line = new StringBuilder($"{world.Calendar.Year - 1,4}  {world.Households.Count,3} ");

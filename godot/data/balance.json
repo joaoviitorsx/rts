@@ -56,5 +56,11 @@
   "mushroomFood": 4,
   "outcropUnits": 400,
   "oreUnits": 300,
-  "richDepositFactor": 3
+  "richDepositFactor": 3,
+  // Generated maps: trees/bushes/stones under a new building are cleared by its builders first (wood/stone to storage);
+  // woodcutters lose harvestWalkPermillePerCell of output per cell walked to the tree (capped).
+  "clearTreeHours": 4,
+  "clearNodeHours": 1,
+  "harvestWalkPermillePerCell": 20,
+  "harvestWalkMaxPermille": 500
 }

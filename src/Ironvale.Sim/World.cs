@@ -6,7 +6,7 @@ namespace Ironvale.Sim;
 /// Root of the simulation state. Pure C#: no Godot, no threads, no wall clock.
 /// The view reads it through public getters (setters are internal) and changes it only via <see cref="Enqueue"/>.
 /// </summary>
-public sealed class World
+public sealed partial class World
 {
     private readonly List<Household> _households = new();
     private readonly List<Building> _buildings = new();
@@ -369,6 +369,7 @@ public sealed class World
             Recipe = def.Recipes.Count > 0 ? def.Recipes[0] : null,
             RemainderMicro = new long[Content.ResourceCount],
         };
+        if (!active) b.ClearWorkMilli = SiteClearingWorkMilli(def, origin, rotation);
         InsertBuilding(b);
         Map.Fill(def, origin, rotation, b.Id);
         Emit(new BuildingPlaced(Tick, b.Id));

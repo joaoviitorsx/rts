@@ -31,6 +31,15 @@ public sealed class Building
     public RecipeDef? Recipe { get; internal set; }
     /// <summary>Seasonal recipes: work accumulated (in milli of output) until the harvest.</summary>
     public long SeasonalWorkMilli { get; internal set; }
+    /// <summary>Generated maps: resource already taken from the world and not yet produced (a felled tree's wood,
+    /// stone broken off the outcrop), in milli.</summary>
+    public long HarvestBudgetMilli { get; internal set; }
+    /// <summary>Generated maps: cell index + 1 of the tree being felled (0 = none yet).</summary>
+    public int HarvestTarget { get; internal set; }
+    /// <summary>Generated maps: the work radius has nothing left to harvest (no mature tree / outcrop exhausted).</summary>
+    public bool HarvestExhausted { get; internal set; }
+    /// <summary>Generated maps: work (milli household-hours) still needed to clear trees/bushes/stones off the site.</summary>
+    public long ClearWorkMilli { get; internal set; }
     /// <summary>Sub-milli production remainder per resource (micro units), so fractions are not lost.</summary>
     internal long[] RemainderMicro { get; set; } = Array.Empty<long>();
 
@@ -76,7 +85,7 @@ public sealed class Building
     public long BuildWorkCapMilli => RequiredBuildWorkMilli * MaterialPermille / Permille.One;
 
     /// <summary>A site where a builder's hour would count (materials allow more work).</summary>
-    public bool CanProgress => !IsActive && BuildWorkMilli < BuildWorkCapMilli;
+    public bool CanProgress => !IsActive && (ClearWorkMilli > 0 || BuildWorkMilli < BuildWorkCapMilli);
 
     public bool IsStorage => Def.Has(BuildingRole.Storage);
     public bool IsProducer => Def.Has(BuildingRole.Producer);

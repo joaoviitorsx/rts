@@ -243,6 +243,14 @@ public static class ContentLoader
                 InputCapacity = Qty.FromDouble(c.OptNum(el, "inputCapacity", 0)),
                 AdminCapacity = c.OptInt(el, "adminCapacity", 0),
                 HousingCapacity = c.OptInt(el, "housingCapacity", 0),
+                Harvests = c.OptStr(el, "harvests") switch
+                {
+                    null => HarvestSource.None,
+                    "trees" => HarvestSource.Trees,
+                    "outcrop" => HarvestSource.Outcrop,
+                    var other => throw c.Error($"unknown harvest source '{other}'"),
+                },
+                WorkRadius = c.OptInt(el, "radius", 0),
             });
         }
         return list;
@@ -332,6 +340,10 @@ public static class ContentLoader
             OutcropUnits = Math.Max(1, c.OptInt(el, "outcropUnits", 400)),
             OreUnits = Math.Max(1, c.OptInt(el, "oreUnits", 300)),
             RichDepositFactor = Math.Max(1, c.OptInt(el, "richDepositFactor", 3)),
+            ClearTreeHours = c.OptInt(el, "clearTreeHours", 4),
+            ClearNodeHours = c.OptInt(el, "clearNodeHours", 1),
+            HarvestWalkPermillePerCell = c.OptInt(el, "harvestWalkPermillePerCell", 20),
+            HarvestWalkMaxPermille = Permille.Clamp(c.OptInt(el, "harvestWalkMaxPermille", 500)),
         };
     }
 
@@ -393,6 +405,11 @@ public static class ContentLoader
             return v.ValueKind == JsonValueKind.Number && v.TryGetInt32(out int i) && i >= 0
                 ? i : throw Error($"'{name}' must be a non-negative integer");
         }
+
+        public string? OptStr(JsonElement el, string name) =>
+            !el.TryGetProperty(name, out var v) ? null
+            : v.ValueKind == JsonValueKind.String && v.GetString() is { Length: > 0 } s ? s
+            : throw Error($"'{name}' must be a non-empty string");
 
         public bool OptBool(JsonElement el, string name, bool fallback)
         {

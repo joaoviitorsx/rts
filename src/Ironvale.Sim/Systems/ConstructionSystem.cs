@@ -26,6 +26,15 @@ public sealed class ConstructionSystem : ISimSystem
                 h.ToolHoursToday++;
             }
             if (work == 0) continue;
+            if (b.ClearWorkMilli > 0)
+            {
+                // Generated maps: fell the trees and lift the stones under the site first (GDD v0.3 D5).
+                long clear = Math.Min(work, b.ClearWorkMilli);
+                b.ClearWorkMilli -= clear;
+                work -= clear;
+                if (b.ClearWorkMilli == 0) w.FinishClearing(b);
+                if (work == 0) continue;
+            }
             b.BuildWorkMilli = Math.Min(b.BuildWorkMilli + work, b.BuildWorkCapMilli);
             if (b.BuildWorkMilli >= b.RequiredBuildWorkMilli) w.CompleteConstruction(b);
         }

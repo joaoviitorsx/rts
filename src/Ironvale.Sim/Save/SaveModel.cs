@@ -120,6 +120,15 @@ public sealed class BuildingDto
     public string? Recipe { get; set; }
     public long SeasonalWorkMilli { get; set; }
     public SortedDictionary<string, long> RemainderMicro { get; set; } = new(StringComparer.Ordinal);
+    // Generated maps only (omitted when zero, so flat saves/hashes are unchanged).
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
+    public long HarvestBudgetMilli { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
+    public int HarvestTarget { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
+    public bool HarvestExhausted { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
+    public long ClearWorkMilli { get; set; }
 }
 
 public sealed class CarrierDto

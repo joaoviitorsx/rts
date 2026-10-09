@@ -28,8 +28,12 @@ public static class MvpOpening
     public static void Apply(World w, long foodThreshold = 1500, long firewoodThreshold = 300, long woodThreshold = 40,
         bool roads = false)
     {
-        foreach (var (def, origin) in Layout) w.Enqueue(new PlaceBuilding(def, origin, 0));
-        if (roads) w.Enqueue(new PlaceRoad(Roads));
+        foreach (var (def, origin) in Layout) Placement.Place(w, def, origin);   // flat map: the layout as is
+        if (roads)
+        {
+            if (w.Terrain is null) w.Enqueue(new PlaceRoad(Roads));
+            else Placement.RoadsFromHall(w, Roads.Length);
+        }
 
         var hall = w.SeatBuilding ?? throw new InvalidOperationException("scenario has no seat building");
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, hall.Id));

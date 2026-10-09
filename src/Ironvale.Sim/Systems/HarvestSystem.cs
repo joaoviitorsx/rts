@@ -18,6 +18,7 @@ public sealed class HarvestSystem : ISimSystem
 
             int delta = variance > 0 ? w.Rng.Get(RngStreams.Harvest).Range(-variance, variance) : 0;
             var amount = new Qty(b.SeasonalWorkMilli * (Permille.One + delta) / Permille.One);
+            if (w.Terrain is not null) amount = amount.MulPermille(w.FertilityPermille(b));   // GDD v0.3 §9
             int r = Array.FindIndex(recipe.OutputPerWorkerHour, q => q.IsPositive);
             var added = b.Stock.AddUpTo(r, amount);
             w.RecordProduced(r, added, economic: true);

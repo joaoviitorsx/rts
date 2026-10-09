@@ -5,6 +5,8 @@ public abstract record SimEvent(long Tick);
 
 public sealed record BuildingPlaced(long Tick, int BuildingId) : SimEvent(Tick);
 public sealed record BuildingCompleted(long Tick, int BuildingId) : SimEvent(Tick);
+/// <summary>A woodcutter felled a tree (generated maps): the view swaps it for a stump.</summary>
+public sealed record TreeFelled(long Tick, int BuildingId, Cell Cell) : SimEvent(Tick);
 public sealed record BuildingRemoved(long Tick, int BuildingId) : SimEvent(Tick);
 public sealed record HouseholdAssigned(long Tick, int HouseholdId, int BuildingId) : SimEvent(Tick);
 public sealed record HouseholdLeft(long Tick, int HouseholdId, string Name, string Reason) : SimEvent(Tick);
