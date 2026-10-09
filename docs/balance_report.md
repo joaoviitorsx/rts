@@ -1,7 +1,7 @@
 # Relatório de balanceamento (gerado pela CLI)
 
 > `dotnet run --project src/Ironvale.Sim.Cli -- --balance-report docs/balance_report.md --years 3`
-> Conteúdo `fnv64:35e52185f0e31b41` · cenário `mvp_start` · 3 anos · seeds 42, 7, 123.
+> Conteúdo `fnv64:6a57cdf9647897b3` · cenário `mvp_start` · 3 anos · seeds 42, 7, 123.
 > Minutos = tempo de jogo a 1x (1 dia = 4 s). Crises (GDD v0.2 §6): **1** lenha abaixo da demanda do inverno no
 > outono · **2** sem ferramentas de reserva e condição média < 50% · **3** família com fome no inverno.
 > Trajeto = % das horas de turno dos produtores gastas andando (ida e volta).

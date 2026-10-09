@@ -16,7 +16,10 @@
 - Exportar de novo: `godot-mono --headless --path godot --export-release "Windows" ../out/playtest/windows/Ironvale.exe`
   (idem `"Linux"`). Templates oficiais 4.7 mono instalados em `~/.local/share/godot/export_templates/4.7.stable.mono/`.
 - O build de jogador **não tem** painel de debug. Atalhos: Espaço pausa · 1–4 velocidade · F famílias · P decretos ·
-  F5/F9 salvar/carregar · Esc fecha painel.
+  F5/F9 salvar/carregar · Esc fecha painel · Ctrl+= / Ctrl+- escala da interface.
+- **Configurações** (barra inferior): escala da interface 80–150%. Em telas pequenas o jogo sobe a escala sozinho até o
+  menor texto ter ≥ 12 px (1280×720 → 129%) e mostra o motivo no painel. Se a pessoa usar um notebook pequeno, deixe-a
+  ajustar antes de começar.
 
 ## 2. Registro automático (não precisa cronometrar à mão)
 
@@ -93,13 +96,23 @@ Falhou = a pessoa não sabe dizer o objetivo do painel → informação demais o
 | Momentos > 2 min sem decisão | 0 | | | | | |
 
 **Gate do 2A:** a maioria dos critérios em ≥ 4 de 5 pessoas e nenhum sinal forte de "o jogo jogando por mim" (§8.4).
-Resultados em `docs/playtest_2A_resultados.md`; problemas de sensação também em `docs/feel_notes.md`.
+Resultados em `docs/playtest_2A_resultados.md` (incluir as notas de §9); problemas de sensação também em `docs/feel_notes.md`.
 
-## 9. O que já se sabe (para não gastar sessão nisso)
+## 9. Observar com atenção (pedido do dono, 09/10/2026)
 
-- Arte, som e animações de UI são cinza/placeholder (F3); a pedreira é um bloco cinza.
+| Decisão | O que olhar | Sinal de problema |
+|---|---|---|
+| **P1** — obra parada sem carregador | Quanto tempo a pessoa leva para designar carregadores; se lê "Parada: ninguém carregando material" e o objetivo 1 | > 3 min com casas posicionadas e nada acontecendo; frustração dita em voz alta |
+| **P18** — passivo morre cedo | Se alguém demora a agir no começo e perde famílias antes do 1º outono | Famílias indo embora antes dos ~8 min sem a pessoa entender por quê |
+| **P21** — faixa sugerida pelo reeve | A faixa do cartão (lenha/comida cobrem metade do inverno, com o aviso "o mínimo foi aumentado") | Pessoa recusa por achar a faixa errada, ou aceita e depois muda a faixa no painel P |
+
+Anotar na folha (§8) com o minuto e a frase dita.
+
+## 10. O que já se sabe (para não gastar sessão nisso)
+
+- Arte, som e animações de UI são cinza/placeholder (F3); a pedreira é um kitbash de rochas e props só para ficar
+  legível.
 - Crise 2 (ferramentas) quase não aparece em 60 min nos cenários da CLI (12 ferramentas de reserva) — observar se
   alguém a encontra; senão, ajustar antes da próxima rodada.
-- A faixa sugerida pelo reeve segue o estoque observado (ex.: lenha 60–80) e pode ficar baixa para o inverno —
-  observar se as pessoas ajustam a faixa no painel.
+- O livro de contas do reeve ainda mostra nomes em português mesmo com o jogo em inglês (os outros textos já traduzem).
 - Aldeões "correm" no trajeto (o dia dura 4 s a 1x).
