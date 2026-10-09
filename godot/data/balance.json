@@ -96,5 +96,7 @@
   // every familyArrivalDays days while a house has room and the stores hold familyArrivalFoodDays of food for all.
   "familyFromColonists": 2,
   "familyArrivalDays": 10,
-  "familyArrivalFoodDays": 30
+  "familyArrivalFoodDays": 30,
+  // Hunting camp: never takes the last animals of a herd (they breed back each spring).
+  "huntKeepPerHerd": 2
 }

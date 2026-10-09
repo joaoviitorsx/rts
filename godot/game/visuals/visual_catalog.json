@@ -16,7 +16,9 @@
     "pile":       { "scene": "res://assets/buildings/BLD_Pile_A.tscn" },
     "campfire":   { "scene": "res://assets/buildings/BLD_Campfire_A.tscn" },
     "depot":      { "scene": "res://assets/buildings/BLD_Depot_A.tscn" },
-    "tent":       { "scene": "res://assets/buildings/BLD_Tent_A.tscn" }
+    "tent":       { "scene": "res://assets/buildings/BLD_Tent_A.tscn" },
+    "gatherer":   { "scene": "res://assets/buildings/BLD_Gatherer_A.tscn" },
+    "hunting_camp": { "scene": "res://assets/buildings/BLD_HuntingCamp_A.tscn" }
   },
   "characters": ["res://assets/characters/CHR_Villager_Base.tscn", "res://assets/characters/CHR_Villager_Base_F.tscn"],
   "agents": {

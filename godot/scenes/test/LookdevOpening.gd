@@ -3,7 +3,7 @@ extends Node3D
 ## Args after "--": --shot=PATH
 
 const CozyEnvironment := preload("res://game/visual/CozyEnvironment.gd")
-const SCENES := ["BLD_Pile_A", "BLD_Campfire_A", "BLD_Depot_A", "BLD_Tent_A"]
+const SCENES := ["BLD_Pile_A", "BLD_Campfire_A", "BLD_Depot_A", "BLD_Tent_A", "BLD_Gatherer_A", "BLD_HuntingCamp_A"]
 
 
 func _ready() -> void:
@@ -18,7 +18,7 @@ func _ready() -> void:
 	add_child(ground)
 	for i in SCENES.size():
 		var n := (load("res://assets/buildings/%s.tscn" % SCENES[i]) as PackedScene).instantiate() as Node3D
-		n.position = Vector3(-9 + i * 6, 0, 0)
+		n.position = Vector3(-15 + i * 6, 0, 0)
 		add_child(n)
 		var foot := MeshInstance3D.new()   # footprint outline: 1×1 cell for the campfire, 2×2 otherwise
 		var q := PlaneMesh.new()
@@ -33,7 +33,7 @@ func _ready() -> void:
 	var cam := Camera3D.new()
 	cam.fov = 32.0
 	add_child(cam)
-	cam.position = Vector3(0, 16, 17)
+	cam.position = Vector3(0, 21, 23)
 	cam.look_at(Vector3(0, 0.5, 0), Vector3.UP)
 	cam.current = true
 	for a in OS.get_cmdline_user_args():

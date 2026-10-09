@@ -23,5 +23,7 @@ public static class UiText
 
     public static string Res(ResourceDef r) => Content("res", r.Id, r.Name);
     public static string Bld(BuildingDef b) => Content("bld", b.Id, b.Name);
+    /// <summary>Short label for tight places (build bar buttons); the full name stays in the tooltip.</summary>
+    public static string BldShort(BuildingDef b) => Content("bld_short", b.Id, Bld(b));
     public static string Rcp(RecipeDef r) => Content("rcp", r.Id, r.Name);
 }

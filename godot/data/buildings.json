@@ -19,7 +19,7 @@
       "harvests": "outcrop" },
     // RTS opening (GDD v0.3 §10): the ground pile is free and open to the rain (food and firewood spoil).
     { "id": "pile", "name": "Pilha", "footprint": [2, 2], "buildDays": 0,
-      "roles": ["storage"], "storageCapacity": 400, "uncovered": true },
+      "roles": ["storage"], "storageCapacity": 400, "jobSlots": 1, "uncovered": true },
     { "id": "granary", "name": "Celeiro", "footprint": [3, 2], "cost": { "wood": 30, "stone": 5 }, "buildDays": 5,
       "roles": ["storage"], "storageCapacity": 4000, "jobSlots": 2 },
     // RTS opening, briefing step 3 (GDD v0.3 §11): only on generated maps ("generatedOnly").
@@ -28,6 +28,13 @@
     { "id": "depot", "name": "Depósito coberto", "footprint": [2, 2], "cost": { "wood": 12 }, "buildDays": 2,
       "roles": ["storage"], "storageCapacity": 300, "jobSlots": 1, "generatedOnly": true },
     { "id": "tent", "name": "Tenda", "footprint": [2, 2], "cost": { "wood": 6, "hides": 2 }, "buildDays": 1,
-      "roles": ["shelter"], "shelterCapacity": 2, "generatedOnly": true }
+      "roles": ["shelter"], "shelterCapacity": 2, "generatedOnly": true },
+    // Step 1 of the delegation ladder (GDD v0.3 §9): huts that take from the world around them.
+    { "id": "gatherer", "name": "Cabana do coletor", "footprint": [2, 2], "cost": { "wood": 10 }, "buildDays": 2,
+      "roles": ["producer"], "jobSlots": 2, "recipes": ["forage"], "outputCapacity": 60,
+      "harvests": "forage", "radius": 10, "generatedOnly": true },
+    { "id": "hunting_camp", "name": "Acampamento de caça", "footprint": [2, 2], "buildDays": 1,
+      "roles": ["producer"], "jobSlots": 2, "recipes": ["hunt_game"], "outputCapacity": 60,
+      "harvests": "game", "radius": 16, "generatedOnly": true }
   ]
 }

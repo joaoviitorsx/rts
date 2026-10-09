@@ -63,6 +63,11 @@ public sealed class Chronicle
                 case SuggestionOffered:
                     Add(cal, "suggestion", 2);
                     break;
+                case HouseholdAssigned ha when !_delegated && w.Terrain is not null
+                                              && w.GetBuilding(ha.BuildingId) is { Def.Harvests: not HarvestSource.None } hut:
+                    _delegated = true;   // degree 0 → 1 (GDD v0.3 §4.6)
+                    Add(cal, "first_delegation", 4, hut.Def.Name);
+                    break;
                 case FamilyFormed f:
                     Add(cal, "family_formed", 3, f.Name);
                     break;
@@ -90,6 +95,8 @@ public sealed class Chronicle
         CloseSeason(w);
         CloseYear(w);
     }
+
+    private bool _delegated;
 
     private void Add(in Calendar cal, string key, int weight, params string[] args) =>
         _moments.Add(new Moment(cal.Year, cal.Season, key, args, weight));

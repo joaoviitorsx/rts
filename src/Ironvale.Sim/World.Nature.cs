@@ -99,6 +99,14 @@ public sealed partial class World
             {
                 if (!FellNextTree(b)) break;
             }
+            else if (b.Def.Harvests == HarvestSource.Forage)
+            {
+                if (!PickNextForage(b)) break;
+            }
+            else if (b.Def.Harvests == HarvestSource.Game)
+            {
+                if (!HuntNextAnimal(b)) break;
+            }
             else
             {
                 var deposit = nature.DepositAt(b.Origin);
@@ -133,6 +141,58 @@ public sealed partial class World
         return true;
     }
 
+    /// <summary>Gatherer: the in-season bush or mushroom patch with the shortest walk; it is picked for the season.</summary>
+    private bool PickNextForage(Building b)
+    {
+        var nature = Nature!;
+        int r = b.Def.WorkRadius;
+        var center = b.Center;
+        Cell? best = null;
+        int bestTicks = int.MaxValue;
+        for (int y = Math.Max(0, center.Y - r); y <= Math.Min(Map.Height - 1, center.Y + r); y++)
+        for (int x = Math.Max(0, center.X - r); x <= Math.Min(Map.Width - 1, center.X + r); x++)
+        {
+            var c = new Cell(x, y);
+            var kind = nature.At(c).Kind;
+            if (kind is not (NodeKind.Bush or NodeKind.Mushroom) || !Gatherable(c)) continue;
+            int ticks = Paths.Ticks(c, center);
+            if (ticks < bestTicks) { bestTicks = ticks; best = c; }
+        }
+        if (best is not { } cell) return false;
+        var node = nature.At(cell);
+        nature.Set(nature.Index(cell), node with { Tick = Tick });   // picked this season
+        var bal = Content.Balance;
+        b.HarvestBudgetMilli += (long)(node.Kind == NodeKind.Bush ? bal.BushFood : bal.MushroomFood) * Permille.One;
+        b.HarvestTarget = nature.Index(cell) + 1;
+        return true;
+    }
+
+    /// <summary>
+    /// Hunting camp: the nearest deer or rabbit in the radius whose herd keeps <see cref="BalanceDef.HuntKeepPerHerd"/>
+    /// after it (sustainable, GDD v0.3 §9). Meat feeds the budget; a deer's hides go straight to the camp's stock.
+    /// </summary>
+    private bool HuntNextAnimal(Building b)
+    {
+        var bal = Content.Balance;
+        int r = b.Def.WorkRadius;
+        var center = b.Center;
+        var herds = _animals.GroupBy(a => a.Herd).ToDictionary(g => g.Key, g => g.Count());
+        var prey = _animals.Where(a => a.Huntable && Chebyshev(a.Pos, center) <= r && herds[a.Herd] > bal.HuntKeepPerHerd)
+            .OrderBy(a => a.Pos.Manhattan(center)).ThenBy(a => a.Id).FirstOrDefault();
+        if (prey is null) return false;
+        bool deer = prey.Kind == FaunaKind.Deer;
+        b.HarvestBudgetMilli += (long)(deer ? bal.DeerFood : bal.RabbitFood) * Permille.One;
+        if (deer && bal.DeerHides > 0)
+        {
+            int hides = Content.Resource("hides").Index;
+            var added = b.Stock.AddUpTo(hides, Qty.Units(bal.DeerHides));
+            RecordProduced(hides, added, economic: true);
+        }
+        b.HarvestTarget = Map.Index(prey.Pos) + 1;
+        RemoveAnimal(prey);
+        return true;
+    }
+
     /// <summary>Mature tree within <see cref="BuildingDef.WorkRadius"/> with the shortest walk to the building (ties by cell).</summary>
     public Cell? NearestMatureTree(Building b)
     {
@@ -163,7 +223,7 @@ public sealed partial class World
     /// </summary>
     public int HarvestEfficiencyPermille(Building b)
     {
-        if (Nature is null || b.Def.Harvests != HarvestSource.Trees || b.HarvestTarget == 0) return Permille.One;
+        if (Nature is null || b.Def.Harvests is HarvestSource.None or HarvestSource.Outcrop || b.HarvestTarget == 0) return Permille.One;
         var tree = Map.CellAt(b.HarvestTarget - 1);
         int cells = tree.Manhattan(b.Center);
         var bal = Content.Balance;

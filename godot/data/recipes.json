@@ -6,6 +6,9 @@
     // inputs = units consumed per unit of output (the building keeps an input buffer that carriers refill).
     { "id": "forge_tools",    "name": "Forjar ferramentas", "kind": "continuous", "outputs": { "tools": 0.05 },
       "inputs": { "wood": 2, "stone": 1 }, "usesTools": true },
+    // Generated maps only (huts of the delegation ladder): output limited by what the world around gives.
+    { "id": "forage",         "name": "Coletar",        "kind": "continuous", "outputs": { "food": 0.5 },     "usesTools": false },
+    { "id": "hunt_game",      "name": "Caçar",          "kind": "continuous", "outputs": { "food": 0.6 },     "usesTools": true },
     { "id": "quarry_stone",   "name": "Extrair pedra", "kind": "continuous", "outputs": { "stone": 0.25 }, "usesTools": true },
     { "id": "grow_food",      "name": "Cultivar",       "kind": "seasonal",   "outputs": { "food": 0.8 },     "usesTools": true,
       "workSeasons": ["spring", "summer"] }

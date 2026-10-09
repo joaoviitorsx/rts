@@ -55,6 +55,8 @@ public partial class SimHost : Node
     public event Action<List<SimEvent>>? EventsReceived;
     /// <summary>Messages for the player (save/load results, errors).</summary>
     public event Action<string>? Message;
+    /// <summary>A player command was applied (advice that learns from the player's orders, e.g. HutAdviceCard).</summary>
+    public event Action<SimCommand>? CommandSent;
 
     public override void _Ready()
     {
@@ -87,6 +89,7 @@ public partial class SimHost : Node
         (_log ??= new SessionLog()).Command(World, command);
         World.Enqueue(command);
         World.ApplyPendingCommands();   // instant feedback, also while paused (same tick: deterministic)
+        CommandSent?.Invoke(command);
     }
 
     public void SetSpeed(int speed)

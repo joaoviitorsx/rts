@@ -268,6 +268,8 @@ public static class ContentLoader
                     null => HarvestSource.None,
                     "trees" => HarvestSource.Trees,
                     "outcrop" => HarvestSource.Outcrop,
+                    "forage" => HarvestSource.Forage,
+                    "game" => HarvestSource.Game,
                     var other => throw c.Error($"unknown harvest source '{other}'"),
                 },
                 WorkRadius = c.OptInt(el, "radius", 0),
@@ -396,6 +398,7 @@ public static class ContentLoader
             FamilyFromColonists = c.OptInt(el, "familyFromColonists", 2),
             FamilyArrivalDays = c.OptInt(el, "familyArrivalDays", 10),
             FamilyArrivalFoodDays = c.OptInt(el, "familyArrivalFoodDays", 30),
+            HuntKeepPerHerd = c.OptInt(el, "huntKeepPerHerd", 2),
         };
     }
 

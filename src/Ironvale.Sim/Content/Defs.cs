@@ -216,6 +216,8 @@ public sealed class BalanceDef
     /// <summary>A new family may arrive every this many days, if a house has room and food lasts (D7).</summary>
     public required int FamilyArrivalDays { get; init; }
     public required int FamilyArrivalFoodDays { get; init; }
+    /// <summary>A hunting camp leaves at least this many animals in each herd (they breed back in spring).</summary>
+    public required int HuntKeepPerHerd { get; init; }
 }
 
 public sealed class ScenarioBuilding
@@ -237,6 +239,10 @@ public enum HarvestSource
     Trees,
     /// <summary>The outcrop the building stands on (quarry): finite.</summary>
     Outcrop,
+    /// <summary>Fruit bushes (summer, autumn) and mushrooms (autumn) within the radius (gatherer): seasonal.</summary>
+    Forage,
+    /// <summary>Deer and rabbits within the radius (hunting camp), never the last ones of a herd: it grows back.</summary>
+    Game,
 }
 
 public sealed class ScenarioUnit

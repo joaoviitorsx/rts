@@ -89,6 +89,9 @@ public partial class Hud : CanvasLayer
         middle.AddChild(leftColumn);
         leftColumn.AddChild(BuildObjectiveCard());
         leftColumn.AddChild(BuildSuggestionCard());
+        var advice = new HutAdviceCard { Name = "HutAdvice" };
+        advice.Init(host, build, camera, view);
+        leftColumn.AddChild(advice);
         _alerts = new VBoxContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
         leftColumn.AddChild(_alerts);
         _unitPanel = new UnitPanel { Visible = false };
@@ -253,10 +256,10 @@ public partial class Hud : CanvasLayer
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.bottom.away"), () => TogglePanel(_away), UiText.T("away.tooltip")));
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.bottom.settings"), () => TogglePanel(_settings), UiText.T("settings.scale.tooltip")));
         row.AddChild(left);
-        row.AddChild(UiNodes.Spacer());
 
-        var buildPanel = new PanelContainer { ThemeTypeVariation = "PanelPrimary" };
-        var buildRow = new HBoxContainer();
+        // The build bar takes the free width and wraps into a second line on narrow windows (1280×720, guide §8.1).
+        var buildPanel = new PanelContainer { ThemeTypeVariation = "PanelPrimary", SizeFlagsHorizontal = Control.SizeFlags.ExpandFill };
+        var buildRow = new HFlowContainer { Alignment = FlowContainer.AlignmentMode.Center };
         buildPanel.AddChild(buildRow);
         buildRow.AddChild(UiNodes.Label(UiText.T("ui.bottom.build"), "SecondaryLabel"));
         foreach (var def in _host.Content.Buildings.Where(d => d.Buildable && (!d.GeneratedOnly || _host.World.Terrain is not null)))
@@ -264,13 +267,12 @@ public partial class Hud : CanvasLayer
             string cost = string.Join(", ", def.Cost.Select((q, r) => (q, r)).Where(x => x.q.IsPositive)
                 .Select(x => $"{x.q} {UiText.Res(_host.Content.Resources[x.r])}"));
             var d = def;
-            buildRow.AddChild(UiNodes.Button(UiText.Bld(def), () => _build.Begin(d), UiText.T("ui.build.tooltip", UiText.Bld(def), cost, def.BuildDays)));
+            buildRow.AddChild(UiNodes.Button(UiText.BldShort(def), () => _build.Begin(d), UiText.T("ui.build.tooltip", UiText.Bld(def), cost, def.BuildDays)));
         }
         buildRow.AddChild(new VSeparator());
         buildRow.AddChild(UiNodes.Button(UiText.T("ui.build.road"), _build.BeginRoad,
             UiText.T("ui.build.road.tooltip", _host.Content.Balance.RoadStonePerCell)));
         row.AddChild(buildPanel);
-        row.AddChild(UiNodes.Spacer());
         if (OS.IsDebugBuild())
         {
             var dbg = new PanelContainer { ThemeTypeVariation = "PanelPrimary" };

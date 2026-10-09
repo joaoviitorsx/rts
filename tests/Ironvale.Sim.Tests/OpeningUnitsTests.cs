@@ -344,4 +344,49 @@ public class OpeningUnitsTests
         Assert.Empty(w.DrainEvents().OfType<FamilyArrived>());
         TestKit.AssertInvariants(w);
     }
+
+    // ------------------------------------------------------------------ step 3c: huts of the delegation ladder
+
+    private static Building HutWithFamily(World w, string id, Cell near)
+    {
+        BuildHouse(w);
+        int wood = Res(w, "wood");
+        Pile(w).Stock.AddUpTo(wood, Qty.Units(20));
+        w.Ledger.Initial[wood] += 20_000;
+        var hut = PlaceAndBuild(w, id, near, Colonists(w).Take(3));
+        Assert.True(StepUntil(w, () => hut.IsActive, 20 * SimTime.TicksPerDay), $"{id} not built");
+        w.Enqueue(new AssignHousehold(w.Households.Single().Id, hut.Id));
+        w.StepDays(1);
+        return hut;
+    }
+
+    [Fact]
+    public void A_gatherer_family_picks_the_bushes_around_its_hut_in_summer()
+    {
+        var w = NewWild(42, Patient.Value);
+        // Summer, so the bushes bear fruit.
+        w.StepTicks(SimTime.TicksPerSeason - w.Calendar.Tick % SimTime.TicksPerSeason);
+        var start = w.Terrain!.Start;
+        var bush = w.NearestNode(NodeKind.Bush, start, 40, Colonists(w)[0]) ?? throw new InvalidOperationException("no bush");
+        var hut = HutWithFamily(w, "gatherer", bush);
+        w.StepDays(5);
+        Assert.True(hut.Stock.Get(Res(w, "food")).IsPositive, "the gatherer produced nothing (no carriers: it stays in the hut)");
+        Assert.False(w.Gatherable(bush), "the nearest bush was not picked");
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void A_hunting_camp_never_takes_the_last_animals_of_a_herd()
+    {
+        var w = NewWild(42, Patient.Value);
+        var start = w.Terrain!.Start;
+        var deer = w.Animals.Where(a => a.Kind == FaunaKind.Deer).OrderBy(a => a.Pos.Manhattan(start)).First();
+        var camp = HutWithFamily(w, "hunting_camp", deer.Home);
+        int herdBefore = w.Animals.Count(a => a.Herd == deer.Herd);
+        w.StepDays(40);
+        int keep = w.Content.Balance.HuntKeepPerHerd;
+        Assert.True(w.Animals.Count(a => a.Herd == deer.Herd) >= Math.Min(keep, herdBefore), "herd hunted out");
+        Assert.True(camp.Stock.Get(Res(w, "food")).IsPositive || w.Animals.Count(a => a.Herd == deer.Herd) < herdBefore, "the camp hunted nothing");
+        TestKit.AssertInvariants(w);
+    }
 }

@@ -54,6 +54,8 @@ public static class Placement
             int detour = Math.Max(0, ticks / w.Content.Balance.TicksPerCellOffroad - center.Manhattan(hall));
             long score = -10L * c.Manhattan(want) - 30L * detour - TreesUnder(w, def, c) * 25L;
             if (def.Harvests == HarvestSource.Trees) score += MatureTreesNear(w, center, def.WorkRadius) * 4L;
+            if (def.Harvests == HarvestSource.Forage) score += ForageNear(w, center, def.WorkRadius) * 12L;
+            if (def.Harvests == HarvestSource.Game) score += w.Animals.Count(a => a.Huntable && World.Chebyshev(a.Pos, center) <= def.WorkRadius) * 20L;
             if (def.Recipes.Any(r => r.Kind == RecipeKind.Seasonal)) score += w.FertilityPermille(def, c, 0) / 4;
             if (score > bestScore)
             {
@@ -62,6 +64,18 @@ public static class Placement
             }
         }
         return best;
+    }
+
+    private static int ForageNear(World w, Cell center, int r)
+    {
+        int n = 0;
+        for (int y = center.Y - r; y <= center.Y + r; y++)
+        for (int x = center.X - r; x <= center.X + r; x++)
+        {
+            var c = new Cell(x, y);
+            if (w.Map.InBounds(c) && w.Nature!.At(c).Kind is NodeKind.Bush or NodeKind.Mushroom) n++;
+        }
+        return n;
     }
 
     private static int TreesUnder(World w, BuildingDef def, Cell origin)

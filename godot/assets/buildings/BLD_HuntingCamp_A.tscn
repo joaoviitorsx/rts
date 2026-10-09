@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_tent.tscn" id="1_KS_tent"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_tent-canvas.tscn" id="2_KS_tent-canvas"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_campfire-pit.tscn" id="3_KS_campfire-pit"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_workbench.tscn" id="4_KS_workbench"]
+
+[node name="BLD_HuntingCamp_A" type="Node3D"]
+
+[node name="KS_tent_0" parent="." instance=ExtResource("1_KS_tent")]
+transform = Transform3D(1.0392, 0, -0.6000, 0, 1.2, 0, 0.6000, 0, 1.0392, -0.4, 0, -0.5)
+
+[node name="KS_tent-canvas_1" parent="." instance=ExtResource("2_KS_tent-canvas")]
+transform = Transform3D(1.0392, 0, -0.6000, 0, 1.2, 0, 0.6000, 0, 1.0392, -0.4, 0, -0.5)
+
+[node name="KS_campfire-pit_2" parent="." instance=ExtResource("3_KS_campfire-pit")]
+transform = Transform3D(1.4000, 0, -0.0000, 0, 1.4, 0, 0.0000, 0, 1.4000, 0.9, 0, 0.8)
+
+[node name="KS_workbench_3" parent="." instance=ExtResource("4_KS_workbench")]
+transform = Transform3D(0.0000, 0, 1.0000, 0, 1.0, 0, -1.0000, 0, 0.0000, 1.0, 0, -0.9)

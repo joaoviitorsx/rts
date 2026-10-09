@@ -71,6 +71,14 @@ ui.top.ca,CA {0}/{1},AC {0}/{1}
 ui.top.ca.tooltip,"Capacidade Administrativa: quanto o reeve consegue governar (escrivães, pergaminhos, o salão do senhor).
 Cada decreto ativo usa CA. Acima do limite, ele atrasa e erra.","Administrative capacity: how much the reeve can govern (scribes, parchments, the lord's hall).
 Each active decree uses AC. Above the limit he is late and makes mistakes."
+advice.title,Sugestão: deixe uma família cuidar disso,Suggestion: let a family handle it
+advice.show,Mostrar onde,Show where
+advice.woodcutter.why,"Seus colonos vivem cortando árvores ({0} ordens em {1} dias).","Your colonists keep chopping trees ({0} orders in {1} days)."
+advice.woodcutter.what,"Uma cabana de lenhador ({0}) com uma família corta sozinha as árvores maduras num raio de {1} células — e a floresta cresce de volta.","A woodcutter's hut ({0}) with one family fells the mature trees within {1} cells on its own — and the forest grows back."
+advice.gatherer.why,"Seus colonos vivem colhendo frutas e cogumelos ({0} ordens em {1} dias).","Your colonists keep picking berries and mushrooms ({0} orders in {1} days)."
+advice.gatherer.what,"Uma {0} com uma família colhe sozinha os arbustos e cogumelos num raio de {1} células, a cada estação.","A {0} with one family picks the bushes and mushrooms within {1} cells on its own, every season."
+advice.hunting_camp.why,"Seus colonos vivem caçando ({0} ordens em {1} dias).","Your colonists keep hunting ({0} orders in {1} days)."
+advice.hunting_camp.what,"Um {0} com uma família caça sozinho num raio de {1} células, sem acabar com os rebanhos (eles voltam na primavera).","A {0} with one family hunts within {1} cells on its own, never wiping out a herd (they come back in spring)."
 suggestion.title,💡 O reeve sugere,💡 The reeve suggests
 suggestion.why,"Você colocou famílias para produzir {0} {1} vezes quando o estoque estava em ~{2}.","You put families to produce {0} {1} times when the stock was around {2}."
 suggestion.what,"Decreto: manter {0} entre {1} e {2}","Decree: keep {0} between {1} and {2}"
@@ -206,8 +214,15 @@ bld.pile,Pilha,Pile
 bld.campfire,Fogueira,Campfire
 bld.depot,Depósito coberto,Covered depot
 bld.tent,Tenda,Tent
+bld.gatherer,Cabana do coletor,Gatherer's hut
+bld.hunting_camp,Acampamento de caça,Hunting camp
+bld_short.depot,Depósito,Depot
+bld_short.gatherer,Coletor,Gatherer
+bld_short.hunting_camp,Caça,Hunting
 rcp.chop_wood,Cortar madeira,Chop wood
 rcp.split_firewood,Rachar lenha,Split firewood
+rcp.forage,Coletar,Forage
+rcp.hunt_game,Caçar,Hunt
 rcp.forge_tools,Forjar ferramentas,Forge tools
 rcp.quarry_stone,Extrair pedra,Quarry stone
 rcp.grow_food,Cultivar,Grow food
@@ -230,6 +245,7 @@ chronicle.overloaded,o reeve ficou sobrecarregado por {0} dias (decretos demais 
 chronicle.harvest,colheita farta: o estoque de comida chegou a {0},bumper harvest: food stock reached {0}
 chronicle.family_formed,{0} deixaram o bando e viraram uma família,{0} left the band and became a family
 chronicle.family_arrived,a {0} chegou porque havia casa livre,the {0} arrived because there was a free house
+chronicle.first_delegation,o dia em que paramos de fazer tudo à mão: uma família assumiu {0},the day we stopped doing everything by hand: a family took over the {0}
 chronicle.suggestion,o reeve deixou uma sugestão de decreto esperando por você,the reeve left a decree suggestion waiting for you
 ui.top.colonists,{0} colonos,{0} colonists
 ui.top.population_colonists,{0} famílias · {1} colonos,{0} families · {1} colonists

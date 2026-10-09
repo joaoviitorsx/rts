@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_structure.tscn" id="1_KS_structure"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_structure-canvas.tscn" id="2_KS_structure-canvas"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_bucket.tscn" id="3_KS_bucket"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_box-open.tscn" id="4_KS_box-open"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_box-large-open.tscn" id="5_KS_box-large-open"]
+[ext_resource type="PackedScene" path="res://assets/environment/kenney/K_mushroom_redGroup.tscn" id="6_K_mushroom_redGroup"]
+[ext_resource type="PackedScene" path="res://assets/environment/kenney/K_plant_bushSmall.tscn" id="7_K_plant_bushSmall"]
+
+[node name="BLD_Gatherer_A" type="Node3D"]
+
+[node name="KS_structure_0" parent="." instance=ExtResource("1_KS_structure")]
+transform = Transform3D(1.6000, 0, -0.0000, 0, 1.6, 0, 0.0000, 0, 1.6000, 0.2, 0, -0.4)
+
+[node name="KS_structure-canvas_1" parent="." instance=ExtResource("2_KS_structure-canvas")]
+transform = Transform3D(1.6000, 0, -0.0000, 0, 1.6, 0, 0.0000, 0, 1.6000, 0.2, 0, -0.4)
+
+[node name="KS_bucket_2" parent="." instance=ExtResource("3_KS_bucket")]
+transform = Transform3D(1.2000, 0, -0.0000, 0, 1.2, 0, 0.0000, 0, 1.2000, 1.0, 0, 1.0)
+
+[node name="KS_box-open_3" parent="." instance=ExtResource("4_KS_box-open")]
+transform = Transform3D(0.9397, 0, -0.3420, 0, 1.0, 0, 0.3420, 0, 0.9397, -0.9, 0, 1.0)
+
+[node name="KS_box-large-open_4" parent="." instance=ExtResource("5_KS_box-large-open")]
+transform = Transform3D(0.9848, 0, 0.1736, 0, 1.0, 0, -0.1736, 0, 0.9848, 1.2, 0, 0.0)
+
+[node name="K_mushroom_redGroup_5" parent="." instance=ExtResource("6_K_mushroom_redGroup")]
+transform = Transform3D(0.8000, 0, -0.0000, 0, 0.8, 0, 0.0000, 0, 0.8000, -1.4, 0, 0.2)
+
+[node name="K_plant_bushSmall_6" parent="." instance=ExtResource("7_K_plant_bushSmall")]
+transform = Transform3D(0.8000, 0, -0.0000, 0, 0.8, 0, 0.0000, 0, 0.8000, -1.3, 0, -1.3)

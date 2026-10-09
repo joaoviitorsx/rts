@@ -273,3 +273,16 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
   ocioso (P33/D6) · C8 velocidade 0,5× · C9 telemetria opt-in (privacidade) · C10 outono em manchas.
 - Recomendação: só a C7 (atalho de ocioso, baixo custo, reversível) entra agora na etapa 3; o resto fica para depois do
   balanceamento da etapa 5.
+
+### P41. Quem leva a produção das cabanas do degrau 1 até o estoque (10/10/2026)
+- **Contexto:** lenhador, coletor e acampamento de caça guardam a produção na própria cabana; só carregadores (P1) a
+  levam ao estoque. Na abertura não havia vaga de carregador antes do depósito/celeiro.
+- **Escolha (simples, reversível):** a pilha ganha 1 vaga de carregador (o depósito coberto já tem 1). Uma 2ª família
+  vira carregadora — 2 casas para o degrau 1 completo.
+- **Alternativas:** (b) os trabalhadores da cabana levam a própria produção (como no Manor Lords), com custo de horas
+  pela distância; (c) colonos sob controle direto recebem ordem "buscar" numa cabana. Medir na etapa 5 (CLI).
+
+### P42. Sugestão do degrau 0→1 como conselho da interface (10/10/2026)
+- **Escolha:** o cartão "deixe uma família cuidar disso" conta as ordens de coleta/caça que o jogador enviou nesta
+  sessão (não é estado do mundo: save e hash intactos). A crônica registra a 1ª delegação pela simulação.
+- **Reverter:** mover a contagem para a sim (campo salvo) se a CLI precisar medir a sugestão.

@@ -189,6 +189,11 @@ public partial class Main : Node3D
         player?.Start(host.World);
         if (args.Contains("--rts-demo")) RtsDemo(host.World);
         if (args.Contains("--camp-demo")) CampDemo(host.World);
+        if (args.Contains("--advice-demo") && host.World.Terrain is { } ta)   // dev: tree orders through Send (HutAdviceCard)
+            for (int i = 0; i < host.World.Content.Balance.SuggestAfterActions; i++)
+                if (host.World.Units.FirstOrDefault(u => u.IsColonist) is { } c
+                    && host.World.NearestNode(Ironvale.Sim.Map.NodeKind.Tree, ta.Start, 30, c) is { } t)
+                    host.Send(new Ironvale.Sim.Commands.OrderUnits(new[] { c.Id }, Ironvale.Sim.Population.OrderKind.Gather, t));
         foreach (var arg in args)
         {
             if (arg.StartsWith("--speed=") && int.TryParse(arg[8..], out int speed)) host.SetSpeed(speed);

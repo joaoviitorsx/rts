@@ -53,6 +53,13 @@ OPENING = {
         ("KS_campfire-stand", (0, 0, 0), 0, 1.0), ("KS_resource-wood", (0.75, 0, 0.6), 40, 1.0)],
     "BLD_Tent_A": [   # 2×2: canvas tent and bedrolls
         ("K_tent_detailedOpen", (0, 0, -0.2), 0, 1.0), ("KS_bedroll", (1.1, 0, 1.4), 80, 1.0)],
+    "BLD_Gatherer_A": [   # 2×2: a lean-to with baskets of berries and mushrooms
+        ("KS_structure", (0.2, 0, -0.4), 0, 1.6), ("KS_structure-canvas", (0.2, 0, -0.4), 0, 1.6),
+        ("KS_bucket", (1.0, 0, 1.0), 0, 1.2), ("KS_box-open", (-0.9, 0, 1.0), 20, 1.0), ("KS_box-large-open", (1.2, 0, 0.0), -10, 1.0),
+        ("K_mushroom_redGroup", (-1.4, 0, 0.2), 0, 0.8), ("K_plant_bushSmall", (-1.3, 0, -1.3), 0, 0.8)],
+    "BLD_HuntingCamp_A": [   # 2×2: hide-drying frame, a small fire and the skinning bench
+        ("KS_tent", (-0.4, 0, -0.5), 30, 1.2), ("KS_tent-canvas", (-0.4, 0, -0.5), 30, 1.2),
+        ("KS_campfire-pit", (0.9, 0, 0.8), 0, 1.4), ("KS_workbench", (1.0, 0, -0.9), -90, 1.0)],
     "BLD_Depot_A": [   # 2×2: a roof on posts sheltering the stock
         ("KS_structure-roof", (0.68, 0, 0.7), 0, 1.25), ("K_log_stackLarge", (-0.4, 0, -0.5), 90, 0.6),
         ("KS_box-large", (0.9, 0, -0.6), 0, 1.0), ("KS_barrel", (0.9, 0, 0.6), 0, 1.0), ("KS_box", (-0.6, 0, 0.9), 10, 1.0)],
