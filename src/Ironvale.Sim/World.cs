@@ -27,6 +27,8 @@ public sealed class World
     public long Tick { get; internal set; }
     public long StartTick { get; }
     public GridMap Map { get; }
+    /// <summary>Routes and walking times (cached distance fields; not part of the saved state).</summary>
+    public Pathfinder Paths { get; }
     public RngStreams Rng { get; }
     public Ledger Ledger { get; }
     public TelemetryRecorder Telemetry { get; }
@@ -55,6 +57,7 @@ public sealed class World
         StartTick = startTick;
         Tick = startTick;
         Map = new GridMap(mapW, mapH);
+        Paths = new Pathfinder(Map, content.Balance);
         Rng = new RngStreams(seed);
         Ledger = new Ledger(content.ResourceCount);
         Telemetry = new TelemetryRecorder(content.ResourceCount);
@@ -219,6 +222,9 @@ public sealed class World
         return n;
     }
 
+    /// <summary>Ticks to walk into <paramref name="cell"/> on the way to <paramref name="target"/>.</summary>
+    public int StepTicksInto(Cell cell, Cell target) => Paths.EnterCost(cell, Map.BuildingAt(target));
+
     public Cell HomeCellOf(Household h) =>
         GetBuilding(h.HomeId)?.Center ?? SeatBuilding?.Center ?? new Cell(Map.Width / 2, Map.Height / 2);
 
@@ -297,6 +303,7 @@ public sealed class World
                 Phase = CarrierPhase.Idle,
                 Pos = b.Center,
                 Target = b.Center,
+                NextCell = b.Center,
             };
             _carriers.Add(c);
         }

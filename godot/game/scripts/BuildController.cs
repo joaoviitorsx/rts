@@ -86,9 +86,7 @@ public partial class BuildController : Node3D
         _ghost.Position = _catalog.CellToWorld(_cell.X, _cell.Y) + new Vector3(w, 0, h) * (cs / 2);
 
         var world = _host.World;
-        _valid = world.Map.CanPlace(Selected, _cell, _rotation);
-        for (int r = 0; r < Selected.Cost.Length && _valid; r++)
-            if (world.StorageFree(r) < Selected.Cost[r]) _valid = false;
+        _valid = world.Map.CanPlace(Selected, _cell, _rotation);   // materials come later, carried to the site
 
         var tint = _valid ? new Color(0.5f, 1f, 0.5f) : new Color(1f, 0.4f, 0.4f);
         _ghost.GetChild<MeshInstance3D>(1).MaterialOverride = _catalog.Material(tint, ghost: true);

@@ -33,6 +33,8 @@ public sealed class StateDto
     public List<PolicyDto> Policies { get; set; } = new();
     public LedgerDto Ledger { get; set; } = new();
     public List<PolicyLogDto> PolicyLog { get; set; } = new();
+    /// <summary>Road cells as indices (y × width + x), ascending.</summary>
+    public List<int> Roads { get; set; } = new();
 }
 
 public sealed class RngDto
@@ -89,6 +91,8 @@ public sealed class CarrierDto
     public int Y { get; set; }
     public int TargetX { get; set; }
     public int TargetY { get; set; }
+    public int NextX { get; set; }
+    public int NextY { get; set; }
     public int StepTicks { get; set; }
     public int WaitTicks { get; set; }
     public int PickupId { get; set; }

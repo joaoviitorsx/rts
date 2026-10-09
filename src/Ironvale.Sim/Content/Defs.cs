@@ -105,7 +105,11 @@ public sealed class BalanceDef
     public required int LeaveAfterDeficitDays { get; init; }
     public required int SubsistenceFoodCoverPermille { get; init; }
     public required int SubsistenceFirewoodCoverPermille { get; init; }
-    public required int CarrierTicksPerCell { get; init; }
+    /// <summary>Ticks to walk into a road cell / an open (off-road) cell.</summary>
+    public required int TicksPerCellRoad { get; init; }
+    public required int TicksPerCellOffroad { get; init; }
+    /// <summary>Stone paid per road cell when it is laid.</summary>
+    public required Qty RoadStonePerCell { get; init; }
     public required int CarrierLoadTicks { get; init; }
     public required Qty MinPickup { get; init; }
     public required int HarvestVariancePermille { get; init; }

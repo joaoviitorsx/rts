@@ -10,7 +10,10 @@
   "leaveAfterDeficitDays": 30,
   "subsistenceFoodCoverPermille": 500,
   "subsistenceFirewoodCoverPermille": 500,
-  "carrierTicksPerCell": 2,
+  // Walking (Marco 2A.3): ticks to enter a cell. Roads are faster; crossing other buildings is a last resort.
+  "ticksPerCellRoad": 2,
+  "ticksPerCellOffroad": 3,
+  "roadStonePerCell": 1,
   "carrierLoadTicks": 4,
   "minPickup": 2,
   "harvestVariancePermille": 100,

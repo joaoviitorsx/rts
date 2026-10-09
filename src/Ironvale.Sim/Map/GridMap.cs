@@ -13,10 +13,16 @@ public readonly record struct Cell(int X, int Y)
     }
 }
 
-/// <summary>Square tile grid. Each cell stores the id of the building occupying it (0 = free).</summary>
+/// <summary>
+/// Square tile grid. Each cell stores the id of the building occupying it (0 = free) and whether it is a road.
+/// <see cref="Version"/> changes whenever walking costs may change (paths are cached against it).
+/// </summary>
 public sealed class GridMap
 {
     private readonly int[] _occupancy;
+    private readonly bool[] _road;
+
+    public int Version { get; private set; }
 
     public int Width { get; }
     public int Height { get; }
@@ -26,6 +32,27 @@ public sealed class GridMap
         Width = width;
         Height = height;
         _occupancy = new int[width * height];
+        _road = new bool[width * height];
+    }
+
+    public int Index(Cell c) => c.Y * Width + c.X;
+    public Cell CellAt(int index) => new(index % Width, index / Width);
+
+    public bool IsRoad(Cell c) => InBounds(c) && _road[Index(c)];
+
+    public IEnumerable<Cell> Roads
+    {
+        get
+        {
+            for (int i = 0; i < _road.Length; i++)
+                if (_road[i]) yield return CellAt(i);
+        }
+    }
+
+    internal void SetRoad(Cell c, bool road)
+    {
+        _road[Index(c)] = road;
+        Version++;
     }
 
     public bool InBounds(Cell c) => c.X >= 0 && c.Y >= 0 && c.X < Width && c.Y < Height;
@@ -42,7 +69,7 @@ public sealed class GridMap
         for (int x = origin.X; x < origin.X + w; x++)
         {
             var c = new Cell(x, y);
-            if (!InBounds(c) || BuildingAt(c) != 0) return false;
+            if (!InBounds(c) || BuildingAt(c) != 0 || _road[Index(c)]) return false;
         }
         return true;
     }
@@ -53,5 +80,6 @@ public sealed class GridMap
         for (int y = origin.Y; y < origin.Y + h; y++)
         for (int x = origin.X; x < origin.X + w; x++)
             _occupancy[y * Width + x] = buildingId;
+        Version++;
     }
 }

@@ -24,8 +24,10 @@ public sealed class Carrier
     public Qty Amount { get; internal set; }
     public int ShipmentId { get; internal set; }
 
+    /// <summary>Cell being walked into (chosen by the pathfinder when the step starts; == Pos when standing).</summary>
+    public Cell NextCell { get; internal set; }
+
     public bool Retiring => HouseholdId == 0;
-    public Cell NextCell => Pos.StepToward(Target);
     public bool IsMoving => Phase is CarrierPhase.ToPickup or CarrierPhase.ToDropoff or CarrierPhase.Returning && Pos != Target;
 }
 

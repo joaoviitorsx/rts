@@ -24,6 +24,35 @@ public sealed record PlaceBuilding(string DefId, Cell Origin, int Rotation) : Si
     }
 }
 
+/// <summary>Lays road on free cells (Marco 2A.3). Stone is paid per cell, from storage; occupied cells are skipped.</summary>
+public sealed record PlaceRoad(Cell[] Cells) : SimCommand
+{
+    internal override string? Apply(World w)
+    {
+        var cells = Cells.Distinct().Where(c => w.Map.InBounds(c) && w.Map.BuildingAt(c) == 0 && !w.Map.IsRoad(c)).ToList();
+        if (cells.Count == 0) return "nenhuma célula livre para estrada";
+        int stone = w.Content.Resource("stone").Index;
+        var cost = w.Content.Balance.RoadStonePerCell * cells.Count;
+        if (w.StorageFree(stone) < cost) return $"faltam {w.Content.Resources[stone].Name} ({w.StorageFree(stone)}/{cost})";
+        var center = cells[cells.Count / 2];
+        w.RecordConsumed(stone, w.TakeFromStorages(stone, cost, center), fromStorage: true);
+        foreach (var c in cells) w.Map.SetRoad(c, true);
+        return null;
+    }
+}
+
+/// <summary>Removes road cells (no refund).</summary>
+public sealed record RemoveRoad(Cell[] Cells) : SimCommand
+{
+    internal override string? Apply(World w)
+    {
+        var cells = Cells.Distinct().Where(w.Map.IsRoad).ToList();
+        if (cells.Count == 0) return "nenhuma estrada aqui";
+        foreach (var c in cells) w.Map.SetRoad(c, false);
+        return null;
+    }
+}
+
 public sealed record CancelConstruction(int BuildingId) : SimCommand
 {
     internal override string? Apply(World w)

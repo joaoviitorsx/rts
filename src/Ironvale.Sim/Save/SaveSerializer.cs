@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 3;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + structured log (2A.2)
+    public const int CurrentVersion = 4;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes (2A.3)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -92,7 +92,7 @@ public static class SaveSerializer
             Carriers = w.Carriers.Select(c => new CarrierDto
             {
                 Id = c.Id, HouseholdId = c.HouseholdId, BaseId = c.BaseId, Phase = c.Phase.ToString(),
-                X = c.Pos.X, Y = c.Pos.Y, TargetX = c.Target.X, TargetY = c.Target.Y,
+                X = c.Pos.X, Y = c.Pos.Y, TargetX = c.Target.X, TargetY = c.Target.Y, NextX = c.NextCell.X, NextY = c.NextCell.Y,
                 StepTicks = c.StepTicks, WaitTicks = c.WaitTicks, PickupId = c.PickupId, DropoffId = c.DropoffId,
                 Resource = c.Resource >= 0 ? Res(c.Resource) : null, Amount = c.Amount.Milli, ShipmentId = c.ShipmentId,
             }).ToList(),
@@ -111,6 +111,7 @@ public static class SaveSerializer
                 Initial = Map(w.Ledger.Initial), Produced = Map(w.Ledger.Produced), Consumed = Map(w.Ledger.Consumed),
             },
             PolicyLog = w.PolicyLog.Select(e => new PolicyLogDto { Tick = e.Tick, PolicyId = e.PolicyId, Key = e.Key, Args = e.Args }).ToList(),
+            Roads = w.Map.Roads.Select(w.Map.Index).ToList(),
         };
     }
 
@@ -223,7 +224,7 @@ public static class SaveSerializer
             w.InsertCarrier(new Carrier
             {
                 Id = d.Id, HouseholdId = d.HouseholdId, BaseId = d.BaseId, Phase = Enum<CarrierPhase>(d.Phase),
-                Pos = new Cell(d.X, d.Y), Target = new Cell(d.TargetX, d.TargetY), StepTicks = d.StepTicks,
+                Pos = new Cell(d.X, d.Y), Target = new Cell(d.TargetX, d.TargetY), NextCell = new Cell(d.NextX, d.NextY), StepTicks = d.StepTicks,
                 WaitTicks = d.WaitTicks, PickupId = d.PickupId, DropoffId = d.DropoffId,
                 Resource = d.Resource is null ? -1 : Res(d.Resource), Amount = new Qty(d.Amount), ShipmentId = d.ShipmentId,
             });
@@ -251,6 +252,7 @@ public static class SaveSerializer
         Array.Copy(Arr(s.Ledger.Initial), w.Ledger.Initial, content.ResourceCount);
         Array.Copy(Arr(s.Ledger.Produced), w.Ledger.Produced, content.ResourceCount);
         Array.Copy(Arr(s.Ledger.Consumed), w.Ledger.Consumed, content.ResourceCount);
+        foreach (int i in s.Roads) w.Map.SetRoad(w.Map.CellAt(i), true);
         foreach (var e in s.PolicyLog) w.InsertPolicyLog(new PolicyLogEntry(e.Tick, e.PolicyId, e.Key, e.Args));
         return w;
     }

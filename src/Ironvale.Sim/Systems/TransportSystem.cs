@@ -29,11 +29,11 @@ public sealed class TransportSystem : ISimSystem
                     return;
                 }
                 if (cal.IsHourStart && TryPlan(w, c)) return;
-                if (c.Phase == CarrierPhase.Returning && Move(c, bal)) c.Phase = CarrierPhase.Idle;
+                if (c.Phase == CarrierPhase.Returning && Move(w, c)) c.Phase = CarrierPhase.Idle;
                 return;
 
             case CarrierPhase.ToPickup:
-                if (Move(c, bal))
+                if (Move(w, c))
                 {
                     c.Phase = CarrierPhase.Loading;
                     c.WaitTicks = bal.CarrierLoadTicks;
@@ -51,7 +51,7 @@ public sealed class TransportSystem : ISimSystem
                 return;
 
             case CarrierPhase.ToDropoff:
-                if (Move(c, bal))
+                if (Move(w, c))
                 {
                     c.Phase = CarrierPhase.Unloading;
                     c.WaitTicks = bal.CarrierLoadTicks;
@@ -81,12 +81,21 @@ public sealed class TransportSystem : ISimSystem
         }
     }
 
+    /// <summary>
+    /// One tick of walking along the pathfinder's route: the next cell is chosen when a step starts, and entering
+    /// it takes its terrain cost (road faster than open ground).
+    /// </summary>
     /// <returns>true when arrived at <see cref="Carrier.Target"/>.</returns>
-    private static bool Move(Carrier c, BalanceDef bal)
+    private static bool Move(World w, Carrier c)
     {
-        if (c.Pos == c.Target) return true;
+        if (c.Pos == c.Target)
+        {
+            c.NextCell = c.Pos;
+            return true;
+        }
+        if (c.StepTicks == 0) c.NextCell = w.Paths.NextStep(c.Pos, c.Target);
         c.StepTicks++;
-        if (c.StepTicks >= bal.CarrierTicksPerCell)
+        if (c.StepTicks >= w.StepTicksInto(c.NextCell, c.Target))
         {
             c.Pos = c.NextCell;
             c.StepTicks = 0;

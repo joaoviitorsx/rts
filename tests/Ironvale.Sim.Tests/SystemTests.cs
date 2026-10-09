@@ -147,7 +147,7 @@ public class TransportTests
 
         int near = TicksToDeliver(4);
         int far = TicksToDeliver(14);
-        int perCell = TestKit.Content.Balance.CarrierTicksPerCell;
+        int perCell = TestKit.Content.Balance.TicksPerCellOffroad;   // no roads here
         Assert.Equal(2 * 10 * perCell, far - near);   // there and back, 10 extra cells each way
     }
 

@@ -194,7 +194,6 @@ public partial class WorldView : Node3D
     {
         foreach (var a in _agentNodes.Values) a.Seen = false;
         float alpha = _host.TickAlpha;
-        int ticksPerCell = w.Content.Balance.CarrierTicksPerCell;
         float dt = (float)GetProcessDeltaTime();
         var season = w.Calendar.Season;
 
@@ -203,7 +202,7 @@ public partial class WorldView : Node3D
             var carrier = h.State == HouseholdState.Hauling ? w.CarrierOf(h.Id) : null;
             if (carrier is not null)
             {
-                UpdateCarrierAgent(w, h.Id, carrier, alpha, ticksPerCell, dt);
+                UpdateCarrierAgent(w, h.Id, carrier, alpha, dt);
                 continue;
             }
             var agent = GetAgent(h.Id);
@@ -222,7 +221,7 @@ public partial class WorldView : Node3D
             }
         }
         foreach (var c in w.Carriers)
-            if (c.Retiring) UpdateCarrierAgent(w, -c.Id, c, alpha, ticksPerCell, dt);
+            if (c.Retiring) UpdateCarrierAgent(w, -c.Id, c, alpha, dt);
 
         foreach (var id in _agentNodes.Where(kv => !kv.Value.Seen).Select(kv => kv.Key).ToList())
         {
@@ -231,10 +230,10 @@ public partial class WorldView : Node3D
         }
     }
 
-    private void UpdateCarrierAgent(World w, int key, Carrier c, float alpha, int ticksPerCell, float dt)
+    private void UpdateCarrierAgent(World w, int key, Carrier c, float alpha, float dt)
     {
         var agent = GetAgent(key);
-        var pos = CarrierPosition(c, alpha, ticksPerCell);
+        var pos = CarrierPosition(c, alpha, w.StepTicksInto(c.NextCell, c.Target));
         float speed = dt > 0 ? agent.LastPosition.DistanceTo(pos) / dt : 0;
         Place(agent, pos, pos - agent.LastPosition);
         bool loaded = c.ShipmentId != 0;
