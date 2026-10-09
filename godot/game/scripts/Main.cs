@@ -57,9 +57,9 @@ public partial class Main : Node3D
         AddChild(build);
         build.Init(host, catalog, camera, view);
 
-        var ui = new GameUI { Name = "UI" };
+        var ui = GD.Load<PackedScene>("res://ui/screens/hud.tscn").Instantiate<Hud>();
         AddChild(ui);
-        ui.Init(host, build, view);
+        ui.Init(host, build, view, camera);
 
         ApplyCommandLine(host);
         PerfProbe.AttachIfRequested(this);

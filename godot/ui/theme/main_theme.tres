@@ -1,0 +1,125 @@
+[gd_resource type="Theme" load_steps=8 format=3]
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.16, 0.17, 0.18, 0.94)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="topbar"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0.12, 0.13, 0.14, 0.96)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+
+[sub_resource type="StyleBoxFlat" id="chip"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.22, 0.23, 0.24, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="alert_info"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.16, 0.17, 0.18, 0.94)
+border_width_left = 4
+border_color = Color(0.29, 0.39, 0.48, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="alert_warning"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.16, 0.17, 0.18, 0.94)
+border_width_left = 4
+border_color = Color(0.85, 0.58, 0.17, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="alert_critical"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.16, 0.17, 0.18, 0.94)
+border_width_left = 4
+border_color = Color(0.69, 0.29, 0.23, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="chart"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.11, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[resource]
+default_font_size = 16
+HBoxContainer/constants/separation = 8
+VBoxContainer/constants/separation = 8
+GridContainer/constants/h_separation = 12
+GridContainer/constants/v_separation = 4
+HeaderLabel/base_type = &"Label"
+HeaderLabel/font_sizes/font_size = 22
+SecondaryLabel/base_type = &"Label"
+SecondaryLabel/colors/font_color = Color(0.72, 0.72, 0.72, 1)
+SecondaryLabel/font_sizes/font_size = 14
+TrendUp/base_type = &"Label"
+TrendUp/colors/font_color = Color(0.37, 0.54, 0.27, 1)
+TrendDown/base_type = &"Label"
+TrendDown/colors/font_color = Color(0.69, 0.29, 0.23, 1)
+WarningLabel/base_type = &"Label"
+WarningLabel/colors/font_color = Color(0.85, 0.58, 0.17, 1)
+PanelPrimary/base_type = &"PanelContainer"
+PanelPrimary/styles/panel = SubResource("panel")
+TopBar/base_type = &"PanelContainer"
+TopBar/styles/panel = SubResource("topbar")
+ChipPanel/base_type = &"PanelContainer"
+ChipPanel/styles/panel = SubResource("chip")
+AlertInfo/base_type = &"PanelContainer"
+AlertInfo/styles/panel = SubResource("alert_info")
+AlertWarning/base_type = &"PanelContainer"
+AlertWarning/styles/panel = SubResource("alert_warning")
+AlertCritical/base_type = &"PanelContainer"
+AlertCritical/styles/panel = SubResource("alert_critical")
+ScreenMargin/base_type = &"MarginContainer"
+ScreenMargin/constants/margin_left = 12
+ScreenMargin/constants/margin_top = 8
+ScreenMargin/constants/margin_right = 12
+ScreenMargin/constants/margin_bottom = 12
+SeriesChart/base_type = &"Control"
+SeriesChart/colors/background = Color(0.1, 0.1, 0.11, 1)
+SeriesChart/colors/series_stock = Color(0.95, 0.85, 0.4, 1)
+SeriesChart/colors/series_produced = Color(0.5, 0.9, 0.5, 1)
+SeriesChart/colors/series_consumed = Color(0.95, 0.5, 0.45, 1)
+SeriesChart/font_sizes/font_size = 12

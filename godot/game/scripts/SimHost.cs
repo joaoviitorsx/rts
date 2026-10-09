@@ -9,6 +9,7 @@ using Ironvale.Sim.Content;
 using Ironvale.Sim.Events;
 using Ironvale.Sim.Save;
 using Ironvale.Sim.Time;
+using Ironvale.Game.UI;
 
 namespace Ironvale.Game;
 
@@ -69,6 +70,9 @@ public partial class SimHost : Node
         _accumulator = 0;
         WorldReplaced?.Invoke();
     }
+
+    /// <summary>Read-only data for the HUD (the UI never touches the World directly).</summary>
+    public UiSnapshot BuildUiSnapshot() => UiSnapshotBuilder.Build(World, Speed, key => TranslationServer.Translate(key));
 
     public void Send(SimCommand command)
     {

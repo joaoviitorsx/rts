@@ -1,0 +1,106 @@
+keys,pt_BR,en
+ui.top.population,{0} famílias,{0} families
+ui.top.date,{1} · dia {3}/{2} · ano {0},{1} · day {3}/{2} · year {0}
+ui.top.winter_in,inverno em {0} d,winter in {0} d
+ui.top.winter_now,inverno,winter
+ui.top.simulating,Simulando… {0}%,Simulating… {0}%
+ui.season.Spring,Primavera,Spring
+ui.season.Summer,Verão,Summer
+ui.season.Autumn,Outono,Autumn
+ui.season.Winter,Inverno,Winter
+ui.speed.pause,Pausa (Espaço),Pause (Space)
+ui.speed.x,Velocidade {0}x (1–4),Speed {0}x (1–4)
+ui.save,Salvar,Save
+ui.load,Carregar,Load
+ui.save.tooltip,Salvar rápido (F5),Quick save (F5)
+ui.load.tooltip,Carregar rápido (F9),Quick load (F9)
+ui.bottom.families,Famílias,Families
+ui.bottom.policies,Políticas,Policies
+ui.bottom.debug,Debug,Debug
+ui.bottom.build,Construir:,Build:
+ui.build.tooltip,"{0}
+Custo: {1}
+Obra: {2} dias
+R gira · Shift mantém · botão direito cancela","{0}
+Cost: {1}
+Build time: {2} days
+R rotates · Shift keeps · right click cancels"
+ui.resource.tooltip,"{0}: {1}
+Produção: +{2}/dia
+Consumo: −{3}/dia
+{4}","{0}: {1}
+Production: +{2}/day
+Consumption: −{3}/day
+{4}"
+ui.resource.lasts,Dura ~{0} dias no ritmo atual,Lasts ~{0} days at the current rate
+ui.resource.stable,Estoque estável ou subindo,Stock stable or rising
+ui.close,Fechar (Esc),Close (Esc)
+ui.alert.go,Ir,Go
+ui.alert.dismiss,Dispensar,Dismiss
+alert.food_out,Comida acaba em ~{0} dias,Food runs out in ~{0} days
+alert.food_low,Comida para ~{0} dias,Food for ~{0} days
+alert.firewood_winter,Pouca lenha ({0}) — inverno em {1} dias,Low firewood ({0}) — winter in {1} days
+alert.deadlock,Economia travada: nada é produzido nem transportado,Economy stalled: nothing produced or hauled
+alert.hunger,Família {0} com fome há {1} dias,{0} family hungry for {1} days
+building.status.construction,● Em obra: {0}/{1} dias,● Under construction: {0}/{1} days
+building.status.no_workers,● Parado: sem trabalhadores,● Idle: no workers
+building.status.off_season,● Fora de estação (trabalho na primavera/verão),● Out of season (work in spring/summer)
+building.status.full,● Parado: estoque cheio — precisa de carregadores,● Idle: stock full — needs carriers
+building.status.working,● Funcionando,● Working
+building.status.ok,● Pronto,● Ready
+building.produces,Produz:,Produces:
+building.stock,Estoque {0}/{1},Stock {0}/{1}
+building.harvest,Colheita prevista: ~{0},Expected harvest: ~{0}
+building.residents,Moradores ({0}/{1}): {2},Residents ({0}/{1}): {2}
+building.workers,Trabalhadores ({0}/{1}),Workers ({0}/{1})
+building.carriers,Carregadores ({0}/{1}),Carriers ({0}/{1})
+building.slot_free,(vaga livre),(free slot)
+building.remove,Remover,Remove
+building.assign,Designar,Assign
+building.cancel,Cancelar obra (reembolsa),Cancel construction (refund)
+building.no_job,sem emprego,unemployed
+source.player,manual,manual
+source.policy,política,policy
+source.free,livre,free
+families.title,Famílias,Families
+families.row,"{0} ({1}) — {2} · {3}","{0} ({1}) — {2} · {3}"
+families.detail,ferramenta {0}% · produtividade {1}%{2},tools {0}% · productivity {1}%{2}
+families.hunger, · fome {0}d, · hungry {0}d
+families.cold, · frio {0}d, · cold {0}d
+families.homeless, · sem casa, · homeless
+state.Working,trabalhando,working
+state.Hauling,carregando,hauling
+state.Subsisting,subsistência,subsisting
+policies.title,Políticas,Policies
+policies.keep,Manter,Keep
+policies.above,acima de,above
+policies.create,Criar,Create
+policies.row,#{0} Manter {1} ≥,#{0} Keep {1} ≥
+policies.enabled,Ativa,Enabled
+policies.log,Registro do administrador,Administrator log
+debug.title,Debug (dev),Debug (dev)
+debug.flows,Fluxos por recurso (último dia · média 30 dias),Flows per resource (last day · 30-day average)
+debug.col.resource,Recurso,Resource
+debug.col.prod,Prod/dia,Prod/day
+debug.col.cons,Cons/dia,Cons/day
+debug.col.prod30,Prod 30d,Prod 30d
+debug.col.cons30,Cons 30d,Cons 30d
+debug.col.stored,Armazém,Storage
+debug.col.local,Local,Local
+debug.col.transit,Trânsito,Transit
+debug.chart,Gráfico (último ano):,Chart (last year):
+debug.advance,Avançar,Advance
+debug.years,anos,years
+debug.advance_button,Avançar (headless),Advance (headless)
+debug.hash,Hash do estado,State hash
+debug.new_game,Novo jogo,New game
+debug.status,Tick {0} · {1} cargas em trânsito · economia parada há {2} dias · deadlock: {3},Tick {0} · {1} loads in transit · economy idle for {2} days · deadlock: {3}
+debug.yes,SIM,YES
+debug.no,não,no
+debug.series.stock,Armazém,Storage
+debug.series.prod,Produção/dia,Production/day
+debug.series.cons,Consumo/dia,Consumption/day
+debug.max,máx {0},max {0}
+event.rejected,Não foi possível: {0},Not possible: {0}
+event.left,A família {0} foi embora ({1}),The {0} family left ({1})
+event.completed,{0} concluído,{0} finished
