@@ -20,6 +20,10 @@
   // 70 ‰ ≈ 20 % of the shift for 20 cells off-road, ≈ 14 % on road).
   "commuteTicksPermille": 70,
   "autoRehome": 1,
+  // Yard garden: each family with a house grows food for itself in its free time (not in winter).
+  // Free hours = gardenFreeHours − round-trip commute; food = free hours × gardenFoodPerHour (only up to its need).
+  "gardenFreeHours": 2,
+  "gardenFoodPerHour": 0.15,
   "rehomeMinGainTicks": 12,
   "carrierLoadTicks": 4,
   "minPickup": 2,

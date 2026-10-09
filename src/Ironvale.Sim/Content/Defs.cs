@@ -113,6 +113,9 @@ public sealed class BalanceDef
     /// <summary>Commute time = walking ticks × this ‰ (0 = no commute).</summary>
     public required int CommuteTicksPermille { get; init; }
     public required bool AutoRehome { get; init; }
+    /// <summary>Daily free hours of a family that lives next to its work (commute eats into them).</summary>
+    public required int GardenFreeHours { get; init; }
+    public required Qty GardenFoodPerHour { get; init; }
     /// <summary>Minimum one-way saving, in walking ticks, for a family to move house.</summary>
     public required int RehomeMinGainTicks { get; init; }
     public required int CarrierLoadTicks { get; init; }

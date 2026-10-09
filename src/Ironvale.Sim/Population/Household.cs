@@ -43,6 +43,8 @@ public sealed class Household
     public int ToolHoursToday { get; internal set; }
     /// <summary>Construction site this household works on this hour (0 = none). Recomputed hourly.</summary>
     public int BuildSiteId { get; internal set; }
+    /// <summary>Food the yard garden gave the family today (for the family panel).</summary>
+    public Qty GardenFoodToday { get; internal set; }
 
     public bool HasJob => JobBuildingId != 0;
 }

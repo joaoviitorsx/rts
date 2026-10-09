@@ -284,6 +284,8 @@ public static class ContentLoader
             RoadStonePerCell = Qty.FromDouble(c.OptNum(el, "roadStonePerCell", 1)),
             CommuteTicksPermille = c.OptInt(el, "commuteTicksPermille", 70),
             AutoRehome = c.OptInt(el, "autoRehome", 1) != 0,
+            GardenFreeHours = c.OptInt(el, "gardenFreeHours", 2),
+            GardenFoodPerHour = Qty.FromDouble(c.OptNum(el, "gardenFoodPerHour", 0.15)),
             RehomeMinGainTicks = c.OptInt(el, "rehomeMinGainTicks", 6),
             CarrierLoadTicks = c.PositiveInt(el, "carrierLoadTicks"),
             MinPickup = Qty.FromDouble(c.Num(el, "minPickup")),

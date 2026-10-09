@@ -261,6 +261,15 @@ public sealed class World
         return overlap <= 0 ? 0 : overlap / SimTime.TicksPerHour;
     }
 
+    /// <summary>Free hours today (milli-hours): balance.gardenFreeHours minus the round-trip commute.</summary>
+    public int FreeMilliHours(Household h) =>
+        Math.Max(0, Content.Balance.GardenFreeHours * Permille.One - 2 * CommuteMilliTicks(h) / SimTime.TicksPerHour);
+
+    /// <summary>Food the yard garden can give today (none without a house or in winter).</summary>
+    public Qty GardenFood(Household h, in Calendar cal) =>
+        h.HomeId == 0 || cal.IsWinter ? Qty.Zero
+            : new Qty(Content.Balance.GardenFoodPerHour.Milli * FreeMilliHours(h) / Permille.One);
+
     /// <summary>Share (‰) of the shift spent walking (round trip).</summary>
     public int CommutePermille(Household h) => (int)(2L * CommuteMilliTicks(h) * Permille.One / DayMilliTicks);
 

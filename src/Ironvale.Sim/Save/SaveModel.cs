@@ -61,6 +61,7 @@ public sealed class HouseholdDto
     public string State { get; set; } = "";
     public int ToolHoursToday { get; set; }
     public int BuildSiteId { get; set; }
+    public long GardenFoodToday { get; set; }
 }
 
 public sealed class BuildingDto

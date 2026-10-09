@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 4;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes (2A.3)
+    public const int CurrentVersion = 5;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -79,7 +79,7 @@ public static class SaveSerializer
                 AssignedByPolicyId = h.AssignedByPolicyId, ToolCondition = h.ToolCondition,
                 FoodDeficitDays = h.FoodDeficitDays, ColdDeficitDays = h.ColdDeficitDays,
                 Productivity = h.ProductivityPermille, State = h.State.ToString(), ToolHoursToday = h.ToolHoursToday,
-                BuildSiteId = h.BuildSiteId,
+                BuildSiteId = h.BuildSiteId, GardenFoodToday = h.GardenFoodToday.Milli,
             }).ToList(),
             Buildings = w.Buildings.Select(b => new BuildingDto
             {
@@ -216,6 +216,7 @@ public static class SaveSerializer
                 FoodDeficitDays = d.FoodDeficitDays, ColdDeficitDays = d.ColdDeficitDays,
                 ProductivityPermille = d.Productivity, State = Enum<HouseholdState>(d.State),
                 ToolHoursToday = d.ToolHoursToday, BuildSiteId = d.BuildSiteId,
+                GardenFoodToday = new Qty(d.GardenFoodToday),
             });
         }
 
