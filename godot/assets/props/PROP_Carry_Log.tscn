@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_medieval_village/Roof_Log.gltf" id="1_Roof_Log"]
+
+[node name="PROP_Carry_Log" type="Node3D"]
+metadata/note = "carga visível do carregador (madeira/lenha): tora no ombro"
+
+[node name="Model" parent="." instance=ExtResource("1_Roof_Log")]
+transform = Transform3D(0.16, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 0, 0, 0)

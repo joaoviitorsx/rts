@@ -44,9 +44,18 @@ public partial class WorldView : Node3D
     {
         public required Node3D Root;
         public required ModularCharacter Character;
+        public required VillagerLook Look;
         public Vector3 LastPosition;
         public bool Seen;
     }
+
+    /// <summary>Most emotion balloons on screen at once (guide: don't clutter); happy ones rotate, one at a time.</summary>
+    private const int MaxEmotes = 4;
+    private double _emoteTimer;
+    /// <summary>Dev proportion study (--head-scale=N); 1 = the model as authored.</summary>
+    public static float HeadScale { get; set; } = 1f;
+    private readonly Dictionary<int, OmniLight3D> _windowLights = new();
+    private static readonly Color WindowColor = new(1f, 0.72f, 0.42f);
 
     public int SelectedBuildingId { get; set; }
 
@@ -319,9 +328,14 @@ public partial class WorldView : Node3D
                 var home = w.GetBuilding(h.HomeId) ?? w.SeatBuilding;
                 var pos = home is null ? Vector3.Zero : AroundBuilding(home, h.Id);
                 Place(agent, pos, null);
-                agent.Character.Play(h.Id % 3 == 0 ? "talk" : "idle");
+                agent.Character.Play(agent.Look.IdleClip(Time.GetTicksMsec() / 1000.0));
             }
+            agent.Look.Carry("");
         }
+        UpdateEmotes(w);
+        UpdateWindowLights(w, alpha);
+        double now = Time.GetTicksMsec() / 1000.0;
+        foreach (var a in _agentNodes.Values) a.Look.Animate(now);
         foreach (var c in w.Carriers)
             if (c.Retiring) UpdateCarrierAgent(w, -c.Id, c, alpha, dt);
 
@@ -332,9 +346,63 @@ public partial class WorldView : Node3D
         }
     }
 
+    /// <summary>
+    /// Emotion balloons, 2×/s: negative feelings first (hunger > cold > tired), then at most one happy villager that
+    /// rotates every few seconds; never more than <see cref="MaxEmotes"/> on screen.
+    /// </summary>
+    private void UpdateEmotes(World w)
+    {
+        _emoteTimer -= GetProcessDeltaTime();
+        if (_emoteTimer > 0) return;
+        _emoteTimer = 0.5;
+        var wanted = new List<(int Key, VillagerLook.Emote E)>();
+        foreach (var h in w.Households)
+        {
+            var e = VillagerLook.Feeling(w, h);
+            if (e != VillagerLook.Emote.None && _agentNodes.ContainsKey(h.Id)) wanted.Add((h.Id, e));
+        }
+        var shown = wanted.Where(x => x.E != VillagerLook.Emote.Happy).OrderBy(x => x.E).ThenBy(x => x.Key).Take(MaxEmotes).ToList();
+        var happy = wanted.Where(x => x.E == VillagerLook.Emote.Happy).ToList();
+        if (shown.Count < MaxEmotes && happy.Count > 0)
+            shown.Add(happy[(int)(Time.GetTicksMsec() / 5000) % happy.Count]);
+        var keys = shown.ToDictionary(x => x.Key, x => x.E);
+        foreach (var (key, agent) in _agentNodes)
+            agent.Look.ShowEmote(keys.GetValueOrDefault(key, VillagerLook.Emote.None));
+    }
+
+    /// <summary>Houses with families light a warm lantern at dusk and fade it out in the morning (fades, never blinks).</summary>
+    private void UpdateWindowLights(World w, float alpha)
+    {
+        float t = (w.Tick % SimTime.TicksPerDay + alpha) / SimTime.TicksPerDay;
+        float dusk = Mathf.Max(Mathf.SmoothStep(0.72f, 0.95f, t), 1f - Mathf.SmoothStep(0f, 0.12f, t));
+        foreach (var b in w.Buildings)
+        {
+            if (!b.IsActive || !b.Def.Has(Ironvale.Sim.Content.BuildingRole.Housing) || !_buildings.TryGetValue(b.Id, out var node)) continue;
+            bool lived = w.Households.Any(h => h.HomeId == b.Id);
+            if (!_windowLights.TryGetValue(b.Id, out var light))
+            {
+                // A porch lantern by the door side (+Z, like DoorOf): a warm pool on the ground, visible from the camera.
+                var (_, hc) = b.Size;
+                light = new OmniLight3D { LightColor = WindowColor, OmniRange = 4.5f, ShadowEnabled = false,
+                    Position = new Vector3(0, 1.9f, hc * _catalog.CellSize * 0.5f + 0.7f) };
+                node.Root.AddChild(light);
+                _windowLights[b.Id] = light;
+            }
+            float target = lived ? dusk * 3.0f : 0f;
+            light.LightEnergy = Mathf.Lerp(light.LightEnergy, target, 0.15f);
+            light.Visible = light.LightEnergy > 0.02f;
+        }
+        foreach (var id in _windowLights.Keys.Where(id => w.GetBuilding(id) is null).ToList())
+        {
+            if (IsInstanceValid(_windowLights[id])) _windowLights[id].QueueFree();
+            _windowLights.Remove(id);
+        }
+    }
+
     private void UpdateCarrierAgent(World w, int key, Carrier c, float alpha, float dt)
     {
         var agent = GetAgent(key);
+        agent.Look.Carry(c.ShipmentId != 0 && c.Resource >= 0 ? w.Content.Resources[c.Resource].Id : "");
         var pos = CarrierPosition(c, alpha, w.StepTicksInto(c.NextCell, c.Target));
         float speed = dt > 0 ? agent.LastPosition.DistanceTo(pos) / dt : 0;
         Place(agent, pos, pos - agent.LastPosition);
@@ -366,7 +434,9 @@ public partial class WorldView : Node3D
         _agents.AddChild(root);
         var character = (ModularCharacter)root;
         character.ApplyHairColor(ModularCharacter.HairPalette[Mathf.PosMod(key * 7, ModularCharacter.HairPalette.Length)]);
-        agent = new Agent { Root = root, Character = character, Seen = true };
+        if (!Mathf.IsEqualApprox(HeadScale, 1f) && character.Skeleton is { } sk)
+            sk.AddChild(new HeadScaleModifier { HeadScale = HeadScale });
+        agent = new Agent { Root = root, Character = character, Seen = true, Look = new VillagerLook(root, key) };
         _agentNodes[key] = agent;
         return agent;
     }

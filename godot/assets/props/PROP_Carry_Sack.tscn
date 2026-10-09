@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_fantasy_props/Bag.gltf" id="1_Bag"]
+
+[node name="PROP_Carry_Sack" type="Node3D"]
+metadata/note = "carga visível (pedra, moedas): saco"
+
+[node name="Model" parent="." instance=ExtResource("1_Bag")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)

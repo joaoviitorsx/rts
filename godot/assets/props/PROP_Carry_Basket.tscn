@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_fantasy_props/FarmCrate_Apple.gltf" id="1_FarmCrate_Apple"]
+
+[node name="PROP_Carry_Basket" type="Node3D"]
+metadata/note = "carga visível (comida): cesto à frente"
+
+[node name="Model" parent="." instance=ExtResource("1_FarmCrate_Apple")]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)

@@ -1093,6 +1093,42 @@
    ]
   },
   {
+   "id": "PROP_Carry_Log",
+   "category": "props",
+   "kind": "model",
+   "src": "MVK/Roof_Log",
+   "scale": 0.16,
+   "ground": false,
+   "note": "carga visível do carregador (madeira/lenha): tora no ombro"
+  },
+  {
+   "id": "PROP_Carry_Basket",
+   "category": "props",
+   "kind": "model",
+   "src": "FP/FarmCrate_Apple",
+   "scale": 0.45,
+   "ground": false,
+   "note": "carga visível (comida): cesto à frente"
+  },
+  {
+   "id": "PROP_Carry_Sack",
+   "category": "props",
+   "kind": "model",
+   "src": "FP/Bag",
+   "scale": 0.7,
+   "ground": false,
+   "note": "carga visível (pedra, moedas): saco"
+  },
+  {
+   "id": "PROP_Carry_Crate",
+   "category": "props",
+   "kind": "model",
+   "src": "FP/Crate_Wooden",
+   "scale": 0.4,
+   "ground": false,
+   "note": "carga visível (ferramentas): caixote"
+  },
+  {
    "id": "BLD_Quarry_A",
    "category": "buildings",
    "kind": "composite",

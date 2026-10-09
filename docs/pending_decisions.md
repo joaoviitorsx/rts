@@ -177,3 +177,16 @@
 - **Decreto criado:** carimbo + pulso no medidor de CA (o "cartão voando até o medidor" fica para a arte final).
 - **Poeira:** esferas translúcidas (a textura de gradiente não renderizava como partícula); discreta de propósito.
 
+### P27. NPCs cozy (prioridade média)
+- **Balões:** fome > frio > cansaço (trajeto ≥ 25% do turno ou ferramenta < 30%) > feliz (tem casa e a horta rendeu);
+  no máximo **4** na tela, "feliz" só 1 por vez em rodízio de 5 s; ícones desenhados por `tools/assets/build_emotes.py`
+  (arte própria, sem depender de emoji/fonte no PC do jogador).
+- **Carga visível:** madeira/lenha = tora no ombro, comida = cesto, pedra/moedas = saco, ferramentas = caixote — modelos
+  existentes (MVK/FP) em `PROP_Carry_*`, centralizados pela caixa envolvente.
+- **Idles:** em casa alterna parado/conversa/sentado a cada ~7 s por aldeão.
+- **Rotina:** aldeões já vão e voltam pela rota; casas com moradores acendem um lampião quente junto à porta no fim do dia
+  e apagam de manhã (fade). Como o dia dura 4 s a 1x, o ciclo é rápido; a 8x quase não se vê.
+- **Proporção:** escala do osso da cabeça (modificador de esqueleto), **não** ligada por padrão; comparação 1,0 · 1,15 · 1,3
+  em `docs/reports/img_2B/proporcao_cabeca.jpg` (dev: `--head-scale=1.15`, cena `scenes/test/NPC_SHOWCASE.tscn`).
+  Decisão do dono.
+

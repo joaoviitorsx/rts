@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/vendor/quaternius_fantasy_props/Crate_Wooden.gltf" id="1_Crate_Wooden"]
+
+[node name="PROP_Carry_Crate" type="Node3D"]
+metadata/note = "carga visível (ferramentas): caixote"
+
+[node name="Model" parent="." instance=ExtResource("1_Crate_Wooden")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)

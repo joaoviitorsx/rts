@@ -73,6 +73,10 @@ public partial class Main : Node3D
             if (arg.StartsWith("--window=") && arg[9..].Split('x') is [var ws, var hs] && int.TryParse(ws, out int ww) && int.TryParse(hs, out int wh))
                 DisplayServer.WindowSetSize(new Vector2I(ww, wh));   // dev: check the HUD at other window sizes
             if (arg.StartsWith("--panel=")) ui.OpenPanel(arg[8..]);
+            if (arg.StartsWith("--zoom=") && float.TryParse(arg[7..], System.Globalization.CultureInfo.InvariantCulture, out float zoom))
+                camera.CallDeferred(CameraRig.MethodName.FocusAt, camera.Position, zoom);   // dev: close-up captures
+            if (arg.StartsWith("--head-scale=") && float.TryParse(arg[13..], System.Globalization.CultureInfo.InvariantCulture, out float headScale))
+                WorldView.HeadScale = headScale;   // dev: proportion study (not the default)
             if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
         }
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
