@@ -11,6 +11,8 @@ const PlantPalette := preload("res://game/vegetation/PlantPalette.gd")
 const Clusters := preload("res://game/vegetation/Clusters.gd")
 const MaterialTint := preload("res://game/materials/MaterialTint.gd")
 const CozyEnvironment := preload("res://game/visual/CozyEnvironment.gd")
+const StaticMerge := preload("res://game/visual/StaticMerge.gd")
+const FOREST_CHUNK := 64.0
 
 const LAYOUT := "res://scenes/test/TEST_VILLAGE_01_layout.json"
 const ZOOMS := {"near": 22.0, "mid": 45.0, "far": 95.0}
@@ -49,12 +51,14 @@ func _ready() -> void:
 		$GrassCarpet.stream(mask, Rect2(r[0], r[1], r[2], r[3]), $CameraRig, 7)
 	_build_forest()
 	_build_clusters()
+	var merged := 0
 	for b in $Buildings.get_children():
 		MaterialTint.apply(b, b.get_meta("roof", "tile"))
+		merged += StaticMerge.merge(b)
 	MaterialTint.apply($Rocks)
 	MaterialTint.apply($Props)
 	_spawn_villagers()
-	print("VILLAGE mask+bake_ms=%d total_ready_ms=%d trees=%d" % [t1 - t0, Time.get_ticks_msec() - t0, _layout["trees"].size()])
+	print("VILLAGE mask+bake_ms=%d total_ready_ms=%d trees=%d merged_pieces=%d" % [t1 - t0, Time.get_ticks_msec() - t0, _layout["trees"].size(), merged])
 
 	$CameraRig.EdgePan = false
 	$CameraRig.SetBounds(Rect2(60, 95, 150, 75))
@@ -99,18 +103,20 @@ func _build_mask() -> GroundMask:
 
 ## Forest/tree MultiMeshes grouped by scene (draw calls stay low with hundreds of trees).
 func _build_forest() -> void:
+	# Grouped by tree type AND 64 m tile: per-tile frustum culling + mesh LOD by distance.
 	var groups := {}
 	for t in _layout["trees"]:
 		var xf := Transform3D(Basis(Vector3.UP, deg_to_rad(t["rot"])).scaled(Vector3.ONE * t["scale"]),
 			Vector3(t["pos"][0], 0, t["pos"][1]))
-		if not groups.has(t["scene"]):
-			groups[t["scene"]] = []
-		groups[t["scene"]].append(xf)
+		var key := "%s|%d|%d" % [t["scene"], floori(t["pos"][0] / FOREST_CHUNK), floori(t["pos"][1] / FOREST_CHUNK)]
+		if not groups.has(key):
+			groups[key] = []
+		groups[key].append(xf)
 	var forest := Node3D.new()
 	forest.name = "Forest"
 	add_child(forest)
-	for scene in groups:
-		Clusters.add(forest, scene, groups[scene], 0, true, true)
+	for key in groups:
+		Clusters.add(forest, key.get_slice("|", 0), groups[key], 0, true, true)
 
 
 ## Integration clusters: tall tufts at rocks/fences/trunks, bushes at the forest/field transition,
@@ -214,6 +220,11 @@ func _process(delta: float) -> void:
 			var k := maxi(1, sorted.size() / 100)
 			for i in k: low += sorted[i]
 			low /= k
+			var hitches := []
+			for i in _perf_frames.size():
+				if _perf_frames[i] > 20.0:
+					hitches.append("#%d:%.0fms" % [i, _perf_frames[i]])
+			print("VILLAGE hitches>20ms=%d %s" % [hitches.size(), " ".join(hitches.slice(0, 20))])
 			print("VILLAGE PERF fps=%.1f avg_ms=%.2f 1%%low_fps=%.1f worst_ms=%.1f prims=%d draws=%d grass_chunks=%d" % [
 				1000.0 / avg, avg, 1000.0 / low, sorted[0], Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME),
 				Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME), $GrassCarpet._chunks.size()])

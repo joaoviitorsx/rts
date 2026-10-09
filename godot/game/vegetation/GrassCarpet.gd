@@ -81,7 +81,7 @@ func _process(_delta: float) -> void:
 				var key := center + Vector2i(dx, dz)
 				if _chunks.has(key) or (Vector2(key) + Vector2(0.5, 0.5)).distance_to(ground / chunk_size) * chunk_size > radius + chunk_size:
 					continue
-				if Rect2(Vector2(key) * chunk_size, Vector2.ONE * chunk_size).intersects(_area):
+				if Rect2(Vector2(key) * chunk_size, Vector2.ONE * chunk_size).intersects(_area) and _in_view(cam, key):
 					_queue.append(key)
 		_queue.sort_custom(func(a, b): return (a - center).length_squared() < (b - center).length_squared())
 	# Incremental build with a per-frame time budget (no hitches).
@@ -97,6 +97,15 @@ func _process(_delta: float) -> void:
 			_building = {"key": key, "y": float(key.y) * chunk_size, "list": [], "rng": rng}
 		if _step_chunk(start):
 			_queue.pop_front()
+
+
+## A chunk is wanted if any corner (or its centre) is on screen; chunks behind the camera are never built.
+func _in_view(cam: Camera3D, key: Vector2i) -> bool:
+	var o := Vector2(key) * chunk_size
+	for c in [Vector2(0, 0), Vector2(chunk_size, 0), Vector2(0, chunk_size), Vector2(chunk_size, chunk_size), Vector2.ONE * chunk_size * 0.5]:
+		if cam.is_position_in_frustum(Vector3(o.x + c.x, 0.2, o.y + c.y)):
+			return true
+	return false
 
 
 @export var budget_usec := 1500         ## max time per frame spent building grass chunks
