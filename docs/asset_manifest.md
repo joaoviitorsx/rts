@@ -88,6 +88,7 @@ Caminhos relativos a `assets/` (Fantasy Props = `FP/Exports/glTF/`, Medieval Vil
 | BLD_Warehouse_A | (armazém) | MVK + FP | paredes + `Roof_RoundTiles_6x8`; `FP/Crate_*`, `MVK/Prop_Crate`, `FP/Barrel_Holder` | montar | Fora do sim do Marco 1 |
 | BLD_Market_A | (mercado) | FP | `Stall_Empty`, `Stall_Cart_Empty`, `FarmCrate_Apple/Carrot`, `Barrel_Apples` | pronto/montar | Bancas sem toldo colorido |
 | BLD_Smithy_A | (ferraria) | MVK + FP | paredes Brick + `Prop_Chimney2`; `FP/Anvil`, `FP/Workbench`, `FP/Whetstone`, `FP/Cauldron` | montar | Forja/brasas **falta** (L7) |
+| BLD_Quarry_A | `quarry` | NAT + FP | kitbash (09/10/2026, sem Blender): `Rock_Medium_1–3` ampliadas como paredão, `RockPath_Square_*` como blocos cortados, `Pebble_*`; `FP/Crate_Wooden`, `Bucket_Wooden_1`, `Whetstone`, `Rope_2`, `Pickaxe_Bronze`; piso primitivo | legível (placeholder de playtest) | Modelo dedicado de pedreira **falta** (F3) |
 | BLD_Well_A | (poço) | MVK + FP | `Prop_Brick1–4`/`Floor_UnevenBrick` (aro), `Roof_Wooden_2x1`, `Prop_Support`, `FP/Bucket_Wooden_1`, `FP/Rope_1` | montar | Montagem improvisada; validar visual (L8) |
 | BLD_Site_A | (obra) | MVK + FP | `Prop_Support`, `Floor_WoodLight`, `FP/Crate_Wooden` | montar | Estado "em construção" do sim |
 

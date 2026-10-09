@@ -1093,6 +1093,32 @@
    ]
   },
   {
+   "id": "BLD_Quarry_A",
+   "category": "buildings",
+   "kind": "composite",
+   "sim": "quarry",
+   "note": "kitbash sem Blender: rochas do Stylized Nature + props do Fantasy Props; piso é placeholder (falta modelo dedicado)",
+   "parts": [
+    {"name": "Floor", "primitive": "box", "size": [5.8, 0.05, 5.8], "color": "#a89a86", "pos": [0, 0, 0]},
+    {"src": "NAT/Rock_Medium_1", "pos": [-1.6, 0, -1.9], "rot": 15, "scale": 0.95},
+    {"src": "NAT/Rock_Medium_2", "pos": [0.2, 0, -2.0], "rot": -30, "scale": 1.15},
+    {"src": "NAT/Rock_Medium_3", "pos": [1.9, 0, -1.8], "rot": 60, "scale": 0.9},
+    {"src": "NAT/Rock_Medium_2", "pos": [-2.3, 0, -0.1], "rot": 110, "scale": 0.55},
+    {"src": "NAT/RockPath_Square_Wide", "pos": [-1.5, 0.05, 1.3], "rot": 5, "scale": 1.3},
+    {"src": "NAT/RockPath_Square_Small_1", "pos": [-1.5, 0.3, 1.3], "rot": 20, "scale": 1.3},
+    {"src": "NAT/RockPath_Square_Small_2", "pos": [-0.6, 0.05, 1.8], "rot": -10, "scale": 1.3},
+    {"src": "NAT/RockPath_Square_Small_3", "pos": [-0.6, 0.3, 1.8], "rot": 40, "scale": 1.2},
+    {"src": "NAT/Pebble_Square_1", "pos": [0.4, 0.05, 0.4], "rot": 0, "scale": 1.6},
+    {"src": "NAT/Pebble_Round_2", "pos": [1.0, 0.05, -0.3], "rot": 0, "scale": 1.6},
+    {"src": "NAT/Pebble_Round_4", "pos": [-0.2, 0.05, -0.6], "rot": 0, "scale": 1.4},
+    {"src": "FP/Crate_Wooden", "pos": [1.6, 0.05, 1.5], "rot": 20},
+    {"src": "FP/Bucket_Wooden_1", "pos": [2.3, 0.05, 0.6], "rot": 0},
+    {"src": "FP/Whetstone", "pos": [0.8, 0.05, 2.1], "rot": 70},
+    {"src": "FP/Rope_2", "pos": [2.4, 0.05, 1.9], "rot": 0},
+    {"src": "FP/Pickaxe_Bronze", "pos": [0.9, 0.55, 1.4], "rot": 35}
+   ]
+  },
+  {
    "id": "BLD_Field_A",
    "category": "buildings",
    "kind": "composite",
