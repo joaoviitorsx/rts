@@ -26,3 +26,5 @@
 | 08/10/2026 | **Cenários de balanceamento da CLI** implementados junto com o tempo de trajeto (2A). | — |
 | 08/10/2026 | **GDD oficial** = `GDD_sociedade_autonoma.md`; a cópia v0.1 foi para `docs/archive/`. | Resolve TDD Q16 |
 | 08/10/2026 | **Etapas 2 e 3 concluídas** (integração e montagem da TEST_VILLAGE_01). O look-dev visual (chão, vegetação, luz, câmera) vira item próprio, em andamento; fecha com a aprovação do LOOKDEV_GROUND aplicado na TEST_VILLAGE_01 e não bloqueia o 2A. | — |
+| 08/10/2026 | **Look-dev visual aprovado** e item fechado; ajustes finos de arte ficam para a F3. | — |
+| 08/10/2026 | **Ordem do Marco 2A**: 1 construção consome madeira/pedra → 2 decreto com faixa mín/máx → 3 trajeto + fora da estrada + horta + cenários CLI → 4 ferreiro + decreto de ferramentas → 5 abertura sem roteiro balanceada → 6 CA + sugestão de decreto (telas com decreto/reeve). Incrementos jogáveis, commit + push por item; passe de feel após 3, 5 e 6; build + roteiro de playtest após 6. | — |

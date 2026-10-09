@@ -10,8 +10,8 @@
 | Reorganização A1–A3 | ✅ | `godot/`, `art/vendor_raw/`, `scripts/setup_vendor.py`, `docs/vendor_sources.md` |
 | Etapa 2 — integração de assets | ✅ concluída (08/10/2026) | assets importados, cenas herdadas, registro visual |
 | Etapa 3 — TEST_VILLAGE_01 | ✅ concluída (08/10/2026) — montagem | cena de validação + screenshots em 3 zooms |
-| **Look-dev visual: chão, vegetação, luz e câmera** | 🟡 em andamento | fecha quando o dono aprovar o LOOKDEV_GROUND **e** ele estiver aplicado na TEST_VILLAGE_01; não bloqueia o 2A |
-| **Marco 2A — loop central jogável** | 📋 liberado (em paralelo ao look-dev), não iniciado | gate: playtest com 5 pessoas (GDD §8.3) |
+| Look-dev visual: chão, vegetação, luz e câmera | ✅ aprovado (08/10/2026) | LOOKDEV_GROUND aplicado na TEST_VILLAGE_01; ajustes finos de arte ficam para a F3 |
+| **Marco 2A — loop central jogável** | 🟡 em andamento (plano em revisão) | gate: playtest com 5 pessoas (GDD §8.3) |
 | Marco 2B — diferenciais e polimento | 📋 registrado | depois do gate do 2A |
 
 ## Etapa 2 — integração de assets (plano combinado)
