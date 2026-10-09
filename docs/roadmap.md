@@ -30,6 +30,23 @@
 5. **Capacidade Administrativa** + **sugestão automática de política** (GDD v0.2 §3).
 6. **Caravana mercante** sazonal e simples: compra excedente, vende ferramentas e comida por moedas (destino para pedra e moedas).
 
+### Telas do MVP (UI_UX_guide §2.3) — processo §9.1 por tela
+Cada tela passa por: 1 objetivo → 2 informações → 3 wireframe → 4 cinza (Theme padrão) → 5 teste com 1 pessoa →
+6 ajustes → 7 arte final (Kenney + game-icons, **F3**) → 8 checklist §10. Nunca pular de 1 para 7.
+
+| Tela | Objetivo único | Etapa §9.1 atual | Item do Marco 2 |
+|---|---|---|---|
+| Barra de recursos com tendência | "Tenho o suficiente?" | 4 (cinza) — falta teste com pessoa | — |
+| Relógio de estação + previsão do inverno | "Quanto tempo até o perigo?" | 4 (cinza, só texto) | 1 |
+| Painel de família | "Esta família está bem? O que faz?" | 4 (cinza) | — |
+| Painel de edifício | "Está produzindo? Por que não?" | 4 (cinza) | 3 (mostrar material chegando à obra) |
+| Menu de construção | "O que posso construir e quanto custa?" | 4 parcial (barra simples; falta atalho B e categorias) | 3, 4 |
+| Cartão de sugestão de política | "Quer automatizar o que você vem repetindo?" | 1–3 (wireframe §3.3 no guia) | 5 |
+| Medidor de Capacidade Administrativa | "Quanto ainda consigo governar?" | 1 | 5 |
+| Painel do Administrador + log | "O que está automatizado e o que ele decidiu?" | 4 parcial (PoliciesPanel lista + log) | 2, 5 |
+| Overlay de fluxo | "Para onde vão os recursos?" | — (depois do Marco 2; F1–F4) | — |
+| Painel de debug (só dev) | Telemetria | pronto (F12, só build debug) | — |
+
 ### Economy Sheet via CLI
 - Cenários de balanceamento na CLI: **jogador passivo**, **jogador ingênuo**, **abertura ótima**.
 - `docs/balance_report.md` com CSV e gráficos por cenário, verificando se as crises 1–3 aparecem nos minutos previstos no GDD v0.2 §4.
@@ -46,8 +63,9 @@
   Perf (sem vsync): 6–7 ms (~140–160 FPS) com a GPU já aquecida por muitas medições.
 - **Próximas pendências:**
   1. Florestas ainda pouco densas na borda; densidade alta custa caro → impostores/billboards para árvores distantes.
-  2. Integrar pacotes novos em `art/vendor_raw/`: `UIpack_RPG` (Kenney) e `VoxelCoreLab_Watercolor_Terrain_Textures_1024px`
-     (setup_vendor + vendor_sources + CREDITS; watercolor como detalhe sutil em terra/caminho).
-  3. Adaptar HUD/debug do Marco 1 às regras do `docs/UI_UX_guide.md` §8.1; incluir telas §2.3 no plano do Marco 2.
+  2. ~~Integrar `UIpack_RPG` (Kenney) e watercolor~~ — feito (watercolor = detalhe sutil na terra/caminho).
+  3. ~~HUD/debug do Marco 1 nas regras §8.1~~ — feito em cinza (`godot/ui/`); telas §2.3 no plano do Marco 2 acima.
+     Pendências de UI: nomes de conteúdo, motivos de rejeição e textos do log ainda vêm do sim em português (não são
+     chaves `tr()`); `icon_registry.tres` ainda não existe (chips mostram texto); atalho B do menu de construção.
 - Sistema travou 2× durante a sessão (sem erro de SSD nos logs; ver chat). Evitar baterias longas de testes de GPU seguidas.
-- Arquivos ainda ausentes: `docs/asset_production_bible_mvp.md`, `docs/reference/koastalia_ref.png`, KayKit Resource Bits, watercolor.
+- Arquivos ainda ausentes: `docs/asset_production_bible_mvp.md`, `docs/reference/koastalia_ref.png`, KayKit Resource Bits.
