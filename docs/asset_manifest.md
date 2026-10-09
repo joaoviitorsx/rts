@@ -300,6 +300,8 @@ jazidas de carvão/ferro (tingir `rock_tall*`); `kenney_building_kit` e `kenney_
 | Aldeões Quaternius (UBC + Outfits) | **parcialmente** | Proporções realistas e roupas com textura; ao lado de casas "de brinquedo" chapadas, parecem de outro jogo de perto (de longe passam) | Avaliar **KayKit Adventurers/Character pack** (Kay Lousberg, CC0, proporção chibi, já citado no GDD) ou **Kenney Mini Characters** (CC0). Até decidir, manter Quaternius (animações UAL prontas) com cores mais chapadas no material |
 | Animais Quaternius Ultimate (cervo, lobo, raposa, cavalo, vaca, touro…) | **sim** | Low-poly flat-shaded com animações (Idle, Walk, Gallop, Eating, Death) — conversam bem com o Kenney | Usar. **Farm Animals** (porco, ovelha, vaca…) só vêm em FBX/Blend: precisam de export glTF pelo Blender (P36) |
 
+**No jogo (4c):** `assets/characters/animals/ANM_Deer|ANM_Wolf|ANM_Ox.tscn` (×0,33 / ×0,33 / ×0,36). Boi = `Cow` (marrom com chifres; o `Bull` é preto e destoa). Animação pela sim: andando → Walk, fugindo → Gallop, pastando → Eating/Idle. **Coelho continua primitiva** (o pack não tem coelho) — lacuna para Meshy ou outro pack CC0.
+
 ### 9.3 Penhascos: módulos Kenney × paredões gerados
 O Nature Kit traz módulos de penhasco em grade (retos, cantos internos/externos, degraus, cachoeira). Para os terraços
 do mapa gerado (contornos de célula), duas opções: (a) **módulos Kenney** escolhidos por marching squares célula a

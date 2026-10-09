@@ -26,6 +26,7 @@ public partial class WorldPrimitives : Node3D
     private double _timer;
     private readonly Dictionary<int, Node3D> _creatures = new();
     private readonly Dictionary<int, (Cell Next, int Total)> _steps = new();
+    private readonly Dictionary<int, AnimationPlayer?> _players = new();
 
     private static readonly Color GrassLow = new("6e9e35");
     private static readonly Color Sand = new("e4d09b");
@@ -233,7 +234,8 @@ public partial class WorldPrimitives : Node3D
 
     // ------------------------------------------------------------------------------------------------ creatures
 
-    /// <summary>Animals and the ox (colonists use the villager models, in WorldView).</summary>
+    /// <summary>Animals and the ox (colonists use the villager models, in WorldView). Deer, wolf and ox are the
+    /// Quaternius models (assets/characters/animals); the rabbit has no model yet and stays a primitive.</summary>
     private void UpdateCreatures(World w)
     {
         var alive = new HashSet<int>();
@@ -241,29 +243,58 @@ public partial class WorldPrimitives : Node3D
         foreach (var a in w.Animals)
         {
             alive.Add(a.Id);
-            var node = Creature(a.Id, a.Kind switch
+            var node = a.Kind switch
             {
-                FaunaKind.Deer => ("capsule", new Vector3(0.7f, 1.5f, 0.7f), new Color("9a6a3e")),
-                FaunaKind.Rabbit => ("capsule", new Vector3(0.35f, 0.6f, 0.35f), new Color("efeae0")),
-                _ => ("capsule", new Vector3(0.6f, 1.2f, 0.6f), new Color("5c5d66")),
-            });
-            node.Position = Interpolate(a.Id, a.Pos, a.Next, a.StepTicks, alpha);
+                FaunaKind.Deer => Creature(a.Id, "ANM_Deer"),
+                FaunaKind.Wolf => Creature(a.Id, "ANM_Wolf"),
+                _ => Creature(a.Id, ("capsule", new Vector3(0.35f, 0.6f, 0.35f), new Color("efeae0"))),
+            };
+            Move(node, Interpolate(a.Id, a.Pos, a.Next, a.StepTicks, alpha));
+            Animate(a.Id, node, a.IsMoving ? (a.State == AnimalState.Fleeing ? "Gallop" : "Walk")
+                : a.State == AnimalState.Grazing && a.Id % 3 != 0 ? "Eating" : "Idle");
         }
         foreach (var u in w.Units.Where(u => u.Kind == UnitKind.Ox))
         {
             alive.Add(u.Id);
-            var node = Creature(u.Id, ("box", new Vector3(1.0f, 1.3f, 2.0f), new Color("7a4f2c")));
-            var pos = Interpolate(u.Id, u.Pos, u.Next, u.StepTicks, alpha);
-            var dir = pos - node.Position;
-            node.Position = pos;
-            if (dir.LengthSquared() > 1e-5f) node.Rotation = new Vector3(0, Mathf.Atan2(dir.X, dir.Z), 0);
+            var node = Creature(u.Id, "ANM_Ox");
+            Move(node, Interpolate(u.Id, u.Pos, u.Next, u.StepTicks, alpha));
+            Animate(u.Id, node, u.Next != u.Pos ? "Walk" : "Idle");
         }
         foreach (var id in _creatures.Keys.Where(id => !alive.Contains(id)).ToList())
         {
             _creatures[id].QueueFree();
             _creatures.Remove(id);
             _steps.Remove(id);
+            _players.Remove(id);
         }
+    }
+
+    private static void Move(Node3D node, Vector3 pos)
+    {
+        var dir = pos - node.Position;
+        node.Position = pos;
+        if (dir.X * dir.X + dir.Z * dir.Z > 1e-5f) node.Rotation = new Vector3(0, Mathf.Atan2(dir.X, dir.Z), 0);
+    }
+
+    private void Animate(int id, Node3D node, string clip)
+    {
+        if (!_players.TryGetValue(id, out var ap))
+            _players[id] = ap = node.FindChild("AnimationPlayer", true, false) as AnimationPlayer;
+        if (ap is null || ap.CurrentAnimation == clip || !ap.HasAnimation(clip)) return;
+        var anim = ap.GetAnimation(clip);
+        anim.LoopMode = Animation.LoopModeEnum.Linear;
+        ap.Play(clip, 0.25);
+        if (ap.CurrentAnimationPosition == 0) ap.Seek(id * 0.37 % anim.Length);   // herds out of step
+    }
+
+    private Node3D Creature(int id, string asset)
+    {
+        if (_creatures.TryGetValue(id, out var node)) return node;
+        node = GD.Load<PackedScene>($"res://assets/characters/animals/{asset}.tscn").Instantiate<Node3D>();
+        node.Name = $"Creature{id}";
+        AddChild(node);
+        _creatures[id] = node;
+        return node;
     }
 
     private Node3D Creature(int id, (string Kind, Vector3 Size, Color Color) look)

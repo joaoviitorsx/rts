@@ -122,6 +122,8 @@ public partial class Main : Node3D
             }
             if (arg == "--focus-units" && host.World.Units.Count > 0)   // dev: look at the band wherever it went
                 camera.FocusOn(view.CellCenter(host.World.Units[0].Pos), 30);
+            if (arg.StartsWith("--focus-fauna=") && host.World.Animals.FirstOrDefault(an => an.Kind.ToString() == arg[14..]) is { } animal)
+                camera.FocusOn(view.CellCenter(animal.Pos), 18);   // dev: look at the first deer / wolf / rabbit
         }
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
         {
