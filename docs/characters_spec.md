@@ -116,8 +116,9 @@ Root
 
 18 ossos humanoides + 3 sockets. `EmoteSocket` fica 0,25 m acima do topo da cabeça (≈ 1,60 m do chão, acima do
 chapéu), para os balões de emoção; segue a cabeça, sem keyframes próprios. Sem `Shoulder`, `UpperChest`, dedos, olhos e mandíbula: no estilo blocado eles não
-têm o que mover; o perfil da Godot aceita ossos ausentes. Bind pose em **T-pose** (o retarget da Godot espera
-T-pose e o skinning rígido não sofre com isso); as animações começam em pose relaxada.
+têm o que mover; o perfil da Godot aceita ossos ausentes. Bind pose em **A-pose** (braços 45° abaixo da
+horizontal), como pede a Bible §45 ("A-pose limpa"); o retarget da Godot corrige a pose de repouso
+("Fix Silhouette"). As animações começam em pose relaxada.
 
 ## 7. Animações (keyframes gerados por script)
 

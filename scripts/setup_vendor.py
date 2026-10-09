@@ -71,6 +71,8 @@ PACKS: dict[str, tuple[str, list[tuple[str, str, str]]]] = {
     "kenney_nature_kit": ("kenney_nature_kit", [("Models/GLTF format", "", "models")]),
     "kenney_fantasy_town_kit": ("kenney_fantasy_town_kit", [("Models/GLB format", "", "models")]),
     "kenney_survival_kit": ("kenney_survival_kit", [("Models/GLB format", "", "models")]),
+    # Comparison reference for the own villagers (feature/characters-kenney): Blocky Characters 2.0, CC0.
+    "kenney_blocky_characters": ("kenney_blocky_characters", [("Models/GLB format", "", "models")]),
     # Animals (Quaternius, CC0): Ultimate Animated Animals ships glTF; Farm Animals only FBX/Blend (needs Blender export).
     "quaternius_ultimate_animals": ("quaternius_ultimate_animals", [("Ultimate Animated Animals - July 2021/glTF", "", "models")]),
 
@@ -144,7 +146,7 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
                         print(f"  ! {model.name}: missing dependency {dep.name}", file=sys.stderr)
                         continue
                 try:
-                    rel = dep.relative_to(model.parent)
+                    rel = dep.resolve().relative_to(model.parent.resolve())   # art/vendor_raw may be a symlink
                 except ValueError:
                     # Dependency outside the model folder (e.g. ../Textures): keep the uri layout working
                     # by mirroring it next to the copied model would escape dst; flatten instead.

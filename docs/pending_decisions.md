@@ -292,3 +292,12 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
   arquivos idênticos (`addon.py` e `blender_mcp.py`): ativar só um no Blender, ou apagar o `addon.py`.
 - 09/10: `look` do MCP falhava ("Screenshot file was not created"): o servidor grava em `tempfile.gettempdir()` e o
   `/tmp` do Flatpak é privado. Correção: `TMPDIR=~/.cache/blender-mcp-tmp` na config do servidor (pasta visível dos dois lados).
+
+### P44. Nomes de animações e ferramentas: spec × Bible §29/§13/§18 (prioridade média, Etapa 3)
+- Lidos o briefing e a Bible (o adendo prevalece e confirma os personagens próprios pela `characters_spec.md`).
+  O protótipo usa só `idle`, `walk` e `chop`, que são iguais nos dois.
+- Para a Etapa 3, a Bible usa `farm_hoe`, `harvest_sickle`, `hammer_anvil`, `pickup_ground`, `drop_ground` e pede também
+  `turn`, `push_handcart`, `point` e `inspect`; a carga é `TOOL_CarryBasket_A`. **Proposta:** adotar os nomes da Bible e
+  somar as 4 animações que faltam; trocar `PROP_Carry_*` por `TOOL_Carry<Nome>_A`.
+- Já aplicado: bind pose em **A-pose** (Bible §45). Altura 1,30 m em vez dos 1,75 m da §11: o adendo manda ajustar à
+  escala real dos kits. Orçamento de 300–900 tris (spec aprovada) em vez dos 2.000–4.000 da §11 (o adendo não mantém a §11).

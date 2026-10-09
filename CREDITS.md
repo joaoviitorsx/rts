@@ -22,6 +22,7 @@ Credit is not required; we record it anyway.
 | Nature Kit | Kenney (www.kenney.nl) | 2.1 | CC0 1.0 | https://kenney.nl/assets/nature-kit | `art/vendor_raw/kenney_nature_kit/` |
 | Fantasy Town Kit | Kenney (www.kenney.nl) | 2.0 | CC0 1.0 | https://kenney.nl/assets/fantasy-town-kit | `art/vendor_raw/kenney_fantasy_town_kit/` |
 | Survival Kit | Kenney (www.kenney.nl) | — | CC0 1.0 | https://kenney.nl/assets/survival-kit | `art/vendor_raw/kenney_survival_kit/` |
+| Blocky Characters | Kenney (www.kenney.nl) | 2.0 | CC0 1.0 | https://kenney.nl/assets/blocky-characters | `art/vendor_raw/kenney_blocky_characters/` (referência de comparação) |
 | Ultimate Animated Animals | Quaternius | July 2021 | CC0 1.0 | https://quaternius.com | `art/vendor_raw/quaternius_ultimate_animals/` |
 | Farm Animals Animated | Quaternius | — | CC0 1.0 | https://quaternius.com | `art/vendor_raw/quaternius_farm_animals/` |
 
