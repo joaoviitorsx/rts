@@ -159,6 +159,28 @@ public partial class Main : Node3D
             w.Enqueue(new Ironvale.Sim.Commands.OrderUnits(colonists[5..7], Ironvale.Sim.Population.OrderKind.Gather, stone));
     }
 
+    /// <summary>
+    /// Dev (--camp-demo, with --scenario=wild_camp_dev): campfire, covered depot and tent placed around the start and
+    /// built by the band (step 3 captures). Combine with --days=N to see them finished.
+    /// </summary>
+    private static void CampDemo(Ironvale.Sim.World w)
+    {
+        var band = w.Units.Where(u => u.IsColonist).Select(u => u.Id).ToArray();
+        if (w.Terrain is not { } t || band.Length < 8) return;
+        var spots = new[] { ("campfire", 3, 3, band[..2]), ("depot", -5, 0, band[2..5]), ("tent", 1, 6, band[5..8]) };
+        foreach (var (id, dx, dy, who) in spots)
+        {
+            var def = w.Content.Building(id);
+            var near = new Ironvale.Sim.Map.Cell(t.Start.X + dx, t.Start.Y + dy);
+            var spot = Enumerable.Range(0, 21 * 21).Select(i => new Ironvale.Sim.Map.Cell(near.X + i % 21 - 10, near.Y + i / 21 - 10))
+                .Where(c => w.CanPlace(def, c, 0)).OrderBy(c => c.Manhattan(near)).FirstOrDefault();
+            w.Enqueue(new Ironvale.Sim.Commands.PlaceBuilding(id, spot, 0));
+            w.ApplyPendingCommands();
+            var site = w.Buildings.Last(b => b.Def.Id == id);
+            w.Enqueue(new Ironvale.Sim.Commands.OrderUnits(who, Ironvale.Sim.Population.OrderKind.Build, site.Center, site.Id));
+        }
+    }
+
     private static void ApplyCommandLine(SimHost host)
     {
         var args = OS.GetCmdlineUserArgs();
@@ -166,6 +188,7 @@ public partial class Main : Node3D
         if (args.FirstOrDefault(x => x.StartsWith("--player=")) is { } p) player = ScriptedPlayers.Create(p[9..], roads: !args.Contains("--no-roads"));
         player?.Start(host.World);
         if (args.Contains("--rts-demo")) RtsDemo(host.World);
+        if (args.Contains("--camp-demo")) CampDemo(host.World);
         foreach (var arg in args)
         {
             if (arg.StartsWith("--speed=") && int.TryParse(arg[8..], out int speed)) host.SetSpeed(speed);

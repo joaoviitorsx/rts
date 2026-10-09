@@ -12,8 +12,11 @@
     "granary":    { "scene": "res://assets/buildings/BLD_Granary_A.tscn" },
     "smithy":     { "scene": "res://assets/buildings/BLD_Smithy_A.tscn" },
     "quarry":     { "scene": "res://assets/buildings/BLD_Quarry_A.tscn" },
-    // RTS opening placeholder (step 3 brings the real pile/storehouse/tent/campfire): a low heap of sacks and logs.
-    "pile":       { "primitive": "box", "size": [2.6, 0.7, 2.6], "color": "#a9865a" }
+    // RTS opening (briefing step 3): composed from the Kenney Nature/Survival kits (tools/assets/build_kenney_scenes.py).
+    "pile":       { "scene": "res://assets/buildings/BLD_Pile_A.tscn" },
+    "campfire":   { "scene": "res://assets/buildings/BLD_Campfire_A.tscn" },
+    "depot":      { "scene": "res://assets/buildings/BLD_Depot_A.tscn" },
+    "tent":       { "scene": "res://assets/buildings/BLD_Tent_A.tscn" }
   },
   "characters": ["res://assets/characters/CHR_Villager_Base.tscn", "res://assets/characters/CHR_Villager_Base_F.tscn"],
   "agents": {

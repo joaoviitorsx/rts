@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_structure-roof.tscn" id="1_KS_structure-roof"]
+[ext_resource type="PackedScene" path="res://assets/environment/kenney/K_log_stackLarge.tscn" id="2_K_log_stackLarge"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_box-large.tscn" id="3_KS_box-large"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_barrel.tscn" id="4_KS_barrel"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_box.tscn" id="5_KS_box"]
+
+[node name="BLD_Depot_A" type="Node3D"]
+
+[node name="KS_structure-roof_0" parent="." instance=ExtResource("1_KS_structure-roof")]
+transform = Transform3D(1.2500, 0, -0.0000, 0, 1.25, 0, 0.0000, 0, 1.2500, 0.68, 0, 0.7)
+
+[node name="K_log_stackLarge_1" parent="." instance=ExtResource("2_K_log_stackLarge")]
+transform = Transform3D(0.0000, 0, -0.6000, 0, 0.6, 0, 0.6000, 0, 0.0000, -0.4, 0, -0.5)
+
+[node name="KS_box-large_2" parent="." instance=ExtResource("3_KS_box-large")]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1.0, 0, 0.0000, 0, 1.0000, 0.9, 0, -0.6)
+
+[node name="KS_barrel_3" parent="." instance=ExtResource("4_KS_barrel")]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1.0, 0, 0.0000, 0, 1.0000, 0.9, 0, 0.6)
+
+[node name="KS_box_4" parent="." instance=ExtResource("5_KS_box")]
+transform = Transform3D(0.9848, 0, -0.1736, 0, 1.0, 0, 0.1736, 0, 0.9848, -0.6, 0, 0.9)

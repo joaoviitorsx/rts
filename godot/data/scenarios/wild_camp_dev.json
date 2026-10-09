@@ -1,0 +1,26 @@
+{
+  // DEV ONLY (--camp-demo captures): wild_start plus wood and hides for the campfire, depot and tent.
+  // GDD v0.3 §3: the RTS opening — a band of 8 colonists and one ox in a clearing of a generated map, with a small
+  // pile of food and firewood on the ground (rain spoils it) and a few tools. Nothing built. First day of spring.
+  "id": "wild_camp_dev",
+  "name": "O bando (dev: material para o acampamento)",
+  "map": { "width": 192, "height": 192, "terrain": "generated" },
+  "startMonth": 0,
+  "buildings": [
+    { "def": "pile", "origin": [-1, -1], "anchor": "start", "rotation": 0 }
+  ],
+  "stock": { "food": 80, "firewood": 40, "tools": 3, "wood": 40, "hides": 4 },
+  "householdToolCondition": 1000,
+  "households": [],
+  "units": [
+    { "kind": "colonist", "name": "Ada" },
+    { "kind": "colonist", "name": "Bertil" },
+    { "kind": "colonist", "name": "Cora" },
+    { "kind": "colonist", "name": "Dag" },
+    { "kind": "colonist", "name": "Edda" },
+    { "kind": "colonist", "name": "Frode" },
+    { "kind": "colonist", "name": "Gunna" },
+    { "kind": "colonist", "name": "Hakon" },
+    { "kind": "ox", "name": "Boi" }
+  ]
+}

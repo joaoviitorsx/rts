@@ -49,6 +49,8 @@ public sealed class BuildingDef
     public HarvestSource Harvests { get; init; }
     /// <summary>Storage open to the weather (ground pile): food and firewood spoil on rainy days (GDD v0.3 §5).</summary>
     public bool Uncovered { get; init; }
+    /// <summary>Only offered on generated maps (the RTS opening's campfire, depot, tent).</summary>
+    public bool GeneratedOnly { get; init; }
     /// <summary>Colonists this shelter houses (tent).</summary>
     public int ShelterCapacity { get; init; }
     /// <summary>Cells (Chebyshev) around the building the workers reach for <see cref="Harvests"/> = trees.</summary>

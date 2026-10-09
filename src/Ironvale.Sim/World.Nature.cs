@@ -10,6 +10,7 @@ public sealed partial class World
     /// <summary>Why <paramref name="def"/> cannot go at <paramref name="origin"/>, or null if it can.</summary>
     public string? PlacementError(BuildingDef def, Cell origin, int rotation)
     {
+        if (def.GeneratedOnly && Terrain is null) return $"{def.Name} só existe na abertura (mapa gerado)";
         if (!Map.CanPlace(def, origin, rotation))
             return Terrain is null ? "local ocupado ou fora do mapa" : "local ocupado, fora do mapa, na água ou em terreno irregular";
         if (Nature is not { } nature) return null;

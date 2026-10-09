@@ -272,6 +272,7 @@ public static class ContentLoader
                 },
                 WorkRadius = c.OptInt(el, "radius", 0),
                 Uncovered = c.OptBool(el, "uncovered", false),
+                GeneratedOnly = c.OptBool(el, "generatedOnly", false),
                 ShelterCapacity = c.OptInt(el, "shelterCapacity", 0),
             });
         }

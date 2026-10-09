@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/environment/kenney/K_campfire_stones.tscn" id="1_K_campfire_stones"]
+[ext_resource type="PackedScene" path="res://assets/environment/kenney/K_campfire_logs.tscn" id="2_K_campfire_logs"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_campfire-stand.tscn" id="3_KS_campfire-stand"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_resource-wood.tscn" id="4_KS_resource-wood"]
+
+[node name="BLD_Campfire_A" type="Node3D"]
+
+[node name="K_campfire_stones_0" parent="." instance=ExtResource("1_K_campfire_stones")]
+transform = Transform3D(0.8500, 0, -0.0000, 0, 0.85, 0, 0.0000, 0, 0.8500, 0, 0, 0)
+
+[node name="K_campfire_logs_1" parent="." instance=ExtResource("2_K_campfire_logs")]
+transform = Transform3D(1.3856, 0, -0.8000, 0, 1.6, 0, 0.8000, 0, 1.3856, 0, 0, 0)
+
+[node name="KS_campfire-stand_2" parent="." instance=ExtResource("3_KS_campfire-stand")]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1.0, 0, 0.0000, 0, 1.0000, 0, 0, 0)
+
+[node name="KS_resource-wood_3" parent="." instance=ExtResource("4_KS_resource-wood")]
+transform = Transform3D(0.7660, 0, -0.6428, 0, 1.0, 0, 0.6428, 0, 0.7660, 0.75, 0, 0.6)

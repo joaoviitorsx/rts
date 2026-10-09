@@ -243,4 +243,56 @@ public class OpeningUnitsTests
         Assert.Equal(SaveSerializer.StateHashHex(a), SaveSerializer.StateHashHex(c));
         TestKit.AssertInvariants(a);
     }
+
+    // ------------------------------------------------------------------ step 3: campfire, covered depot, tent
+
+    private static Building PlaceAndBuild(World w, string id, Cell near, IEnumerable<Unit> builders)
+    {
+        var def = w.Content.Building(id);
+        var spot = w.FreeCellsAround(near, 80).First(c => w.CanPlace(def, c, 0));
+        w.Enqueue(new PlaceBuilding(id, spot, 0));
+        w.ApplyPendingCommands();
+        var site = w.Buildings.Last(b => b.Def.Id == id);
+        w.Enqueue(new OrderUnits(builders.Select(u => u.Id).ToArray(), OrderKind.Build, site.Center, site.Id));
+        return site;
+    }
+
+    [Fact]
+    public void Campfire_depot_and_tent_are_built_and_do_their_job()
+    {
+        var w = NewWild(42, Patient.Value);
+        int wood = Res(w, "wood"), hides = Res(w, "hides"), food = Res(w, "food");
+        Pile(w).Stock.AddUpTo(wood, Qty.Units(40));
+        w.Ledger.Initial[wood] += 40_000;
+        Pile(w).Stock.AddUpTo(hides, Qty.Units(4));
+        w.Ledger.Initial[hides] += 4_000;
+        var start = w.Terrain!.Start;
+        var band = Colonists(w);
+        var fire = PlaceAndBuild(w, "campfire", new Cell(start.X + 3, start.Y + 3), band.Take(2));
+        var depot = PlaceAndBuild(w, "depot", new Cell(start.X - 4, start.Y), band.Skip(2).Take(3));
+        var tent = PlaceAndBuild(w, "tent", new Cell(start.X, start.Y + 5), band.Skip(5).Take(3));
+        Assert.True(StepUntil(w, () => fire.IsActive && depot.IsActive && tent.IsActive, 30 * SimTime.TicksPerDay),
+            $"not built: fire {fire.IsActive} depot {depot.IsActive} tent {tent.IsActive}");
+
+        // Tent: two colonists sleep in it (the next daily needs pass).
+        w.StepDays(1);
+        Assert.Equal(2, w.Units.Count(u => u.ShelterId == tent.Id));
+
+        // Covered depot: food moved into it does not spoil on rainy days, the pile's does.
+        var moved = Pile(w).Stock.RemoveUpTo(food, Qty.Units(30));
+        depot.Stock.AddUpTo(food, moved);
+        w.DrainEvents();
+        Assert.True(StepUntil(w, () => w.WeatherToday == Weather.Rain, 60 * SimTime.TicksPerDay), "no rain");
+        w.StepTicks(SimTime.TicksPerDay);
+        var spoiled = w.DrainEvents().OfType<Spoiled>().ToList();
+        Assert.DoesNotContain(spoiled, e => e.BuildingId == depot.Id);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void Opening_buildings_are_not_offered_on_the_flat_map()
+    {
+        var w = World.Create(TestKit.Content, TestKit.Scenario, 1);
+        Assert.NotNull(w.PlacementError(w.Content.Building("campfire"), new Cell(5, 5), 0));
+    }
 }

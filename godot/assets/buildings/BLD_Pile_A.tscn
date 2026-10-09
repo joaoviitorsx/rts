@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/environment/kenney/K_log_stack.tscn" id="1_K_log_stack"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_box-large.tscn" id="2_KS_box-large"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_box.tscn" id="3_KS_box"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_barrel.tscn" id="4_KS_barrel"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_bedroll-packed.tscn" id="5_KS_bedroll-packed"]
+[ext_resource type="PackedScene" path="res://assets/props/kenney/KS_resource-wood.tscn" id="6_KS_resource-wood"]
+
+[node name="BLD_Pile_A" type="Node3D"]
+
+[node name="K_log_stack_0" parent="." instance=ExtResource("1_K_log_stack")]
+transform = Transform3D(0.0000, 0, -0.7500, 0, 0.75, 0, 0.7500, 0, 0.0000, -0.7, 0, -0.2)
+
+[node name="KS_box-large_1" parent="." instance=ExtResource("2_KS_box-large")]
+transform = Transform3D(0.9659, 0, -0.2588, 0, 1.0, 0, 0.2588, 0, 0.9659, 0.9, 0, -0.7)
+
+[node name="KS_box_2" parent="." instance=ExtResource("3_KS_box")]
+transform = Transform3D(0.9397, 0, 0.3420, 0, 1.0, 0, -0.3420, 0, 0.9397, 1.2, 0, 0.3)
+
+[node name="KS_barrel_3" parent="." instance=ExtResource("4_KS_barrel")]
+transform = Transform3D(1.0000, 0, -0.0000, 0, 1.0, 0, 0.0000, 0, 1.0000, 0.6, 0, 1.1)
+
+[node name="KS_bedroll-packed_4" parent="." instance=ExtResource("5_KS_bedroll-packed")]
+transform = Transform3D(0.8660, 0, -0.5000, 0, 1.0, 0, 0.5000, 0, 0.8660, -0.6, 0, 1.2)
+
+[node name="KS_resource-wood_5" parent="." instance=ExtResource("6_KS_resource-wood")]
+transform = Transform3D(0.6000, 0, -1.0392, 0, 1.2, 0, 1.0392, 0, 0.6000, 0.2, 0, 0.2)

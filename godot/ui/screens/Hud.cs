@@ -259,7 +259,7 @@ public partial class Hud : CanvasLayer
         var buildRow = new HBoxContainer();
         buildPanel.AddChild(buildRow);
         buildRow.AddChild(UiNodes.Label(UiText.T("ui.bottom.build"), "SecondaryLabel"));
-        foreach (var def in _host.Content.Buildings.Where(d => d.Buildable))
+        foreach (var def in _host.Content.Buildings.Where(d => d.Buildable && (!d.GeneratedOnly || _host.World.Terrain is not null)))
         {
             string cost = string.Join(", ", def.Cost.Select((q, r) => (q, r)).Where(x => x.q.IsPositive)
                 .Select(x => $"{x.q} {UiText.Res(_host.Content.Resources[x.r])}"));

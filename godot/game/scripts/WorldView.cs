@@ -37,6 +37,8 @@ public partial class WorldView : Node3D
         public required Label3D Label;
         public Node3D? Site;
         public CpuParticles3D? SiteDust;
+        public Node3D? Flame;
+        public bool Burning;
         public bool WasActive;
     }
 
@@ -290,6 +292,13 @@ public partial class WorldView : Node3D
                 Visual.Fx.Pop(node.Root);
                 Visual.Fx.Dust(node.Root, new Vector2(wc, hc) * _catalog.CellSize, continuous: false);
                 Audio.Sfx.PlayAt("site_complete", node.Root.GlobalPosition);
+            }
+            if (b.Def.Has(Ironvale.Sim.Content.BuildingRole.Fire))
+            {
+                bool first = node.Flame is null;
+                node.Flame ??= Visual.Fx.Flame(node.Root);
+                if (first || node.Burning != b.Burning) Visual.Fx.SetFlame(node.Flame, b.Burning);
+                node.Burning = b.Burning;
             }
             bool isProducer = b.IsProducer;
             node.Label.Visible = isProducer || b.IsStorage;
