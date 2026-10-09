@@ -14,6 +14,13 @@
   "ticksPerCellRoad": 2,
   "ticksPerCellOffroad": 3,
   "roadStonePerCell": 1,
+  // Commute: workers walk home → work → home inside the 10-hour shift and only produce on site.
+  // autoRehome: a family with a job moves to a free house that saves at least rehomeMinGainTicks one way.
+  // commuteTicksPermille: commute time = walking ticks × this ‰ (walkers' tick scale is compressed with the day;
+  // 70 ‰ ≈ 20 % of the shift for 20 cells off-road, ≈ 14 % on road).
+  "commuteTicksPermille": 70,
+  "autoRehome": 1,
+  "rehomeMinGainTicks": 12,
   "carrierLoadTicks": 4,
   "minPickup": 2,
   "harvestVariancePermille": 100,

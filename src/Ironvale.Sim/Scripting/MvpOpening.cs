@@ -9,13 +9,14 @@ public static class MvpOpening
 {
     public static readonly (string Def, Cell Origin)[] Layout =
     {
+        // Food first (the cart lasts ~40 days and fields only yield at harvest), then wood, then shelter.
+        ("field", new Cell(35, 35)),
+        ("field", new Cell(39, 35)),
+        ("woodcutter", new Cell(24, 25)),
+        ("woodcutter", new Cell(27, 25)),
         ("house", new Cell(26, 30)),
         ("house", new Cell(26, 33)),
         ("house", new Cell(34, 30)),
-        ("woodcutter", new Cell(24, 25)),
-        ("woodcutter", new Cell(27, 25)),
-        ("field", new Cell(35, 35)),
-        ("field", new Cell(39, 35)),
         ("granary", new Cell(30, 35)),
     };
 

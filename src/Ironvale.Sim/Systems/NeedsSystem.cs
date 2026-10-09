@@ -37,24 +37,42 @@ public sealed class NeedsSystem : ISimSystem
         }
     }
 
+    /// <summary>
+    /// Homeless families take the free house nearest to their job (first free one without a job). With
+    /// balance.autoRehome, a family with a job moves to a free house that saves enough walking (2A.3).
+    /// </summary>
     private static void AssignHomes(World w)
     {
         var occupants = new Dictionary<int, int>();
         foreach (var h in w.Households)
             if (h.HomeId != 0) occupants[h.HomeId] = occupants.GetValueOrDefault(h.HomeId) + 1;
+        var houses = w.Buildings.Where(b => b.IsActive && b.Def.Has(BuildingRole.Housing)).ToList();
+        if (houses.Count == 0) return;
+        var bal = w.Content.Balance;
 
         foreach (var h in w.Households)
         {
-            if (h.HomeId != 0) continue;
-            foreach (var b in w.Buildings)
+            var job = w.GetBuilding(h.JobBuildingId) is { IsActive: true } j ? j : null;
+            if (h.HomeId != 0 && (!bal.AutoRehome || job is null)) continue;
+
+            Building? best = null;
+            int bestTicks = int.MaxValue;
+            foreach (var b in houses)
             {
-                if (!b.IsActive || !b.Def.Has(BuildingRole.Housing)) continue;
-                int used = occupants.GetValueOrDefault(b.Id);
-                if (used >= b.Def.HousingCapacity) continue;
-                h.HomeId = b.Id;
-                occupants[b.Id] = used + 1;
-                break;
+                if (b.Id == h.HomeId || occupants.GetValueOrDefault(b.Id) >= b.Def.HousingCapacity) continue;
+                if (job is null) { best = b; break; }
+                int t = w.Paths.Ticks(b.Center, job.Center);
+                if (t < bestTicks) { best = b; bestTicks = t; }
             }
+            if (best is null) continue;
+            if (h.HomeId != 0)
+            {
+                var current = w.GetBuilding(h.HomeId);
+                if (current is not null && w.Paths.Ticks(current.Center, job!.Center) - bestTicks < bal.RehomeMinGainTicks) continue;
+                occupants[h.HomeId] -= 1;
+            }
+            h.HomeId = best.Id;
+            occupants[best.Id] = occupants.GetValueOrDefault(best.Id) + 1;
         }
     }
 }

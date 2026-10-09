@@ -5,7 +5,7 @@ public class ProductionTests
     [Fact]
     public void Woodcutter_produces_per_worker_hour_into_its_own_stock()
     {
-        var w = TestKit.NewWorld();
+        var w = TestKit.NewWorld(TestKit.ContentWith(("commuteTicksPermille", "0")));   // rate only (commute: CommuteTests)
         var b = TestKit.AddActive(w, "woodcutter", new Cell(10, 10));
         var h = w.Households[0];
         w.Assign(h, b, AssignmentSource.Player, 0);

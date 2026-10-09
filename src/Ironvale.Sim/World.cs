@@ -225,6 +225,45 @@ public sealed class World
     /// <summary>Ticks to walk into <paramref name="cell"/> on the way to <paramref name="target"/>.</summary>
     public int StepTicksInto(Cell cell, Cell target) => Paths.EnterCost(cell, Map.BuildingAt(target));
 
+    /// <summary>Where the household works this hour (job building, or the site it helps), or null.</summary>
+    public Building? WorkplaceOf(Household h) => h.State switch
+    {
+        HouseholdState.Working => GetBuilding(h.JobBuildingId),
+        HouseholdState.Building => GetBuilding(h.BuildSiteId),
+        _ => null,
+    };
+
+    private const int DayMilliTicks = SimTime.TicksPerDay * Permille.One;
+
+    /// <summary>
+    /// One-way commute home → workplace in milli-ticks of the day: walking ticks of the route × commuteTicksPermille,
+    /// capped at half a day. Carriers walk as their job, so they have no separate commute (2A.3 simplification).
+    /// </summary>
+    public int CommuteMilliTicks(Household h)
+    {
+        if (h.State is not (HouseholdState.Working or HouseholdState.Building)) return 0;
+        var work = WorkplaceOf(h);
+        return work is null ? 0 : CommuteMilliTicks(HomeCellOf(h), work.Center);
+    }
+
+    public int CommuteMilliTicks(Cell home, Cell work) =>
+        (int)Math.Min((long)Paths.Ticks(home, work) * Content.Balance.CommuteTicksPermille, DayMilliTicks / 2);
+
+    /// <summary>
+    /// Share (‰) of hour <paramref name="hourOfDay"/> the household spends at its workplace: the shift is
+    /// [commute, day − commute) — walking there in the morning and back home before the day ends.
+    /// </summary>
+    public int OnSitePermille(Household h, int hourOfDay)
+    {
+        int c = CommuteMilliTicks(h);
+        int start = hourOfDay * SimTime.TicksPerHour * Permille.One, end = start + SimTime.TicksPerHour * Permille.One;
+        int overlap = Math.Min(end, DayMilliTicks - c) - Math.Max(start, c);
+        return overlap <= 0 ? 0 : overlap / SimTime.TicksPerHour;
+    }
+
+    /// <summary>Share (‰) of the shift spent walking (round trip).</summary>
+    public int CommutePermille(Household h) => (int)(2L * CommuteMilliTicks(h) * Permille.One / DayMilliTicks);
+
     public Cell HomeCellOf(Household h) =>
         GetBuilding(h.HomeId)?.Center ?? SeatBuilding?.Center ?? new Cell(Map.Width / 2, Map.Height / 2);
 

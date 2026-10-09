@@ -20,7 +20,9 @@ public sealed class ConstructionSystem : ISimSystem
             foreach (var h in w.Households)
             {
                 if (h.State != HouseholdState.Building || h.BuildSiteId != b.Id) continue;
-                work += h.ProductivityPermille;
+                int onSite = w.OnSitePermille(h, cal.HourOfDay);
+                if (onSite == 0) continue;   // walking to or from the site
+                work += (long)h.ProductivityPermille * onSite / Permille.One;
                 h.ToolHoursToday++;
             }
             if (work == 0) continue;

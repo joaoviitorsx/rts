@@ -82,6 +82,16 @@ public sealed class TelemetryRecorder
 
     internal void OnDelivery() => ActivityToday = true;
 
+    /// <summary>Worker-hours of producer shifts since the start, and how many of them were spent walking (‰ units).</summary>
+    public long ShiftHoursPermille { get; internal set; }
+    public long CommuteHoursPermille { get; internal set; }
+
+    internal void OnShiftHour(int workers, int onSitePermille)
+    {
+        ShiftHoursPermille += (long)workers * Permille.One;
+        CommuteHoursPermille += (long)workers * (Permille.One - onSitePermille);
+    }
+
     internal void AddDaily(DailySample sample)
     {
         _ring[_ringNext] = sample;

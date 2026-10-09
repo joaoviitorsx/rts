@@ -1,8 +1,8 @@
 namespace Ironvale.Sim.Systems;
 
 /// <summary>
-/// Decides, each hour, whether a household works, hauls, builds or only subsists. Families without a job help
-/// the nearest construction site that can progress (balance.autoBuilders), up to maxBuildersPerSite per site.
+/// Decides, each hour, whether a household works, hauls, builds or only subsists. Families idle right now (no job,
+/// or a seasonal job out of season) help the nearest construction site that can progress (balance.autoBuilders), up to maxBuildersPerSite per site.
 /// </summary>
 public sealed class HouseholdStateSystem : ISimSystem
 {
@@ -35,7 +35,7 @@ public sealed class HouseholdStateSystem : ISimSystem
         };
     }
 
-    /// <summary>Jobless households → nearest site that can progress (ties by id), respecting the per-site cap.</summary>
+    /// <summary>Idle households → nearest site that can progress (ties by id), respecting the per-site cap.</summary>
     private static void AssignHelpers(World w)
     {
         List<Building>? sites = null;
@@ -50,7 +50,8 @@ public sealed class HouseholdStateSystem : ISimSystem
 
         foreach (var h in w.Households)
         {
-            if (h.HasJob || h.State != HouseholdState.Subsisting) continue;
+            // Idle right now: no job, or a seasonal job out of season (the field waits for spring).
+            if (h.State != HouseholdState.Subsisting) continue;
             var home = w.HomeCellOf(h);
             Building? best = null;
             foreach (var s in sites)

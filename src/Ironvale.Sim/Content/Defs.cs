@@ -110,6 +110,11 @@ public sealed class BalanceDef
     public required int TicksPerCellOffroad { get; init; }
     /// <summary>Stone paid per road cell when it is laid.</summary>
     public required Qty RoadStonePerCell { get; init; }
+    /// <summary>Commute time = walking ticks × this ‰ (0 = no commute).</summary>
+    public required int CommuteTicksPermille { get; init; }
+    public required bool AutoRehome { get; init; }
+    /// <summary>Minimum one-way saving, in walking ticks, for a family to move house.</summary>
+    public required int RehomeMinGainTicks { get; init; }
     public required int CarrierLoadTicks { get; init; }
     public required Qty MinPickup { get; init; }
     public required int HarvestVariancePermille { get; init; }

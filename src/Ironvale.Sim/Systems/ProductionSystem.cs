@@ -1,7 +1,7 @@
 namespace Ironvale.Sim.Systems;
 
 /// <summary>
-/// Hourly output = Σ(workers × productivity) × rate. Continuous recipes fill the building's own stock
+/// Hourly output = Σ(workers × productivity × share of the hour on site) × rate (commute: 2A.3). Continuous recipes fill the building's own stock
 /// (production stops when it is full: physical economy); seasonal recipes accumulate work until harvest.
 /// </summary>
 public sealed class ProductionSystem : ISimSystem
@@ -22,7 +22,10 @@ public sealed class ProductionSystem : ISimSystem
             {
                 var h = w.GetHousehold(id);
                 if (h is null || h.State != HouseholdState.Working) continue;
-                workerPermille += (long)h.Workers * h.ProductivityPermille;
+                int onSite = w.OnSitePermille(h, cal.HourOfDay);
+                w.Telemetry.OnShiftHour(h.Workers, onSite);
+                if (onSite == 0) continue;   // walking to or from work
+                workerPermille += (long)h.Workers * h.ProductivityPermille * onSite / Permille.One;
                 if (recipe.UsesTools) h.ToolHoursToday++;
             }
             if (workerPermille == 0) continue;
