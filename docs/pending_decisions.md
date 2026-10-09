@@ -261,3 +261,23 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
 ### P39. Aldeões: Quaternius × alternativa chibi (prioridade alta para a coesão)
 - Ver `asset_manifest.md` §9.2. Recomendação: testar KayKit Adventurers ou Kenney Mini Characters lado a lado antes de trocar.
 
+
+## Aldeões próprios no padrão Kenney (09/10/2026, branch `feature/characters-kenney`)
+
+### P40. Briefing e Bible ausentes do repo (prioridade média)
+- O pedido cita `docs/briefing_2026-10-09.md` e `docs/asset_production_bible_mvp.md` (§13 nomes, §29 animação), mas
+  nenhum dos dois está no repo. **Escolha:** a `characters_spec.md` segue o texto do pedido e a decisão de 09/10 no
+  `decisions.md`; revisar quando os arquivos entrarem.
+
+### P41. Blender 5.1 (Flatpak do Fedora) no lugar do 4.x (prioridade média)
+- Instalado: `org.blender.Blender` 5.1.1, remoto `fedora`, fora do PATH. Funciona em modo headless (importou e mediu
+  os glTF do Fantasy Town), mas avisa `OpenColorIO 2.4.2 não carrega config.ocio 2.5` e cai no modo de cor de
+  fallback (renders de conferência podem sair com cor diferente; a referência de cor é a Godot).
+  O `/tmp` do Flatpak é privado: rodar com `--filesystem=<repo>`.
+- **Escolha:** seguir com o 5.1 (API do 4.x compatível no que usamos; ações com *slots* desde o 4.4).
+  Alternativa: Blender do Flathub (build oficial, sem o problema do OCIO).
+
+### P42. Comparação com Kenney Blocky e Slavic Villagers (prioridade alta no gate do protótipo)
+- Nenhum dos dois pacotes está em `art/vendor_raw/`. Para a comparação lado a lado do gate, o dono precisa baixá-los
+  (Kenney Blocky Characters é CC0; checar a licença do Slavic Villagers) e colocar em `~/Downloads`. Sem eles, a
+  comparação sai só com os Quaternius atuais.
