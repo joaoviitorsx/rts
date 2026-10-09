@@ -17,7 +17,7 @@
 | Git | pasta **não é repositório** | Precisa `git init` antes dos commits do Marco 1. |
 | MCP godot-devpilot | config global aponta `GODOT_MCP_PROJECT_ROOT` para `Games/runeway`; addon não está em `rts/addons/` | Precisa apontar para `rts` e copiar/ativar o plugin. Ver §9. |
 | Assets | só **Quaternius Stylized Nature MegaKit (Standard, CC0)** em `assets/` — glTF + FBX + OBJ (118 MB) | Faltam KayKit e LOWPO Villager. FBX/OBJ duplicados vão inflar import → ver §1.2. |
-| Docs | `GDD_sociedade_autonoma.md` e `GDD_v0.1_sociedade_autonoma.md` são idênticos exceto o título | Ver Q16. |
+| Docs | `GDD_sociedade_autonoma.md` e `GDD_v0.1_sociedade_autonoma.md` são idênticos exceto o título | Resolvido (Q16). |
 
 ---
 
@@ -448,6 +448,7 @@ Capacidade Administrativa, sugestão automática de política ("o jogo aprende c
 ### Documentos
 - **Q1. Bible ausente.** `asset_production_bible_mvp.md` não está no repo. Pode adicionar? Sem ela, uso a estrutura do §1 e escala/nomes provisórios (📎).
 - **Q16. GDD duplicado.** `GDD_sociedade_autonoma.md` e `GDD_v0.1_…md` são iguais (o "v0.1" diz "Versão 0.2" no cabeçalho). Qual é o canônico? Posso apagar o outro?
+  **Resolvido (08/10/2026):** `GDD_sociedade_autonoma.md` é o oficial; a cópia foi para `docs/archive/`.
 - **Q2. Partes do GDD anuladas pela decisão visual.** Considero obsoletos: §6.1–6.2 inteiros, o SubViewport 640×360 do §7.1, D7, risco "pixel creep", e a fase F0.5 vira "spike de câmera/MultiMesh" sem pixel art. Confirma?
 
 ### Tempo

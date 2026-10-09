@@ -8,9 +8,10 @@
 | Marco 1 — núcleo da simulação + view cinza | ✅ aprovado (08/10/2026) | sim C# headless, 50 testes, soak 50 anos, CLI, view com primitivas |
 | Etapa 1 — inventário de assets | ✅ | `docs/asset_manifest.md`, `CREDITS.md` |
 | Reorganização A1–A3 | ✅ | `godot/`, `art/vendor_raw/`, `scripts/setup_vendor.py`, `docs/vendor_sources.md` |
-| **Etapa 2 — integração de assets** | 🟡 em andamento | ver abaixo + "Onde paramos" |
-| Etapa 3 — TEST_VILLAGE_01 | ⏳ | cena de validação + screenshots em 3 zooms + opções de material |
-| **Marco 2A — loop central jogável** | 📋 registrado, não iniciado | gate: playtest com 5 pessoas (GDD §8.3) |
+| Etapa 2 — integração de assets | ✅ concluída (08/10/2026) | assets importados, cenas herdadas, registro visual |
+| Etapa 3 — TEST_VILLAGE_01 | ✅ concluída (08/10/2026) — montagem | cena de validação + screenshots em 3 zooms |
+| **Look-dev visual: chão, vegetação, luz e câmera** | 🟡 em andamento | fecha quando o dono aprovar o LOOKDEV_GROUND **e** ele estiver aplicado na TEST_VILLAGE_01; não bloqueia o 2A |
+| **Marco 2A — loop central jogável** | 📋 liberado (em paralelo ao look-dev), não iniciado | gate: playtest com 5 pessoas (GDD §8.3) |
 | Marco 2B — diferenciais e polimento | 📋 registrado | depois do gate do 2A |
 
 ## Etapa 2 — integração de assets (plano combinado)
@@ -25,9 +26,12 @@
 9. TEST_VILLAGE_01 (Bible §43) + screenshots em 3 zooms + opções de material hand-painted × PBR.
 
 ## Marco 2 — dividido em 2A e 2B (decisão de 08/10/2026, ver `docs/decisions.md`)
-Não iniciar antes da Etapa 2/3. Regra transversal: toda mecânica nova precisa ser **legível** (painel e tooltip
+O 2A pode começar em paralelo ao item de look-dev visual. Regra transversal: toda mecânica nova precisa ser **legível** (painel e tooltip
 explicam a perda e a causa) e reforçar o loop **problema → solução → delegação**. Termos do tema medieval
 (decreto, reeve, livro de contas…) no glossário do GDD §12.
+**Nomes na interface × no código:** o código mantém os nomes técnicos (`Policy`, `Administrator`…); o jogador só vê
+decreto/reeve/bailio/senescal, via chaves de tradução em `godot/ui/localization/ui.csv`. A troca é feita junto com as
+telas do 2A, atualizando o `docs/UI_UX_guide.md` na mesma entrega.
 
 ### Marco 2A — loop central jogável para playtest (GDD v0.2)
 1. **Abertura jogável sem roteiro:** suprimentos na carroça e balanceamento para que um jogador inexperiente sobreviva ao 1º inverno com folga apertada, sem morrer no ano 1. Crise da lenha no 1º outono (GDD v0.2 §4.2).
@@ -93,12 +97,14 @@ Cada tela passa por: 1 objetivo → 2 informações → 3 wireframe → 4 cinza 
 
 ### Economy Sheet via CLI
 - Cenários de balanceamento na CLI: **jogador passivo**, **jogador ingênuo**, **abertura ótima**.
+- Implementados **junto com o tempo de trajeto (2A.5)**, não antes.
 - Cada cenário mede o **impacto do trajeto**: % do turno em trajeto por edifício, produção perdida/ano e tempo livre
   (horta) por família, com e sem estrada, morando perto × longe do trabalho.
 - `docs/balance_report.md` com CSV e gráficos por cenário, verificando se as crises 1–3 aparecem nos minutos previstos no GDD v0.2 §4.
 
 ## Onde paramos (08/10/2026)
-- Look-dev do chão **aprovado** (paleta V2 "meadow", mais saturada, virou padrão global). Imagens em `docs/lookdev/`.
+- Paleta V2 "meadow" (mais saturada) escolhida e já padrão global. A aprovação do look-dev visual completo é o item
+  "Look-dev visual" da tabela acima. Imagens em `docs/lookdev/`.
 - TEST_VILLAGE_01 reconstruída com o pipeline do look-dev (`tools/assets/build_test_village.py` → `.tscn` + `_layout.json`,
   controlador `scenes/test/TestVillage.gd`): casas giradas ±5–15° para a estrada, telhados tile/thatch/slate, quintais com props,
   terra só em entrada/quintal, 249 árvores em florestas (MultiMesh), aglomerados de tufos/flores, 20 aldeões.
