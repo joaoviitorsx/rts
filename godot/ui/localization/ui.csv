@@ -67,6 +67,7 @@ Each active decree uses AC. Above the limit he is late and makes mistakes."
 suggestion.title,💡 O reeve sugere,💡 The reeve suggests
 suggestion.why,"Você colocou famílias para produzir {0} {1} vezes quando o estoque estava em ~{2}.","You put families to produce {0} {1} times when the stock was around {2}."
 suggestion.what,"Decreto: manter {0} entre {1} e {2}","Decree: keep {0} between {1} and {2}"
+suggestion.winter,"(o mínimo foi aumentado para cobrir metade do inverno)","(the minimum was raised to cover half the winter)"
 suggestion.cost,"Custo: {0} de Capacidade Administrativa ({1}/{2} em uso hoje)","Cost: {0} administrative capacity ({1}/{2} in use today)"
 suggestion.lose,"Você deixa de: escolher quem produz {0}. O reeve move até {1} famílias; as que você designou ele não toca.","You give up: choosing who makes {0}. The reeve moves up to {1} families; he never touches the ones you assigned."
 suggestion.accept,Criar decreto,Issue decree

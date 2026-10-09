@@ -17,4 +17,6 @@ public sealed class DecreeSuggestion
     public int Actions { get; internal set; }
     public long AverageStockUnits { get; internal set; }
     public long OfferedTick { get; internal set; }
+    /// <summary>The minimum was raised above the observed stock to cover part of the winter (P21).</summary>
+    public bool WinterAdjusted { get; internal set; }
 }

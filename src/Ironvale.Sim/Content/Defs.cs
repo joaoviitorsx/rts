@@ -141,6 +141,8 @@ public sealed class BalanceDef
     public required int SuggestAfterActions { get; init; }
     public required int SuggestWindowDays { get; init; }
     public required int SuggestSnoozeDays { get; init; }
+    /// <summary>Suggested minimum for firewood/food covers at least this share of a winter's demand (0 = off).</summary>
+    public required int SuggestWinterCoverPermille { get; init; }
     /// <summary>Families without a job help the nearest construction site that can progress.</summary>
     public required bool AutoBuilders { get; init; }
     public required int MaxBuildersPerSite { get; init; }

@@ -317,6 +317,7 @@ public static class ContentLoader
             SuggestAfterActions = Math.Max(1, c.OptInt(el, "suggestAfterActions", 3)),
             SuggestWindowDays = c.OptInt(el, "suggestWindowDays", 60),
             SuggestSnoozeDays = c.OptInt(el, "suggestSnoozeDays", 90),
+            SuggestWinterCoverPermille = c.OptInt(el, "suggestWinterCoverPermille", 500),
             AutoBuilders = c.OptInt(el, "autoBuilders", 1) != 0,
             MaxBuildersPerSite = Math.Max(1, c.OptInt(el, "maxBuildersPerSite", 3)),
         };

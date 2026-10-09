@@ -40,6 +40,8 @@
   "suggestAfterActions": 3,
   "suggestWindowDays": 60,
   "suggestSnoozeDays": 90,
+  // Suggested minimum for firewood/food covers at least this share of the coming winter's demand (0 = off).
+  "suggestWinterCoverPermille": 500,
   // Construction (Marco 2A.1): materials are hauled to the site; work = buildDays × 1 household at 100%.
   // autoBuilders: families without a job help the nearest site that can progress (1 = on, 0 = off).
   "autoBuilders": 1,

@@ -41,7 +41,7 @@ public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, 
 
 /// <summary>The reeve's offer (guide §3.3): why, what, cost and what the player gives up.</summary>
 public sealed record SuggestionSnap(int Id, string ResourceName, long Min, long Max, int Actions, long AverageStock,
-    int CaCost, int MaxHouseholds);
+    int CaCost, int MaxHouseholds, bool WinterAdjusted);
 
 public enum AlertSeverity { Info, Warning, Critical }
 
@@ -139,7 +139,7 @@ public static class UiSnapshotBuilder
             AdminUsed = w.AdminUsed,
             Suggestion = w.Suggestion is { } sg ? new SuggestionSnap(sg.Id, content.Resources[sg.Resource].Name, sg.Min.WholeUnits,
                 sg.Max.WholeUnits, sg.Actions, sg.AverageStockUnits, content.Policies[0].CaCostFor(sg.Resource),
-                content.Policies[0].MaxHouseholds) : null,
+                content.Policies[0].MaxHouseholds, sg.WinterAdjusted) : null,
         };
     }
 

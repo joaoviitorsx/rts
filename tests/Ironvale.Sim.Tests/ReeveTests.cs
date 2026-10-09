@@ -157,3 +157,44 @@ public class ReeveTests
         Assert.Equal(SaveSerializer.StateHashHex(w), SaveSerializer.StateHashHex(copy));
     }
 }
+
+public class WinterAwareSuggestionTests
+{
+    private static DecreeSuggestion? FirewoodSuggestion(ContentDb content)
+    {
+        var w = TestKit.NewWorld(content);
+        var cutter = TestKit.AddActive(w, "woodcutter", new Cell(26, 30));
+        var other = TestKit.AddActive(w, "woodcutter", new Cell(29, 26));
+        var field = TestKit.AddActive(w, "field", new Cell(36, 26));
+        var field2 = TestKit.AddActive(w, "field", new Cell(36, 31));
+        w.Assign(w.Households[0], field, AssignmentSource.Player, 0);
+        w.Assign(w.Households[1], field, AssignmentSource.Player, 0);
+        w.Assign(w.Households[2], field2, AssignmentSource.Player, 0);
+        w.Enqueue(new SetRecipe(cutter.Id, "split_firewood"));
+        w.Enqueue(new SetRecipe(other.Id, "split_firewood"));
+        w.Step();
+        w.Enqueue(new AssignHousehold(w.Households[0].Id, cutter.Id));
+        w.Enqueue(new AssignHousehold(w.Households[1].Id, cutter.Id));
+        w.Enqueue(new AssignHousehold(w.Households[2].Id, other.Id));
+        w.Step();
+        return w.Suggestion;
+    }
+
+    [Fact]
+    public void A_firewood_suggestion_covers_half_the_winter()
+    {
+        var s = FirewoodSuggestion(TestKit.Content)!;
+        Assert.True(s.WinterAdjusted);
+        // 6 families × 1 firewood/day × 90 days × 50% = 270.
+        Assert.Equal(Qty.Units(270), s.Min);
+        Assert.True(s.Max > s.Min);
+    }
+
+    [Fact]
+    public void With_winter_cover_off_the_band_follows_the_observed_stock()
+    {
+        var s = FirewoodSuggestion(TestKit.ContentWith(("suggestWinterCoverPermille", "0")))!;
+        Assert.False(s.WinterAdjusted);
+        Assert.Equal(Qty.Units(60), s.Min);   // the cart's 60 firewood, rounded to 10
+    }
+}

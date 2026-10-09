@@ -132,6 +132,9 @@
 - **Escolha:** mínimo = média do estoque nos momentos das 3 ações, arredondada a 10; máximo = mínimo × 1,25.
   Simples e explicável ("quando o estoque estava em ~60"), mas para lenha pode ficar baixo para o inverno.
 - **Alternativa:** considerar a demanda do próximo inverno para lenha/comida.
+- **Atualização (09/10):** feito atrás de parâmetro — `suggestWinterCoverPermille` (500): para lenha e comida o mínimo
+  sugerido cobre pelo menos metade do inverno (6 famílias → lenha 270); o cartão avisa "o mínimo foi aumentado".
+  `0` volta ao comportamento anterior (só o estoque observado).
 
 ### P22. Jogadores roteirizados mudaram (prioridade baixa)
 - **optimal:** mantém 3 decretos (3/4 de CA) e cuida da pedreira/ferreiro à mão (trocar o decreto de madeira pelo de

@@ -117,7 +117,7 @@ public static class SaveSerializer
             Suggestion = w.Suggestion is { } sg ? new SuggestionDto
             {
                 Id = sg.Id, Resource = Res(sg.Resource), Min = sg.Min.Milli, Max = sg.Max.Milli, Actions = sg.Actions,
-                AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick,
+                AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick, WinterAdjusted = sg.WinterAdjusted,
             } : null,
             SuggestionMuted = new SortedDictionary<string, long>(w.SuggestionMuted.ToDictionary(kv => Res(kv.Key), kv => kv.Value), StringComparer.Ordinal),
         };
@@ -269,7 +269,7 @@ public static class SaveSerializer
             w.Suggestion = new DecreeSuggestion
             {
                 Id = sg.Id, Resource = Res(sg.Resource), Min = new Qty(sg.Min), Max = new Qty(sg.Max), Actions = sg.Actions,
-                AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick,
+                AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick, WinterAdjusted = sg.WinterAdjusted,
             };
         foreach (var (id, until) in s.SuggestionMuted) w.InsertSuggestionMute(Res(id), until);
         foreach (var e in s.PolicyLog) w.InsertPolicyLog(new PolicyLogEntry(e.Tick, e.PolicyId, e.Key, e.Args));

@@ -202,7 +202,8 @@ public partial class Hud : CanvasLayer
         if (s.Suggestion is not { } g || g.Id == _suggestionId) return;
         _suggestionId = g.Id;
         _suggestionWhy.Text = UiText.T("suggestion.why", g.ResourceName, g.Actions, g.AverageStock);
-        _suggestionWhat.Text = UiText.T("suggestion.what", g.ResourceName, g.Min, g.Max);
+        _suggestionWhat.Text = UiText.T("suggestion.what", g.ResourceName, g.Min, g.Max)
+                               + (g.WinterAdjusted ? "\n" + UiText.T("suggestion.winter") : "");
         _suggestionCost.Text = UiText.T("suggestion.cost", g.CaCost, s.AdminUsed, s.AdminCapacity);
         _suggestionLose.Text = UiText.T("suggestion.lose", g.ResourceName, g.MaxHouseholds);
     }

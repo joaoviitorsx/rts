@@ -57,6 +57,7 @@ public sealed class SuggestionDto
     public int Actions { get; set; }
     public long AverageStockUnits { get; set; }
     public long OfferedTick { get; set; }
+    public bool WinterAdjusted { get; set; }
 }
 
 public sealed class RngDto

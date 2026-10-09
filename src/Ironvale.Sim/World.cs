@@ -632,14 +632,31 @@ public sealed class World
         var def = Content.Policies[0];
         long avg = (long)mine.Average(a => a.StockUnits);
         long min = Math.Max(10, (avg + 9) / 10 * 10);
+        long winter = WinterCoverUnits(r);
+        bool winterAdjusted = winter > min;
+        if (winterAdjusted) min = (winter + 9) / 10 * 10;
         long max = Math.Max(min + 10, (min * (Permille.One + def.HysteresisPermille) / Permille.One + 9) / 10 * 10);
         Suggestion = new DecreeSuggestion
         {
             Id = NewId(), Resource = r, Min = Qty.Units(min), Max = Qty.Units(max),
-            Actions = mine.Count, AverageStockUnits = avg, OfferedTick = Tick,
+            Actions = mine.Count, AverageStockUnits = avg, OfferedTick = Tick, WinterAdjusted = winterAdjusted,
         };
         _playerActions.RemoveAll(a => a.Resource == r);
         Emit(new SuggestionOffered(Tick, Suggestion.Id));
+    }
+
+    /// <summary>balance.suggestWinterCoverPermille of a winter's need of firewood or food (0 for other resources).</summary>
+    private long WinterCoverUnits(int r)
+    {
+        var bal = Content.Balance;
+        const int winterDays = SimTime.DaysPerMonth * SimTime.MonthsPerSeason;
+        Qty need;
+        if (Content.Resources[r].Id == ConsumptionSystem.FirewoodId)
+            need = bal.FirewoodPerHouseholdPerWinterDay * (_households.Count * winterDays);
+        else if (Content.Resources[r].Id == ConsumptionSystem.FoodId)
+            need = bal.FoodPerMemberPerDay * (_households.Sum(h => h.Members) * winterDays);
+        else return 0;
+        return need.MulPermille(bal.SuggestWinterCoverPermille).WholeUnits;
     }
 
     /// <summary>"Agora não" (snooze for balance.suggestSnoozeDays) or "Nunca" for this resource.</summary>
