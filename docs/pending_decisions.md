@@ -281,3 +281,12 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
 - Nenhum dos dois pacotes está em `art/vendor_raw/`. Para a comparação lado a lado do gate, o dono precisa baixá-los
   (Kenney Blocky Characters é CC0; checar a licença do Slavic Villagers) e colocar em `~/Downloads`. Sem eles, a
   comparação sai só com os Quaternius atuais.
+
+### P43. Instalação do MCP: dois desvios do README (prioridade baixa)
+- O README oficial (`mcp-for-blender` 2.1.9, repo ahujasid/blender-mcp) bate com o pedido: `claude mcp add blender uvx
+  mcp-for-blender`, `install-addon`, "Interface: MCP for Blender", `BLENDER_MCP_SAFE_MODE=1`, servidor em `localhost:9876`.
+- Desvios: (1) versão **fixada** em `@2.1.9`, a mesma que foi inspecionada, para não puxar atualização sem revisão;
+  (2) **`DISABLE_TELEMETRY=1`**, porque o pacote envia um registro anônimo de uso por padrão (README, "Telemetry
+  Control"). O addon foi instalado com `--addons-dir` no caminho do Flatpak (`~/.var/app/org.blender.Blender/config/blender/5.1/scripts/addons`).
+- O `install-addon` também sobrescreveu um `addon.py` antigo que já estava lá (backup em `addon.py.bak`). Agora há dois
+  arquivos idênticos (`addon.py` e `blender_mcp.py`): ativar só um no Blender, ou apagar o `addon.py`.

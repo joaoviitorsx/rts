@@ -15,8 +15,11 @@
 | Props/árvores do Nature Kit | — | ×4 | — |
 | Câmera oficial | pitch 50°, FOV 32°, distância 30 / **62** / 110 m (perto / médio / longe) | — | — |
 
-**Altura do aldeão: 1,30 m sem chapéu, no máximo 1,40 m com chapéu.** Sobram 10 cm na porta no pior caso e
-cabem dois lado a lado na largura (ombros ≈ 0,40 m).
+**Escolhido — altura final: 1,30 m sem chapéu, no máximo 1,40 m com chapéu.** Sobram 10 cm na porta no pior caso e
+cabe com folga na largura (ombros ≈ 0,40 m, porta 0,80 m).
+
+**Escolhido — orientação: frente para −Y no Blender = +Z na Godot** (convenção do projeto, `WorldView.cs`:
+"models face +Z"); +Y up no glTF; pivô entre os pés, no chão.
 
 ## 2. Estilo
 
@@ -96,14 +99,14 @@ Skinning rígido: cada vértice pesa 1,0 em um único osso. Os vãos entre peça
 
 Todas as combinações saem só de dados (slots + deslocamentos de cor), sem modelo novo.
 
-## 6. Esqueleto (20 ossos)
+## 6. Esqueleto (21 ossos)
 
 Nomes do `SkeletonProfileHumanoid` da Godot, para retarget futuro:
 
 ```
 Root
 └─ Hips
-   ├─ Spine ─ Chest ─┬─ Neck ─ Head
+   ├─ Spine ─ Chest ─┬─ Neck ─ Head ─ EmoteSocket
    │                 ├─ LeftUpperArm ─ LeftLowerArm ─ LeftHand
    │                 ├─ RightUpperArm ─ RightLowerArm ─ RightHand ─ ToolSocket
    │                 └─ BackSocket
@@ -111,7 +114,8 @@ Root
    └─ RightUpperLeg ─ RightLowerLeg ─ RightFoot
 ```
 
-18 ossos humanoides + 2 sockets. Sem `Shoulder`, `UpperChest`, dedos, olhos e mandíbula: no estilo blocado eles não
+18 ossos humanoides + 3 sockets. `EmoteSocket` fica 0,25 m acima do topo da cabeça (≈ 1,60 m do chão, acima do
+chapéu), para os balões de emoção; segue a cabeça, sem keyframes próprios. Sem `Shoulder`, `UpperChest`, dedos, olhos e mandíbula: no estilo blocado eles não
 têm o que mover; o perfil da Godot aceita ossos ausentes. Bind pose em **T-pose** (o retarget da Godot espera
 T-pose e o skinning rígido não sofre com isso); as animações começam em pose relaxada.
 
@@ -149,6 +153,9 @@ O `walk` tem um quique de 3–4 cm por passo (cozy, saltitante). 30 fps.
 
 ## 9. Pipeline e reprodutibilidade
 
+- Referência visual: imagens em `docs/reference/characters/` (prints de personagens Kenney + ficha de conceito, a
+  fornecer). O protótipo é comparado lado a lado com elas.
+
 - `tools/blender/build_villager.py` (Etapa 2) → depois `build_characters.py` (todas as peças) e
   `validate_characters.py` (tris, nomes de ossos, animações, escala, pivô, material único).
 - Execução: `flatpak run --filesystem=<repo> org.blender.Blender --background --factory-startup --python
@@ -156,3 +163,16 @@ O `walk` tem um quique de 3–4 cm por passo (cozy, saltitante). 30 fps.
   salva o `.blend` e exporta. Rodar de novo gera o mesmo conteúdo.
 - Renders de conferência (frente, lado, 3/4, folha de quadros-chave) pelo próprio Blender; a cena de comparação
   oficial é na Godot, com a câmera do jogo.
+
+## 10. Gate do protótipo (Etapa 2)
+
+No máximo **3 iterações** antes de mostrar o resultado. Checklist de aprovação:
+
+- [ ] Silhueta legível no zoom médio da câmera oficial (62 m, pitch 50°, FOV 32°).
+- [ ] Profissão identificável sem abrir UI (chapéu + ferramenta + cor do torso).
+- [ ] Nenhuma cor fora da paleta (validação: toda UV cai no centro de uma célula usada do atlas).
+- [ ] Passa pela porta do Fantasy Town Kit com folga (≤ 1,40 m com chapéu × porta 1,50 m; ombros ≤ 0,45 m × 0,80 m).
+- [ ] 50 aldeões animados na tela a 60 FPS na máquina do dono (medido na Godot e reportado: FPS médio e mínimo,
+      draw calls, tempo de frame).
+- [ ] Comparação lado a lado com as referências de `docs/reference/characters/` e, se os pacotes chegarem (P42),
+      com Kenney Blocky e Slavic Villagers.
