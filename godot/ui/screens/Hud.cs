@@ -41,6 +41,7 @@ public partial class Hud : CanvasLayer
     private Label _suggestionLose = null!;
     private int _suggestionId;
     private SettingsPanel _settings = null!;
+    private AwayPanel _away = null!;
     private Label _objective = null!;
     private BuildingPanel _buildingPanel = null!;
     private FamiliesPanel _families = null!;
@@ -96,6 +97,15 @@ public partial class Hud : CanvasLayer
         _families = AddPanel(right, new FamiliesPanel());
         _families.Closed += CloseActivePanel;
         _families.FocusBuilding += id => { FocusOnBuilding(id); OpenBuilding(id); };
+        _away = AddPanel(right, new AwayPanel());
+        _away.Closed += CloseActivePanel;
+        _away.Away += years => _host.FastForwardWithChronicle(years);
+        _host.ChronicleReady += c =>
+        {
+            ShowPanel(_away);
+            _away.ShowChronicle(c);
+            Audio.Sfx.Play("suggestion");
+        };
         _settings = AddPanel(right, new SettingsPanel());
         _settings.Closed += CloseActivePanel;
         _policies = AddPanel(right, new PoliciesPanel());
@@ -233,6 +243,7 @@ public partial class Hud : CanvasLayer
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.save"), _host.QuickSave, UiText.T("ui.save.tooltip")));
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.load"), _host.QuickLoad, UiText.T("ui.load.tooltip")));
         leftRow.AddChild(new VSeparator());
+        leftRow.AddChild(UiNodes.Button(UiText.T("ui.bottom.away"), () => TogglePanel(_away), UiText.T("away.tooltip")));
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.bottom.settings"), () => TogglePanel(_settings), UiText.T("settings.scale.tooltip")));
         row.AddChild(left);
         row.AddChild(UiNodes.Spacer());
@@ -439,6 +450,7 @@ public partial class Hud : CanvasLayer
     {
         if (name == "families") ShowPanel(_families);
         else if (name == "settings") ShowPanel(_settings);
+        else if (name == "away") ShowPanel(_away);
         else if (name == "policies") ShowPanel(_policies);
         else if (name.StartsWith("building:") && int.TryParse(name[9..], out int id)) OpenBuilding(id);
         else if (name.StartsWith("building:") && _host.World.Buildings.FirstOrDefault(b => b.Def.Id == name[9..]) is { } first)

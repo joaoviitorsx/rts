@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
+using Ironvale.Sim.Scripting;
 using Ironvale.Sim;
 using Ironvale.Sim.Commands;
 using Ironvale.Sim.Content;
@@ -122,6 +123,36 @@ public partial class SimHost : Node
     }
 
     /// <summary>Runs N years on a worker thread. The SceneTree is never touched from that thread.</summary>
+    /// <summary>Chronicle of the last "while you were away" fast-forward (null until one ran).</summary>
+    public Chronicle? LastChronicle { get; private set; }
+    public event Action<Chronicle>? ChronicleReady;
+    private Chronicle? _pendingChronicle;
+
+    /// <summary>
+    /// "Enquanto você estava fora": like <see cref="AdvanceYears"/>, but day by day with a <see cref="Chronicle"/> watching
+    /// (events on while away; the world's outcome is the same — tested).
+    /// </summary>
+    public void FastForwardWithChronicle(int years)
+    {
+        if (IsBusy || years <= 0) return;
+        var world = World;
+        _advanceStart = world.Tick;
+        _advanceTarget = world.Tick + (long)years * SimTime.TicksPerYear;
+        world.DrainEvents();
+        world.CollectEvents = true;
+        var chronicle = new Chronicle();
+        _pendingChronicle = chronicle;
+        _advanceTask = Task.Run(() =>
+        {
+            for (int d = 0; d < years * SimTime.DaysPerYear; d++)
+            {
+                world.StepDays(1);
+                chronicle.Observe(world, world.DrainEvents());
+            }
+            chronicle.Finish(world);
+        });
+    }
+
     public void AdvanceYears(int years)
     {
         if (IsBusy || years <= 0) return;
@@ -139,9 +170,16 @@ public partial class SimHost : Node
         World.CollectEvents = true;
         if (task.IsFaulted) Message?.Invoke($"Erro ao avançar: {task.Exception?.GetBaseException().Message}");
         else Message?.Invoke($"Avançou até {DateText(World.Calendar)}");
+        var chronicle = _pendingChronicle;
+        _pendingChronicle = null;
         _accumulator = 0;
         _objectiveFloor = 0;
         WorldReplaced?.Invoke();
+        if (chronicle is not null && !task.IsFaulted)
+        {
+            LastChronicle = chronicle;
+            ChronicleReady?.Invoke(chronicle);
+        }
     }
 
     public void QuickSave()

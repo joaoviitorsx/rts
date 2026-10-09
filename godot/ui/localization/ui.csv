@@ -205,3 +205,21 @@ rcp.split_firewood,Rachar lenha,Split firewood
 rcp.forge_tools,Forjar ferramentas,Forge tools
 rcp.quarry_stone,Extrair pedra,Quarry stone
 rcp.grow_food,Cultivar,Grow food
+ui.bottom.away,Ausência,Away
+away.tooltip,"Avançar 1, 5 ou 10 anos com o reeve governando sozinho e ler a crônica do que aconteceu.","Skip 1, 5 or 10 years with the reeve governing alone and read the chronicle of what happened."
+away.title,Enquanto você estava fora,While you were away
+away.intro,"Os anos passam sem você: o reeve segue os decretos ativos e ninguém constrói nem remaneja à mão. Volte e leia o que aconteceu.","The years go by without you: the reeve follows the active decrees and nobody builds or reassigns by hand. Come back and read what happened."
+away.years,{0} ano(s),{0} year(s)
+away.empty,A crônica aparece aqui depois de uma ausência.,The chronicle appears here after an absence.
+away.summary,"{0} ano(s) se passaram. Famílias: {1} → {2}. Decretos ativos: {3}.","{0} year(s) went by. Families: {1} → {2}. Active decrees: {3}."
+away.quiet,Anos tranquilos: nada de marcante aconteceu.,Quiet years: nothing memorable happened.
+away.when,{0} do ano {1},{0} of year {1}
+chronicle.left,"{0} família(s) foram embora ({2}): {1}","{0} family(ies) left ({2}): {1}"
+chronicle.hungry_winter,a vila passou fome no inverno,the village went hungry in winter
+chronicle.cold_winter,faltou lenha e a vila passou frio,firewood ran out and the village was cold
+chronicle.good_winter,o inverno passou sem perdas — o reeve deu conta,winter passed without losses — the reeve managed
+chronicle.built,obras concluídas: {0},buildings finished: {0}
+chronicle.reeve_busy,o reeve remanejou famílias {0} vezes para manter os decretos,the reeve reassigned families {0} times to keep the decrees
+chronicle.overloaded,o reeve ficou sobrecarregado por {0} dias (decretos demais para a capacidade),the reeve was overloaded for {0} days (too many decrees for the capacity)
+chronicle.harvest,colheita farta: o estoque de comida chegou a {0},bumper harvest: food stock reached {0}
+chronicle.suggestion,o reeve deixou uma sugestão de decreto esperando por você,the reeve left a decree suggestion waiting for you

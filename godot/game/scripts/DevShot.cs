@@ -13,6 +13,8 @@ public partial class DevShot : Node
 
     public override void _Process(double delta)
     {
+        // Wait for a background fast-forward (--away) to finish before counting frames.
+        if (GetTree().Root.FindChild("SimHost", true, false) is SimHost { IsBusy: true }) { _frames = 0; return; }
         if (++_frames != 60) return;
         var image = GetViewport().GetTexture().GetImage();
         var error = image.SavePng(Path);

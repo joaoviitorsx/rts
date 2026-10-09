@@ -190,3 +190,21 @@
   em `docs/reports/img_2B/proporcao_cabeca.jpg` (dev: `--head-scale=1.15`, cena `scenes/test/NPC_SHOWCASE.tscn`).
   Decisão do dono.
 
+### P28. Item 4 (lacunas de assets com o Blender MCP) — BLOQUEADO (prioridade alta para você destravar)
+- **Contexto:** nesta sessão não há ferramentas do Blender MCP (nenhum servidor MCP do Blender conectado; nada escutando
+  na porta do addon). O Blender existe como flatpak (`org.blender.Blender`).
+- **Não fiz:** estágios do trigo, pilhas de madeira/lenha/pedra, toco, poço, forja, ícones renderizados para o
+  `icon_registry`. Não troquei de método por conta própria.
+- **Opções:** (a) você abre o Blender com o addon MCP (localhost, `BLENDER_MCP_SAFE_MODE=1`) e eu sigo pelo MCP;
+  (b) autoriza usar o Blender **headless** por linha de comando (`flatpak run org.blender.Blender -b --python …`, como o
+  `setup_vendor.py --derive` já faz), gerando .glb em pasta nova, sem cena aberta para estragar.
+
+### P29. "Enquanto você estava fora" (prioridade média)
+- **Escolha:** botão "Ausência" na barra inferior → 1/5/10 anos com o reeve governando sozinho (sem jogador); a crônica
+  (`Ironvale.Sim.Scripting.Chronicle`, só observa) guarda: famílias que foram embora (nomes e motivo), invernos com fome/frio
+  ou sem perdas, anos em que o reeve mais remanejou, sobrecarga de CA, colheita farta (≥ 2000), obras concluídas, sugestão
+  deixada esperando. Mostra até 12 momentos (por peso), em ordem cronológica. O avanço roda dia a dia com eventos ligados;
+  o resultado do mundo é idêntico ao avanço antigo (teste `Watching_does_not_change_the_simulation`).
+- **Limites:** sem nomes de reeve (delegados com personalidade são 2B, não feitos); argumentos da crônica (nomes de edifícios)
+  ainda em português, como o livro de contas.
+

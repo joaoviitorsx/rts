@@ -75,6 +75,8 @@ public partial class Main : Node3D
             if (arg.StartsWith("--panel=")) ui.OpenPanel(arg[8..]);
             if (arg.StartsWith("--zoom=") && float.TryParse(arg[7..], System.Globalization.CultureInfo.InvariantCulture, out float zoom))
                 camera.CallDeferred(CameraRig.MethodName.FocusAt, camera.Position, zoom);   // dev: close-up captures
+            if (arg.StartsWith("--away=") && int.TryParse(arg[7..], out int awayYears))
+                host.FastForwardWithChronicle(awayYears);   // dev: "while you were away" capture
             if (arg.StartsWith("--head-scale=") && float.TryParse(arg[13..], System.Globalization.CultureInfo.InvariantCulture, out float headScale))
                 WorldView.HeadScale = headScale;   // dev: proportion study (not the default)
             if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
