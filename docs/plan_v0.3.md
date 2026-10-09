@@ -16,9 +16,9 @@
 | 0 | GDD v0.3 + plano | (a) | ✅ aprovado |
 | 1 | Gerador de mundo no sim (terraços, rampas, água, recursos, animais como dados) + testes de determinismo e alcançabilidade | b1, b2 | ✅ `eee8199`, `f633afb` |
 | 2 | Unidades, seleção e comandos RTS; coleta, caça, transporte físico; boi; suprimentos que a chuva estraga | (c), (d), clima de (e), fauna de b4 no sim | ✅ `0f39bc4` |
-| 3 | Fogueira, tendas, depósito; colonos → famílias; toras × lenha | (e), (f) | ⏳ próxima (visual foi antecipado, decisão do dono) |
+| 3 | Fogueira, tendas, depósito; colonos → famílias; toras × lenha | (e), (f) | ✅ 3a `0f73a01` · 3b `28e492b` · 3c `37719e4` · 3d (gate na CLI, `docs/reports/opening_report.md`) |
 | 4 | Visual do mundo: terreno, penhascos por contorno, shader triplanar, rochas, água, florestas, animais | b3, b4 (visual) | ✅ 4a `68b61d3` · 4b Kenney `49dd9e6` · 4c céu/chuva Sky3D, animais Quaternius, grama no relevo, penhascos diagonais `e05e414`…`496c98e` |
-| 5 | Balanceamento da abertura na CLI contra o checklist da pesquisa §5 | (g) | — |
+| 5 | Balanceamento da abertura na CLI contra o checklist da pesquisa §5 | (g) | ⏳ próxima — base pronta (`--opening-report`, jogador `rts`); alvos: 1ª delegação 15–25 min (hoje ~4), inverno com folga apertada nas 3 seeds |
 | 6 | HUD v2: etapas 1–3 da spec + painel de seleção de colonos | branch `feature/hud-v2` | etapas 1–2 ✅ (Theme, estrutura) |
 | 7 | Playtest da nova abertura | — | — |
 

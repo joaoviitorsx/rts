@@ -12,13 +12,16 @@ public interface IScriptedPlayer
 public static class ScriptedPlayers
 {
     public static readonly string[] Ids = { "passive", "naive", "optimal" };
+    /// <summary>Players of the RTS opening (generated maps, wild_start).</summary>
+    public static readonly string[] RtsIds = { "rts" };
 
     public static IScriptedPlayer Create(string id, bool roads = true) => id switch
     {
         "passive" => new PassivePlayer(),
         "naive" => new NaivePlayer(),
         "optimal" => new OptimalPlayer(roads),
-        _ => throw new ArgumentException($"unknown player '{id}' (passive | naive | optimal)"),
+        "rts" => new RtsPlayer(),
+        _ => throw new ArgumentException($"unknown player '{id}' (passive | naive | optimal | rts)"),
     };
 }
 

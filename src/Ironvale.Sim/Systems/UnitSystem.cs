@@ -340,7 +340,10 @@ public sealed class UnitSystem : ISimSystem
         if (u.IsCarrying)
         {
             int r = u.CarryResource;
-            if (!w.SiteNeed(site, r).IsPositive && site.Stock.Get(r) >= site.Def.Cost[r])
+            // Room for this load: the cost minus what is on site and what carriers have reserved (not other builders:
+            // whoever arrives first unloads).
+            var room = Qty.Max(Qty.Zero, site.Def.Cost[r] - site.Stock.Get(r) - w.CarrierIncoming(site, r));
+            if (!room.IsPositive)
             {
                 u.Step = UnitStep.Delivering;   // not needed here: back to storage
                 return;
@@ -348,7 +351,7 @@ public sealed class UnitSystem : ISimSystem
             var walk = w.WalkToward(u, site.Center, site.Id);
             if (walk == World.Walk.Blocked) u.Step = UnitStep.Delivering;
             if (walk != World.Walk.Arrived) return;
-            var added = site.Stock.AddUpTo(r, Qty.Min(u.CarryAmount, site.Def.Cost[r] - site.Stock.Get(r)));
+            var added = site.Stock.AddUpTo(r, Qty.Min(u.CarryAmount, room));
             u.CarryAmount -= added;
             if (!u.CarryAmount.IsPositive) u.CarryResource = -1;
             else u.Step = UnitStep.Delivering;

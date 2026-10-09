@@ -1,3 +1,4 @@
+using Ironvale.Sim.Scripting;
 namespace Ironvale.Sim.Tests;
 
 /// <summary>RTS opening, briefing step 2 (GDD v0.3 §3–§9): units, orders, gathering, hunting, the ox, rain, wolves.</summary>
@@ -327,20 +328,22 @@ public class OpeningUnitsTests
     }
 
     [Fact]
-    public void A_family_arrives_only_while_a_house_has_room_and_food_lasts()
+    public void A_family_arrives_only_while_a_house_stands_empty_and_food_lasts()
     {
-        var content = TestKit.ContentWith(("leaveAfterDeficitDays", "100000"), ("familyArrivalFoodDays", "1"));
+        // No colonists move in (familyFromColonists 0), so the finished house stays empty: an invitation.
+        var content = TestKit.ContentWith(("leaveAfterDeficitDays", "100000"), ("familyArrivalFoodDays", "1"), ("familyFromColonists", "0"));
         var w = NewWild(42, content);
         w.StepDays(12);
         Assert.Empty(w.Households);   // no house, nobody comes
         var house = BuildHouse(w);
-        Assert.True(StepUntil(w, () => w.Households.Count == 2, 25 * SimTime.TicksPerDay), "no family arrived");
+        Assert.Empty(w.Households);
+        Assert.True(StepUntil(w, () => w.Households.Count == 1, 25 * SimTime.TicksPerDay), "no family arrived");
         var arrived = w.DrainEvents().OfType<FamilyArrived>().Single();
         Assert.InRange(arrived.Members, 2, 4);
         Assert.Equal(house.Id, arrived.HouseId);
-        // The house is full now (2 households): nobody else comes.
+        // The house is taken now: nobody else comes.
         w.StepDays(25);
-        Assert.Equal(2, w.Households.Count(h => h.HomeId == house.Id));
+        Assert.Single(w.Households);
         Assert.Empty(w.DrainEvents().OfType<FamilyArrived>());
         TestKit.AssertInvariants(w);
     }
@@ -388,5 +391,33 @@ public class OpeningUnitsTests
         Assert.True(w.Animals.Count(a => a.Herd == deer.Herd) >= Math.Min(keep, herdBefore), "herd hunted out");
         Assert.True(camp.Stock.Get(Res(w, "food")).IsPositive || w.Animals.Count(a => a.Herd == deer.Herd) < herdBefore, "the camp hunted nothing");
         TestKit.AssertInvariants(w);
+    }
+
+    // ------------------------------------------------------------------ step 3 gate
+
+    [Fact]
+    public void The_scripted_band_reaches_the_first_winter_with_families_and_the_passive_one_does_not()
+    {
+        static World Play(string player)
+        {
+            var w = NewWild(42);
+            var p = ScriptedPlayers.Create(player);
+            p.Start(w);
+            while (!w.Calendar.IsWinter)
+            {
+                w.StepTicks(SimTime.TicksPerDay / 4);
+                p.Daily(w);
+            }
+            return w;
+        }
+        var rts = Play("rts");
+        Assert.True(rts.Households.Count >= 3, $"rts reached winter with {rts.Households.Count} families");
+        Assert.True(rts.StorageStock(Res(rts, "firewood")).WholeUnits >= 60, "no firewood for the winter");
+        Assert.All(rts.Buildings.Where(b => !b.IsActive), b =>
+            Assert.All(Enumerable.Range(0, rts.Content.ResourceCount), r => Assert.True(b.Stock.Get(r) <= b.Def.Cost[r], $"site {b.Def.Id} overfilled")));
+        TestKit.AssertInvariants(rts);
+        var passive = Play("passive");
+        Assert.Empty(passive.Households);
+        Assert.Empty(passive.Units.Where(u => u.IsColonist));
     }
 }

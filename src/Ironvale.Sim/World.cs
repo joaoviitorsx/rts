@@ -266,12 +266,26 @@ public sealed partial class World
     }
 
     /// <summary>Resource <paramref name="r"/> carriers are bringing (or about to bring) to a building (site or input buffer).</summary>
-    public Qty SiteIncoming(Building site, int r)
+    public Qty SiteIncoming(Building site, int r) => CarrierIncoming(site, r) + ColonistIncoming(site, r);
+
+    /// <summary>Material carriers have reserved space for on <paramref name="site"/>.</summary>
+    public Qty CarrierIncoming(Building site, int r)
     {
         long sum = 0;
         foreach (var c in _carriers)
             if (c.DropoffId == site.Id && c.Resource == r && c.Phase is not (CarrierPhase.Idle or CarrierPhase.Returning))
                 sum += c.Amount.Milli;
+        return new Qty(sum);
+    }
+
+    /// <summary>RTS opening: what colonists ordered to build <paramref name="site"/> are carrying to it (so carriers and
+    /// other builders don't bring the same material twice and overfill the site).</summary>
+    public Qty ColonistIncoming(Building site, int r)
+    {
+        long sum = 0;
+        foreach (var u in _units)
+            if (u.Order is { Kind: OrderKind.Build } o && o.TargetId == site.Id && u.CarryResource == r && u.CarryAmount.IsPositive)
+                sum += u.CarryAmount.Milli;
         return new Qty(sum);
     }
 

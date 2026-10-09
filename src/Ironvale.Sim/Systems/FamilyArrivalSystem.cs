@@ -4,8 +4,9 @@ using Ironvale.Sim.Time;
 namespace Ironvale.Sim.Systems;
 
 /// <summary>
-/// Growth by free house (GDD v0.3 §6, D7 — Manor Lords): every <c>familyArrivalDays</c> days, if some house has room
+/// Growth by free house (GDD v0.3 §6, D7 — Manor Lords): every <c>familyArrivalDays</c> days, if some house stands empty
 /// and the stores hold food for <c>familyArrivalFoodDays</c> days of everyone, a family of 2–4 arrives and moves in.
+/// "Empty", not "has room": a house is one family's home here (the 2A capacity of 2 is for the flat map's hall village).
 /// Generated maps only; stateless (the day number decides), so saves need nothing new.
 /// </summary>
 public sealed class FamilyArrivalSystem : ISimSystem
@@ -27,7 +28,7 @@ public sealed class FamilyArrivalSystem : ISimSystem
         long day = (cal.Tick - w.StartTick) / SimTime.TicksPerDay;
         if (day == 0 || day % bal.FamilyArrivalDays != 0) return;
 
-        var house = w.Buildings.Where(b => b.IsActive && b.Def.Has(BuildingRole.Housing) && w.Occupants(b) < b.Def.HousingCapacity)
+        var house = w.Buildings.Where(b => b.IsActive && b.Def.Has(BuildingRole.Housing) && w.Occupants(b) == 0)
             .OrderBy(b => b.Id).FirstOrDefault();
         if (house is null) return;
 

@@ -28,6 +28,15 @@ if (opts.GetValueOrDefault("balance-report") is { } reportPath)
     BalanceReport.Write(reportPath, content, scenario, int.Parse(opts.GetValueOrDefault("years") ?? "3", CultureInfo.InvariantCulture), generated);
     return 0;
 }
+if (opts.GetValueOrDefault("opening-report") is { } openingPath)
+{
+    // RTS opening on generated maps (default scenario wild_start): timeline to the end of the first winter.
+    var (oc, os) = DataPaths.LoadWithScenario(dataDir, opts.GetValueOrDefault("scenario") ?? "wild_start");
+    var oseeds = (opts.GetValueOrDefault("seeds") ?? "42,7,123").Split(',').Select(ulong.Parse).ToList();
+    var oplayers = (opts.GetValueOrDefault("players") ?? "passive,rts").Split(',').ToList();
+    OpeningReport.Write(openingPath, oc, os, oseeds, oplayers);
+    return 0;
+}
 if (opts.GetValueOrDefault("map-png") is { } mapPng)
 {
     // Generated map only (no simulation): --map-png out/map.png [--map-size 192] [--fertility]. "{seed}" in the path
