@@ -208,3 +208,19 @@
 - **Limites:** sem nomes de reeve (delegados com personalidade são 2B, não feitos); argumentos da crônica (nomes de edifícios)
   ainda em português, como o livro de contas.
 
+
+## v0.3 — mundo gerado + abertura RTS (09/10/2026)
+
+As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1–D12), cada uma com recomendação:
+- D1: ritmo de 4 ticks/s (ano de 60 min, inverno aos 45–60 min);
+- D2: base da branch;
+- D3: mapa de 192²;
+- D4: auto-continuação curta;
+- D5: árvore sob obra;
+- D6: teclas de grupo;
+- D7: família nova só com casa vazia;
+- D8: lobos só assustam;
+- D9: Salão vira construção;
+- D10: merge na `main`;
+- D11: boi;
+- D12: chuva estraga a pilha ao relento.

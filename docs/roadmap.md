@@ -12,7 +12,8 @@
 | Etapa 3 — TEST_VILLAGE_01 | ✅ concluída (08/10/2026) — montagem | cena de validação + screenshots em 3 zooms |
 | Look-dev visual: chão, vegetação, luz e câmera | ✅ aprovado (08/10/2026) | LOOKDEV_GROUND aplicado na TEST_VILLAGE_01; ajustes finos de arte ficam para a F3 |
 | **Marco 2A — loop central jogável** | 🟢 itens 1–6 feitos na branch `overnight/2026-10-09` (09/10/2026) — aguardando playtest | gate: playtest com 5 pessoas (GDD §8.3) |
-| Marco 2B — diferenciais e polimento | 📋 registrado | depois do gate do 2A |
+| Marco 2B — diferenciais e polimento | 🟡 parcial na branch `feature/2B-polish` (log de sessão, feel, NPCs cozy, "Enquanto você estava fora") | delegados com traço, caravana e cerimônia ainda não feitos |
+| **v0.3 — mundo gerado + abertura RTS** | 📝 GDD e plano aguardando aprovação (09/10/2026) — **substitui o playtest do 2A** | `docs/GDD_v0.3_abertura_rts.md`, `docs/plan_v0.3.md`; branch `feature/worldgen` |
 
 ## Etapa 2 — integração de assets (plano combinado)
 1. Remover `godot/assets/vendor/.gdignore`; configurar import por pacote (escala, colisão quando fizer sentido, compressão/limite de textura).

@@ -221,3 +221,34 @@ Medido aplicando as transformações dos nós às caixas delimitadoras das malha
 - **A4 — Pacotes faltando.** Medieval Village está só em zip (posso extrair para o vendor?), e KayKit Resource Bits e watercolor não estão na máquina. Baixa você, ou sigo com as soluções L2/L5?
 - **A5 — Terrain3D.** É um GDExtension (C++), instalado por zip do GitHub/Asset Library. Posso baixar a versão compatível com Godot 4.7 na Etapa 2?
 - **A6 — Bible.** Sem a §13/§18/§43, sigo com os IDs provisórios acima?
+
+## 8. Lacunas do mundo gerado e da abertura RTS (v0.3, 09/10/2026)
+
+> Ver `docs/GDD_v0.3_abertura_rts.md` §11. **Fluxo para as peças do Meshy:**
+> 1. o dono gera e coloca em `art/vendor_raw/meshy/` (originais intocados);
+> 2. eu ajusto via Blender MCP (`BLENDER_MCP_SAFE_MODE=1`, salvando antes de cada script): escala em metros, pivô na
+>    base, Y = solo, ≤ 3–5 mil tris, material com cores da paleta (sem PBR pesado);
+> 3. exporto glTF para `godot/assets/environment/`.
+>
+> Enquanto as peças não chegam, usamos placeholders.
+
+### 8.1 Peças para o Meshy (IA)
+| ID | Peça | Especificação para o prompt | Placeholder até chegar |
+|---|---|---|---|
+| ENV_Cliff_Straight_A/B | Módulo de **paredão reto** de terraço | 4 m de largura × 2,5 m de altura × ~1,5 m de espessura; pedra clara acinzentada (`#d9d6cc`–`#b8b4a8`), blocos arredondados estilo cartoon (como os muros brancos da referência), topo com borda de grama; emenda lateral reta para encaixar em fila | Rochas do Stylized Nature escaladas em fila |
+| ENV_Cliff_CornerOut / CornerIn | **Canto** externo e interno do paredão (90°) | Mesmo material e altura; encaixa nas duas faces do módulo reto | Idem |
+| ENV_Cliff_End | Ponta do paredão / rampa | Paredão que desce até o chão em 4 m (lateral da rampa) | Idem |
+| ENV_Outcrop_A/B | **Afloramento de pedreira** | Rocha cinza com faces cortadas e degraus, ~6 × 6 m, 2–3 m de altura; 2 variações; legível de longe como "pedra para extrair" | `ENV_RockGroup_*` escalado |
+| ENV_BeachRock_A/B/C | **Pedras de praia** | Seixos arredondados e lisos, areia/cinza quente, 0,3–1,5 m; 3 variações | `ENV_Pebble_*` / `ENV_Rock_*` recoloridos |
+| ENV_OreCoal / ENV_OreIron | **Jazidas de carvão e de ferro** (visíveis, bloqueadas) | Rocha com veios pretos (carvão) / avermelhados (ferro), ~3 × 3 m | Rocha com material tingido |
+
+### 8.2 Outras lacunas (sem IA)
+| ID | Peça | Solução recomendada |
+|---|---|---|
+| CHR_Deer / CHR_Rabbit / CHR_Wolf | Fauna animada | **Quaternius Ultimate Animated Animal Pack** (CC0): o dono baixa para `art/vendor_raw/`; derivo glTF com `setup_vendor.py` |
+| ENV_BerryBush_A | Arbusto com frutas | `ENV_Bush_*` + esferas vermelhas por MultiMesh (sem modelo novo) |
+| ENV_Stump_A | Toco (árvore cortada) | Já existe (`ENV_Stump_A`) |
+| ENV_Sapling_A | Muda | `ENV_Oak_*` escalado a 25–35% |
+| BLD_Campfire / BLD_Tent / BLD_Stockpile | Fogueira, tenda, depósito | Kitbash com Fantasy Props + Medieval Village (validar); tenda pode precisar do Meshy (decidir na etapa e) |
+| Água | Superfície | Shader próprio (sem asset) |
+| Anim. caçar | Arco ou lança | UAL: verificar arco/arremesso; senão, Mixamo "Throw" com retarget (não CC0, só uso) |
