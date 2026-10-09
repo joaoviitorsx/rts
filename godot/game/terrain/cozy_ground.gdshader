@@ -216,5 +216,9 @@ void fragment() {
 
 	vec4 g = ground_sample(v_vertex.xz);
 	ALBEDO = g.rgb * (1.0 + (gc_noise(v_vertex.xz * 0.8) - 0.5) * 0.06) * ground_detail(v_vertex.xz, 1.0 - g.a);
+	// Slope blend (GDD v0.3 §12): steep ground turns to pale rock, with noise so the border isn't a ruler line.
+	// Flat ground (the whole TEST_VILLAGE) is unaffected.
+	float slope = 1.0 - w_normal.y + (gc_noise(v_vertex.xz * 1.3) - 0.5) * 0.12;
+	ALBEDO = mix(ALBEDO, mix(vec3(0.62, 0.60, 0.55), vec3(0.86, 0.84, 0.78), gc_noise(v_vertex.xz * 2.1 + v_vertex.y)), smoothstep(0.32, 0.6, slope));
 	ROUGHNESS = 1.0;
 }

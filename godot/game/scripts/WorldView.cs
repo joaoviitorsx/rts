@@ -61,6 +61,8 @@ public partial class WorldView : Node3D
     /// <summary>Units selected by the RTS controls (rings under them; "?" over confused colonists).</summary>
     public HashSet<int> SelectedUnits { get; } = new();
     private Visual.WorldPrimitives _primitives = null!;
+    private World3D.WorldLook? _look;
+    public World3D.WorldLook? Look => _look;
     private readonly Dictionary<int, Node3D> _unitMarks = new();
 
     public void Init(SimHost host, VisualCatalog catalog)
@@ -105,9 +107,22 @@ public partial class WorldView : Node3D
         foreach (var agent in _agentNodes.Values) agent.Root.QueueFree();
         _agentNodes.Clear();
         _ground?.QueueFree();
-        _ground = _host.World.Terrain is { } terrain
-            ? Visual.WorldPrimitives.BuildTerrain(terrain, _catalog.CellSize)   // generated map (primitive look, step 4 = real one)
-            : CreateGround(_host.World.Map);
+        Ground.Visual = null;
+        _look?.QueueFree();
+        _look = null;
+        if (_host.World.Terrain is not null && !OS.GetCmdlineUserArgs().Contains("--primitive-terrain"))
+        {
+            // Generated map: Terrain3D + cliffs + water (step 4a); the primitive terrain stays as a dev fallback.
+            _look = new World3D.WorldLook { Name = "WorldLook" };
+            AddChild(_look);
+            _look.Build(_host.World, _catalog.CellSize);
+            Ground.Visual = _look.HeightAt;
+            _ground = new MeshInstance3D { Name = "NoFlatGround" };
+        }
+        else
+            _ground = _host.World.Terrain is { } terrain
+                ? Visual.WorldPrimitives.BuildTerrain(terrain, _catalog.CellSize)
+                : CreateGround(_host.World.Map);
         AddChild(_ground);
         _roadVersion = -1;
         Sync();

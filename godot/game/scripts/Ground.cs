@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Ironvale.Sim.Map;
 
@@ -15,6 +16,8 @@ public static class Ground
     public const float WaterDrop = 0.45f;
 
     public static Terrain? Terrain { get; set; }
+    /// <summary>Height of the drawn ground (smooth ramps, cliff slopes), when a generated map's look is built.</summary>
+    public static Func<float, float, float>? Visual { get; set; }
     public static float CellSize { get; set; } = 2f;
 
     /// <summary>Walkable surface height of a cell (water: its surface).</summary>
@@ -33,7 +36,11 @@ public static class Ground
     }
 
     public static float HeightAtWorld(float x, float z) =>
-        CellHeight(Mathf.FloorToInt(x / CellSize), Mathf.FloorToInt(z / CellSize));
+        Visual?.Invoke(x, z) ?? CellHeight(Mathf.FloorToInt(x / CellSize), Mathf.FloorToInt(z / CellSize));
+
+    /// <summary>Height at the centre of a cell (where things stand): the drawn ground when there is one.</summary>
+    public static float CellCenterHeight(int x, int y) =>
+        Visual?.Invoke((x + 0.5f) * CellSize, (y + 0.5f) * CellSize) ?? CellHeight(x, y);
 
     /// <summary>First ground hit along a ray (terraces: marched in 0.5 m steps, then refined).</summary>
     public static Vector3? Raycast(Vector3 from, Vector3 dir)

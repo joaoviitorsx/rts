@@ -20,7 +20,9 @@ public partial class Main : Node3D
         var catalog = new VisualCatalog();
         Ground.CellSize = catalog.CellSize;
 
-        AddChild(new WorldEnvironment
+        if (host.World.Terrain is not null)
+            GD.Load<GDScript>("res://game/visual/CozyEnvironment.gd").Call("build", this);   // approved look-dev light
+        else AddChild(new WorldEnvironment
         {
             Environment = new Environment
             {
@@ -40,7 +42,7 @@ public partial class Main : Node3D
                 SsaoEnabled = true,
             },
         });
-        AddChild(new DirectionalLight3D
+        if (host.World.Terrain is null) AddChild(new DirectionalLight3D
         {
             RotationDegrees = new Vector3(-55, -35, 0),
             LightEnergy = 1.15f,
@@ -93,6 +95,16 @@ public partial class Main : Node3D
             if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
             if (arg == "--select-all")   // dev: selection rings and the selection panel in captures
                 units.SetSelection(host.World.Units.Where(u => u.Controllable).Select(u => u.Id), add: false);
+            if (arg.StartsWith("--focus=") && arg[8..].Split(',') is [var fx, var fy] && int.TryParse(fx, out int cx) && int.TryParse(fy, out int cy))
+                camera.FocusOn(view.CellCenter(new Ironvale.Sim.Map.Cell(cx, cy)), 26);   // dev: look at a cell
+            if (arg == "--focus-cliff" && host.World.Terrain is { } tc)   // dev: nearest terrace edge to the start
+            {
+                var near = Enumerable.Range(0, tc.Width * tc.Height).Select(i => new Ironvale.Sim.Map.Cell(i % tc.Width, i / tc.Width))
+                    .Where(c => !tc.IsWater(c) && Ironvale.Sim.Map.Terrain.Dirs.Any(d => tc.InBounds(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy))
+                        && tc.LevelAt(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy)) < tc.LevelAt(c) && !tc.IsRamp(new Ironvale.Sim.Map.Cell(c.X + d.Dx, c.Y + d.Dy))))
+                    .OrderBy(c => c.Manhattan(tc.Start)).First();
+                camera.FocusOn(view.CellCenter(near), 24);
+            }
             if (arg == "--focus-units" && host.World.Units.Count > 0)   // dev: look at the band wherever it went
                 camera.FocusOn(view.CellCenter(host.World.Units[0].Pos), 30);
         }
