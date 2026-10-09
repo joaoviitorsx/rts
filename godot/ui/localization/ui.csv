@@ -50,6 +50,9 @@ objective.granary,"Construa um celeiro perto dos campos (mais espaço e caminhos
 objective.tools,"Ferramentas se desgastam: construa uma pedreira e um ferreiro.","Tools wear out: build a quarry and a smithy."
 objective.winter,"Sobreviva ao primeiro inverno.","Survive the first winter."
 objective.grow,"A vila está de pé. Cresça: mais casas, estradas e decretos para o que você repete.","The village stands. Grow: more houses, roads and decrees for what you keep repeating."
+ui.scale,UI {0}%,UI {0}%
+ui.scale.capped,UI {0}% (pediu {1}%: janela pequena),UI {0}% (asked {1}%: small window)
+ui.scale.tooltip,"Escala da interface (80%–150%). Clique para mudar · Ctrl+= / Ctrl+- também.","Interface scale (80%–150%). Click to change · Ctrl+= / Ctrl+- too."
 alert.food_out,Comida acaba em ~{0} dias,Food runs out in ~{0} days
 alert.food_low,Comida para ~{0} dias,Food for ~{0} days
 alert.firewood_winter,Pouca lenha ({0}) — inverno em {1} dias,Low firewood ({0}) — winter in {1} days

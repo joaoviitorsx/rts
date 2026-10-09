@@ -40,6 +40,17 @@ public partial class Hud : CanvasLayer
     private Label _suggestionCost = null!;
     private Label _suggestionLose = null!;
     private int _suggestionId;
+    private Button _scaleButton = null!;
+
+    private void UpdateScaleButton() => _scaleButton.Text = UiSettings.AppliedPercent < UiSettings.Percent
+        ? UiText.T("ui.scale.capped", UiSettings.AppliedPercent, UiSettings.Percent)
+        : UiText.T("ui.scale", UiSettings.Percent);
+
+    private void ChangeScale(int delta, bool wrap = false)
+    {
+        UiSettings.Change(GetTree().Root, delta, wrap);
+        UpdateScaleButton();
+    }
     private Label _objective = null!;
     private BuildingPanel _buildingPanel = null!;
     private FamiliesPanel _families = null!;
@@ -65,6 +76,7 @@ public partial class Hud : CanvasLayer
         _host.WorldReplaced += () => { CloseActivePanel(); Refresh(); };
         _build.BuildingSelected += id => { if (id == 0) CloseActivePanel(); else OpenBuilding(id); };
 
+        UiSettings.Load(GetTree().Root);
         var root = new Control { Name = "Root", MouseFilter = Control.MouseFilterEnum.Ignore, Theme = GD.Load<Theme>(ThemePath) };
         root.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         AddChild(root);
@@ -206,6 +218,10 @@ public partial class Hud : CanvasLayer
         leftRow.AddChild(new VSeparator());
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.save"), _host.QuickSave, UiText.T("ui.save.tooltip")));
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.load"), _host.QuickLoad, UiText.T("ui.load.tooltip")));
+        leftRow.AddChild(new VSeparator());
+        _scaleButton = UiNodes.Button("", () => ChangeScale(+1, wrap: true), UiText.T("ui.scale.tooltip"));
+        leftRow.AddChild(_scaleButton);
+        UpdateScaleButton();
         row.AddChild(left);
         row.AddChild(UiNodes.Spacer());
 
@@ -373,6 +389,8 @@ public partial class Hud : CanvasLayer
         if (e is not InputEventKey { Pressed: true, Echo: false } key) return;
         switch (key.Keycode)
         {
+            case Key.Equal or Key.KpAdd when key.CtrlPressed: ChangeScale(+1); break;
+            case Key.Minus or Key.KpSubtract when key.CtrlPressed: ChangeScale(-1); break;
             case Key.Space: _host.SetSpeed(_host.Paused ? 1 : 0); break;
             case Key.Key1: _host.SetSpeed(1); break;
             case Key.Key2: _host.SetSpeed(2); break;
