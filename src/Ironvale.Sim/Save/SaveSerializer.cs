@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 7;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4) · 7: decree suggestions (2A.6)
+    public const int CurrentVersion = 8;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4) · 7: decree suggestions (2A.6) · 8: generated maps (v0.3)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -120,6 +120,13 @@ public static class SaveSerializer
                 AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick, WinterAdjusted = sg.WinterAdjusted,
             } : null,
             SuggestionMuted = new SortedDictionary<string, long>(w.SuggestionMuted.ToDictionary(kv => Res(kv.Key), kv => kv.Value), StringComparer.Ordinal),
+            Generated = w.Nature is { } nature ? new GeneratedMapDto
+            {
+                Generator = Terrain.GeneratorVersion,
+                Changes = nature.Changes.Select(kv => new[] { kv.Key, (int)kv.Value.Kind, kv.Value.Variant, kv.Value.Amount }).ToList(),
+                ChangeTicks = nature.Changes.Select(kv => kv.Value.Tick).ToList(),
+                Deposits = nature.Deposits.Select(d => d.Units).ToList(),
+            } : null,
         };
     }
 
@@ -194,6 +201,21 @@ public static class SaveSerializer
             NextId = s.NextId,
         };
         foreach (var r in s.Rng) w.Rng.Restore(r.Name, r.State, r.Inc);
+        if (s.Generated is { } gen)
+        {
+            if (gen.Generator != Terrain.GeneratorVersion)
+                throw new SaveException($"mapa gerado pela versão {gen.Generator} do gerador; esta é a {Terrain.GeneratorVersion}");
+            w.GenerateMap();
+            var nature = w.Nature!;
+            if (gen.Changes.Count != gen.ChangeTicks.Count || gen.Deposits.Count != nature.Deposits.Count)
+                throw new SaveException("generated map data is inconsistent");
+            for (int i = 0; i < gen.Changes.Count; i++)
+            {
+                var c = gen.Changes[i];
+                nature.Set(c[0], new NatureNode((NodeKind)c[1], (byte)c[2], gen.ChangeTicks[i], c[3]));
+            }
+            for (int i = 0; i < gen.Deposits.Count; i++) nature.Deposits[i].Units = gen.Deposits[i];
+        }
 
         foreach (var d in s.Buildings)
         {

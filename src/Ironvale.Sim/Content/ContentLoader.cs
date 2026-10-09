@@ -83,6 +83,7 @@ public static class ContentLoader
                 Def = bdef,
                 Origin = new Cell(origin.a, origin.b),
                 Rotation = c.OptInt(el, "rotation", 0),
+                AtStart = el.TryGetProperty("anchor", out var anchor) && anchor.GetString() == "start",
             });
         }
 
@@ -107,6 +108,8 @@ public static class ContentLoader
             Name = ctx.Str(root, "name"),
             MapWidth = ctx.PositiveInt(map, "width"),
             MapHeight = ctx.PositiveInt(map, "height"),
+            Terrain = map.TryGetProperty("terrain", out var terrain) && terrain.GetString() == "generated"
+                ? TerrainKind.Generated : TerrainKind.Flat,
             StartMonth = startMonth,
             Buildings = buildings,
             Stock = ctx.QtyMap(root, "stock", resIndex),
@@ -320,6 +323,15 @@ public static class ContentLoader
             SuggestWinterCoverPermille = c.OptInt(el, "suggestWinterCoverPermille", 500),
             AutoBuilders = c.OptInt(el, "autoBuilders", 1) != 0,
             MaxBuildersPerSite = Math.Max(1, c.OptInt(el, "maxBuildersPerSite", 3)),
+            TreeMatureDays = Math.Max(4, c.OptInt(el, "treeMatureDays", 1440)),
+            TreeStumpDays = c.OptInt(el, "treeStumpDays", 360),
+            TreeWood = Math.Max(1, c.OptInt(el, "treeWood", 12)),
+            LooseStoneUnits = Math.Max(1, c.OptInt(el, "looseStoneUnits", 6)),
+            BushFood = Math.Max(1, c.OptInt(el, "bushFood", 8)),
+            MushroomFood = Math.Max(1, c.OptInt(el, "mushroomFood", 4)),
+            OutcropUnits = Math.Max(1, c.OptInt(el, "outcropUnits", 400)),
+            OreUnits = Math.Max(1, c.OptInt(el, "oreUnits", 300)),
+            RichDepositFactor = Math.Max(1, c.OptInt(el, "richDepositFactor", 3)),
         };
     }
 

@@ -146,14 +146,33 @@ public sealed class BalanceDef
     /// <summary>Families without a job help the nearest construction site that can progress.</summary>
     public required bool AutoBuilders { get; init; }
     public required int MaxBuildersPerSite { get; init; }
+
+    // ---- world as a resource (GDD v0.3 §7): generated maps only
+    /// <summary>Days from sapling to a mature (cuttable) tree; young from a quarter of it.</summary>
+    public required int TreeMatureDays { get; init; }
+    /// <summary>Days a stump stays before a sapling sprouts.</summary>
+    public required int TreeStumpDays { get; init; }
+    /// <summary>Wood (units) a mature tree gives when felled.</summary>
+    public required int TreeWood { get; init; }
+    public required int LooseStoneUnits { get; init; }
+    public required int BushFood { get; init; }
+    public required int MushroomFood { get; init; }
+    public required int OutcropUnits { get; init; }
+    public required int OreUnits { get; init; }
+    /// <summary>Units multiplier of the map's rich deposit.</summary>
+    public required int RichDepositFactor { get; init; }
 }
 
 public sealed class ScenarioBuilding
 {
     public required BuildingDef Def { get; init; }
+    /// <summary>Absolute cell, or an offset from the generated start when <see cref="AtStart"/>.</summary>
     public required Cell Origin { get; init; }
     public required int Rotation { get; init; }
+    public bool AtStart { get; init; }
 }
+
+public enum TerrainKind { Flat, Generated }
 
 public sealed class ScenarioHousehold
 {
@@ -168,6 +187,8 @@ public sealed class ScenarioDef
     public required string Name { get; init; }
     public required int MapWidth { get; init; }
     public required int MapHeight { get; init; }
+    /// <summary>Flat (the 2A map) or generated from the seed (GDD v0.3 §8).</summary>
+    public TerrainKind Terrain { get; init; }
     public required int StartMonth { get; init; }
     public required IReadOnlyList<ScenarioBuilding> Buildings { get; init; }
     public required Qty[] Stock { get; init; }                 // placed in the first storage building

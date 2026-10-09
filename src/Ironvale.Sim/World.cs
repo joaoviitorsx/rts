@@ -30,6 +30,10 @@ public sealed class World
     public long Tick { get; internal set; }
     public long StartTick { get; }
     public GridMap Map { get; }
+    /// <summary>Relief and water of a generated map (null on the flat map).</summary>
+    public Terrain? Terrain => Map.Terrain;
+    /// <summary>Trees, bushes, stones and deposits of a generated map (null on the flat map).</summary>
+    public Nature? Nature { get; private set; }
     /// <summary>Routes and walking times (cached distance fields; not part of the saved state).</summary>
     public Pathfinder Paths { get; }
     public RngStreams Rng { get; }
@@ -102,12 +106,17 @@ public sealed class World
     {
         var w = new World(content, seed, scenario.Id, scenario.MapWidth, scenario.MapHeight,
             (long)scenario.StartMonth * SimTime.TicksPerMonth);
+        if (scenario.Terrain == TerrainKind.Generated) w.GenerateMap();
 
         foreach (var sb in scenario.Buildings)
         {
-            if (!w.Map.CanPlace(sb.Def, sb.Origin, sb.Rotation))
-                throw new ContentException($"scenario {scenario.Id}: cannot place {sb.Def.Id} at {sb.Origin}");
-            w.AddBuilding(sb.Def, sb.Origin, sb.Rotation, active: true);
+            var origin = sb.AtStart
+                ? new Cell((w.Terrain?.Start.X ?? 0) + sb.Origin.X, (w.Terrain?.Start.Y ?? 0) + sb.Origin.Y)
+                : sb.Origin;
+            if (!w.Map.CanPlace(sb.Def, origin, sb.Rotation))
+                throw new ContentException($"scenario {scenario.Id}: cannot place {sb.Def.Id} at {origin}");
+            w.ClearNature(sb.Def, origin, sb.Rotation);
+            w.AddBuilding(sb.Def, origin, sb.Rotation, active: true);
         }
 
         var firstStorage = w._buildings.FirstOrDefault(b => b.IsStorage)
@@ -132,6 +141,24 @@ public sealed class World
             });
         }
         return w;
+    }
+
+    /// <summary>Builds terrain and nature from the seed (also on load, before the saved changes are applied).</summary>
+    internal void GenerateMap()
+    {
+        var g = WorldGen.Generate(Seed, Map.Width, Map.Height, StartTick, Content.Balance);
+        Map.Terrain = g.Terrain;
+        Nature = g.Nature;
+    }
+
+    /// <summary>Removes trees, bushes and stones under a footprint (generated maps).</summary>
+    internal void ClearNature(BuildingDef def, Cell origin, int rotation)
+    {
+        if (Nature is null) return;
+        var (fw, fh) = GridMap.Footprint(def, rotation);
+        for (int y = origin.Y; y < origin.Y + fh; y++)
+        for (int x = origin.X; x < origin.X + fw; x++)
+            if (Nature.At(new Cell(x, y)).Kind != NodeKind.None) Nature.Clear(new Cell(x, y));
     }
 
     // ---------------------------------------------------------------- stepping

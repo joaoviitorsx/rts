@@ -45,5 +45,16 @@
   // Construction (Marco 2A.1): materials are hauled to the site; work = buildDays × 1 household at 100%.
   // autoBuilders: families without a job help the nearest site that can progress (1 = on, 0 = off).
   "autoBuilders": 1,
-  "maxBuildersPerSite": 3
+  "maxBuildersPerSite": 3,
+  // World as a resource (GDD v0.3 §7, generated maps only). Trees: stump → sapling after treeStumpDays, young at a
+  // quarter of treeMatureDays, cuttable when mature. Deposits: outcrop (quarry) and coal/iron (later); one rich ×factor.
+  "treeMatureDays": 1440,
+  "treeStumpDays": 360,
+  "treeWood": 12,
+  "looseStoneUnits": 6,
+  "bushFood": 8,
+  "mushroomFood": 4,
+  "outcropUnits": 400,
+  "oreUnits": 300,
+  "richDepositFactor": 3
 }

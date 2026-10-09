@@ -26,6 +26,8 @@ public sealed class GridMap
 
     public int Width { get; }
     public int Height { get; }
+    /// <summary>Relief, water and ramps of a generated map (null on the flat 2A map).</summary>
+    public Terrain? Terrain { get; internal set; }
 
     public GridMap(int width, int height)
     {
@@ -62,17 +64,25 @@ public sealed class GridMap
     public static (int w, int h) Footprint(BuildingDef def, int rotation) =>
         (rotation & 1) == 0 ? (def.FootprintW, def.FootprintH) : (def.FootprintH, def.FootprintW);
 
+    /// <summary>
+    /// Free cells in bounds; on a generated map also buildable land (no water, no ramp) on a single terrace level.
+    /// </summary>
     public bool CanPlace(BuildingDef def, Cell origin, int rotation)
     {
         var (w, h) = Footprint(def, rotation);
+        int level = Terrain is { } t && t.InBounds(origin) ? t.LevelAt(origin) : 0;
         for (int y = origin.Y; y < origin.Y + h; y++)
         for (int x = origin.X; x < origin.X + w; x++)
         {
             var c = new Cell(x, y);
             if (!InBounds(c) || BuildingAt(c) != 0 || _road[Index(c)]) return false;
+            if (Terrain is { } terrain && (!terrain.IsBuildable(c) || terrain.LevelAt(c) != level)) return false;
         }
         return true;
     }
+
+    /// <summary>Can a walker step between these 4-neighbours? (Always on the flat map.)</summary>
+    public bool CanStep(Cell from, Cell to) => Terrain is null || Terrain.CanStep(from, to);
 
     internal void Fill(BuildingDef def, Cell origin, int rotation, int buildingId)
     {

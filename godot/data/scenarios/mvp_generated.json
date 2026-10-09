@@ -1,0 +1,21 @@
+{
+  // The 2A opening (6 families, cart in the Salão) on a generated map (GDD v0.3 §8): the "mapa gerado" side of the
+  // CLI comparison with mvp_start ("mapa plano"). The hall is centred on the generated start clearing.
+  "id": "mvp_generated",
+  "name": "Chegada (mapa gerado)",
+  "map": { "width": 192, "height": 192, "terrain": "generated" },
+  "startMonth": 2,
+  "buildings": [
+    { "def": "hall", "origin": [-1, -1], "anchor": "start", "rotation": 0 }
+  ],
+  "stock": { "wood": 120, "firewood": 60, "food": 400, "stone": 30, "tools": 6, "coins": 50 },
+  "householdToolCondition": 1000,
+  "households": [
+    { "name": "Halberg", "members": 4, "workers": 2 },
+    { "name": "Falk",    "members": 5, "workers": 2 },
+    { "name": "Roth",    "members": 3, "workers": 2 },
+    { "name": "Weber",   "members": 4, "workers": 2 },
+    { "name": "Brandt",  "members": 4, "workers": 2 },
+    { "name": "Moser",   "members": 4, "workers": 2 }
+  ]
+}

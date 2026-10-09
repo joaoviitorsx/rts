@@ -39,6 +39,20 @@ public sealed class StateDto
     public SuggestionDto? Suggestion { get; set; }
     /// <summary>Resource id → tick until which suggestions are muted (long.MaxValue = never).</summary>
     public SortedDictionary<string, long> SuggestionMuted { get; set; } = new(StringComparer.Ordinal);
+    /// <summary>Generated map (GDD v0.3): rebuilt from the seed, plus what changed. Absent on the flat map, so flat
+    /// saves and hashes stay byte-identical.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public GeneratedMapDto? Generated { get; set; }
+}
+
+public sealed class GeneratedMapDto
+{
+    public int Generator { get; set; }
+    /// <summary>Changed cells: [index, kind, variant, amount] + tick in <see cref="ChangeTicks"/> (same order).</summary>
+    public List<int[]> Changes { get; set; } = new();
+    public List<long> ChangeTicks { get; set; } = new();
+    /// <summary>Units left per deposit, in generation order.</summary>
+    public List<long> Deposits { get; set; } = new();
 }
 
 public sealed class PlayerActionDto

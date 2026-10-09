@@ -26,6 +26,27 @@ if (opts.GetValueOrDefault("balance-report") is { } reportPath)
     BalanceReport.Write(reportPath, content, scenario, int.Parse(opts.GetValueOrDefault("years") ?? "3", CultureInfo.InvariantCulture));
     return 0;
 }
+if (opts.GetValueOrDefault("map-png") is { } mapPng)
+{
+    // Generated map only (no simulation): --map-png out/map.png [--map-size 192] [--fertility]. "{seed}" in the path
+    // is replaced, and --seeds 1,2,3 writes one image per seed.
+    int size = int.Parse(opts.GetValueOrDefault("map-size") ?? "192", CultureInfo.InvariantCulture);
+    var seeds = (opts.GetValueOrDefault("seeds") ?? seed.ToString(CultureInfo.InvariantCulture)).Split(',').Select(ulong.Parse);
+    foreach (var s in seeds)
+    {
+        var timer = Stopwatch.StartNew();
+        var g = Ironvale.Sim.Map.WorldGen.Generate(s, size, size, 0, content.Balance);
+        timer.Stop();
+        string file = mapPng.Replace("{seed}", s.ToString(CultureInfo.InvariantCulture));
+        if (!opts.ContainsKey("no-image")) MapImage.Write(file, g, 0, content.Balance, fertility: opts.ContainsKey("fertility"));
+        foreach (var problem in Ironvale.Sim.Map.WorldCheck.Problems(g, 0, content.Balance)) Console.WriteLine($"  PROBLEM seed {s}: {problem}");
+        var i = g.Terrain.Info;
+        Console.WriteLine($"seed {s}: {timer.ElapsedMilliseconds} ms, attempt {i.Attempt}, coast {i.CoastSides}, lakes {i.Lakes}, " +
+                          $"levels {i.Levels}, forest {i.ForestPermille}‰, rich {i.RichDeposit}, reach {i.ReachablePermille}‰, " +
+                          $"pond {i.StartPond}, retries [{i.Retries}], start {g.Terrain.Start}, trees {g.Nature.Count(Ironvale.Sim.Map.NodeKind.Tree)} -> {file}");
+    }
+    return 0;
+}
 var world = World.Create(content, scenario, seed);
 IScriptedPlayer? player = opts.ContainsKey("no-opening") ? null
     : ScriptedPlayers.Create(opts.GetValueOrDefault("player") ?? "optimal", roads: !opts.ContainsKey("no-roads"));

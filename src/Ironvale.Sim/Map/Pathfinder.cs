@@ -6,6 +6,8 @@ namespace Ironvale.Sim.Map;
 /// cost-to-enter + distance, ties broken N, E, S, W. Memoryless and deterministic: routes never need saving.
 /// <para>Entering a road cell costs <c>ticksPerCellRoad</c>, open ground <c>ticksPerCellOffroad</c>; cells of other
 /// buildings cost <see cref="BuildingCostFactor"/>× off-road (walkers go around them, but are never stuck).</para>
+/// <para>Generated maps (GDD v0.3): water and cliffs cannot be crossed, ramps join the terraces. Unreachable cells keep
+/// <see cref="int.MaxValue"/> ticks.</para>
 /// </summary>
 public sealed class Pathfinder
 {
@@ -51,7 +53,7 @@ public sealed class Pathfinder
         foreach (var (dx, dy) in Steps)
         {
             var n = new Cell(from.X + dx, from.Y + dy);
-            if (!_map.InBounds(n)) continue;
+            if (!_map.InBounds(n) || !_map.CanStep(from, n) || field[_map.Index(n)] == int.MaxValue) continue;
             long v = (long)EnterCost(n, targetBuilding) + field[_map.Index(n)];
             if (v < bestValue)
             {
@@ -104,7 +106,7 @@ public sealed class Pathfinder
             foreach (var (dx, dy) in Steps)
             {
                 var uc = new Cell(vc.X + dx, vc.Y + dy);
-                if (!_map.InBounds(uc)) continue;
+                if (!_map.InBounds(uc) || !_map.CanStep(uc, vc)) continue;
                 int u = _map.Index(uc);
                 if (nd >= dist[u]) continue;
                 dist[u] = nd;
