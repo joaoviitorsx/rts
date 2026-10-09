@@ -2,6 +2,9 @@
 
 > Registradas durante o trabalho autônomo. Cada uma: contexto, opções, escolha e motivo. A escolha é sempre a mais
 > simples e reversível; quando possível fica atrás de um parâmetro em `godot/data/balance.json`.
+>
+> **Status (09/10/2026): todas aprovadas pelo dono** (P1–P24). Parâmetros mantidos em `balance.json`; o playtest calibra.
+> Observar com atenção no playtest: **P1** (obra parada sem carregador), **P18** (passivo morre cedo), **P21** (faixa sugerida).
 
 ## 2A.1 — Construção consumindo material
 
@@ -34,8 +37,7 @@
 - **Contexto:** o log agora é estruturado (chave + argumentos), traduzido pelo `ui.csv` (`log.*`). Os argumentos ainda são
   nomes do conteúdo em português (recurso, edifício) e o trecho "(saiu de X)" vem pronto do sim.
 - **Escolha:** manter assim até os nomes de conteúdo virarem chaves `tr()` (pendência de UI já registrada no roadmap).
-- **Termos:** o painel ainda se chama "Políticas"; a troca para decreto/reeve é feita no item 6 junto com o `UI_UX_guide.md`
-  (decisão registrada). As linhas novas do log já dizem "Decreto".
+- **Termos:** feito no item 6 — o painel é "Decretos do reeve" e o livro de contas usa "decreto".
 
 ## 2A.3 — Trajeto, estrada, horta, cenários
 
@@ -88,8 +90,8 @@
 - **Prioridade dos carregadores:** decreto urgente → obra/insumo (mais antigo primeiro) → buffer de produtor mais cheio.
 
 ### P14. Jogador "optimal" usa a indústria no 1º inverno (prioridade baixa)
-- Pedreira + ferreiro + decretos "pedra entre 20 e 40" e "ferramentas entre 8 e 12". O `--opening` de dev no jogo agora usa
-  o mesmo jogador (continua jogando durante `--days`).
+- Substituído por **P22** (o ótimo cuida da pedreira e do ferreiro à mão para caber na CA). O `--opening` de dev no jogo
+  usa o mesmo jogador (continua jogando durante `--days`).
 
 ## 2A.5 — Abertura sem roteiro
 

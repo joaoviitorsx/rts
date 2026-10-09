@@ -6,7 +6,7 @@ depois disso só trabalho seguro (testes, relatório).
 ## 1. Resumo (5 linhas)
 
 1. **Os 6 itens do Marco 2A foram implementados na ordem do plano**, cada um com testes, smoke na engine, commit e push.
-2. Testes: 50 → **103** (determinismo, save/load, soak de 50 anos, fuzz de comandos e as mecânicas novas), build sem avisos.
+2. Testes: 50 → **105** (determinismo, save/load, soak de 50 anos, fuzz de comandos e as mecânicas novas), build sem avisos.
 3. Balanceamento pela CLI (`docs/balance_report.md`): o jogador ingênuo não perde ninguém no ano 1 em 3 seeds; a crise
    da lenha surge no 1º outono (~8 min); a 1ª sugestão de decreto aos ~12 min; a crise das ferramentas aos ~40 min.
 4. Dois bugs graves achados e corrigidos: carregadores deixavam a colheita apodrecer no campo (fome com comida no
@@ -65,7 +65,7 @@ Nenhum item ficou bloqueado. O que ficou parcial e por quê:
 
 **Média**
 4. P1 — Só carregadores levam material à obra (sem carregador a obra para, com motivo e alerta).
-5. P21 — Faixa sugerida = estoque médio observado (lenha 60–80 pode ser baixa para o inverno).
+5. P21 — Faixa sugerida: **feito depois** (`d80ac38`) — cobre metade do inverno para lenha/comida (`suggestWinterCoverPermille`).
 6. P20 — Só remanejamentos contam como repetição para a sugestão.
 7. P24 — Carroça com 6 ferramentas (crise 2 aos ~40 min).
 8. P16 — Carroça com 400 de comida (era 300).
@@ -86,7 +86,7 @@ Nenhum item ficou bloqueado. O que ficou parcial e por quê:
 - **Profiling (Release, sem mudar comportamento):** ~725 mil ticks/s com o jogador ótimo (50 anos em ~1 s); ~270 mil com
   o ingênuo. A 8x o jogo precisa de 80 ticks/s. No jogo, 1% low de ~40 FPS é igual pausado (vsync/compositor, não sim).
 - **Legibilidade em 1280×720 (simulada):** o layout é o mesmo (base 1920, `canvas_items`), mas o texto secundário fica com
-  ~9 px. Sugestão para depois do playtest: opção de escala da UI.
+  ~9 px. **Feito depois** (`a877422`): escala de UI 80–150%, ajustada para caber na janela.
 
 ## 7. Riscos e próximos passos
 
