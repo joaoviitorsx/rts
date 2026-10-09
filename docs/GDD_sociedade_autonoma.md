@@ -452,11 +452,19 @@ Se a delegação parecer **"o jogo jogando por mim"** (tédio) em vez de **"conq
 
 ## 12. Glossário
 
+> Atualizado em 08/10/2026 (tema medieval da delegação). Este GDD é histórico/visão; decisões atuais em `docs/decisions.md`.
+
 | Termo | Definição |
 |---|---|
 | Família (Household) | Unidade atômica da população |
 | Nomeado | Indivíduo promovido a simulação completa |
-| Política | Regra/diretriz delegável (limiar, prioridade, proibição) |
+| Política / **Decreto** | Regra/diretriz delegável (limiar, prioridade, proibição). No jogo, chama-se *decreto*: lido pelo pregoeiro na praça e pregado no quadro de avisos |
+| **Reeve** | Administrador da vila: um aldeão com nome e traço que executa os decretos |
+| **Bailio** | Administrador regional (acima dos reeves) |
+| **Senescal** | Administrador do topo da hierarquia |
+| **Capacidade Administrativa (CA)** | Quanto o jogador consegue governar; no tema, escrivães, pergaminhos e o salão do senhor (GDD v0.2 §3.1) |
+| **Livro de contas do reeve** | Log do administrador: o que foi decidido e por quê |
+| **Tempo de trajeto** | Parte do turno gasta indo e voltando do trabalho; não produz |
 | Instituição | Entidade persistente nascida de famílias (oficina, guilda, ordem) |
 | Integração | Grau em que um território está conectado à sociedade |
 | Legado | Bônus herdado na sucessão |

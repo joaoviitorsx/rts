@@ -1,15 +1,17 @@
 # Roadmap de execução
 
-> Plano operacional (o *quê* e a *ordem*). Visão e fases: GDD §9. Arquitetura: TDD v0.1.
+> Plano operacional (o *quê* e a *ordem*). Fonte da verdade atual, junto com `docs/decisions.md`; os GDDs são
+> histórico/visão (fases: GDD §9). Arquitetura: TDD v0.1.
 
 | Etapa | Status | Entrega |
 |---|---|---|
 | Marco 1 — núcleo da simulação + view cinza | ✅ aprovado (08/10/2026) | sim C# headless, 50 testes, soak 50 anos, CLI, view com primitivas |
 | Etapa 1 — inventário de assets | ✅ | `docs/asset_manifest.md`, `CREDITS.md` |
 | Reorganização A1–A3 | ✅ | `godot/`, `art/vendor_raw/`, `scripts/setup_vendor.py`, `docs/vendor_sources.md` |
-| **Etapa 2 — integração de assets** | 🟡 em andamento (pausado 08/10/2026) | ver abaixo + "Onde paramos" |
+| **Etapa 2 — integração de assets** | 🟡 em andamento | ver abaixo + "Onde paramos" |
 | Etapa 3 — TEST_VILLAGE_01 | ⏳ | cena de validação + screenshots em 3 zooms + opções de material |
-| **Marco 2 — loop central (GDD v0.2)** | 📋 registrado, não iniciado | ver abaixo |
+| **Marco 2A — loop central jogável** | 📋 registrado, não iniciado | gate: playtest com 5 pessoas (GDD §8.3) |
+| Marco 2B — diferenciais e polimento | 📋 registrado | depois do gate do 2A |
 
 ## Etapa 2 — integração de assets (plano combinado)
 1. Remover `godot/assets/vendor/.gdignore`; configurar import por pacote (escala, colisão quando fizer sentido, compressão/limite de textura).
@@ -22,33 +24,77 @@
 8. Lacunas (trigo, pilhas, tocos, poço, forja): placeholders, listadas como "falta" no manifesto.
 9. TEST_VILLAGE_01 (Bible §43) + screenshots em 3 zooms + opções de material hand-painted × PBR.
 
-## Marco 2 — loop central do GDD v0.2 (não iniciar antes da Etapa 2/3)
+## Marco 2 — dividido em 2A e 2B (decisão de 08/10/2026, ver `docs/decisions.md`)
+Não iniciar antes da Etapa 2/3. Regra transversal: toda mecânica nova precisa ser **legível** (painel e tooltip
+explicam a perda e a causa) e reforçar o loop **problema → solução → delegação**. Termos do tema medieval
+(decreto, reeve, livro de contas…) no glossário do GDD §12.
+
+### Marco 2A — loop central jogável para playtest (GDD v0.2)
 1. **Abertura jogável sem roteiro:** suprimentos na carroça e balanceamento para que um jogador inexperiente sobreviva ao 1º inverno com folga apertada, sem morrer no ano 1. Crise da lenha no 1º outono (GDD v0.2 §4.2).
-2. **Política com faixa mínimo/máximo** (histerese explícita) em vez de limiar único — ciclos curtos, não de 3 anos.
+2. **Decreto (política) com faixa mínimo/máximo** (histerese explícita) em vez de limiar único — ciclos curtos, não de 3 anos.
 3. **Construir consome madeira e pedra** (de verdade, com o material chegando à obra).
-4. **Ferreiro** + política "produzir ferramentas se estoque < X".
-5. **Capacidade Administrativa** + **sugestão automática de política** (GDD v0.2 §3).
-6. **Caravana mercante** sazonal e simples: compra excedente, vende ferramentas e comida por moedas (destino para pedra e moedas).
+4. **Ferreiro** + decreto "produzir ferramentas se estoque < X".
+5. **Tempo de trajeto no turno** (playtester): o trabalhador sai de casa, anda até o trabalho e volta; só produz no
+   local. Tempo produtivo = turno − trajeto. Painel do edifício mostra **"% do turno em trajeto"**; tooltip explica a perda
+   e sugere a solução (morar perto, estrada).
+   - **Andar fora da estrada** é permitido, porém mais lento (custo de terreno no pathfinding); na estrada é mais rápido.
+6. **Horta no quintal** (playtester): cada família produz verdura no tempo livre; quem mora longe do trabalho tem menos
+   tempo livre (liga trajeto ↔ comida). Painel da família mostra o tempo livre e a produção da horta.
+7. **Capacidade Administrativa** (escrivães, pergaminhos, salão do senhor) + **sugestão automática de decreto** (GDD v0.2 §3).
+
+**Gate do 2A:** playtest com **5 pessoas** pelos critérios do GDD §8.3, mais o passe de feel (abaixo).
+
+### Marco 2B — diferenciais e polimento (depois do gate do 2A)
+1. **Delegados são pessoas:** o reeve é um aldeão com nome e 1 traço, implementado como modificador na Utility AI
+   (delegar = escolher em quem confiar):
+   - *Cauteloso*: guarda mais que o pedido e desperdiça trabalho.
+   - *Ambicioso*: rende mais, ganha prestígio e faz exigências.
+   - *Desleixado*: custa menos CA, mas erra.
+   - *Ganancioso*: desvia uma fração para a própria família.
+2. **"Enquanto você estava fora":** acelerar 1/5/10 anos e receber uma crônica com os momentos marcantes
+   ("o reeve Tomas salvou a vila no inverno do ano 12").
+3. **Caravana mercante** sazonal e simples: compra excedente, vende ferramentas e comida por moedas (destino para pedra e moedas).
+4. **NPCs cozy:**
+   - andar levemente saltitante e idles variados (espreguiçar, olhar em volta, bocejar);
+   - aldeões que se cruzam acenam ou param para conversar;
+   - item carregado visível (tora no ombro, cesto), e o andar muda com o peso;
+   - balões de emoção com as necessidades (fome, frio, cansaço, feliz) — forma diegética do estado das famílias;
+   - rotina visível: saem de manhã, voltam ao anoitecer, janela acende.
+   - **Proporção dos personagens:** o cozy pede cabeça maior. Propor opções (escala de ossos × outro modelo) com
+     screenshots antes de decidir.
+5. **Cerimônia do decreto:** o pregoeiro lê o decreto na praça e ele é pregado no quadro de avisos.
+
+### Game feel — critério de aprovação de todo marco
+- Toda ação com resposta visual + sonora em < 100 ms e animação de 150–250 ms.
+- Câmera com suavização, zoom em direção ao cursor e rotação de 90° animada.
+- Posicionar construção: fantasma suave, encaixe com som, rotação por tecla. Obra com andaime, poeira e estalo final.
+- Copiar construção, desfazer e atalhos para tudo que se repete.
+- Nenhum período de mais de 2 min sem decisão relevante; sempre um próximo objetivo visível.
+- Antes de fechar cada marco: **passe de feel** de 15 min jogando só para avaliar sensação, com notas em `docs/feel_notes.md`.
 
 ### Telas do MVP (UI_UX_guide §2.3) — processo §9.1 por tela
 Cada tela passa por: 1 objetivo → 2 informações → 3 wireframe → 4 cinza (Theme padrão) → 5 teste com 1 pessoa →
 6 ajustes → 7 arte final (Kenney + game-icons, **F3**) → 8 checklist §10. Nunca pular de 1 para 7.
 
-| Tela | Objetivo único | Etapa §9.1 atual | Item do Marco 2 |
+| Tela | Objetivo único | Etapa §9.1 atual | Item |
 |---|---|---|---|
 | Barra de recursos com tendência | "Tenho o suficiente?" | 4 (cinza) — falta teste com pessoa | — |
-| Relógio de estação + previsão do inverno | "Quanto tempo até o perigo?" | 4 (cinza, só texto) | 1 |
-| Painel de família | "Esta família está bem? O que faz?" | 4 (cinza) | — |
-| Painel de edifício | "Está produzindo? Por que não?" | 4 (cinza) | 3 (mostrar material chegando à obra) |
-| Menu de construção | "O que posso construir e quanto custa?" | 4 parcial (barra simples; falta atalho B e categorias) | 3, 4 |
-| Cartão de sugestão de política | "Quer automatizar o que você vem repetindo?" | 1–3 (wireframe §3.3 no guia) | 5 |
-| Medidor de Capacidade Administrativa | "Quanto ainda consigo governar?" | 1 | 5 |
-| Painel do Administrador + log | "O que está automatizado e o que ele decidiu?" | 4 parcial (PoliciesPanel lista + log) | 2, 5 |
+| Relógio de estação + previsão do inverno | "Quanto tempo até o perigo?" | 4 (cinza, só texto) | 2A.1 |
+| Painel de família | "Esta família está bem? O que faz?" | 4 (cinza) | 2A.6 (tempo livre, horta) |
+| Painel de edifício | "Está produzindo? Por que não?" | 4 (cinza) | 2A.3 (material chegando), 2A.5 (% em trajeto) |
+| Menu de construção | "O que posso construir e quanto custa?" | 4 parcial (barra simples; falta atalho B e categorias) | 2A.3, 2A.4 |
+| Cartão de sugestão de decreto | "Quer automatizar o que você vem repetindo?" | 1–3 (wireframe §3.3 no guia) | 2A.7 |
+| Medidor de Capacidade Administrativa | "Quanto ainda consigo governar?" | 1 | 2A.7 |
+| Painel do reeve + livro de contas | "O que está automatizado e o que ele decidiu?" | 4 parcial (PoliciesPanel lista + log) | 2A.2, 2A.7, 2B.1 (traço) |
+| Crônica "Enquanto você estava fora" | "O que aconteceu enquanto eu não olhava?" | — | 2B.2 |
+| Balões de emoção (diegético) | "Quem está mal, e por quê?" | — | 2B.4 |
 | Overlay de fluxo | "Para onde vão os recursos?" | — (depois do Marco 2; F1–F4) | — |
 | Painel de debug (só dev) | Telemetria | pronto (F12, só build debug) | — |
 
 ### Economy Sheet via CLI
 - Cenários de balanceamento na CLI: **jogador passivo**, **jogador ingênuo**, **abertura ótima**.
+- Cada cenário mede o **impacto do trajeto**: % do turno em trajeto por edifício, produção perdida/ano e tempo livre
+  (horta) por família, com e sem estrada, morando perto × longe do trabalho.
 - `docs/balance_report.md` com CSV e gráficos por cenário, verificando se as crises 1–3 aparecem nos minutos previstos no GDD v0.2 §4.
 
 ## Onde paramos (08/10/2026)
