@@ -91,3 +91,26 @@
 - Pedreira + ferreiro + decretos "pedra entre 20 e 40" e "ferramentas entre 8 e 12". O `--opening` de dev no jogo agora usa
   o mesmo jogador (continua jogando durante `--days`).
 
+## 2A.5 — Abertura sem roteiro
+
+### P15. Urgência de transporte por necessidade (prioridade ALTA — confirmar)
+- **Contexto:** sem decreto, os carregadores levavam sempre o buffer mais cheio (madeira) e a colheita apodrecia no
+  campo enquanto as famílias iam embora de fome.
+- **Escolha:** comida (sempre) e lenha (outono/inverno) abaixo de `haulUrgentDays` (20) dias de consumo viram urgentes,
+  como um decreto em falta. Parâmetro em `balance.json`.
+
+### P16. Carroça e capacidade (prioridade média)
+- **Escolha:** comida 300 → **400**; lenha 60 (mantida). Varredura (3 seeds × 3 anos) em `docs/balance_report.md`:
+  ingênuo não perde ninguém no ano 1 em nenhuma seed; passivo perde todos no 1º verão; ótimo estável.
+- **Observação:** o resultado do ingênuo no ano 3 não é monótono com a carroça (mais comida às vezes piora) — o roteiro
+  ingênuo nunca expande. Não otimizei para o ano 3.
+
+### P17. Lista de objetivos (prioridade média)
+- **Escolha:** 9 objetivos derivados do estado (carregadores → casas → campo → lenhador → lenha p/ inverno → decreto →
+  celeiro → pedreira + ferreiro → 1º inverno), calculados na camada de UI como os alertas (sem estado salvo).
+- **Alternativa:** objetivos como sistema da simulação (com recompensa/registro) — mais pesado; só se o playtest pedir.
+
+### P18. Passivo morre no 1º verão (prioridade baixa)
+- Fazer nada perde todas as famílias por volta de 8 min (fome). O GDD pede falha branda; o passivo literalmente não
+  constrói casas nem campos. Se parecer duro demais no playtest: subir `subsistenceFoodCoverPermille`.
+

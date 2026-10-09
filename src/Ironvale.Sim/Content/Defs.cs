@@ -125,6 +125,8 @@ public sealed class BalanceDef
     public required int RehomeMinGainTicks { get; init; }
     public required int CarrierLoadTicks { get; init; }
     public required Qty MinPickup { get; init; }
+    /// <summary>Food (and firewood in autumn/winter) is urgent for carriers below this many days of need in storage.</summary>
+    public required int HaulUrgentDays { get; init; }
     public required int HarvestVariancePermille { get; init; }
     public required int DeadlockWindowDays { get; init; }
     public required int PolicyLogMax { get; init; }

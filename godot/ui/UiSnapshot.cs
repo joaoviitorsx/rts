@@ -44,6 +44,9 @@ public enum AlertSeverity { Info, Warning, Critical }
 /// <summary>Fixed format (guide §3.4): severity · problem · deadline · action.</summary>
 public sealed record AlertSnap(string Key, AlertSeverity Severity, string Text, int FocusBuildingId);
 
+/// <summary>The next goal shown in the objective card (GDD v0.2 §4.1: always a visible next step).</summary>
+public sealed record ObjectiveSnap(string Key, string Text, int Index, int Count);
+
 public sealed record DailySnap(long[] Produced, long[] Consumed, long[] Stored, long[] Local, long[] Transit);
 
 public sealed class UiSnapshot
@@ -66,6 +69,7 @@ public sealed class UiSnapshot
     public required int Shipments { get; init; }
     public required int FrozenDays { get; init; }
     public required bool Deadlocked { get; init; }
+    public required ObjectiveSnap? Objective { get; init; }
 
     public BuildingSnap? Building(int id) => Buildings.FirstOrDefault(b => b.Id == id);
 }
@@ -122,6 +126,7 @@ public static class UiSnapshotBuilder
             Shipments = w.Shipments.Count,
             FrozenDays = w.Telemetry.FrozenDays,
             Deadlocked = w.Telemetry.Deadlocked,
+            Objective = NextObjective(w, cal, tr),
         };
     }
 
@@ -238,6 +243,37 @@ public static class UiSnapshotBuilder
         if (b.CanProgress && w.BuildersAt(b) == 0) return ("no_builders", "");
         if (!b.CanProgress) return ("waiting", "");
         return ("", "");
+    }
+
+    /// <summary>
+    /// First unmet goal of the opening (presentation-level, derived from the world like the alerts): carriers →
+    /// houses → field → woodcutter → firewood for winter → a decree → granary → smithy + quarry → first winter.
+    /// </summary>
+    private static ObjectiveSnap? NextObjective(World w, Calendar cal, Func<string, string> tr)
+    {
+        int Active(string def) => w.Buildings.Count(b => b.IsActive && b.Def.Id == def);
+        int Workers(string def) => w.Buildings.Where(b => b.IsActive && b.Def.Id == def).Sum(b => b.AssignedCount);
+        int carriers = w.Carriers.Count(c => !c.Retiring);
+        var firewood = w.StorageStock(w.Content.Resource("firewood").Index).WholeUnits;
+        long winterNeed = (long)(w.Content.Balance.FirewoodPerHouseholdPerWinterDay.AsDouble * w.Households.Count * 90);
+        var steps = new (string Key, bool Done, object[] Args)[]
+        {
+            ("carriers", carriers >= 2, new object[] { carriers }),
+            ("houses", Active("house") >= 3, new object[] { Active("house") }),
+            ("field", Workers("field") >= 2, new object[] { Workers("field") }),
+            ("woodcutter", Workers("woodcutter") >= 1, Array.Empty<object>()),
+            ("firewood", firewood >= winterNeed || cal.Year > 1, new object[] { firewood, winterNeed }),
+            ("decree", w.Policies.Count > 0, Array.Empty<object>()),
+            ("granary", Active("granary") >= 1, Array.Empty<object>()),
+            ("tools", Active("smithy") >= 1 && Active("quarry") >= 1, Array.Empty<object>()),
+            ("winter", cal.Year > 1, Array.Empty<object>()),
+        };
+        for (int i = 0; i < steps.Length; i++)
+        {
+            if (steps[i].Done) continue;
+            return new ObjectiveSnap(steps[i].Key, string.Format(tr("objective." + steps[i].Key), steps[i].Args), i + 1, steps.Length);
+        }
+        return new ObjectiveSnap("grow", tr("objective.grow"), steps.Length, steps.Length);
     }
 
     /// <summary>Presentation-level warnings derived from the snapshot numbers (no game rules live here).</summary>

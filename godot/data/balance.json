@@ -27,6 +27,8 @@
   "rehomeMinGainTicks": 12,
   "carrierLoadTicks": 4,
   "minPickup": 2,
+  // Carriers treat food (and firewood in autumn/winter) as urgent while storage holds less than this many days of need.
+  "haulUrgentDays": 20,
   "harvestVariancePermille": 100,
   "deadlockWindowDays": 60,
   "policyLogMax": 200,

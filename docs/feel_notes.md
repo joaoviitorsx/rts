@@ -34,3 +34,18 @@
   **próximo objetivo visível** — previsto no item 5 (cartão de objetivo).
 - **Top 3 para corrigir:** (1) abertura: decretos ocupam todas as famílias e casas ficam sem construtor no 1º verão
   (item 5); (2) cartão de próximo objetivo (item 5); (3) pedra sem fonte (estrada e ferreiro dependem dela — item 4).
+
+## Marco 2A — item 5 — 09/10/2026 (passe medido pelo agente, sem jogador humano)
+
+- **Próximo objetivo visível:** cartão fixo no canto superior esquerdo desde o segundo 0 ("Próximo objetivo (1/9):
+  Designe 2 carregadores…"). 9 passos até sobreviver ao 1º inverno, depois "Cresça…". Cada texto diz **o que fazer e
+  onde** (Salão → Designar; receita Rachar lenha; tecla P). Falta: destaque visual/seta no alvo (F3).
+- **Ritmo:** com o cartão, sempre há uma próxima ação. Nos cenários da CLI o jogador ingênuo encontra a crise da lenha aos
+  ~8 min (1º outono) — dentro do GDD v0.2 §4.2 (5–30 min). Crise 2 (ferramentas) não aparece em 3 anos nos cenários:
+  12 ferramentas de reserva + desgaste lento (pendência de balanceamento para o 1º playtest).
+- **Logística (achado grave, corrigido):** a colheita ficava no campo e as famílias passavam fome com comida no mapa,
+  porque os carregadores preferiam o buffer de madeira mais cheio. Agora comida (e lenha no outono/inverno) abaixo de
+  `haulUrgentDays` (20) dias de consumo é prioridade. Isso sozinho fez o ingênuo sobreviver ao ano 1.
+- **Abertura:** o jogo começa sem roteiro (só o Salão e a carroça). Carroça: 400 comida, 60 lenha (antes 300/60).
+- **Top 3 para o dono testar:** (1) os textos do cartão são claros sem tutorial? (2) a crise da lenha (~8 min) é
+  percebida antes de virar fome/frio? (3) o jogo começa rodando a 1x — deveria começar pausado?

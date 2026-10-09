@@ -294,6 +294,7 @@ public static class ContentLoader
             RehomeMinGainTicks = c.OptInt(el, "rehomeMinGainTicks", 6),
             CarrierLoadTicks = c.PositiveInt(el, "carrierLoadTicks"),
             MinPickup = Qty.FromDouble(c.Num(el, "minPickup")),
+            HaulUrgentDays = c.OptInt(el, "haulUrgentDays", 20),
             HarvestVariancePermille = Permille.Clamp(c.OptInt(el, "harvestVariancePermille", 0)),
             DeadlockWindowDays = c.PositiveInt(el, "deadlockWindowDays"),
             PolicyLogMax = c.PositiveInt(el, "policyLogMax"),

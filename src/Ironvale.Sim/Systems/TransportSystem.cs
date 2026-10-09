@@ -114,6 +114,7 @@ public sealed class TransportSystem : ISimSystem
         Span<bool> urgent = stackalloc bool[w.Content.ResourceCount];
         foreach (var p in w.Policies)
             if (p.Enabled && w.StorageStockIncludingTransit(p.Resource) < p.Min) urgent[p.Resource] = true;
+        MarkNeedUrgency(w, urgent);
 
         Building? best = null;
         int bestRes = -1;
@@ -161,6 +162,26 @@ public sealed class TransportSystem : ISimSystem
         c.StepTicks = 0;
         c.Phase = CarrierPhase.ToPickup;
         return true;
+    }
+
+    /// <summary>
+    /// What families live on is urgent when storage runs low: food all year, firewood from autumn on
+    /// (balance.haulUrgentDays of need). Without it carriers kept hauling full wood buffers while the harvest
+    /// sat in the field and families starved.
+    /// </summary>
+    private static void MarkNeedUrgency(World w, Span<bool> urgent)
+    {
+        var bal = w.Content.Balance;
+        int members = 0;
+        foreach (var h in w.Households) members += h.Members;
+        int food = w.Content.Resource(ConsumptionSystem.FoodId).Index;
+        if (w.StorageStockIncludingTransit(food) < bal.FoodPerMemberPerDay * (members * bal.HaulUrgentDays)) urgent[food] = true;
+        if (w.Calendar.Season is Season.Autumn or Season.Winter)
+        {
+            int firewood = w.Content.Resource(ConsumptionSystem.FirewoodId).Index;
+            if (w.StorageStockIncludingTransit(firewood) < bal.FirewoodPerHouseholdPerWinterDay * (w.Households.Count * bal.HaulUrgentDays))
+                urgent[firewood] = true;
+        }
     }
 
     /// <summary>

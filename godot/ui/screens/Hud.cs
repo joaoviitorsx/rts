@@ -31,6 +31,8 @@ public partial class Hud : CanvasLayer
     private Label _population = null!;
     private readonly List<Button> _speedButtons = new();
     private VBoxContainer _alerts = null!;
+    private Label _objectiveTitle = null!;
+    private Label _objective = null!;
     private BuildingPanel _buildingPanel = null!;
     private FamiliesPanel _families = null!;
     private PoliciesPanel _policies = null!;
@@ -68,8 +70,11 @@ public partial class Hud : CanvasLayer
 
         var middle = new HBoxContainer { SizeFlagsVertical = Control.SizeFlags.ExpandFill, MouseFilter = Control.MouseFilterEnum.Ignore };
         column.AddChild(middle);
-        _alerts = new VBoxContainer { CustomMinimumSize = new Vector2(380, 0), MouseFilter = Control.MouseFilterEnum.Ignore };
-        middle.AddChild(_alerts);
+        var leftColumn = new VBoxContainer { CustomMinimumSize = new Vector2(380, 0), MouseFilter = Control.MouseFilterEnum.Ignore };
+        middle.AddChild(leftColumn);
+        leftColumn.AddChild(BuildObjectiveCard());
+        _alerts = new VBoxContainer { MouseFilter = Control.MouseFilterEnum.Ignore };
+        leftColumn.AddChild(_alerts);
         middle.AddChild(UiNodes.Spacer());
         var right = new VBoxContainer { CustomMinimumSize = new Vector2(440, 0), MouseFilter = Control.MouseFilterEnum.Ignore };
         middle.AddChild(right);
@@ -128,6 +133,19 @@ public partial class Hud : CanvasLayer
             row.AddChild(b);
         }
         return bar;
+    }
+
+    /// <summary>Always-visible next goal (GDD v0.2 §4.1; feel rule: a next objective is always on screen).</summary>
+    private Control BuildObjectiveCard()
+    {
+        var card = new PanelContainer { ThemeTypeVariation = "PanelPrimary" };
+        var box = new VBoxContainer();
+        card.AddChild(box);
+        _objectiveTitle = UiNodes.Label("", "SecondaryLabel");
+        box.AddChild(_objectiveTitle);
+        _objective = UiNodes.Label("", wrap: true);
+        box.AddChild(_objective);
+        return card;
     }
 
     private Control BuildBottomBar()
@@ -230,6 +248,11 @@ public partial class Hud : CanvasLayer
         for (int i = 0; i < s.Resources.Count; i++) ((ResourceChip)_chips.GetChild(i)).Bind(s.Resources[i]);
         _population.Text = UiText.T("ui.top.population", s.Population);
         _date.Text = UiText.T("ui.top.date", s.Year, UiText.T("ui.season." + s.Season), s.Month, s.Day);
+        if (s.Objective is { } o)
+        {
+            _objectiveTitle.Text = UiText.T("objective.title", o.Index, o.Count);
+            _objective.Text = o.Text;
+        }
         _winter.Text = s.DaysToWinter == 0 ? "❄ " + UiText.T("ui.top.winter_now") : UiText.T("ui.top.winter_in", s.DaysToWinter);
         for (int i = 0; i < _speedButtons.Count; i++) _speedButtons[i].SetPressedNoSignal(SimHost.Speeds[i] == s.Speed);
 

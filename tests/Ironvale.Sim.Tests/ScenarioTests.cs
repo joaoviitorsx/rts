@@ -49,6 +49,38 @@ public class ScenarioTests
         Assert.True(N(naive) > N(optimal) * 1.5, $"naive {N(naive):P0} vs optimal {N(optimal):P0}");
     }
 
+    /// <summary>Marco 2A.5 balance gate: a newcomer loses nobody in year 1, meets the firewood crisis in the first
+    /// autumn, and doing nothing is punished (GDD v0.2 §4.2).</summary>
+    [Theory]
+    [InlineData(42UL)]
+    [InlineData(7UL)]
+    [InlineData(123UL)]
+    public void Naive_player_loses_nobody_in_year_one_and_meets_the_firewood_crisis(ulong seed)
+    {
+        var w = TestKit.NewWorld(seed);
+        w.CollectEvents = false;
+        var player = ScriptedPlayers.Create("naive");
+        player.Start(w);
+        var watch = new CrisisWatch();
+        for (int d = 0; d < SimTime.DaysPerYear; d++)
+        {
+            w.StepDays(1);
+            player.Daily(w);
+            watch.Observe(w);
+        }
+        Assert.Equal(0, watch.Departures);
+        Assert.NotNull(watch.FirewoodDay);
+        Assert.Equal(Season.Autumn, new Calendar(w.StartTick + watch.FirewoodDay!.Value * SimTime.TicksPerDay).Season);
+        Assert.Equal(1, new Calendar(w.StartTick + watch.FirewoodDay!.Value * SimTime.TicksPerDay).Year);
+    }
+
+    [Fact]
+    public void Doing_nothing_costs_families_in_year_one()
+    {
+        var (_, watch) = Run(ScriptedPlayers.Create("passive"), SimTime.DaysPerYear);
+        Assert.True(watch.Departures > 0);
+    }
+
     [Fact]
     public void Unknown_player_is_rejected()
     {

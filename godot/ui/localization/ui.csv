@@ -39,6 +39,17 @@ ui.resource.stable,Estoque estável ou subindo,Stock stable or rising
 ui.close,Fechar (Esc),Close (Esc)
 ui.alert.go,Ir,Go
 ui.alert.dismiss,Dispensar,Dismiss
+objective.title,Próximo objetivo ({0}/{1}),Next goal ({0}/{1})
+objective.carriers,"Designe 2 carregadores: selecione o Salão e use Designar ({0}/2). Eles levam material às obras e a produção ao armazém.","Assign 2 carriers: select the Hall and use Assign ({0}/2). They take materials to sites and goods to storage."
+objective.houses,"Construa 3 casas ({0}/3). Famílias sem trabalho ajudam nas obras sozinhas.","Build 3 houses ({0}/3). Jobless families help on building sites by themselves."
+objective.field,"Construa um campo e coloque 2 famílias nele ({0}/2). A colheita vem na troca de estação.","Build a field and put 2 families on it ({0}/2). The harvest comes when the season changes."
+objective.woodcutter,"Construa um lenhador e coloque uma família nele.","Build a woodcutter and put a family on it."
+objective.firewood,"Junte lenha para o inverno: {0}/{1}. No lenhador, troque a receita para Rachar lenha.","Gather firewood for winter: {0}/{1}. At the woodcutter, switch the recipe to Split firewood."
+objective.decree,"Crie um decreto (P): o reeve cuida de um recurso sozinho entre um mínimo e um máximo.","Issue a decree (P): the reeve keeps a resource between a minimum and a maximum by himself."
+objective.granary,"Construa um celeiro perto dos campos (mais espaço e caminhos mais curtos).","Build a granary near the fields (more room and shorter trips)."
+objective.tools,"Ferramentas se desgastam: construa uma pedreira e um ferreiro.","Tools wear out: build a quarry and a smithy."
+objective.winter,"Sobreviva ao primeiro inverno.","Survive the first winter."
+objective.grow,"A vila está de pé. Cresça: mais casas, estradas e decretos para o que você repete.","The village stands. Grow: more houses, roads and decrees for what you keep repeating."
 alert.food_out,Comida acaba em ~{0} dias,Food runs out in ~{0} days
 alert.food_low,Comida para ~{0} dias,Food for ~{0} days
 alert.firewood_winter,Pouca lenha ({0}) — inverno em {1} dias,Low firewood ({0}) — winter in {1} days
