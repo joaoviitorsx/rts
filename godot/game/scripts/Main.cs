@@ -64,6 +64,11 @@ public partial class Main : Node3D
         ApplyCommandLine(host);
         PerfProbe.AttachIfRequested(this);
         if (OS.GetCmdlineUserArgs().Contains("--debug")) ui.ToggleDebug();
+        foreach (var arg in OS.GetCmdlineUserArgs())
+        {
+            if (arg.StartsWith("--panel=")) ui.OpenPanel(arg[8..]);
+            if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
+        }
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
         {
             var smoke = new SmokeTest { Name = "SmokeTest" };
@@ -73,7 +78,8 @@ public partial class Main : Node3D
     }
 
     /// <summary>
-    /// Dev/smoke-test switches (after "--"): --opening (scripted MVP opening), --speed=N, --days=N (pre-simulate), --debug (open debug panel), --smoke (input end-to-end check).
+    /// Dev/smoke-test switches (after "--"): --opening (scripted MVP opening), --speed=N, --days=N (pre-simulate), --debug (open debug panel), --panel=families|policies|building:ID,
+    /// --shot=PATH (save the real window image after ~1 s and quit), --smoke (input end-to-end check).
     /// Example: godot-mono --path godot -- --opening --days=60 --speed=8
     /// </summary>
     private static void ApplyCommandLine(SimHost host)

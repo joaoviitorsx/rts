@@ -481,11 +481,11 @@ public sealed class World
         _shipmentById.Remove(s.Id);
     }
 
-    internal Policy AddPolicy(PolicyDef def, int resource, Qty threshold)
+    internal Policy AddPolicy(PolicyDef def, int resource, Qty min, Qty max)
     {
-        var p = new Policy { Id = NewId(), Def = def, Resource = resource, Threshold = threshold, CreatedTick = Tick };
+        var p = new Policy { Id = NewId(), Def = def, Resource = resource, Min = min, Max = max, CreatedTick = Tick };
         _policies.Add(p);
-        LogPolicy(p, $"Política criada: manter {Content.Resources[resource].Name} acima de {threshold}");
+        LogPolicy(p, "created", Content.Resources[resource].Name, PolicySystem.Units(min), PolicySystem.Units(max));
         return p;
     }
 
@@ -505,12 +505,13 @@ public sealed class World
         _policies.Remove(p);
     }
 
-    internal void LogPolicy(Policy p, string text)
+    internal void LogPolicy(Policy p, string key, params string[] args)
     {
-        _policyLog.Add(new PolicyLogEntry(Tick, p.Id, text));
+        var entry = new PolicyLogEntry(Tick, p.Id, key, args);
+        _policyLog.Add(entry);
         int max = Content.Balance.PolicyLogMax;
         if (_policyLog.Count > max) _policyLog.RemoveRange(0, _policyLog.Count - max);
-        Emit(new PolicyActed(Tick, p.Id, text));
+        Emit(new PolicyActed(Tick, p.Id, entry.Text));
     }
 
     internal void InsertPolicyLog(PolicyLogEntry e) => _policyLog.Add(e);

@@ -232,20 +232,20 @@ public class NeedsTests
 
 public class PolicyTests
 {
-    private static (World w, Building cutter, Policy p) Setup(long threshold)
+    private static (World w, Building cutter, Policy p) Setup(long min, long max)
     {
         var w = TestKit.NewWorld();
         var cutter = TestKit.AddActive(w, "woodcutter", new Cell(10, 10));
-        w.Enqueue(new CreatePolicy("keep_above", "wood", threshold));
+        w.Enqueue(new CreatePolicy("keep_above", "wood", min, max));
         w.Step();
         return (w, cutter, w.Policies.Single());
     }
 
     [Fact]
-    public void Recruits_one_household_per_day_while_below_threshold()
+    public void Recruits_one_household_per_day_while_below_the_minimum()
     {
-        var (w, cutter, p) = Setup(threshold: 1000);   // hall has 120 wood → short; created on a day start
-        Assert.Equal(1, cutter.AssignedCount);           // first evaluation already ran that day
+        var (w, cutter, p) = Setup(min: 1000, max: 1250);   // hall has 120 wood → short; created on a day start
+        Assert.Equal(1, cutter.AssignedCount);              // first evaluation already ran that day
         w.StepDays(1);
         Assert.Equal(2, cutter.AssignedCount);
         Assert.All(w.Households.Where(h => h.HasJob), h =>
@@ -253,26 +253,54 @@ public class PolicyTests
             Assert.Equal(AssignmentSource.Policy, h.AssignedBy);
             Assert.Equal(p.Id, h.AssignedByPolicyId);
         });
-        Assert.Contains(w.PolicyLog, e => e.Text.Contains("→ Lenhador"));
+        Assert.Contains(w.PolicyLog, e => e.Key == "recruited" && e.Text.Contains("→ Lenhador"));
     }
 
     [Fact]
-    public void Releases_households_above_threshold_plus_hysteresis()
+    public void Releases_households_above_the_maximum()
     {
-        var (w, cutter, p) = Setup(threshold: 1000);
+        var (w, cutter, p) = Setup(min: 1000, max: 1250);
         w.StepDays(1);
         Assert.Equal(2, cutter.AssignedCount);
 
-        w.Enqueue(new SetPolicyThreshold(p.Id, 10));   // 120 wood > 12.5 → release
+        w.Enqueue(new SetPolicyBand(p.Id, 10, 12));   // 120 wood > 12 → release one per day
         w.StepDays(3);
         Assert.Equal(0, cutter.AssignedCount);
-        Assert.Contains(w.PolicyLog, e => e.Text.Contains("liberada"));
+        Assert.Contains(w.PolicyLog, e => e.Key == "released" && e.Text.Contains("liberada"));
+    }
+
+    [Fact]
+    public void Inside_the_band_the_reeve_does_nothing()
+    {
+        var (w, cutter, p) = Setup(min: 1000, max: 2000);
+        w.StepDays(1);
+        Assert.Equal(2, cutter.AssignedCount);
+        int logBefore = w.PolicyLog.Count;
+
+        w.Enqueue(new SetPolicyBand(p.Id, 50, 100000));   // wood (~120 + production) sits inside the band
+        w.StepDays(5);
+        Assert.Equal(2, cutter.AssignedCount);            // no release, no new recruit
+        Assert.Equal(logBefore + 1, w.PolicyLog.Count);   // only the "band_changed" line
+        Assert.Equal("band_changed", w.PolicyLog[^1].Key);
+    }
+
+    [Theory]
+    [InlineData(100, 100)]
+    [InlineData(100, 50)]
+    [InlineData(-1, 50)]
+    public void A_band_needs_min_below_max(long min, long max)
+    {
+        var w = TestKit.NewWorld();
+        w.Enqueue(new CreatePolicy("keep_above", "wood", min, max));
+        w.Step();
+        Assert.Empty(w.Policies);
+        Assert.Single(w.DrainEvents().OfType<CommandRejected>());
     }
 
     [Fact]
     public void Never_takes_households_assigned_by_the_player()
     {
-        var (w, cutter, _) = Setup(threshold: 1000);
+        var (w, cutter, _) = Setup(min: 1000, max: 1250);
         var field = TestKit.AddActive(w, "field", new Cell(20, 10));
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, field.Id));
         foreach (var h in w.Households.Skip(2)) w.Enqueue(new AssignHousehold(h.Id, field.Id));  // field has 2 slots: rest rejected
@@ -290,10 +318,22 @@ public class PolicyTests
         var w = TestKit.NewWorld();
         var cutter = TestKit.AddActive(w, "woodcutter", new Cell(10, 10));
         Assert.Equal("chop_wood", cutter.Recipe!.Id);
-        w.Enqueue(new CreatePolicy("keep_above", "firewood", 1000));
+        w.Enqueue(new CreatePolicy("keep_above", "firewood", 1000, 1250));
         w.StepDays(1);
         Assert.Equal("split_firewood", cutter.Recipe!.Id);
         Assert.Equal(1, cutter.AssignedCount);
+        Assert.Contains(w.PolicyLog, e => e.Key == "recipe_changed");
+    }
+
+    [Fact]
+    public void The_account_book_survives_save_and_load()
+    {
+        var (w, _, p) = Setup(min: 1000, max: 1250);
+        w.StepDays(2);
+        var copy = SaveSerializer.Load(SaveSerializer.Save(w), w.Content).World;
+        var cp = copy.Policies.Single();
+        Assert.Equal((p.Min, p.Max), (cp.Min, cp.Max));
+        Assert.Equal(w.PolicyLog.Select(e => e.Text), copy.PolicyLog.Select(e => e.Text));
     }
 }
 

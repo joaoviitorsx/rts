@@ -87,6 +87,7 @@ public sealed class PolicyDef
     public required string Name { get; init; }
     public required PolicyKind Kind { get; init; }
     public required int CaCost { get; init; }              // Capacidade Administrativa: ignored in Marco 1
+    /// <summary>Default band for a new decree in the UI: Max = Min × (1 + this).</summary>
     public required int HysteresisPermille { get; init; }
     public required int MaxHouseholds { get; init; }
 }

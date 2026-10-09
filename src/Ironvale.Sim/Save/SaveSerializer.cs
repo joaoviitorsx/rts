@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 2;   // 2: construction sites hold materials + build work (2A.1)
+    public const int CurrentVersion = 3;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + structured log (2A.2)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -104,13 +104,13 @@ public static class SaveSerializer
             Policies = w.Policies.Select(p => new PolicyDto
             {
                 Id = p.Id, Def = p.Def.Id, Enabled = p.Enabled, Resource = Res(p.Resource),
-                Threshold = p.Threshold.Milli, CreatedTick = p.CreatedTick, LastBlockedReason = p.LastBlockedReason,
+                Min = p.Min.Milli, Max = p.Max.Milli, CreatedTick = p.CreatedTick, LastBlockedReason = p.LastBlockedReason,
             }).ToList(),
             Ledger = new LedgerDto
             {
                 Initial = Map(w.Ledger.Initial), Produced = Map(w.Ledger.Produced), Consumed = Map(w.Ledger.Consumed),
             },
-            PolicyLog = w.PolicyLog.Select(e => new PolicyLogDto { Tick = e.Tick, PolicyId = e.PolicyId, Text = e.Text }).ToList(),
+            PolicyLog = w.PolicyLog.Select(e => new PolicyLogDto { Tick = e.Tick, PolicyId = e.PolicyId, Key = e.Key, Args = e.Args }).ToList(),
         };
     }
 
@@ -244,14 +244,14 @@ public static class SaveSerializer
             w.InsertPolicy(new Policy
             {
                 Id = d.Id, Def = def, Enabled = d.Enabled, Resource = Res(d.Resource),
-                Threshold = new Qty(d.Threshold), CreatedTick = d.CreatedTick, LastBlockedReason = d.LastBlockedReason,
+                Min = new Qty(d.Min), Max = new Qty(d.Max), CreatedTick = d.CreatedTick, LastBlockedReason = d.LastBlockedReason,
             });
         }
 
         Array.Copy(Arr(s.Ledger.Initial), w.Ledger.Initial, content.ResourceCount);
         Array.Copy(Arr(s.Ledger.Produced), w.Ledger.Produced, content.ResourceCount);
         Array.Copy(Arr(s.Ledger.Consumed), w.Ledger.Consumed, content.ResourceCount);
-        foreach (var e in s.PolicyLog) w.InsertPolicyLog(new PolicyLogEntry(e.Tick, e.PolicyId, e.Text));
+        foreach (var e in s.PolicyLog) w.InsertPolicyLog(new PolicyLogEntry(e.Tick, e.PolicyId, e.Key, e.Args));
         return w;
     }
 

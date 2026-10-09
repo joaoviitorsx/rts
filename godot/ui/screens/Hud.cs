@@ -318,4 +318,12 @@ public partial class Hud : CanvasLayer
     {
         if (_debug is not null) TogglePanel(_debug);
     }
+
+    /// <summary>Dev switch --panel=families|policies|building:&lt;id&gt; (captures and checks).</summary>
+    public void OpenPanel(string name)
+    {
+        if (name == "families") ShowPanel(_families);
+        else if (name == "policies") ShowPanel(_policies);
+        else if (name.StartsWith("building:") && int.TryParse(name[9..], out int id)) OpenBuilding(id);
+    }
 }

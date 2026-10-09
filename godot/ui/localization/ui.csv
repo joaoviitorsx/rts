@@ -86,9 +86,30 @@ state.Subsisting,subsistência,subsisting
 state.Building,construindo,building
 policies.title,Políticas,Policies
 policies.keep,Manter,Keep
-policies.above,acima de,above
+policies.between,entre,between
+policies.and,e,and
 policies.create,Criar,Create
-policies.row,#{0} Manter {1} ≥,#{0} Keep {1} ≥
+policies.row,#{0} Manter {1} entre,#{0} Keep {1} between
+policies.create.tooltip,"Abaixo do mínimo o reeve põe famílias para produzir; acima do máximo ele as libera; entre os dois não mexe em nada.","Below the minimum the reeve puts families to produce it; above the maximum he frees them; in between he does nothing."
+policies.min.tooltip,Mínimo: abaixo disso o reeve recruta uma família por dia,Minimum: below it the reeve recruits one family per day
+policies.max.tooltip,Máximo: acima disso o reeve libera uma família por dia,Maximum: above it the reeve frees one family per day
+policies.remove,Revogar decreto,Revoke decree
+policies.state.disabled,Pausado,Paused
+policies.state.recruiting,"{0} {1} abaixo do mínimo {2}: recrutando uma família por dia","{0} {1} below the minimum {2}: recruiting one family per day"
+policies.state.releasing,"{0} {1} acima do máximo {3}: liberando uma família por dia","{0} {1} above the maximum {3}: freeing one family per day"
+policies.state.in_band,"{0} {1} dentro da faixa ({2}–{3}): nada a fazer","{0} {1} inside the band ({2}–{3}): nothing to do"
+policies.state.above_max,"{0} {1} acima do máximo {3}: nenhuma família minha para liberar","{0} {1} above the maximum {3}: no family of mine to free"
+policies.state.blocked_max,"{0} {1} abaixo do mínimo {2}, mas já uso o máximo de famílias","{0} {1} below the minimum {2}, but I already use the most families allowed"
+policies.state.blocked_no_slot,"{0} {1} abaixo do mínimo {2}, mas não há vaga produtiva — construa um produtor","{0} {1} below the minimum {2}, but there is no free job — build a producer"
+policies.state.blocked_no_household,"{0} {1} abaixo do mínimo {2}, mas não há família disponível","{0} {1} below the minimum {2}, but no family is available"
+log.created,Decreto criado: manter {0} entre {1} e {2},Decree issued: keep {0} between {1} and {2}
+log.band_changed,Decreto alterado: manter {0} entre {1} e {2},Decree changed: keep {0} between {1} and {2}
+log.recipe_changed,{0} passou a fazer {1},{0} switched to {1}
+log.recruited,Família {0} → {1}{2}: {3} {4} abaixo do mínimo {5},{0} family → {1}{2}: {3} {4} below the minimum {5}
+log.released,Família {0} liberada de {1}: {2} {3} acima do máximo {4},{0} family freed from {1}: {2} {3} above the maximum {4}
+log.blocked_max,"{0} {1} abaixo do mínimo {2}, mas já uso o máximo de {3} famílias","{0} {1} below the minimum {2}, but I already use the maximum of {3} families"
+log.blocked_no_slot,"{0} {1} abaixo do mínimo {2}, mas não há vaga produtiva para {0}","{0} {1} below the minimum {2}, but there is no free job for {0}"
+log.blocked_no_household,"{0} {1} abaixo do mínimo {2}, mas não há família disponível","{0} {1} below the minimum {2}, but no family is available"
 policies.enabled,Ativa,Enabled
 policies.log,Registro do administrador,Administrator log
 debug.title,Debug (dev),Debug (dev)

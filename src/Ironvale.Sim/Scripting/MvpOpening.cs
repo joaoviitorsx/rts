@@ -26,8 +26,9 @@ public static class MvpOpening
         var hall = w.SeatBuilding ?? throw new InvalidOperationException("scenario has no seat building");
         foreach (var h in w.Households.Take(2)) w.Enqueue(new AssignHousehold(h.Id, hall.Id));
 
-        w.Enqueue(new CreatePolicy("keep_above", "food", foodThreshold));
-        w.Enqueue(new CreatePolicy("keep_above", "firewood", firewoodThreshold));
-        w.Enqueue(new CreatePolicy("keep_above", "wood", woodThreshold));
+        // Band = the old fixed 25 % hysteresis, so long runs stay comparable.
+        w.Enqueue(new CreatePolicy("keep_above", "food", foodThreshold, foodThreshold * 5 / 4));
+        w.Enqueue(new CreatePolicy("keep_above", "firewood", firewoodThreshold, firewoodThreshold * 5 / 4));
+        w.Enqueue(new CreatePolicy("keep_above", "wood", woodThreshold, woodThreshold * 5 / 4));
     }
 }

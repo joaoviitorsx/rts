@@ -104,7 +104,7 @@ public sealed class TransportSystem : ISimSystem
         var bal = w.Content.Balance;
         Span<bool> urgent = stackalloc bool[w.Content.ResourceCount];
         foreach (var p in w.Policies)
-            if (p.Enabled && w.StorageStockIncludingTransit(p.Resource) < p.Threshold) urgent[p.Resource] = true;
+            if (p.Enabled && w.StorageStockIncludingTransit(p.Resource) < p.Min) urgent[p.Resource] = true;
 
         Building? best = null;
         int bestRes = -1;

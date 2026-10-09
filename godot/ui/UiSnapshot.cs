@@ -33,7 +33,9 @@ public sealed record BuildingSnap(int Id, string DefId, string Name, string Stat
     IReadOnlyList<string> Residents, int HousingCapacity, long ExpectedHarvest, bool SeasonalRecipe,
     IReadOnlyList<MaterialSnap> Materials, int Builders, int MaxBuilders, string SiteIssue, string SiteIssueArg);
 
-public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, long Threshold, bool Enabled);
+/// <summary>State: disabled · recruiting · releasing · in_band · above_max · blocked_* (why it can't act).</summary>
+public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, long Min, long Max, bool Enabled,
+    long Stock, string State, int DefaultBandPermille);
 
 public enum AlertSeverity { Info, Warning, Critical }
 
@@ -111,15 +113,36 @@ public static class UiSnapshotBuilder
             Resources = resources,
             Households = households,
             Buildings = buildings,
-            Policies = w.Policies.Select(p => new PolicySnap(p.Id, content.Resources[p.Resource].Id,
-                content.Resources[p.Resource].Name, p.Threshold.WholeUnits, p.Enabled)).ToList(),
-            PolicyLog = w.PolicyLog.TakeLast(30).Select(e => (e.Tick, e.Text)).ToList(),
+            Policies = w.Policies.Select(p => PolicySnapOf(w, p)).ToList(),
+            PolicyLog = w.PolicyLog.TakeLast(30).Select(e => (e.Tick, LogText(e, tr))).ToList(),
             Alerts = Alerts(w, resources, daysToWinter, tr),
             Daily = w.Telemetry.Daily.Select(d => new DailySnap(d.Produced, d.Consumed, d.Stored, d.Local, d.Transit)).ToList(),
             Shipments = w.Shipments.Count,
             FrozenDays = w.Telemetry.FrozenDays,
             Deadlocked = w.Telemetry.Deadlocked,
         };
+    }
+
+    private static PolicySnap PolicySnapOf(World w, Ironvale.Sim.Policies.Policy p)
+    {
+        var res = w.Content.Resources[p.Resource];
+        var stock = w.StorageStockIncludingTransit(p.Resource);
+        bool owns = w.Households.Any(h => h.AssignedBy == AssignmentSource.Policy && h.AssignedByPolicyId == p.Id);
+        string state = !p.Enabled ? "disabled"
+            : stock < p.Min ? (p.BlockedReason.Length > 0 ? p.BlockedReason : "recruiting")
+            : stock > p.Max ? (owns ? "releasing" : "above_max")
+            : "in_band";
+        return new PolicySnap(p.Id, res.Id, res.Name, p.Min.WholeUnits, p.Max.WholeUnits, p.Enabled, stock.WholeUnits,
+            state, p.Def.HysteresisPermille);
+    }
+
+    /// <summary>Account-book line in the UI language ("log.&lt;key&gt;"), falling back to the sim's Portuguese text.</summary>
+    private static string LogText(Ironvale.Sim.Policies.PolicyLogEntry e, Func<string, string> tr)
+    {
+        string key = "log." + e.Key, template = tr(key);
+        if (template == key) return e.Text;
+        try { return string.Format(template, e.Args); }
+        catch (FormatException) { return e.Text; }
     }
 
     private static BuildingSnap BuildingSnapOf(World w, Building b, Calendar cal)

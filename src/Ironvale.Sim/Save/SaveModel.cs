@@ -114,7 +114,8 @@ public sealed class PolicyDto
     public string Def { get; set; } = "";
     public bool Enabled { get; set; }
     public string Resource { get; set; } = "";
-    public long Threshold { get; set; }
+    public long Min { get; set; }
+    public long Max { get; set; }
     public long CreatedTick { get; set; }
     public string LastBlockedReason { get; set; } = "";
 }
@@ -130,7 +131,8 @@ public sealed class PolicyLogDto
 {
     public long Tick { get; set; }
     public int PolicyId { get; set; }
-    public string Text { get; set; } = "";
+    public string Key { get; set; } = "";
+    public string[] Args { get; set; } = Array.Empty<string>();
 }
 
 /// <summary>Telemetry is saved so graphs continue after load, but excluded from the state hash.</summary>

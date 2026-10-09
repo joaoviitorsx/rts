@@ -89,31 +89,40 @@ public sealed record SetRecipe(int BuildingId, string RecipeId) : SimCommand
     }
 }
 
-public sealed record CreatePolicy(string DefId, string ResourceId, long ThresholdUnits) : SimCommand
+/// <summary>Decree "keep resource between Min and Max" (units). Max must be greater than Min.</summary>
+public sealed record CreatePolicy(string DefId, string ResourceId, long MinUnits, long MaxUnits) : SimCommand
 {
     internal override string? Apply(World w)
     {
-        if (!w.Content.TryPolicy(DefId, out var def)) return $"política desconhecida '{DefId}'";
+        if (!w.Content.TryPolicy(DefId, out var def)) return $"decreto desconhecido '{DefId}'";
         if (!w.Content.TryResource(ResourceId, out var res)) return $"recurso desconhecido '{ResourceId}'";
-        if (ThresholdUnits < 0) return "limiar negativo";
+        if (PolicyBand.Validate(MinUnits, MaxUnits) is { } error) return error;
         if (w.Policies.Any(p => p.Def == def && p.Resource == res.Index))
-            return $"já existe uma política para {res.Name}";
-        w.AddPolicy(def, res.Index, Qty.Units(ThresholdUnits));
+            return $"já existe um decreto para {res.Name}";
+        w.AddPolicy(def, res.Index, Qty.Units(MinUnits), Qty.Units(MaxUnits));
         return null;
     }
 }
 
-public sealed record SetPolicyThreshold(int PolicyId, long ThresholdUnits) : SimCommand
+public sealed record SetPolicyBand(int PolicyId, long MinUnits, long MaxUnits) : SimCommand
 {
     internal override string? Apply(World w)
     {
         var p = w.GetPolicy(PolicyId);
-        if (p is null) return "política não existe";
-        if (ThresholdUnits < 0) return "limiar negativo";
-        p.Threshold = Qty.Units(ThresholdUnits);
+        if (p is null) return "decreto não existe";
+        if (PolicyBand.Validate(MinUnits, MaxUnits) is { } error) return error;
+        p.Min = Qty.Units(MinUnits);
+        p.Max = Qty.Units(MaxUnits);
         p.LastBlockedReason = "";
+        w.LogPolicy(p, "band_changed", w.Content.Resources[p.Resource].Name, Systems.PolicySystem.Units(p.Min), Systems.PolicySystem.Units(p.Max));
         return null;
     }
+}
+
+internal static class PolicyBand
+{
+    public static string? Validate(long min, long max) =>
+        min < 0 ? "mínimo negativo" : max <= min ? "o máximo precisa ser maior que o mínimo" : null;
 }
 
 public sealed record SetPolicyEnabled(int PolicyId, bool Enabled) : SimCommand
@@ -121,7 +130,7 @@ public sealed record SetPolicyEnabled(int PolicyId, bool Enabled) : SimCommand
     internal override string? Apply(World w)
     {
         var p = w.GetPolicy(PolicyId);
-        if (p is null) return "política não existe";
+        if (p is null) return "decreto não existe";
         p.Enabled = Enabled;
         return null;
     }
@@ -132,7 +141,7 @@ public sealed record RemovePolicy(int PolicyId) : SimCommand
     internal override string? Apply(World w)
     {
         var p = w.GetPolicy(PolicyId);
-        if (p is null) return "política não existe";
+        if (p is null) return "decreto não existe";
         w.RemovePolicyInternal(p);
         return null;
     }
