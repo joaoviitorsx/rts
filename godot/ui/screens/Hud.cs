@@ -40,17 +40,7 @@ public partial class Hud : CanvasLayer
     private Label _suggestionCost = null!;
     private Label _suggestionLose = null!;
     private int _suggestionId;
-    private Button _scaleButton = null!;
-
-    private void UpdateScaleButton() => _scaleButton.Text = UiSettings.AppliedPercent < UiSettings.Percent
-        ? UiText.T("ui.scale.capped", UiSettings.AppliedPercent, UiSettings.Percent)
-        : UiText.T("ui.scale", UiSettings.Percent);
-
-    private void ChangeScale(int delta, bool wrap = false)
-    {
-        UiSettings.Change(GetTree().Root, delta, wrap);
-        UpdateScaleButton();
-    }
+    private SettingsPanel _settings = null!;
     private Label _objective = null!;
     private BuildingPanel _buildingPanel = null!;
     private FamiliesPanel _families = null!;
@@ -105,6 +95,8 @@ public partial class Hud : CanvasLayer
         _families = AddPanel(right, new FamiliesPanel());
         _families.Closed += CloseActivePanel;
         _families.FocusBuilding += id => { FocusOnBuilding(id); OpenBuilding(id); };
+        _settings = AddPanel(right, new SettingsPanel());
+        _settings.Closed += CloseActivePanel;
         _policies = AddPanel(right, new PoliciesPanel());
         _policies.Send = _host.Send;
         _policies.Closed += CloseActivePanel;
@@ -146,6 +138,7 @@ public partial class Hud : CanvasLayer
         _date = UiNodes.Label("");
         row.AddChild(_date);
         _winter = UiNodes.Label("", "SecondaryLabel");
+        _winter.MouseFilter = Control.MouseFilterEnum.Stop;
         row.AddChild(_winter);
         foreach (int speed in SimHost.Speeds)
         {
@@ -153,7 +146,7 @@ public partial class Hud : CanvasLayer
             var b = UiNodes.Button(speed == 0 ? "⏸" : $"{speed}x", () => _host.SetSpeed(s),
                 speed == 0 ? UiText.T("ui.speed.pause") : UiText.T("ui.speed.x", speed));
             b.ToggleMode = true;
-            b.CustomMinimumSize = new Vector2(44, 0);   // Fitts: big, close speed targets
+            b.CustomMinimumSize = new Vector2(36, 0);   // Fitts: close speed targets (36 keeps the bar inside 1440 logical px)
             _speedButtons.Add(b);
             row.AddChild(b);
         }
@@ -220,9 +213,7 @@ public partial class Hud : CanvasLayer
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.save"), _host.QuickSave, UiText.T("ui.save.tooltip")));
         leftRow.AddChild(UiNodes.Button(UiText.T("ui.load"), _host.QuickLoad, UiText.T("ui.load.tooltip")));
         leftRow.AddChild(new VSeparator());
-        _scaleButton = UiNodes.Button("", () => ChangeScale(+1, wrap: true), UiText.T("ui.scale.tooltip"));
-        leftRow.AddChild(_scaleButton);
-        UpdateScaleButton();
+        leftRow.AddChild(UiNodes.Button(UiText.T("ui.bottom.settings"), () => TogglePanel(_settings), UiText.T("settings.scale.tooltip")));
         row.AddChild(left);
         row.AddChild(UiNodes.Spacer());
 
@@ -320,7 +311,8 @@ public partial class Hud : CanvasLayer
             _objectiveTitle.Text = UiText.T("objective.title", o.Index, o.Count);
             _objective.Text = o.Text;
         }
-        _winter.Text = s.DaysToWinter == 0 ? "❄ " + UiText.T("ui.top.winter_now") : UiText.T("ui.top.winter_in", s.DaysToWinter);
+        _winter.Text = s.DaysToWinter == 0 ? UiText.T("ui.top.winter_now") : UiText.T("ui.top.winter_in", s.DaysToWinter);
+        _winter.TooltipText = s.DaysToWinter == 0 ? UiText.T("ui.top.winter_now") : UiText.T("ui.top.winter_in.tooltip", s.DaysToWinter);
         for (int i = 0; i < _speedButtons.Count; i++) _speedButtons[i].SetPressedNoSignal(SimHost.Speeds[i] == s.Speed);
 
         if (_activePanel == _buildingPanel)
@@ -390,8 +382,8 @@ public partial class Hud : CanvasLayer
         if (e is not InputEventKey { Pressed: true, Echo: false } key) return;
         switch (key.Keycode)
         {
-            case Key.Equal or Key.KpAdd when key.CtrlPressed: ChangeScale(+1); break;
-            case Key.Minus or Key.KpSubtract when key.CtrlPressed: ChangeScale(-1); break;
+            case Key.Equal or Key.KpAdd when key.CtrlPressed: UiSettings.Change(GetTree().Root, +1); break;
+            case Key.Minus or Key.KpSubtract when key.CtrlPressed: UiSettings.Change(GetTree().Root, -1); break;
             case Key.Space: _host.SetSpeed(_host.Paused ? 1 : 0); break;
             case Key.Key1: _host.SetSpeed(1); break;
             case Key.Key2: _host.SetSpeed(2); break;
@@ -418,6 +410,7 @@ public partial class Hud : CanvasLayer
     public void OpenPanel(string name)
     {
         if (name == "families") ShowPanel(_families);
+        else if (name == "settings") ShowPanel(_settings);
         else if (name == "policies") ShowPanel(_policies);
         else if (name.StartsWith("building:") && int.TryParse(name[9..], out int id)) OpenBuilding(id);
         else if (name.StartsWith("building:") && _host.World.Buildings.FirstOrDefault(b => b.Def.Id == name[9..]) is { } first)

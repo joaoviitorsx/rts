@@ -346,13 +346,13 @@ Ao ativar um overlay, o mundo fica **dessaturado** e só o dado do overlay fica 
 
 Baseado nas *Game Accessibility Guidelines* (nível básico):
 
-- [ ] Escala de UI ajustável (80%–150%).
+- [x] Escala de UI ajustável (80%–150%). *Configurações (barra inferior) e Ctrl+= / Ctrl+-; salva em `user://settings.cfg`.*
 - [ ] Contraste de texto ≥ **4,5:1** (critério WCAG AA) sobre o fundo do painel.
 - [ ] Nenhuma informação transmitida só por cor.
 - [ ] Legendas/indicação visual para todo alerta sonoro.
 - [ ] Pausa disponível a qualquer momento, inclusive em menus.
 - [ ] Tooltips persistentes opcionais (não somem enquanto o mouse se move para dentro deles).
-- [ ] Fontes nunca abaixo de 12 px na escala 100%.
+- [x] Fontes nunca abaixo de 12 px na escala 100%. *A escala aplicada sobe sozinha até o menor texto (14 do Theme) dar ≥ 12 px na janela (1280×720 → 129%), sem passar do que cabe; o smoke test falha se o HUD não couber.*
 
 ---
 

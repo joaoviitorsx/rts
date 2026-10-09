@@ -1,7 +1,8 @@
 keys,pt_BR,en
 ui.top.population,{0} famílias,{0} families
-ui.top.date,{1} · dia {3}/{2} · ano {0},{1} · day {3}/{2} · year {0}
-ui.top.winter_in,inverno em {0} d,winter in {0} d
+ui.top.date,{1} · {3}/{2} · ano {0},{1} · {3}/{2} · year {0}
+ui.top.winter_in,inverno: {0} d,winter: {0} d
+ui.top.winter_in.tooltip,Inverno em {0} dias,Winter in {0} days
 ui.top.winter_now,inverno,winter
 ui.top.simulating,Simulando… {0}%,Simulating… {0}%
 ui.season.Spring,Primavera,Spring
@@ -50,9 +51,13 @@ objective.granary,"Construa um celeiro perto dos campos (mais espaço e caminhos
 objective.tools,"Ferramentas se desgastam: construa uma pedreira e um ferreiro.","Tools wear out: build a quarry and a smithy."
 objective.winter,"Sobreviva ao primeiro inverno.","Survive the first winter."
 objective.grow,"A vila está de pé. Cresça: mais casas, estradas e decretos para o que você repete.","The village stands. Grow: more houses, roads and decrees for what you keep repeating."
-ui.scale,UI {0}%,UI {0}%
-ui.scale.capped,UI {0}% (pediu {1}%: janela pequena),UI {0}% (asked {1}%: small window)
-ui.scale.tooltip,"Escala da interface (80%–150%). Clique para mudar · Ctrl+= / Ctrl+- também.","Interface scale (80%–150%). Click to change · Ctrl+= / Ctrl+- too."
+ui.bottom.settings,Configurações,Settings
+settings.title,Configurações,Settings
+settings.scale,Escala da interface,Interface scale
+settings.scale.tooltip,"Escala da interface (80%–150%). Também: Ctrl+= / Ctrl+-.","Interface scale (80%–150%). Also: Ctrl+= / Ctrl+-."
+settings.applied,"Aplicada nesta janela: {0}% (menor texto ≈ {1} px){2}","Applied in this window: {0}% (smallest text ≈ {1} px){2}"
+settings.applied.legible," — aumentada para o texto ficar legível (≥ 12 px)"," — raised so text stays readable (≥ 12 px)"
+settings.applied.fit," — reduzida para a interface caber na janela"," — reduced so the interface fits the window"
 alert.food_out,Comida acaba em ~{0} dias,Food runs out in ~{0} days
 alert.food_low,Comida para ~{0} dias,Food for ~{0} days
 alert.firewood_winter,Pouca lenha ({0}) — inverno em {1} dias,Low firewood ({0}) — winter in {1} days

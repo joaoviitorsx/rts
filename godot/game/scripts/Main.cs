@@ -66,6 +66,8 @@ public partial class Main : Node3D
         if (OS.GetCmdlineUserArgs().Contains("--debug")) ui.ToggleDebug();
         foreach (var arg in OS.GetCmdlineUserArgs())
         {
+            if (arg.StartsWith("--window=") && arg[9..].Split('x') is [var ws, var hs] && int.TryParse(ws, out int ww) && int.TryParse(hs, out int wh))
+                DisplayServer.WindowSetSize(new Vector2I(ww, wh));   // dev: check the HUD at other window sizes
             if (arg.StartsWith("--panel=")) ui.OpenPanel(arg[8..]);
             if (arg.StartsWith("--shot=")) AddChild(new DevShot { Name = "DevShot", Path = arg[7..] });
         }

@@ -63,6 +63,9 @@ public partial class SmokeTest : Node
             case 80:   // > 1 sim tick at 1x so the command is applied
                 if (w.CarrierOf(w.Households[0].Id) is null) Fail("assignment did not create a carrier");
                 if (!w.Buildings.Last().IsActive) Fail("house was not completed");
+                if (GetTree().Root.FindChild("Root", true, false) is Control { } hud && hud.GetChild(0) is Control margin
+                    && (margin.GetCombinedMinimumSize().X > hud.Size.X + 0.5f || margin.GetCombinedMinimumSize().Y > hud.Size.Y + 0.5f))
+                    Fail($"HUD overflows the screen: needs {margin.GetCombinedMinimumSize()} of {hud.Size}");
                 GD.Print(_failure.Length == 0 ? "SMOKE OK" : $"SMOKE FAIL: {_failure}");
                 GetTree().Quit(_failure.Length == 0 ? 0 : 1);
                 break;
