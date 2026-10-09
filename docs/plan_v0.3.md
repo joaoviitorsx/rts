@@ -1,13 +1,26 @@
 # Plano v0.3 — mundo gerado + abertura RTS (aprovado em 09/10/2026)
 
 > Design em `docs/GDD_v0.3_abertura_rts.md` (decisões D1–D12 no §15); referência da abertura em
-> `docs/reference/pesquisa_manor_lords.md`. Branch `feature/worldgen`. Regras de sempre:
+> `docs/research/pesquisa_abertura_manor_lords.md`. Branch `feature/worldgen`. Regras de sempre:
 > - sim C# determinística, testes verdes (incluindo golden hash do mapa plano, determinismo, save/load e soak de
 >   50 anos) e smoke na engine;
 > - commit + push e capturas por etapa; dúvidas em `docs/pending_decisions.md`;
 > - nada de push na `main` sem ordem.
 >
 > O cenário `mvp_start` (mapa plano) continua funcionando e com o mesmo hash até a etapa (g).
+
+## Ordem do briefing de 09/10/2026 (vale sobre as letras abaixo)
+
+| Etapa | Entrega | Letras deste plano | Estado |
+|---|---|---|---|
+| 0 | GDD v0.3 + plano | (a) | ✅ aprovado |
+| 1 | Gerador de mundo no sim (terraços, rampas, água, recursos, animais como dados) + testes de determinismo e alcançabilidade | b1, b2 | ✅ `eee8199`, `f633afb` |
+| 2 | Unidades, seleção e comandos RTS; coleta, caça, transporte físico; boi; suprimentos que a chuva estraga | (c), (d), clima de (e), fauna de b4 no sim | ⏳ próxima |
+| 3 | Fogueira, tendas, depósito; colonos → famílias; toras × lenha | (e), (f) | — |
+| 4 | Visual do mundo: terreno, penhascos por contorno, shader triplanar, rochas, água, florestas, animais | b3, b4 (visual) | — |
+| 5 | Balanceamento da abertura na CLI contra o checklist da pesquisa §5 | (g) | — |
+| 6 | HUD v2: etapas 1–3 da spec + painel de seleção de colonos | branch `feature/hud-v2` | etapas 1–2 ✅ (Theme, estrutura) |
+| 7 | Playtest da nova abertura | — | — |
 
 ## (a) Documentos — esta entrega
 GDD v0.3, este plano, `decisions.md`, roadmap, lacunas do Meshy no `asset_manifest.md` e referência salva em

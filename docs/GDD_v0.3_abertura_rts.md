@@ -5,7 +5,7 @@
 > - **Continuam valendo**, a partir do momento em que existem famílias: o GDD v0.2 (CA, sugestão, crises, ritmo macro)
 >   e as mecânicas do 2A.
 > - **Plano:** `docs/plan_v0.3.md`. **Decisões abertas:** §15, cada uma com recomendação.
-> - **Referências:** `docs/reference/koastalia_world.png` (visual) e `docs/reference/pesquisa_manor_lords.md`
+> - **Referências:** `docs/reference/koastalia_world.png` (visual) e `docs/research/pesquisa_abertura_manor_lords.md`
 >   (abertura: urgência diegética, começo físico e humilde, boi, toras × lenha, crescimento por casa livre).
 
 ## 1. A escada de delegação

@@ -34,3 +34,12 @@
 | **Demonstrar em vez de configurar**: o jogador faz a tarefa algumas vezes e o reeve propõe o decreto a partir do exemplo | 1 | a avaliar após o playtest do 2A |
 
 Camadas do incremental: curto prazo (conquistas da Crônica), médio (classes, Grande Obra), longo (legados da Sucessão).
+
+## Briefing de 09/10/2026 (registrar, não implementar)
+
+| Elemento | Fase | Status |
+|---|---|---|
+| **Domesticação de animais** (ovelhas, cabras, bois), pasto e cuidado | F4 | backlog |
+| **Casas procedurais** (gramática + sockets, 3 níveis de regra) com o **Quaternius Medieval Village MegaKit** como kit de módulos; não gerar paredes no Meshy (`docs/research/construcoes_procedurais_referencia.md`) | depois do 1º playtest | backlog |
+| **Lotes desenhados pelo jogador** (área → casa que cabe), fundações adaptativas, estradas procedurais | depois do 1º playtest | backlog |
+| Delegados com personalidade, "enquanto você estava fora" (já feito na `feature/2B-polish`), caravana mercante | Marco 2B | parcial |
