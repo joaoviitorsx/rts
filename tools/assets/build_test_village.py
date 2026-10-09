@@ -53,6 +53,7 @@ ROAD = [(56, 130), (78, 131.5), (96, 129.6), (112, 130.8), (124, 129.8), (138, 1
 ROAD_HALL = [(128, 130.2), (127.6, 124), (128.2, 118)]
 MASK_RECT = [36, 76, 204, 116]          # x, z, width, depth of the painted ground
 ROOF_WEIGHTS = [("thatch", 0.5), ("tile", 0.35), ("slate", 0.15)]
+CORE = (82, 104, 196, 160)             # village core (x0, z0, x1, z1) for shadow-casting trees
 SIDE_DIR = {"S": (0, 1), "N": (0, -1), "E": (1, 0), "W": (-1, 0)}
 
 
@@ -198,14 +199,18 @@ def main():
             if not free(px, pz, gap):
                 continue
             occupied.append((px, pz, gap))
+            # Only trees near the village core cast real shadows; deep-forest trees rely on the ground
+            # mask's canopy shade (big saving: no alpha-tested leaves in 4 shadow cascades).
+            dx = max(CORE[0] - px, 0, px - CORE[2]); dz = max(CORE[1] - pz, 0, pz - CORE[3])
             layout["trees"].append({"scene": E.format(rng.choice(kinds)), "pos": [round(px, 2), round(pz, 2)],
-                                    "rot": round(rng.uniform(0, 360), 1), "scale": round(rng.uniform(0.85, 1.25), 2)})
+                                    "rot": round(rng.uniform(0, 360), 1), "scale": round(rng.uniform(0.85, 1.25), 2),
+                                    "shadow": math.hypot(dx, dz) < 10.0})
             placed += 1
 
-    belt((36, 74, 76, 192), 70, oaks + pines, 2.2, clump=0.6)       # west wood
-    belt((74, 218, 76, 101), 70, pines + oaks, 2.2, clump=0.6)      # north belt
-    belt((198, 240, 96, 192), 45, oaks + ["ENV_TwistedTree_A"], 2.3, clump=0.6)  # east grove
-    belt((74, 198, 160, 192), 55, oaks + pines, 2.3, clump=0.8)     # south edge, gappier
+    belt((36, 74, 76, 192), 100, oaks + pines, 1.8, clump=0.55)       # west wood
+    belt((74, 218, 76, 101), 95, pines + oaks, 1.8, clump=0.55)      # north belt
+    belt((198, 240, 96, 192), 65, oaks + ["ENV_TwistedTree_A"], 1.9, clump=0.55)  # east grove
+    belt((74, 198, 160, 192), 65, oaks + pines, 2.0, clump=0.7)     # south edge, gappier
     belt((84, 196, 104, 156), 9, oaks + ["ENV_TwistedTree_B"], 5.5)  # lone trees in town
     for t in layout["trees"]:
         layout["shade"].append({"center": t["pos"], "radius": 3.4 * t["scale"], "strength": 0.75})

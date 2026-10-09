@@ -23,8 +23,8 @@
 [ext_resource type="PackedScene" path="res://assets/props/PROP_Crate_A.tscn" id="21_PROP_Crate_A"]
 [ext_resource type="PackedScene" path="res://assets/props/PROP_Cart_A.tscn" id="22_PROP_Cart_A"]
 [ext_resource type="PackedScene" path="res://assets/props/PROP_Sack_A.tscn" id="23_PROP_Sack_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_A.tscn" id="24_ENV_RockGroup_A"]
-[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_B.tscn" id="25_ENV_RockGroup_B"]
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_B.tscn" id="24_ENV_RockGroup_B"]
+[ext_resource type="PackedScene" path="res://assets/environment/ENV_RockGroup_A.tscn" id="25_ENV_RockGroup_A"]
 [ext_resource type="Script" path="res://game/scripts/CameraRig.cs" id="26_CameraRig"]
 
 [sub_resource type="Curve3D" id="Curve3D_1"]
@@ -246,35 +246,35 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 186.5, 0, 121)
 
 [node name="Rocks" type="Node3D" parent="."]
 
-[node name="ENV_RockGroup_A" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
-transform = Transform3D(-1.12722, 0, 0.17021, 0, 1.14, 0, -0.17021, 0, -1.12722, 155.72, -0.35, 104.32)
+[node name="ENV_RockGroup_B" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_B")]
+transform = Transform3D(0.36497, 0, -1.34123, 0, 1.39, 0, 1.34123, 0, 0.36497, 133.65, -0.35, 102.54)
 
-[node name="ENV_RockGroup_A_2" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
-transform = Transform3D(0.54133, 0, -0.88801, 0, 1.04, 0, 0.88801, 0, 0.54133, 114.78, -0.35, 102.15)
+[node name="ENV_RockGroup_A" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(1.04272, 0, -0.50827, 0, 1.16, 0, 0.50827, 0, 1.04272, 144.2, -0.35, 157.31)
 
-[node name="ENV_RockGroup_B" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
-transform = Transform3D(1.10167, 0, 0.44992, 0, 1.19, 0, -0.44992, 0, 1.10167, 79.73, -0.35, 122.82)
+[node name="ENV_RockGroup_A_2" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(1.0941, 0, -0.38542, 0, 1.16, 0, 0.38542, 0, 1.0941, 187.71, -0.35, 114.65)
 
-[node name="ENV_RockGroup_A_3" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
-transform = Transform3D(0.73021, 0, 0.95225, 0, 1.2, 0, -0.95225, 0, 0.73021, 158.89, -0.35, 145.28)
+[node name="ENV_RockGroup_A_3" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(0.26956, 0, 1.16933, 0, 1.2, 0, -1.16933, 0, 0.26956, 193.75, -0.35, 139.86)
 
-[node name="ENV_RockGroup_B_2" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
-transform = Transform3D(1.07314, 0, 0.28368, 0, 1.11, 0, -0.28368, 0, 1.07314, 110.41, -0.35, 113.19)
+[node name="ENV_RockGroup_A_4" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(-1.34804, 0, -0.33896, 0, 1.39, 0, 0.33896, 0, -1.34804, 152.07, -0.35, 159.14)
 
-[node name="ENV_RockGroup_A_4" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
-transform = Transform3D(1.04431, 0, -0.70499, 0, 1.26, 0, 0.70499, 0, 1.04431, 106.18, -0.35, 108.7)
+[node name="ENV_RockGroup_A_5" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(-0.71669, 0, -1.10849, 0, 1.32, 0, 1.10849, 0, -0.71669, 180.45, -0.35, 158.36)
 
-[node name="ENV_RockGroup_B_3" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
-transform = Transform3D(-0.5736, 0, 0.91508, 0, 1.08, 0, -0.91508, 0, -0.5736, 172.41, -0.35, 160.13)
+[node name="ENV_RockGroup_B_2" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_B")]
+transform = Transform3D(-0.96095, 0, -0.78369, 0, 1.24, 0, 0.78369, 0, -0.96095, 130.92, -0.35, 135.13)
 
-[node name="ENV_RockGroup_B_4" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
-transform = Transform3D(-1.0312, 0, -0.68864, 0, 1.24, 0, 0.68864, 0, -1.0312, 97.14, -0.35, 104.61)
+[node name="ENV_RockGroup_A_6" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(-0.9829, 0, -0.73946, 0, 1.23, 0, 0.73946, 0, -0.9829, 168.98, -0.35, 157.48)
 
-[node name="ENV_RockGroup_B_5" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_B")]
-transform = Transform3D(-1.28777, 0, 0.52321, 0, 1.39, 0, -0.52321, 0, -1.28777, 111.42, -0.35, 145.24)
+[node name="ENV_RockGroup_B_3" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_B")]
+transform = Transform3D(-0.97691, 0, 0.77984, 0, 1.25, 0, -0.77984, 0, -0.97691, 198.28, -0.35, 101.44)
 
-[node name="ENV_RockGroup_A_5" parent="Rocks" instance=ExtResource("24_ENV_RockGroup_A")]
-transform = Transform3D(0.70948, 0, 0.81427, 0, 1.08, 0, -0.81427, 0, 0.70948, 148.16, -0.35, 124.7)
+[node name="ENV_RockGroup_A_7" parent="Rocks" instance=ExtResource("25_ENV_RockGroup_A")]
+transform = Transform3D(-0.77313, 0, -1.14309, 0, 1.38, 0, 1.14309, 0, -0.77313, 167.31, -0.35, 126.66)
 
 [node name="Villagers" type="Node3D" parent="."]
 

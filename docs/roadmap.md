@@ -40,11 +40,14 @@
   controlador `scenes/test/TestVillage.gd`): casas giradas ±5–15° para a estrada, telhados tile/thatch/slate, quintais com props,
   terra só em entrada/quintal, 249 árvores em florestas (MultiMesh), aglomerados de tufos/flores, 20 aldeões.
 - Performance (sem vsync, RTX 4050, 1080p): perto 5,6 ms (~179 FPS, 1% low 164); distante 6,9 ms.
-- **Pendências ao retomar:**
-  1. Zoom médio teve 1 pico de 112 ms (1% low 11 FPS) após o streaming incremental — investigar (provável fila de blocos
-     reconstruída a cada tick ou criação de muitos MultiMesh no mesmo frame). Perto/distante estão estáveis.
-  2. Raio do streaming no zoom próximo ainda cria ~225 blocos (1 M primitivas): reduzir (frustum + raio menor) e/ou
-     mesclar peças das construções (~400–750 draw calls).
-  3. Capturar DEPOIS em 3 zooms e montar antes/depois (ANTES está só no scratchpad da sessão — refazer a partir do commit `eb2ac8d`).
-  4. Depois: adaptar HUD/debug do Marco 1 às regras do `docs/UI_UX_guide.md` §8.1; incluir telas §2.3 no plano do Marco 2.
+- **Resolvido (08/10/2026, noite):** pico de 112 ms não se repetiu (transitório); grama só no frustum, construções
+  mescladas por material, floresta em blocos de 64 m, sombra só nas árvores perto da vila; 334 árvores.
+  Capturas finais: `docs/lookdev/test_village_{near,mid,far,3zooms}.jpg`.
+  Perf (sem vsync): 6–7 ms (~140–160 FPS) com a GPU já aquecida por muitas medições.
+- **Próximas pendências:**
+  1. Florestas ainda pouco densas na borda; densidade alta custa caro → impostores/billboards para árvores distantes.
+  2. Integrar pacotes novos em `art/vendor_raw/`: `UIpack_RPG` (Kenney) e `VoxelCoreLab_Watercolor_Terrain_Textures_1024px`
+     (setup_vendor + vendor_sources + CREDITS; watercolor como detalhe sutil em terra/caminho).
+  3. Adaptar HUD/debug do Marco 1 às regras do `docs/UI_UX_guide.md` §8.1; incluir telas §2.3 no plano do Marco 2.
+- Sistema travou 2× durante a sessão (sem erro de SSD nos logs; ver chat). Evitar baterias longas de testes de GPU seguidas.
 - Arquivos ainda ausentes: `docs/asset_production_bible_mvp.md`, `docs/reference/koastalia_ref.png`, KayKit Resource Bits, watercolor.

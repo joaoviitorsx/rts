@@ -9,7 +9,7 @@ const ROOF := ["MI_RoundTiles"]
 const STONE := ["MI_UnevenBrick", "MI_Brick", "MI_RockTrim", "Rocks", "PathRocks"]
 
 const ROOF_STYLES := {
-	"tile": {"saturation": 0.55, "tint": Color(1.0, 0.86, 0.78), "brightness": 0.95},
+	"tile": {"saturation": 0.38, "tint": Color(1.0, 0.84, 0.74), "brightness": 0.92},
 	"thatch": {"saturation": 0.15, "tint": Color(1.0, 0.8, 0.52), "brightness": 1.15},
 	"slate": {"saturation": 0.0, "tint": Color(0.72, 0.78, 0.86), "brightness": 0.85},
 }

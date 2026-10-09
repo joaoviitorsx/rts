@@ -108,7 +108,7 @@ func _build_forest() -> void:
 	for t in _layout["trees"]:
 		var xf := Transform3D(Basis(Vector3.UP, deg_to_rad(t["rot"])).scaled(Vector3.ONE * t["scale"]),
 			Vector3(t["pos"][0], 0, t["pos"][1]))
-		var key := "%s|%d|%d" % [t["scene"], floori(t["pos"][0] / FOREST_CHUNK), floori(t["pos"][1] / FOREST_CHUNK)]
+		var key := "%s|%d|%d|%d" % [t["scene"], floori(t["pos"][0] / FOREST_CHUNK), floori(t["pos"][1] / FOREST_CHUNK), int(t.get("shadow", true))]
 		if not groups.has(key):
 			groups[key] = []
 		groups[key].append(xf)
@@ -116,7 +116,7 @@ func _build_forest() -> void:
 	forest.name = "Forest"
 	add_child(forest)
 	for key in groups:
-		Clusters.add(forest, key.get_slice("|", 0), groups[key], 0, true, true)
+		Clusters.add(forest, key.get_slice("|", 0), groups[key], 0, true, key.get_slice("|", 3) == "1")
 
 
 ## Integration clusters: tall tufts at rocks/fences/trunks, bushes at the forest/field transition,
