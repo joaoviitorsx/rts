@@ -67,6 +67,7 @@ public static class SplitMix64
 public sealed class RngStreams
 {
     public const string Harvest = "harvest";
+    public const string Admin = "admin";
 
     private readonly SortedDictionary<string, Pcg32> _streams = new(StringComparer.Ordinal);
 

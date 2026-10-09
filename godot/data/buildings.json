@@ -3,7 +3,7 @@
   // Storage buildings' jobSlots are carriers; producers' jobSlots are workers.
   "buildings": [
     { "id": "hall", "name": "Salão", "footprint": [3, 3], "buildable": false,
-      "roles": ["seat", "storage"], "storageCapacity": 800, "jobSlots": 2 },
+      "roles": ["seat", "storage"], "storageCapacity": 800, "jobSlots": 2, "adminCapacity": 4 },
     { "id": "house", "name": "Casa", "footprint": [2, 2], "cost": { "wood": 15 }, "buildDays": 4,
       "roles": ["housing"], "housingCapacity": 2 },
     { "id": "woodcutter", "name": "Lenhador", "footprint": [2, 2], "cost": { "wood": 10, "stone": 2 }, "buildDays": 3,

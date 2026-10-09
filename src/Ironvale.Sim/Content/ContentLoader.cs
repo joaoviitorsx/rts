@@ -49,7 +49,7 @@ public static class ContentLoader
         var recipes = ParseRecipes(Text(RecipesFile), resIndex);
         var recipeById = recipes.ToDictionary(r => r.Id, StringComparer.Ordinal);
         var buildings = ParseBuildings(Text(BuildingsFile), resIndex, recipeById);
-        var policies = ParsePolicies(Text(PoliciesFile));
+        var policies = ParsePolicies(Text(PoliciesFile), resIndex);
         var balance = ParseBalance(Text(BalanceFile));
 
         // Hash over normalized contents in fixed file order (saves record it).
@@ -238,13 +238,14 @@ public static class ContentLoader
                 OutputCapacity = Qty.FromDouble(c.OptNum(el, "outputCapacity", 0)),
                 StorageCapacity = Qty.FromDouble(c.OptNum(el, "storageCapacity", 0)),
                 InputCapacity = Qty.FromDouble(c.OptNum(el, "inputCapacity", 0)),
+                AdminCapacity = c.OptInt(el, "adminCapacity", 0),
                 HousingCapacity = c.OptInt(el, "housingCapacity", 0),
             });
         }
         return list;
     }
 
-    private static List<PolicyDef> ParsePolicies(string json)
+    private static List<PolicyDef> ParsePolicies(string json, Dictionary<string, int> resIndex)
     {
         var ctx = new Ctx(PoliciesFile);
         using var doc = Parse(json, ctx);
@@ -260,11 +261,24 @@ public static class ContentLoader
                 Name = c.Str(el, "name"),
                 Kind = kind == "keep_above" ? PolicyKind.KeepAbove : throw c.Error($"unknown kind '{kind}'"),
                 CaCost = c.OptInt(el, "caCost", 0),
+                CaCostByResource = CaCosts(c, el, resIndex, c.OptInt(el, "caCost", 0)),
                 HysteresisPermille = c.OptInt(el, "hysteresisPermille", 250),
                 MaxHouseholds = c.OptInt(el, "maxHouseholds", 4),
             });
         }
         return list;
+    }
+
+    private static int[] CaCosts(Ctx c, JsonElement el, Dictionary<string, int> resIndex, int fallback)
+    {
+        var costs = Enumerable.Repeat(fallback, resIndex.Count).ToArray();
+        if (!el.TryGetProperty("caCostByResource", out var map)) return costs;
+        foreach (var prop in map.EnumerateObject())
+        {
+            if (!resIndex.TryGetValue(prop.Name, out int r)) throw c.Error($"caCostByResource: unknown resource '{prop.Name}'");
+            costs[r] = prop.Value.GetInt32();
+        }
+        return costs;
     }
 
     private static BalanceDef ParseBalance(string json)
@@ -298,6 +312,11 @@ public static class ContentLoader
             HarvestVariancePermille = Permille.Clamp(c.OptInt(el, "harvestVariancePermille", 0)),
             DeadlockWindowDays = c.PositiveInt(el, "deadlockWindowDays"),
             PolicyLogMax = c.PositiveInt(el, "policyLogMax"),
+            AdminOverloadDelayDays = c.OptInt(el, "adminOverloadDelayDays", 1),
+            AdminOverloadErrorPermille = c.OptInt(el, "adminOverloadErrorPermille", 150),
+            SuggestAfterActions = Math.Max(1, c.OptInt(el, "suggestAfterActions", 3)),
+            SuggestWindowDays = c.OptInt(el, "suggestWindowDays", 60),
+            SuggestSnoozeDays = c.OptInt(el, "suggestSnoozeDays", 90),
             AutoBuilders = c.OptInt(el, "autoBuilders", 1) != 0,
             MaxBuildersPerSite = Math.Max(1, c.OptInt(el, "maxBuildersPerSite", 3)),
         };

@@ -84,8 +84,9 @@ public sealed class NaivePlayer : IScriptedPlayer
 }
 
 /// <summary>
-/// The scripted MVP opening (food first, decrees, carriers) plus roads linking the work areas; after the first
-/// autumn it adds a quarry and a smithy with "keep stone" and "keep tools" decrees (crisis 2, GDD v0.2 §4.3).
+/// The scripted MVP opening (food first, three decrees, carriers) plus roads linking the work areas. In the first
+/// winter it adds a quarry and a smithy and runs them by hand (one family each, only while stone / tools are short),
+/// staying within the reeve's capacity (2A.6: 3 of 4 CA).
 /// </summary>
 public sealed class OptimalPlayer(bool roads) : IScriptedPlayer
 {
@@ -99,11 +100,32 @@ public sealed class OptimalPlayer(bool roads) : IScriptedPlayer
 
     public void Daily(World w)
     {
-        if (_industry || w.Calendar.Season != Season.Winter) return;
-        _industry = true;
-        w.Enqueue(new PlaceBuilding("quarry", QuarryAt, 0));
-        w.Enqueue(new PlaceBuilding("smithy", SmithyAt, 0));
-        w.Enqueue(new CreatePolicy("keep_above", "stone", 20, 40));
-        w.Enqueue(new CreatePolicy("keep_above", "tools", 8, 12));
+        if (!_industry && w.Calendar.Season == Season.Winter)
+        {
+            _industry = true;
+            w.Enqueue(new PlaceBuilding("quarry", QuarryAt, 0));
+            w.Enqueue(new PlaceBuilding("smithy", SmithyAt, 0));
+        }
+        Manage(w, "quarry", "stone", low: 20, high: 60);
+        Manage(w, "smithy", "tools", low: 8, high: 14);
+    }
+
+    /// <summary>One family on the building while the resource is below <paramref name="low"/>; freed above <paramref name="high"/>.</summary>
+    private static void Manage(World w, string def, string res, int low, int high)
+    {
+        var b = w.Buildings.FirstOrDefault(x => x.IsActive && x.Def.Id == def);
+        if (b is null) return;
+        var stock = w.StorageStockIncludingTransit(w.Content.Resource(res).Index);
+        if (stock < Qty.Units(low) && b.AssignedCount == 0)
+        {
+            var family = w.Households.FirstOrDefault(h => !h.HasJob)
+                         ?? w.Households.LastOrDefault(h => h.HasJob && h.AssignedBy != AssignmentSource.Player
+                                                            && w.GetBuilding(h.JobBuildingId) is { IsStorage: false });
+            if (family is not null) w.Enqueue(new AssignHousehold(family.Id, b.Id));
+        }
+        else if (stock > Qty.Units(high))
+        {
+            foreach (var id in b.SlotHouseholds.Where(id => id != 0)) w.Enqueue(new UnassignHousehold(id));
+        }
     }
 }

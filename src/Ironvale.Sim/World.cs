@@ -14,6 +14,9 @@ public sealed class World
     private readonly List<Shipment> _shipments = new();
     private readonly List<Policy> _policies = new();
     private readonly List<PolicyLogEntry> _policyLog = new();
+    private readonly List<PlayerAction> _playerActions = new();
+    /// <summary>Resource → tick until which no suggestion is offered ("not now"); long.MaxValue = "never".</summary>
+    private readonly SortedDictionary<int, long> _suggestionMuted = new();
     private readonly Dictionary<int, Household> _householdById = new();
     private readonly Dictionary<int, Building> _buildingById = new();
     private readonly Dictionary<int, Shipment> _shipmentById = new();
@@ -43,6 +46,21 @@ public sealed class World
     public IReadOnlyList<Shipment> Shipments => _shipments;
     public IReadOnlyList<Policy> Policies => _policies;
     public IReadOnlyList<PolicyLogEntry> PolicyLog => _policyLog;
+    public IReadOnlyList<PlayerAction> PlayerActions => _playerActions;
+    public IReadOnlyDictionary<int, long> SuggestionMuted => _suggestionMuted;
+    /// <summary>The decree the reeve is offering right now (one at a time), or null.</summary>
+    public DecreeSuggestion? Suggestion { get; internal set; }
+
+    // ---------------------------------------------------------------- administrative capacity (2A.6)
+
+    /// <summary>Capacidade Administrativa: what the active buildings provide (Salão = 3).</summary>
+    public int AdminCapacity => _buildings.Where(b => b.IsActive).Sum(b => b.Def.AdminCapacity);
+
+    /// <summary>CA used by the enabled decrees.</summary>
+    public int AdminUsed => _policies.Where(p => p.Enabled).Sum(p => p.Def.CaCostFor(p.Resource));
+
+    /// <summary>Points above capacity: the reeve gets slower and makes mistakes (0 = fine).</summary>
+    public int AdminOverload => Math.Max(0, AdminUsed - AdminCapacity);
     public IReadOnlyList<ISimSystem> Systems => _scheduler.Systems;
 
     public Calendar Calendar => new(Tick);
@@ -591,6 +609,44 @@ public sealed class World
     }
 
     internal void InsertPolicyLog(PolicyLogEntry e) => _policyLog.Add(e);
+
+    // ---------------------------------------------------------------- decree suggestions (2A.6, GDD v0.2 §3.2)
+
+    /// <summary>
+    /// The player moved a family toward producing <paramref name="r"/> (assignment or recipe switch). After
+    /// balance.suggestAfterActions such moves within the window, the reeve offers a decree for <paramref name="r"/>.
+    /// </summary>
+    internal void ObservePlayerAction(int r)
+    {
+        var bal = Content.Balance;
+        if (_policies.Any(p => p.Resource == r)) return;
+        if (_suggestionMuted.TryGetValue(r, out long until) && Tick < until) return;
+        long stock = StorageStockIncludingTransit(r).WholeUnits;
+        _playerActions.Add(new PlayerAction(Tick, r, stock));
+        long oldest = Tick - (long)bal.SuggestWindowDays * SimTime.TicksPerDay;
+        _playerActions.RemoveAll(a => a.Tick < oldest);
+
+        var mine = _playerActions.Where(a => a.Resource == r).ToList();
+        if (Suggestion is not null || mine.Count < bal.SuggestAfterActions) return;
+        var def = Content.Policies[0];
+        long avg = (long)mine.Average(a => a.StockUnits);
+        long min = Math.Max(10, (avg + 9) / 10 * 10);
+        long max = Math.Max(min + 10, (min * (Permille.One + def.HysteresisPermille) / Permille.One + 9) / 10 * 10);
+        Suggestion = new DecreeSuggestion
+        {
+            Id = NewId(), Resource = r, Min = Qty.Units(min), Max = Qty.Units(max),
+            Actions = mine.Count, AverageStockUnits = avg, OfferedTick = Tick,
+        };
+        _playerActions.RemoveAll(a => a.Resource == r);
+        Emit(new SuggestionOffered(Tick, Suggestion.Id));
+    }
+
+    /// <summary>"Agora não" (snooze for balance.suggestSnoozeDays) or "Nunca" for this resource.</summary>
+    internal void MuteSuggestions(int r, bool forever) =>
+        _suggestionMuted[r] = forever ? long.MaxValue : Tick + (long)Content.Balance.SuggestSnoozeDays * SimTime.TicksPerDay;
+
+    internal void InsertPlayerAction(PlayerAction a) => _playerActions.Add(a);
+    internal void InsertSuggestionMute(int r, long until) => _suggestionMuted[r] = until;
 
     /// <summary>Active storage buildings, nearest to <paramref name="from"/> first (ties by id).</summary>
     internal List<Building> StoragesByDistance(Cell from) =>

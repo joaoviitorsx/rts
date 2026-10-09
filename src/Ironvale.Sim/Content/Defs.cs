@@ -34,6 +34,8 @@ public sealed class BuildingDef
     public required IReadOnlyList<RecipeDef> Recipes { get; init; }
     public required Qty OutputCapacity { get; init; }
     public required Qty StorageCapacity { get; init; }
+    /// <summary>Administrative capacity this building provides while active (Salão; later scribes, chapel).</summary>
+    public required int AdminCapacity { get; init; }
     /// <summary>Input buffer of a producer whose recipes consume inputs (smithy), refilled by carriers.</summary>
     public required Qty InputCapacity { get; init; }
     public required int HousingCapacity { get; init; }
@@ -95,6 +97,10 @@ public sealed class PolicyDef
     /// <summary>Default band for a new decree in the UI: Max = Min × (1 + this).</summary>
     public required int HysteresisPermille { get; init; }
     public required int MaxHouseholds { get; init; }
+    /// <summary>CA per resource (indexed by resource); defaults to <see cref="CaCost"/>.</summary>
+    public required int[] CaCostByResource { get; init; }
+
+    public int CaCostFor(int resource) => CaCostByResource[resource];
 }
 
 /// <summary>Global tuning constants (data/balance.json). Placeholders until the Economy Sheet exists.</summary>
@@ -130,6 +136,11 @@ public sealed class BalanceDef
     public required int HarvestVariancePermille { get; init; }
     public required int DeadlockWindowDays { get; init; }
     public required int PolicyLogMax { get; init; }
+    public required int AdminOverloadDelayDays { get; init; }
+    public required int AdminOverloadErrorPermille { get; init; }
+    public required int SuggestAfterActions { get; init; }
+    public required int SuggestWindowDays { get; init; }
+    public required int SuggestSnoozeDays { get; init; }
     /// <summary>Families without a job help the nearest construction site that can progress.</summary>
     public required bool AutoBuilders { get; init; }
     public required int MaxBuildersPerSite { get; init; }

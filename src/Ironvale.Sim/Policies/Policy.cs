@@ -40,6 +40,7 @@ public static class PolicyLogText
         ["blocked_max"] = "{0} {1} abaixo do mínimo {2}, mas já uso o máximo de {3} famílias",
         ["blocked_no_slot"] = "{0} {1} abaixo do mínimo {2}, mas não há vaga produtiva para {0}",
         ["blocked_no_household"] = "{0} {1} abaixo do mínimo {2}, mas não há família disponível",
+        ["overloaded"] = "Sobrecarregado ({2}/{3} de CA): deixei {0} {1} para depois",
     };
 
     public static string Format(string key, string[] args) =>

@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 6;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4)
+    public const int CurrentVersion = 7;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4) · 7: decree suggestions (2A.6)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -113,6 +113,13 @@ public static class SaveSerializer
             },
             PolicyLog = w.PolicyLog.Select(e => new PolicyLogDto { Tick = e.Tick, PolicyId = e.PolicyId, Key = e.Key, Args = e.Args }).ToList(),
             Roads = w.Map.Roads.Select(w.Map.Index).ToList(),
+            PlayerActions = w.PlayerActions.Select(a => new PlayerActionDto { Tick = a.Tick, Resource = Res(a.Resource), StockUnits = a.StockUnits }).ToList(),
+            Suggestion = w.Suggestion is { } sg ? new SuggestionDto
+            {
+                Id = sg.Id, Resource = Res(sg.Resource), Min = sg.Min.Milli, Max = sg.Max.Milli, Actions = sg.Actions,
+                AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick,
+            } : null,
+            SuggestionMuted = new SortedDictionary<string, long>(w.SuggestionMuted.ToDictionary(kv => Res(kv.Key), kv => kv.Value), StringComparer.Ordinal),
         };
     }
 
@@ -257,6 +264,14 @@ public static class SaveSerializer
         Array.Copy(Arr(s.Ledger.Produced), w.Ledger.Produced, content.ResourceCount);
         Array.Copy(Arr(s.Ledger.Consumed), w.Ledger.Consumed, content.ResourceCount);
         foreach (int i in s.Roads) w.Map.SetRoad(w.Map.CellAt(i), true);
+        foreach (var a in s.PlayerActions) w.InsertPlayerAction(new PlayerAction(a.Tick, Res(a.Resource), a.StockUnits));
+        if (s.Suggestion is { } sg)
+            w.Suggestion = new DecreeSuggestion
+            {
+                Id = sg.Id, Resource = Res(sg.Resource), Min = new Qty(sg.Min), Max = new Qty(sg.Max), Actions = sg.Actions,
+                AverageStockUnits = sg.AverageStockUnits, OfferedTick = sg.OfferedTick,
+            };
+        foreach (var (id, until) in s.SuggestionMuted) w.InsertSuggestionMute(Res(id), until);
         foreach (var e in s.PolicyLog) w.InsertPolicyLog(new PolicyLogEntry(e.Tick, e.PolicyId, e.Key, e.Args));
         return w;
     }

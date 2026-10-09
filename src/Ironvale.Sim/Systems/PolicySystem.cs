@@ -13,10 +13,21 @@ public sealed class PolicySystem : ISimSystem
 
     public void Run(World w, in Calendar cal)
     {
+        int overload = w.AdminOverload;
+        var bal = w.Content.Balance;
         foreach (var p in w.Policies.ToArray())
         {
             if (!p.Enabled) continue;
+            // Over capacity the reeve gets slow (evaluates every 1 + n·delay days) and errs (n·error ‰ per action).
+            if (overload > 0 && (cal.TotalDays + p.Id) % (1 + overload * bal.AdminOverloadDelayDays) != 0) continue;
             var stock = w.StorageStockIncludingTransit(p.Resource);
+            bool wantsToAct = stock < p.Min || (stock > p.Max && w.Households.Any(h => h.AssignedByPolicyId == p.Id));
+            if (overload > 0 && wantsToAct
+                && w.Rng.Get(RngStreams.Admin).NextInt(Permille.One) < overload * bal.AdminOverloadErrorPermille)
+            {
+                Blocked(w, p, "overloaded", ResName(w, p), Units(stock), w.AdminUsed.ToString(), w.AdminCapacity.ToString());
+                continue;
+            }
             if (stock < p.Min) Recruit(w, p, stock, cal);
             else if (stock > p.Max) Release(w, p, stock);
             else p.LastBlockedReason = "";

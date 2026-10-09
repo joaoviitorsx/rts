@@ -35,6 +35,28 @@ public sealed class StateDto
     public List<PolicyLogDto> PolicyLog { get; set; } = new();
     /// <summary>Road cells as indices (y × width + x), ascending.</summary>
     public List<int> Roads { get; set; } = new();
+    public List<PlayerActionDto> PlayerActions { get; set; } = new();
+    public SuggestionDto? Suggestion { get; set; }
+    /// <summary>Resource id → tick until which suggestions are muted (long.MaxValue = never).</summary>
+    public SortedDictionary<string, long> SuggestionMuted { get; set; } = new(StringComparer.Ordinal);
+}
+
+public sealed class PlayerActionDto
+{
+    public long Tick { get; set; }
+    public string Resource { get; set; } = "";
+    public long StockUnits { get; set; }
+}
+
+public sealed class SuggestionDto
+{
+    public int Id { get; set; }
+    public string Resource { get; set; } = "";
+    public long Min { get; set; }
+    public long Max { get; set; }
+    public int Actions { get; set; }
+    public long AverageStockUnits { get; set; }
+    public long OfferedTick { get; set; }
 }
 
 public sealed class RngDto

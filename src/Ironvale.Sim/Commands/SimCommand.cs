@@ -89,6 +89,36 @@ public sealed record AssignHousehold(int HouseholdId, int BuildingId) : SimComma
         }
         if (b.FreeSlotIndex() < 0) return "sem vagas";
         w.Assign(h, b, AssignmentSource.Player, 0);
+        if (b.IsProducer && b.Recipe is { } recipe) w.ObservePlayerAction(PrimaryOutput(recipe));
+        return null;
+    }
+
+    internal static int PrimaryOutput(RecipeDef recipe) => Array.FindIndex(recipe.OutputPerWorkerHour, q => q.IsPositive);
+}
+
+/// <summary>Accepts the reeve's offer: the suggested decree is issued as is.</summary>
+public sealed record AcceptSuggestion(int SuggestionId) : SimCommand
+{
+    internal override string? Apply(World w)
+    {
+        var s = w.Suggestion;
+        if (s is null || s.Id != SuggestionId) return "sugestão não existe mais";
+        w.Suggestion = null;
+        if (w.Policies.Any(p => p.Resource == s.Resource)) return $"já existe um decreto para {w.Content.Resources[s.Resource].Name}";
+        w.AddPolicy(w.Content.Policies[0], s.Resource, s.Min, s.Max);
+        return null;
+    }
+}
+
+/// <summary>"Agora não" (snooze) or "Nunca" (never again for this resource).</summary>
+public sealed record DismissSuggestion(int SuggestionId, bool Forever) : SimCommand
+{
+    internal override string? Apply(World w)
+    {
+        var s = w.Suggestion;
+        if (s is null || s.Id != SuggestionId) return "sugestão não existe mais";
+        w.Suggestion = null;
+        w.MuteSuggestions(s.Resource, Forever);
         return null;
     }
 }
@@ -113,7 +143,9 @@ public sealed record SetRecipe(int BuildingId, string RecipeId) : SimCommand
         if (b is null) return "edifício não existe";
         var recipe = b.Def.Recipes.FirstOrDefault(r => r.Id == RecipeId);
         if (recipe is null) return $"{b.Def.Name} não faz '{RecipeId}'";
+        bool changed = b.Recipe != recipe;
         w.ChangeRecipe(b, recipe);
+        if (changed && b.AssignedCount > 0) w.ObservePlayerAction(AssignHousehold.PrimaryOutput(recipe));
         return null;
     }
 }

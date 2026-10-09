@@ -11,3 +11,4 @@ public sealed record HouseholdLeft(long Tick, int HouseholdId, string Name, stri
 public sealed record PolicyActed(long Tick, int PolicyId, string Text) : SimEvent(Tick);
 public sealed record CommandRejected(long Tick, string Command, string Reason) : SimEvent(Tick);
 public sealed record SimAlert(long Tick, string Text) : SimEvent(Tick);
+public sealed record SuggestionOffered(long Tick, int SuggestionId) : SimEvent(Tick);

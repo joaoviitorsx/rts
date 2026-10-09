@@ -1,6 +1,8 @@
 {
   "policies": [
-    { "id": "keep_above", "name": "Manter recurso acima de N", "kind": "keep_above",
-      "caCost": 1, "hysteresisPermille": 250, "maxHouseholds": 4 }
+    // caCost: Capacidade Administrativa used while enabled (GDD v0.2 §3.1: stock band = 1 per resource,
+    // conditional production (tools) = 2).
+    { "id": "keep_above", "name": "Manter recurso entre mínimo e máximo", "kind": "keep_above",
+      "caCost": 1, "caCostByResource": { "tools": 2 }, "hysteresisPermille": 250, "maxHouseholds": 4 }
   ]
 }
