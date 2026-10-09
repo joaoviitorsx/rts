@@ -261,3 +261,11 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
 ### P39. Aldeões: Quaternius × alternativa chibi (prioridade alta para a coesão)
 - Ver `asset_manifest.md` §9.2. Recomendação: testar KayKit Adventurers ou Kenney Mini Characters lado a lado antes de trocar.
 
+
+### RECADO para a sessão da `feature/worldgen` (09/10/2026, da sessão de personagens)
+- A **`main` (commit `9b7c039`) tem os documentos novos**: `docs/briefing_2026-10-09.md`,
+  `docs/asset_production_bible_mvp.md` (o adendo do topo prevalece), `docs/ui/HUD_v2_spec.md` + mockup e
+  `docs/reference/koastalia_ref.png`. **Trazer a `main` para a `feature/worldgen`** (`git merge origin/main`); o merge é limpo:
+  os HUD v2 são idênticos aos da `feature/hud-v2`, e `research/*.md`, `koastalia_world.png` e `UI_UX_guide.md` **não**
+  foram para a `main` (as versões curadas desta branch continuam valendo).
+- Personagens: worktree `../rts-characters`, branch `feature/characters-kenney`. Não trocar branch neste diretório.
