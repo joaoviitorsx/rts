@@ -57,8 +57,8 @@ public class ProductionTests
         var h = w.Households[0];
         w.Assign(h, b, AssignmentSource.Player, 0);
         int tools = TestKit.Res("tools");
-        w.SeatBuilding!.Stock.RemoveUpTo(tools, Qty.Units(1000));   // no spare tools
-        w.Ledger.Consumed[tools] += Qty.Units(12).Milli;             // keep the ledger honest
+        var removed = w.SeatBuilding!.Stock.RemoveUpTo(tools, Qty.Units(1000));   // no spare tools
+        w.Ledger.Consumed[tools] += removed.Milli;                                // keep the ledger honest
 
         w.StepDays(40);
         Assert.True(h.ToolCondition < Permille.One);

@@ -144,3 +144,10 @@
   `project.godot` aponta `dotnet/project/solution_directory="../"` (a solução fica na raiz).
 - `SessionLog`: CSV por sessão em `user://playtest/` (comandos e eventos) só para medir o playtest; não altera o jogo.
 
+### P24. Crise 2 (ferramentas) dentro de 60 min (prioridade média)
+- **Contexto:** com 12 ferramentas de reserva a crise 2 nunca aparecia em 3 anos — o GDD §8.3 pede ≥ 2 crises em 60 min.
+- **Escolha:** carroça com **6** ferramentas (desgaste igual). Ingênuo: crise 2 no inverno do ano 2 (~40 min, janela
+  30–60 min do GDD v0.2 §4.3) e passa a sobreviver aos 3 anos nas 3 seeds; ótimo evita com o ferreiro; ótimo sem estrada
+  encontra na primavera do ano 2 (~25 min). Alternativas testadas: 4 ferr. + desgaste 12 (crise aos ~14–18 min, perto
+  demais da crise 1) e 6 + desgaste 16 (~14–19 min).
+
