@@ -305,3 +305,17 @@ O Nature Kit traz módulos de penhasco em grade (retos, cantos internos/externos
 do mapa gerado (contornos de célula), duas opções: (a) **módulos Kenney** escolhidos por marching squares célula a
 célula (mais "Kenney", encaixe exato na grade de 2 m); (b) os **paredões facetados gerados** (etapa 4a, mais orgânicos).
 Recomendo (a) pela coesão com a nova direção de arte; decidir junto com a troca (P38).
+
+### 9.4 Aldeões próprios no padrão Kenney (protótipo, `feature/characters-kenney`)
+Gerados por `tools/blender/build_villager.py` (spec `docs/characters_spec.md`); fonte em
+`art/source/characters/villager_proto.blend`; saídas em `godot/assets/characters/kenney/`. Os Quaternius de
+`godot/assets/characters/` não foram tocados.
+
+| ID | Arquivo | Status | Observações |
+|---|---|---|---|
+| CHR_Villager_Proto | `CHR_Villager_Proto.glb` | protótipo (gate) | Montado: corpo M + cabelo curto sob chapéu + chapéu de palha + túnica + calça + machado; `idle`, `walk`, `chop` |
+| CHR_Villager_Base_M | `CHR_Villager_Base_M.glb` | protótipo | Rig de 21 ossos + corpo + animações |
+| CHR_Part_Hair_ShortUnderHat, CHR_Part_Hat_Straw, CHR_Part_Torso_Tunic, CHR_Part_Legs_Trousers | `CHR_Part_*.glb` | protótipo | Uma peça com skin no mesmo rig |
+| TOOL_Axe_A | `TOOL_Axe_A.glb` | protótipo | Skin rígido no `ToolSocket` |
+| MAT_Villager_Atlas + T_Villager_Palette | `.tres` + `.png` 64×64 | protótipo | Material externo de todos os glb; *nearest*, sem mipmap, lossless |
+| Referência Kenney Blocky 2.0 | `godot/assets/vendor/kenney_blocky_characters/` | só comparação | Não entra no jogo |

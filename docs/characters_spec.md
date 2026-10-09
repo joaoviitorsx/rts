@@ -49,8 +49,21 @@ papel; cada **coluna** é uma variação. Trocar a cor de um papel = somar um de
 | 6 | Metal | ferro `#8E959B`, ferro escuro `#5B6166`, bronze `#A57A45` + reservas |
 | 7 | Fixos | olho `#2B2420`, bochecha `#D98C7A`, faixa do reeve `#49637A`, capa do livro `#714555`, páginas `#E9DFC6`, flecha/pena `#E2DCCB` + reservas |
 
-O valor exato de cada cor será ajustado na Godot ao lado do colormap do Kenney (com a luz do jogo), antes de fechar
-o protótipo; os hex do pedido são o ponto de partida.
+**Ajuste na Godot (iteração 3 do protótipo):** com a luz do jogo, os tons do pedido (V 0,42–0,54 nos tecidos e
+madeiras) ficaram escuros ao lado do colormap do Fantasy Town (V 0,65–0,95, S ~0,5–0,6). Os **matizes ficam**; o
+valor sobe: `V' = 0,3 + 0,7·V` em tecido, couro, fibra e metal, `V' = 0,2 + 0,8·V` no cabelo, saturação ×1,05.
+Pele e cores fixas não mudam. Valores em uso (`tools/blender/build_villager.py`, `PALETTE`):
+
+| Linha | Pedido → em uso |
+|---|---|
+| 1 Cabelo | `3E2A1F→654330` `6E4429→8B532F` `D2B062→DBB660` `9C4A26→B04F24` `A6A09A→B8B1AA` |
+| 2/3 Tecido | `D2C5A4→E0D1AC` `5E7045→819B5C` `A44735→BF4D37` `49637A→5E82A2` `C48C39→D69637` `714555→9C5C73` `C6A25D→D7AE5F` `8A6042→AD764E` |
+| 4 Couro/madeira | `8A6042→AD764E` `6B4A33→976644` `4E3526→83573D` `A87C55→C28D5D` |
+| 5 Fibras | `C6A25D→D7AE5F` `9E7E44→BB934B` `B59A6E→CBAB78` `A57F4D→C09254` |
+| 6 Metal | `8E959B→A9B1B9` `5B6166→838C94` `A57A45→C08B4B` |
+
+Na Godot a paleta é importada **sem compressão e sem mipmap**, com filtro *nearest* (`MAT_Villager_Atlas.tres`,
+compartilhado por todos os `.glb` como material externo): mipmap misturaria células vizinhas de longe.
 
 **Troca de cor por dados:** um shader único (`villager_palette.gdshader`) lê a linha da UV e soma um deslocamento
 de coluna vindo de *instance uniforms*: `skin`, `hair`, `cloth_a`, `cloth_b`, `leather`, `fiber` (6 inteiros por
@@ -169,11 +182,113 @@ O `walk` tem um quique de 3–4 cm por passo (cozy, saltitante). 30 fps.
 
 No máximo **3 iterações** antes de mostrar o resultado. Checklist de aprovação:
 
-- [ ] Silhueta legível no zoom médio da câmera oficial (62 m, pitch 50°, FOV 32°).
-- [ ] Profissão identificável sem abrir UI (chapéu + ferramenta + cor do torso).
-- [ ] Nenhuma cor fora da paleta (validação: toda UV cai no centro de uma célula usada do atlas).
-- [ ] Passa pela porta do Fantasy Town Kit com folga (≤ 1,40 m com chapéu × porta 1,50 m; ombros ≤ 0,45 m × 0,80 m).
-- [ ] 50 aldeões animados na tela a 60 FPS na máquina do dono (medido na Godot e reportado: FPS médio e mínimo,
-      draw calls, tempo de frame).
-- [ ] Comparação lado a lado com as referências de `docs/reference/characters/` e, se os pacotes chegarem (P42),
-      com Kenney Blocky e Slavic Villagers.
+- [x] Silhueta legível no zoom médio da câmera oficial (62 m, pitch 50°, FOV 32°): o chapéu e a postura leem; o
+      verde da túnica perde contraste em cima da grama (ver relatório).
+- [ ] Profissão identificável sem abrir UI: **parcial** — o `chop` em movimento lê; parado, o machado tem ~6 px no
+      zoom médio. Decisão do dono no gate.
+- [x] Nenhuma cor fora da paleta: toda UV no centro de uma célula usada; textura sem mipmap e sem compressão.
+- [x] Passa pela porta com folga: 1,38 m com chapéu × 1,50 m; ombros 0,40 m (braços relaxados ~0,66 m) × 0,80 m.
+- [x] 50 aldeões animados a 60 FPS: **268 FPS médios, 1% low 240 FPS** (RTX 4050 Laptop, 2311×1080, vsync off);
+      +0,11 ms/quadro sobre a cena sem eles; draw calls 255 → 923.
+- [x] Comparação lado a lado com `docs/reference/characters/` (Kenney Blocky).
+
+Relatório do gate: `docs/reports/2026-10-09_villager_proto.md`.
+
+## 11. Diversidade dos aldeões (Etapa 3) — rascunho para aprovação
+
+> Complemento do dono de 09/10/2026. O protótipo da Etapa 2 não muda; tudo abaixo entra na Etapa 3.
+
+### 11.1 Corpo: um esqueleto, variação por escala de ossos e poucas malhas
+
+| Eixo | Faixas | Como |
+|---|---|---|
+| Altura | baixa 0,94 · média 1,00 · alta 1,06 | escala uniforme da raiz do personagem (proporções iguais) |
+| Compleição | magra · média · robusta | **3 variantes de malha** geradas pelo mesmo script (largura de tronco, saia, pernas e mãos ×0,90 / ×1,00 / ×1,12); os ossos não mudam |
+| Idade | criança · adulto · idoso | criança: raiz ×0,65 e osso `Head` ×1,25 (cabeça proporcionalmente maior), sem barba; idoso: pose-base curvada (Spine/Chest/Neck +8°/+6°/−6°, aplicada por um `SkeletonModifier3D` depois da animação), `walk` a 0,8×, cabelo grisalho/branco |
+| Sexo | M · F, mesmas faixas | corpo base M/F (spec §4) |
+
+- **Escala não-uniforme em osso fica proibida** (com rotação ela vira cisalhamento nos filhos); por isso a
+  compleição é malha e a altura é escala uniforme.
+- **Porta:** "alta" ficou em +6% e não +8%: 1,38 m × 1,06 = 1,46 m com chapéu, 4 cm abaixo da porta de 1,50 m.
+  Com +8% sobrariam 1 cm. Regra do validador: altura máxima com chapéu ≤ 1,46 m em qualquer combinação.
+- **Encaixe:** o `validate_characters.py` monta todas as combinações corpo × compleição × idade × roupa × ferramenta
+  em `idle`, `walk` e na pose extrema de cada trabalho, e mede a interpenetração (vértice de corpo/pele fora da roupa
+  que o cobre). Roupas são feitas para a compleição "robusta" mais 1 cm e encolhidas nas outras.
+
+### 11.2 Cabeça e rosto (blocos simples, slot próprio para cada um)
+
+| Slot | Variações |
+|---|---|
+| Cabelo | adulto: curto, raspado, careca, médio, longo solto, rabo, trança, coque · criança: tigela, dois rabinhos. Cada um com corte "sob chapéu" (só o que aparece abaixo da aba) |
+| Barba | nenhuma, bigode, cavanhaque, curta, cheia |
+| Sobrancelha | reta, arqueada, grossa (2 blocos, 4–8 tris) |
+| Nariz | bloco, botão (pequeno), comprido |
+| Olhos | normais/próximos, grandes/afastados |
+| Pele | 5 tons (linha 0 do atlas) |
+| Cor de cabelo | 7: castanho-escuro, castanho, preto, loiro-palha, ruivo, grisalho, branco (linha 1) |
+
+Regras (em dados): barba só em adulto/idoso masculino; capuz não combina com coque nem rabo; chapéu troca o cabelo
+pela versão "sob chapéu".
+
+### 11.3 Roupa: qualidade, inverno e acessórios
+
+- **3 níveis de qualidade** em todas as peças de roupa:
+  - remendada: cores desbotadas e 1–2 remendos (malha com quadrados de outra cor por cima);
+  - simples: linho e lã naturais;
+  - tingida: cores da paleta (azul, vinho, verde…).
+- **O atlas cresce para 128×128** (16×16 células de 8 px; a Bible §11 aceita atlas de NPC até 256²). Nas linhas de
+  tecido: colunas 0–7 tingidas, 8–11 naturais (linho cru, lã crua, lã cinza, lã marrom), 12–15 desbotadas. A linha 8
+  passa a ser de mantos (lãs de inverno). A qualidade só muda a coluna da cor, mais a malha de remendo, e nenhuma cor
+  fica fora da paleta.
+- **Inverno:** manto com capuz abaixado, sobre o torso (slot `Cloak`), ligado pela estação da simulação.
+- **Acessórios opcionais:** cinto com bolsa, lenço no pescoço, avental (já previsto) e cajado para idosos, na mão
+  esquerda via `BoneAttachment3D` no `LeftHand`.
+
+### 11.4 Geração determinística ligada à simulação
+
+- **Seed = SplitMix64(id do aldeão).** Nunca `GetHashCode()`, que no .NET muda a cada execução. Mesmo id, mesma
+  aparência, inclusive depois de save/load. O sorteio usa um gerador próprio (PCG32) a partir da seed, separado do RNG
+  da simulação.
+- **Genes × aparência:** a seed sorteia os **genes** (tom de pele, cor e tipo de cabelo, nariz, olhos, sobrancelha,
+  tendência a barba, altura, compleição). A aparência do momento sai dos genes mais idade, profissão, prosperidade e
+  estação.
+- **Herança:** cada gene do filho vem do pai ou da mãe (moeda da seed do filho), com 10% de chance de sortear um
+  valor novo. A altura é a média dos pais ± 1 faixa.
+- **Envelhecimento:** a etapa (criança < 14 anos ≤ adulto < 55 ≤ idoso) vem da idade da simulação. O cabelo fica
+  grisalho a partir de ~45 anos e branco a partir de ~65 (± jitter da seed). A barba aparece aos ~17 para quem tem
+  o gene.
+- **Prosperidade:** define o nível de qualidade da roupa quando existir na simulação; até lá, "simples".
+- **Profissão:** define ferramenta, chapéu de trabalho e peça de trabalho (avental do ferreiro, faixa do reeve). O
+  resto vem dos genes.
+- **Anti-clone:** dentro da mesma família e entre famílias de casas vizinhas, ninguém repete cabelo + roupa + cor
+  principal. Na colisão, re-sorteia só a cor da roupa (nunca um gene herdado), com sal crescente, na ordem dos ids.
+  O resultado é determinístico.
+- **O que falta na simulação** (P46): hoje `Unit` tem só `Id`/`Name` e `Household` tem só a contagem `Members`;
+  não há sexo, idade nem pais. Até isso existir, sexo e etapa de vida saem da seed e as famílias visuais saem do id
+  da `Household` (pai = fundador 1, mãe = fundador 2, filhos = id da casa + índice). A API já recebe idade e
+  ids dos pais, para ligar sem retrabalho.
+
+### 11.5 Dados
+
+`godot/data/villager_appearance.json`: listas de peças por slot, com tris, compatibilidades e pesos de sorteio por
+etapa/sexo; cores por linha do atlas; faixas de altura/compleição; limiares de idade; regras (exclusões e
+dependências); tabela profissão → ferramenta/roupa de trabalho. Nada disso entra no hash de determinismo da
+simulação: a view só lê o id (e, no futuro, idade, sexo, pais, prosperidade e estação).
+
+### 11.6 Orçamento e desempenho
+
+- **300–900 tris na pior combinação** sem ferramenta, verificado pelo validador em todas as combinações. Teto por
+  slot: corpo 220, rosto (olhos/nariz/sobrancelha) 40, cabelo 100, barba 40, chapéu 90, torso 180, pernas 60,
+  acessório 60, manto 100. O protótipo tem 700 tris; o corpo cai de 316 para ~220 tirando o chanfro de mãos e pés.
+- Um material e um atlas; cor por *instance uniforms* (shader da spec §2.1).
+- Meta: 50 aldeões **diferentes** animados a 60 FPS. O protótipo fez 268 FPS com 50; mais slots aumentam as draw
+  calls (~13 por aldeão hoje, contando sombra). Se passar do limite, mesclar na hora de montar as peças estáticas de
+  cada aldeão num `ArrayMesh` só, com o mesmo skin.
+
+### 11.7 Entregas da diversidade (Godot)
+
+1. Folha de contato com 30 aldeões de seeds diferentes, lado a lado.
+2. Árvore de família: pai, mãe e 3 filhos, mostrando a herança.
+3. O mesmo aldeão criança, adulto e idoso.
+4. O mesmo aldeão nos 3 níveis de roupa + inverno.
+

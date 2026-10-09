@@ -301,3 +301,19 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
   somar as 4 animações que faltam; trocar `PROP_Carry_*` por `TOOL_Carry<Nome>_A`.
 - Já aplicado: bind pose em **A-pose** (Bible §45). Altura 1,30 m em vez dos 1,75 m da §11: o adendo manda ajustar à
   escala real dos kits. Orçamento de 300–900 tris (spec aprovada) em vez dos 2.000–4.000 da §11 (o adendo não mantém a §11).
+
+### P45. Gate do protótipo: decisões do dono (prioridade alta)
+- Relatório: `docs/reports/2026-10-09_villager_proto.md`. Três pontos para decidir: (1) torso verde musgo some na
+  grama, tirar o verde como cor dominante dos presets?; (2) ferramentas de 1,3× para 1,5× para a profissão ler parado
+  no zoom médio?; (3) o rosto mínimo perde para o Blocky em expressão; as sobrancelhas, barbas e narizes da §11 bastam
+  ou quer boca?
+- Etapa 3 (técnico): a Godot extraía uma cópia da paleta por `.glb`; resolvido com material externo
+  (`MAT_Villager_Atlas.tres`) e `gltf/embedded_image_handling=0`, que o `build_villager.py` aplica nos `.import`.
+
+### P46. Diversidade precisa de dados que a simulação não tem (prioridade média, Etapa 3)
+- A §11.4 da spec usa sexo, idade e pais; hoje `Unit` só tem `Id`/`Name`, e `Household` só tem `Members` (contagem).
+  **Escolha até a simulação ter esses dados:** sexo e etapa de vida pela seed do id; famílias visuais derivadas do id
+  da `Household`. Adicionar `Sex`, `BirthDay` e `ParentIds` ao sim é mudança na `feature/worldgen` (abertura RTS) ou
+  depois: precisa de ordem sua.
+- "Alta" ficou em +6% (não +8%) para caber na porta com chapéu (1,46 m × 1,50 m). Atlas sobe para 128×128 por causa
+  dos níveis de qualidade da roupa.

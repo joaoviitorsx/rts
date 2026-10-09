@@ -36,6 +36,11 @@ def args() -> dict[str, str]:
 
 def reset() -> None:
     bpy.ops.wm.read_factory_settings(use_empty=True)
+    setup_render()
+
+
+def setup_render() -> None:
+    """Engine, neutral grey world and one sun: the same look for every reference and prototype render."""
     scene = bpy.context.scene
     engines = [e.identifier for e in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items]
     scene.render.engine = next(e for e in ("BLENDER_EEVEE", "BLENDER_EEVEE_NEXT", "BLENDER_WORKBENCH") if e in engines)
@@ -93,9 +98,10 @@ def blocky(letter: str) -> list[bpy.types.Object]:
 
 
 def camera_shot(objs: list[bpy.types.Object], direction: tuple[float, float, float], path: Path,
-                res: tuple[int, int] = (640, 800), margin: float = 1.15) -> None:
+                res: tuple[int, int] = (640, 800), margin: float = 1.15,
+                bounds: tuple[Vector, Vector] | None = None) -> None:
     scene = bpy.context.scene
-    lo, hi = bbox(objs)
+    lo, hi = bounds or bbox(objs)
     centre = (lo + hi) / 2
     size = hi - lo
     cam = bpy.data.objects.get("RefCam") or bpy.data.objects.new("RefCam", bpy.data.cameras.new("RefCam"))
