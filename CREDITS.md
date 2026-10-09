@@ -13,7 +13,10 @@ Credit is not required; we record it anyway.
 | Universal Animation Library | Quaternius | Standard | CC0 1.0 | https://quaternius.com | `assets/Universal Animation Library[Standard]/` |
 | Universal Animation Library 2 | Quaternius | Standard | CC0 1.0 | https://quaternius.com | `assets/Universal Animation Library 2[Standard]/` |
 
-Planned, not yet in the project: KayKit Resource Bits (Kay Lousberg, CC0), a watercolor terrain texture pack (TBD), Terrain3D (MIT, GDExtension).
+| Hand-Painted Watercolor Terrain Textures | Jonas Voland (Voxel Core Lab GmbH) | 1024 px | CC0 1.0 | https://voxelcorelab.itch.io | `art/vendor_raw/VoxelCoreLab_Watercolor_Terrain_Textures_1024px/` |
+| UI Pack: RPG Extension | Kenney (www.kenney.nl) | — | CC0 1.0 | https://kenney.nl | `art/vendor_raw/UIpack_RPG/` |
+
+Planned, not yet in the project: KayKit Resource Bits (Kay Lousberg, CC0); game-icons.net icons (CC BY 3.0, per-icon credit in `docs/icon_credits.csv`).
 
 Quaternius: https://www.patreon.com/quaternius · Kay Lousberg: https://kaylousberg.com
 

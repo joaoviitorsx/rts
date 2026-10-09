@@ -43,9 +43,7 @@ func _ready() -> void:
 	add_child(_baker)
 	_baker.bake(Vector2i(mask.w, mask.h))
 	if not args.has("--no-grass"):
-		var t0 := Time.get_ticks_msec()
-		var n: int = $GrassCarpet.build(mask, MASK_RECT, 7)
-		print("LOOKDEV grass instances=%d build_ms=%d" % [n, Time.get_ticks_msec() - t0])
+		$GrassCarpet.stream(mask, MASK_RECT, $CameraRig, 7)   # same streaming path as the village
 	PlantPalette.apply($Nature)
 	MaterialTint.apply($Nature, _roof)
 	_scatter_clusters()

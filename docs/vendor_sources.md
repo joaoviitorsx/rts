@@ -17,7 +17,8 @@ original folder name, then run the script.
 | quaternius_ual1 | `Universal Animation Library[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-06-16 | 2026-10-08 | CC0 1.0 |
 | quaternius_ual2 | `Universal Animation Library 2[Standard]` | Quaternius | https://quaternius.com | Standard | 2026-06-16 | 2026-10-08 | CC0 1.0 |
 | kaykit_resource_bits | *(pendente — matched by `*Resource*Bits*`)* | Kay Lousberg | https://kaylousberg.com | — | — | pendente | CC0 1.0 |
-| watercolor_terrain_textures | *(pendente — matched by `*atercolor*`)* | — | — | — | — | pendente | CC0 (informado) |
+| watercolor_terrain_textures | `VoxelCoreLab_Watercolor_Terrain_Textures_1024px` | Jonas Voland / Voxel Core Lab GmbH | https://voxelcorelab.itch.io | 1024 px | — | 2026-10-08 | CC0 1.0 |
+| kenney_ui_rpg | `UIpack_RPG` (UI Pack: RPG Extension) | Kenney Vleugels | https://kenney.nl · https://opengameart.org/content/ui-pack-rpg-extension | — | — | 2026-10-08 | CC0 1.0 |
 
 ¹ Modification date of the pack's root folder as shipped (≈ release/build date).
 ² Confirmed by the project owner.
@@ -31,6 +32,13 @@ original folder name, then run the script.
 
 Evaluated and not used: Open Stylized 3D (MIT; own node types + billboard waves, no terrain-colour matching);
 godot-landscaper (licence not stated — scattering is done by our own scripts).
+
+## Import presets
+- `kenney_ui_rpg`: `setup_vendor.py` writes `*.png.import` before Godot's first import — lossless, no mipmaps, no size
+  limit (UI_UX_guide §8.3). Final UI art is F3; for now the pack is only available.
+- `watercolor_terrain_textures`: default 3D preset (VRAM, mipmaps, 1024 px). Only the luminance of `Dirt_03.png` is used,
+  as subtle detail on bare ground (`ground_detail_*` shader globals).
+- The `__MACOSX/` folder and `._*` files in the watercolor zip are skipped.
 
 ## Known issues in the originals (handled by the script, originals untouched)
 - `Universal Base Characters`: `Superhero_*_FullBody.gltf` reference `T_Eye_Normal_png.png` /

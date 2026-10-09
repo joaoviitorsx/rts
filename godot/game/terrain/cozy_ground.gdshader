@@ -214,6 +214,7 @@ void fragment() {
 		BINORMAL = normalize(cross(NORMAL, TANGENT));
 	}
 
-	ALBEDO = ground_sample(v_vertex.xz).rgb * (1.0 + (gc_noise(v_vertex.xz * 0.8) - 0.5) * 0.06);
+	vec4 g = ground_sample(v_vertex.xz);
+	ALBEDO = g.rgb * (1.0 + (gc_noise(v_vertex.xz * 0.8) - 0.5) * 0.06) * ground_detail(v_vertex.xz, 1.0 - g.a);
 	ROUGHNESS = 1.0;
 }

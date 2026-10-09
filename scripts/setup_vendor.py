@@ -35,7 +35,7 @@ DST = ROOT / "godot" / "assets" / "vendor"
 
 MODEL_EXT = {".gltf", ".glb"}
 IMAGE_EXT = {".png", ".jpg", ".jpeg", ".webp", ".tga", ".exr"}
-SKIP_DIR_WORDS = ("fbx", "obj", "unity", "blend")
+SKIP_DIR_WORDS = ("fbx", "obj", "unity", "blend", "__macosx")
 
 # id -> (glob for the raw folder, [(source subdir, destination subdir, kind)])
 # kind: "models" = .gltf/.glb in that dir (non-recursive) + their dependencies
@@ -59,6 +59,8 @@ PACKS: dict[str, tuple[str, list[tuple[str, str, str]]]] = {
         ("Unreal-Godot", "", "models"),
         ("Female Mannequin/Unreal-Godot", "female_mannequin", "models"),
     ]),
+    # UI art (F3): Kenney UI Pack RPG Extension — PNG only (vector/swf/spritesheet stay in vendor_raw).
+    "kenney_ui_rpg": ("UIpack_RPG", [("PNG", "", "images_recursive")]),
     # Layout unknown until downloaded: discovered recursively.
     "kaykit_resource_bits": ("*Resource*Bits*", [("", "", "models_recursive")]),
     "watercolor_terrain_textures": ("*atercolor*", [("", "", "images_recursive")]),
@@ -98,6 +100,8 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
             continue
         if kind == "images_recursive":
             for f in sorted(src.rglob("*")):
+                if f.name.startswith("._"):      # macOS AppleDouble metadata, not images
+                    continue
                 if f.is_file() and f.suffix.lower() in IMAGE_EXT and not skip_dir(f.relative_to(src).parent):
                     plan[dst / f.relative_to(src)] = f
             continue
@@ -206,6 +210,28 @@ def derive(force: bool) -> int:
     return 0
 
 
+# Godot import presets per pack, written as <file>.import only if Godot hasn't imported the file yet.
+# UI art must stay crisp: lossless, no mipmaps, no size limit (UI_UX_guide §8.3).
+IMPORT_PRESETS = {
+    "kenney_ui_rpg": ('[remap]\n\nimporter="texture"\ntype="CompressedTexture2D"\n\n[params]\n\n'
+                      'compress/mode=0\nmipmaps/generate=false\nprocess/size_limit=0\ndetect_3d/compress_to=0\n'),
+}
+
+
+def write_import_presets(dry_run: bool) -> int:
+    written = 0
+    for pack_id, preset in IMPORT_PRESETS.items():
+        root = DST / pack_id
+        if not root.is_dir():
+            continue
+        for f in root.rglob("*"):
+            if f.is_file() and f.suffix.lower() in IMAGE_EXT and not f.with_name(f.name + ".import").exists():
+                written += 1
+                if not dry_run:
+                    f.with_name(f.name + ".import").write_text(preset)
+    return written
+
+
 def same_file(a: Path, b: Path) -> bool:
     if not b.exists() or a.stat().st_size != b.stat().st_size:
         return False
@@ -263,6 +289,9 @@ def main() -> int:
                     f.unlink()
 
     install_addons(args.dry_run)
+    presets = write_import_presets(args.dry_run)
+    if presets:
+        print(f"- import presets written: {presets}")
 
     if (args.derive or args.force_derive) and not args.dry_run:
         if derive(args.force_derive) != 0:

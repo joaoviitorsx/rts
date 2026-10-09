@@ -120,6 +120,22 @@ ground_color_tex={
 "type": "sampler2D",
 "value": ""
 }
+ground_detail_tex={
+"type": "sampler2D",
+"value": "res://assets/vendor/watercolor_terrain_textures/VoxelCoreLab_Watercolor_Terrain_Textures_1024px/Dirt_03.png"
+}
+ground_detail_mean={
+"type": "float",
+"value": 0.218
+}
+ground_detail_strength={
+"type": "float",
+"value": 2.5
+}
+ground_detail_scale={
+"type": "float",
+"value": 0.12
+}
 ground_mask={
 "type": "sampler2D",
 "value": ""
