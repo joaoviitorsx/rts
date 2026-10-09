@@ -22,6 +22,7 @@ original folder name, then run the script.
 | kenney_interface_sounds | `kenney_interface-sounds` (Interface Sounds 1.0) | Kenney Vleugels | https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip | `kenney_interface-sounds.zip` | sha256 `f2193d07…81232` | 2026-10-09 | CC0 1.0 |
 | kenney_impact_sounds | `kenney_impact-sounds` (Impact Sounds 1.0) | Kenney Vleugels | https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip | `kenney_impact-sounds.zip` | sha256 `029d734a…77f8` | 2026-10-09 | CC0 1.0 |
 | kenney_rpg_audio | `kenney_rpg-audio` (RPG Audio 1.0) | Kenney Vleugels | https://kenney.nl/media/pages/assets/rpg-audio/8e99002d76-1677590336/kenney_rpg-audio.zip | `kenney_rpg-audio.zip` | sha256 `6dbeaf85…f38b` | 2026-10-09 | CC0 1.0 |
+| google_fonts | `google_fonts/{alegreyasc,alegreya,nunito}` | Huerta Tipográfica; Vernon Adams et al. | https://github.com/google/fonts (`ofl/alegreyasc`, `ofl/alegreya`, `ofl/nunito`, branch main) | AlegreyaSC-Bold/Medium.ttf, Alegreya-Italic[wght].ttf, Nunito[wght].ttf | — | 2026-10-09 | SIL OFL 1.1 (OFL.txt copied with each font) |
 
 ¹ Modification date of the pack's root folder as shipped (≈ release/build date).
 ² Confirmed by the project owner.

@@ -208,3 +208,25 @@
 - **Limites:** sem nomes de reeve (delegados com personalidade são 2B, não feitos); argumentos da crônica (nomes de edifícios)
   ainda em português, como o livro de contas.
 
+## HUD v2 (branch `feature/hud-v2`, 09/10/2026)
+
+### P30. PNGs do mockup ausentes (prioridade alta para os critérios de aceite)
+- **Contexto:** a spec (`docs/ui/HUD_v2_spec.md` §0/§7) usa os PNGs de `docs/ui/mockups/png/` como critério de aceite
+  (screenshot do jogo ao lado do PNG). Recebi só a spec e o HTML (`docs/ui/mockups/HUD_Principal_v2.dc.html`), que não
+  roda fora do Claude Design (`support.js`, `image-slot.js`).
+- **Escolha:** etapa 1 feita com os valores da spec + estilos extraídos do HTML (cores, bordas, raios, sombras).
+  **Preciso dos PNGs** em `docs/ui/mockups/png/` para as comparações das etapas 2 em diante.
+
+### P31. Texto de 12 px × piso de 12 px na tela pequena (prioridade média)
+- **Contexto:** a spec usa legendas de **12 px** na base 1920×1080 (`caption`) e diz que a escala automática garante o
+  mínimo de 12 px. Em 1280×720 a base é reduzida a 2/3: uma legenda de 12 px vira 8 px. Para voltar a 12 px a UI teria
+  de subir para 150%, e o HUD de 1920 não cabe numa janela de 1280 (o teto atual é "caber na tela").
+- **Opções:** (a) legendas a 12 px e aceitar ~10 px em 720p com a escala no teto que cabe; (b) piso de 14 px para
+  legendas só em telas pequenas (variação `LabelCaption` com 14 px quando a janela < 1600 px); (c) subir `caption` para 13–14 px.
+- **Escolha provisória:** etapa 1 segue a spec (12 px). Decido na etapa 2 (estrutura em 1280×720) com medição, pela
+  opção mais simples que mantenha ≥ 12 px real — provavelmente (b). `UiSettings.SmallestFont` passa de 14 para 12 junto.
+
+### P32. Variações antigas do HUD 2A mantidas durante a transição (prioridade baixa)
+- **Escolha:** o Theme novo convive com as variações do HUD 2A (`PanelPrimary`, `TopBar`, `ChipPanel`, `Alert*`…) e
+  com o texto padrão claro até as etapas 2–3 trocarem as telas; aí o padrão vira texto escuro (`text`) e o bloco
+  "legacy" sai do gerador (`tools/ui/build_theme.py`). Evita deixar o jogo ilegível no meio do caminho.

@@ -37,12 +37,14 @@ DST = ROOT / "godot" / "assets" / "vendor"
 MODEL_EXT = {".gltf", ".glb"}
 IMAGE_EXT = {".png", ".jpg", ".jpeg", ".webp", ".tga", ".exr"}
 AUDIO_EXT = {".ogg", ".wav"}
+FONT_EXT = {".ttf", ".otf", ".txt"}   # fonts travel with their OFL licence
 SKIP_DIR_WORDS = ("fbx", "obj", "unity", "blend", "__macosx")
 
 # id -> (glob for the raw folder, [(source subdir, destination subdir, kind)])
 # kind: "models" = .gltf/.glb in that dir (non-recursive) + their dependencies
 #       "models_recursive" = same, walking subdirs that are not FBX/OBJ/Unity
 #       "images_recursive" = every image file (texture-only packs)
+#       "fonts_recursive" = .ttf/.otf + licence .txt files
 PACKS: dict[str, tuple[str, list[tuple[str, str, str]]]] = {
     "quaternius_stylized_nature": ("Stylized Nature MegaKit*", [("glTF", "", "models")]),
     "quaternius_medieval_village": ("Medieval Village MegaKit*", [("glTF", "", "models")]),
@@ -67,6 +69,8 @@ PACKS: dict[str, tuple[str, list[tuple[str, str, str]]]] = {
     "kenney_interface_sounds": ("kenney_interface-sounds", [("Audio", "", "audio_recursive")]),
     "kenney_impact_sounds": ("kenney_impact-sounds", [("Audio", "", "audio_recursive")]),
     "kenney_rpg_audio": ("kenney_rpg-audio", [("Audio", "", "audio_recursive")]),
+    # HUD v2 fonts (Google Fonts, SIL OFL 1.1): Alegreya SC, Alegreya Italic, Nunito (variable).
+    "google_fonts": ("google_fonts", [("", "", "fonts_recursive")]),
     # Layout unknown until downloaded: discovered recursively.
     "kaykit_resource_bits": ("*Resource*Bits*", [("", "", "models_recursive")]),
     "watercolor_terrain_textures": ("*atercolor*", [("", "", "images_recursive")]),
@@ -103,6 +107,11 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
         dst = DST / pack_id / dst_sub if dst_sub else DST / pack_id
         if not src.is_dir():
             print(f"  ! {pack_id}: missing folder '{src_sub}'", file=sys.stderr)
+            continue
+        if kind == "fonts_recursive":
+            for f in sorted(src.rglob("*")):
+                if f.is_file() and f.suffix.lower() in FONT_EXT and not f.name.startswith("._"):
+                    plan[dst / f.relative_to(src)] = f
             continue
         if kind == "audio_recursive":
             for f in sorted(src.rglob("*")):

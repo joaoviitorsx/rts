@@ -19,6 +19,14 @@ Credit is not required; we record it anyway.
 | Impact Sounds | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/impact-sounds | `art/vendor_raw/kenney_impact-sounds/` |
 | RPG Audio | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/rpg-audio | `art/vendor_raw/kenney_rpg-audio/` |
 
+## Fonts (SIL Open Font License 1.1)
+
+| Font | Author | License | Source | Local copy | Use |
+|---|---|---|---|---|---|
+| Alegreya SC (Bold, Medium) | Juan Pablo del Peral, Huerta Tipográfica | OFL 1.1 | https://github.com/google/fonts/tree/main/ofl/alegreyasc | `art/vendor_raw/google_fonts/alegreyasc/` | HUD titles |
+| Alegreya Italic (variable) | Juan Pablo del Peral, Huerta Tipográfica | OFL 1.1 | https://github.com/google/fonts/tree/main/ofl/alegreya | `art/vendor_raw/google_fonts/alegreya/` | Reeve / villager quotes |
+| Nunito (variable) | Vernon Adams, Cyreal, Jacques Le Bailly | OFL 1.1 | https://github.com/google/fonts/tree/main/ofl/nunito | `art/vendor_raw/google_fonts/nunito/` | HUD body and numbers (tabular figures) |
+
 Planned, not yet in the project: KayKit Resource Bits (Kay Lousberg, CC0); game-icons.net icons (CC BY 3.0, per-icon credit in `docs/icon_credits.csv`).
 
 Quaternius: https://www.patreon.com/quaternius · Kay Lousberg: https://kaylousberg.com
