@@ -1,11 +1,12 @@
 # Relatório da madrugada — 09/10/2026
 
-Branch: `overnight/2026-10-09` (push feito a cada item; nada na `main`). Último commit: `9f1ba5d`.
+Branch: `overnight/2026-10-09` (push feito a cada item; nada na `main`). Último commit de feature: `9f1ba5d`;
+depois disso só trabalho seguro (testes, relatório).
 
 ## 1. Resumo (5 linhas)
 
 1. **Os 6 itens do Marco 2A foram implementados na ordem do plano**, cada um com testes, smoke na engine, commit e push.
-2. Testes: 50 → **100** (determinismo, save/load, soak de 50 anos e as mecânicas novas), build sem avisos.
+2. Testes: 50 → **103** (determinismo, save/load, soak de 50 anos, fuzz de comandos e as mecânicas novas), build sem avisos.
 3. Balanceamento pela CLI (`docs/balance_report.md`): o jogador ingênuo não perde ninguém no ano 1 em 3 seeds; a crise
    da lenha surge no 1º outono (~8 min); a 1ª sugestão de decreto aos ~12 min; a crise das ferramentas aos ~40 min.
 4. Dois bugs graves achados e corrigidos: carregadores deixavam a colheita apodrecer no campo (fome com comida no
@@ -78,7 +79,16 @@ Nenhum item ficou bloqueado. O que ficou parcial e por quê:
 **Baixa**
 15. P2, P3, P4, P9, P11, P14, P18, P23 — prioridades dos carregadores, regras da obra, passo da UI, mudança automática de casa, comandos instantâneos, roteiro ótimo com indústria, passivo morrer cedo, presets/instrumentação.
 
-## 6. Riscos e próximos passos
+## 6. Trabalho seguro feito depois dos itens
+
+- **Fuzz de comandos** (`450ba04`): 2 anos de comandos aleatórios em 3 seeds (mais 30 seeds avulsas), invariantes todo
+  dia e uma cópia carregada de save no dia 200 idêntica por hash — tudo verde.
+- **Profiling (Release, sem mudar comportamento):** ~725 mil ticks/s com o jogador ótimo (50 anos em ~1 s); ~270 mil com
+  o ingênuo. A 8x o jogo precisa de 80 ticks/s. No jogo, 1% low de ~40 FPS é igual pausado (vsync/compositor, não sim).
+- **Legibilidade em 1280×720 (simulada):** o layout é o mesmo (base 1920, `canvas_items`), mas o texto secundário fica com
+  ~9 px. Sugestão para depois do playtest: opção de escala da UI.
+
+## 7. Riscos e próximos passos
 
 **Riscos**
 - **A heurística da sugestão** (3 remanejamentos em 60 dias) e a faixa sugerida são suposições; só o playtest mostra se
