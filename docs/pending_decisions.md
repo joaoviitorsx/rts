@@ -290,3 +290,5 @@ As decisões abertas da v0.3 estão no `docs/GDD_v0.3_abertura_rts.md` §15 (D1�
   Control"). O addon foi instalado com `--addons-dir` no caminho do Flatpak (`~/.var/app/org.blender.Blender/config/blender/5.1/scripts/addons`).
 - O `install-addon` também sobrescreveu um `addon.py` antigo que já estava lá (backup em `addon.py.bak`). Agora há dois
   arquivos idênticos (`addon.py` e `blender_mcp.py`): ativar só um no Blender, ou apagar o `addon.py`.
+- 09/10: `look` do MCP falhava ("Screenshot file was not created"): o servidor grava em `tempfile.gettempdir()` e o
+  `/tmp` do Flatpak é privado. Correção: `TMPDIR=~/.cache/blender-mcp-tmp` na config do servidor (pasta visível dos dois lados).
