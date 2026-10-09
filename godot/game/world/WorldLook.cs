@@ -112,7 +112,7 @@ public partial class WorldLook : Node3D
         _terrain = (Node3D)script.New();
         _terrain.Name = "Ground";
         _terrain.Set("cover", new Rect2(0, 0, _width + 1, _height + 1));
-        _terrain.Set("palette", "meadow");
+        _terrain.Set("palette", "koastalia");
         AddChild(_terrain);   // its _ready builds Terrain3D with the cozy shader
         var terrain = _terrain.Get("terrain").AsGodotObject();
         if (terrain is null) return;   // GDExtension missing: VillageTerrain fell back to a plane

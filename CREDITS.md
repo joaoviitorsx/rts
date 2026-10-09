@@ -34,4 +34,5 @@ Quaternius: https://www.patreon.com/quaternius · Kay Lousberg: https://kaylousb
 | Tool | Author | License | Use |
 |---|---|---|---|
 | [Terrain3D](https://github.com/TokisanGames/Terrain3D) 1.0.2 | Cory Petkovsek, Roope Palmroos & contributors | MIT | Terrain relief, layer painting; `game/terrain/cozy_ground.gdshader` is based on its `extras/shaders/minimum.gdshader` |
+| [Sky3D](https://github.com/TokisanGames/Sky3D) 2.1.0 | Cory Petkovsek & contributors, J. Cuéllar | MIT | Sky, sun/moon, clouds and time of day of generated maps (`game/world/WorldSky.gd`), driven by the sim clock and weather |
 | [Stylized Cartoon Grass](https://godotshaders.com/shader/stylized-cartoon-grass/) | dip000 | MIT | Grass carpet shader approach (terrain-coloured root, root→tip gradient, wind) adapted in `game/vegetation/grass_carpet.gdshader` |

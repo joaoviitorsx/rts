@@ -22,8 +22,14 @@ public partial class Main : Node3D
         var catalog = new VisualCatalog();
         Ground.CellSize = catalog.CellSize;
 
+        Node3D? sky = null;
         if (host.World.Terrain is not null)
-            GD.Load<GDScript>("res://game/visual/CozyEnvironment.gd").Call("build", this);   // approved look-dev light
+        {
+            // Generated maps: Sky3D day/night + clouds + rain driven by the sim (world look 4c); cozy grade inside.
+            sky = (Node3D)GD.Load<GDScript>("res://game/world/WorldSky.gd").New();
+            sky.Name = "WorldSky";
+            AddChild(sky);
+        }
         else AddChild(new WorldEnvironment
         {
             Environment = new Environment
@@ -62,6 +68,8 @@ public partial class Main : Node3D
         camera.SetBounds(new Rect2(0, 0, map.Width * catalog.CellSize, map.Height * catalog.CellSize));
         if (host.World.SeatBuilding is { } seat) camera.FocusOn(view.FootprintCenter(seat), 40);
         else if (host.World.Terrain is { } terrain) camera.FocusOn(view.CellCenter(terrain.Start), 55);   // the band's clearing
+
+        if (sky is not null) AddChild(new SkyDriver { Name = "SkyDriver", Host = host, Sky = sky, Camera = camera });
 
         var build = new BuildController { Name = "BuildController" };
         AddChild(build);

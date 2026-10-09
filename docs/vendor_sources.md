@@ -37,6 +37,7 @@ original folder name, then run the script.
 | id | Source | Version | License | How it gets into the project |
 |---|---|---|---|---|
 | terrain3d | https://github.com/TokisanGames/Terrain3D/releases (`Terrain3D_v1.0.2-stable.zip`) | 1.0.2 (officially 4.4–4.6; verified loading on 4.7) | MIT | extracted to `art/vendor_raw/Terrain3D_v1.0.2-stable/`; `setup_vendor.py` installs Win/Linux x86_64 binaries into `godot/addons/terrain_3d/` |
+| sky3d | https://github.com/TokisanGames/Sky3D/releases (`Sky3D_v2.1.0.zip`) | 2.1.0 (verified on 4.7) | MIT | extracted to `art/vendor_raw/Sky3D_v2.1.0/`; `setup_vendor.py` copies `addons/sky_3d` into `godot/addons/sky_3d/` (gitignored) |
 | stylized_cartoon_grass | https://godotshaders.com/shader/stylized-cartoon-grass/ (dip000) | page as of 2026-10-08 | MIT | ideas/code adapted (not copied verbatim) in `godot/game/vegetation/grass_carpet.gdshader`, credited in the file header |
 
 Evaluated and not used: Open Stylized 3D (MIT; own node types + billboard waves, no terrain-colour matching);

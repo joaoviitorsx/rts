@@ -24,6 +24,11 @@ const PALETTES := {
 		"ground_dirt": Color("a07a50"), "ground_path": Color("d1b282"), "ground_plowed": Color("6e4b33"),
 		"veg_tip": Color("b4d957"), "veg_shadow": Color("3b6128"),
 	},
+	"koastalia": { # generated world under Sky3D (4c): deeper, more saturated meadow like the reference
+		"ground_base": Color("6aa32c"), "ground_light": Color("86bd3a"), "ground_dark": Color("4f8a26"),
+		"ground_dirt": Color("9a7550"), "ground_path": Color("d4b583"), "ground_plowed": Color("6e4b33"),
+		"veg_tip": Color("a8d24a"), "veg_shadow": Color("3b6128"),
+	},
 }
 
 @export var cover := Rect2(0, 0, 256, 256)   ## world XZ rect that must have terrain (regions are added to cover it)

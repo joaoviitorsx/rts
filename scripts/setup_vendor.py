@@ -158,6 +158,8 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
 ADDONS = [
     # (glob for the raw folder, addon folder inside it, destination, binary name filters to keep)
     ("Terrain3D_v*", "addons/terrain_3d", "godot/addons/terrain_3d", ("windows.", "linux.")),
+    # Sky3D (MIT, GDScript): day/night, sun/moon, atmosphere, clouds — world look step 4c.
+    ("Sky3D_v*", "addons/sky_3d", "godot/addons/sky_3d", ()),
 ]
 ADDON_ARCH_SKIP = ("arm64", "rv64", "arm32")
 
