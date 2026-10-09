@@ -33,3 +33,7 @@ TestResults/
 
 # Third-party Godot addons installed by scripts/setup_vendor.py (see docs/vendor_sources.md)
 /godot/addons/terrain_3d/
+
+# Python bytecode
+__pycache__/
+*.pyc
