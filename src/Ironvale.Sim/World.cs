@@ -136,7 +136,14 @@ public sealed class World
 
     // ---------------------------------------------------------------- stepping
 
-    public void Enqueue(SimCommand command) => _pending.Add(command);
+    /// <summary>Observers (session logs) see every queued command. Not part of the state.</summary>
+    public event Action<SimCommand>? CommandEnqueued;
+
+    public void Enqueue(SimCommand command)
+    {
+        _pending.Add(command);
+        CommandEnqueued?.Invoke(command);
+    }
 
     /// <summary>
     /// Applies queued commands now, at the current tick, without advancing time. Same result as letting the next

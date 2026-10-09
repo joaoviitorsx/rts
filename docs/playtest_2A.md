@@ -29,7 +29,9 @@ oferecida, obra concluída, família foi embora, alertas, comandos rejeitados).
 - Windows: `%APPDATA%\Godot\app_userdata\Ironvale\playtest\session_*.csv`
 - Linux: `~/.local/share/godot/app_userdata/Ironvale/playtest/session_*.csv`
 
-Pedir o arquivo ao fim da sessão. Dele saem: cliques (comandos) por minuto, decretos criados, sugestões
+Pedir o arquivo ao fim da sessão. Para gerar o relatório: `python3 tools/analyze_playtest.py <pasta com os CSVs> --out docs/reports/playtest_<data>.md`.
+O build candidato grava o **formato v1** (sem linhas de crise): o relatório mostra crises 1–2 como "—" e estima os decretos
+no fim; builds da branch `feature/2B-polish` gravam o v2 (estado diário + crises). Dele saem: cliques (comandos) por minuto, decretos criados, sugestões
 oferecidas × aceitas (`AcceptSuggestion` / `DismissSuggestion`), quando cada família saiu.
 
 ## 3. Antes de começar (5 min)

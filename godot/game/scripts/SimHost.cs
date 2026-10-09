@@ -83,7 +83,7 @@ public partial class SimHost : Node
     public void Send(SimCommand command)
     {
         if (IsBusy) return;
-        (_log ??= new SessionLog()).Command(command, World.Calendar.TotalDays);
+        (_log ??= new SessionLog()).Command(World, command);
         World.Enqueue(command);
         World.ApplyPendingCommands();   // instant feedback, also while paused (same tick: deterministic)
     }
@@ -112,10 +112,11 @@ public partial class SimHost : Node
             if (ticks == MaxTicksPerFrame) _accumulator = 0;   // can't keep up: drop time instead of spiralling
         }
 
+        _log?.Tick(World);
         var events = World.DrainEvents();
         if (events.Count > 0)
         {
-            (_log ??= new SessionLog()).Events(events, World.Calendar.TotalDays);
+            (_log ??= new SessionLog()).Events(World, events);
             EventsReceived?.Invoke(events);
         }
     }

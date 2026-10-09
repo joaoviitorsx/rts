@@ -10,6 +10,7 @@ using Ironvale.Sim.Time;
 // Headless runner: simulates N years without rendering and prints a yearly summary.
 //   dotnet run --project src/Ironvale.Sim.Cli -- --years 50 --seed 42 [--player passive|naive|optimal] [--no-roads]
 //       [--csv out/] [--save out/run.ivsave] [--no-opening]
+//       [--session-log out/sessions/naive_42.csv]   (playtest CSV of the scripted run, for tools/analyze_playtest.py)
 //   dotnet run --project src/Ironvale.Sim.Cli -- --balance-report docs/balance_report.md [--years 3]
 //       (every scripted player × seeds 42/7/123: survival, crises 1–3, deadlock, commute; GDD v0.2 §4/§6)
 
@@ -28,6 +29,15 @@ if (opts.GetValueOrDefault("balance-report") is { } reportPath)
 var world = World.Create(content, scenario, seed);
 IScriptedPlayer? player = opts.ContainsKey("no-opening") ? null
     : ScriptedPlayers.Create(opts.GetValueOrDefault("player") ?? "optimal", roads: !opts.ContainsKey("no-roads"));
+SessionRecorder? session = null;
+if (opts.GetValueOrDefault("session-log") is { } sessionPath)
+{
+    // Scripted session in the playtest CSV format; "real" seconds = game time at 1x (1 day = 4 s).
+    Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(sessionPath))!);
+    session = new SessionRecorder(new StreamWriter(sessionPath), () => world.ElapsedTicks / (double)SimTime.TicksPerSecondAt1x);
+    world.CollectEvents = true;
+    world.CommandEnqueued += c => session.Command(world, c);
+}
 player?.Start(world);
 var watch = new CrisisWatch();
 
@@ -48,6 +58,11 @@ for (int y = 1; y <= years; y++)
     for (int d = 0; d < SimTime.DaysPerYear; d++)
     {
         world.StepDays(1);
+        if (session is not null)
+        {
+            session.Events(world, world.DrainEvents());
+            session.Tick(world);
+        }
         player?.Daily(world);
         watch.Observe(world);
     }
@@ -73,6 +88,7 @@ for (int y = 1; y <= years; y++)
     }
 }
 sw.Stop();
+session?.Dispose();
 
 Console.WriteLine();
 Console.WriteLine($"ticks: {world.ElapsedTicks:N0} in {sw.Elapsed.TotalSeconds:0.00}s " +

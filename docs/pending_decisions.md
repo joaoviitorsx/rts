@@ -159,3 +159,12 @@
   encontra na primavera do ano 2 (~25 min). Alternativas testadas: 4 ferr. + desgaste 12 (crise aos ~14–18 min, perto
   demais da crise 1) e 6 + desgaste 16 (~14–19 min).
 
+
+## Branch feature/2B-polish (a partir de `playtest-2A-candidate`)
+
+### P25. Formato do log de playtest (prioridade média)
+- **Contexto:** o build candidato (congelado) grava só comandos e eventos (v1): crises 1 e 2 e decretos ativos não aparecem.
+- **Escolha:** a branch grava o v2 (linha `meta`, estado diário, linhas de crise) com o mesmo código no jogo e na CLI
+  (`SessionRecorder`); o analisador lê v1 e v2 e diz o que o v1 não tem. **Opção para o dono:** se quiser crises com horário
+  já no 1º playtest, usar um build da branch (mas ele também traz as mudanças de view/UI dos itens seguintes).
+
