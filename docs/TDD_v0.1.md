@@ -504,3 +504,25 @@ Números do balanceamento são placeholders em `godot/data/balance.json` até ex
 ## Changelog
 - **v0.1 (08/10/2026)** — primeira versão para aprovação.
 - **v0.1.1 (08/10/2026)** — estrutura `godot/` + `art/vendor_raw/`; §12 notas de implementação do Marco 1.
+
+
+---
+
+## Adendo — Marco 2A (09/10/2026)
+
+Sistemas novos na simulação (C# puro, determinística), na ordem do plano `docs/plan_2A.md`:
+
+| Área | O que mudou | Onde |
+|---|---|---|
+| Construção | Obra guarda o material entregue (capacidade = custo); carregadores levam armazém → obra; trabalho horário de construtores (famílias ociosas ajudam: `autoBuilders`); material consumido na conclusão; cancelar devolve | `Systems/ConstructionSystem`, `World.CompleteConstruction/CancelSite`, `TransportSystem.TryPlanDelivery` |
+| Decretos | `Policy.Min/Max` (faixa explícita); livro de contas estruturado (`PolicyLogEntry.Key/Args`, texto pt para CLI/testes, `log.*` no `ui.csv`) | `Policies/Policy.cs`, `Systems/PolicySystem` |
+| Mapa e rotas | Estradas no `GridMap` (+ `Version`); `Pathfinder` com campo de distância (Dijkstra) por alvo em cache, passo mínimo com desempate N-L-S-O (sem estado salvo); custo de entrar na célula: estrada / fora / outro edifício ×6 | `Map/GridMap.cs`, `Map/Pathfinder.cs` |
+| Trajeto | Turno = [ida, dia − volta); ida = ticks da rota × `commuteTicksPermille`; produção e obra só no local; `autoRehome`; horta no tempo livre | `World.CommuteMilliTicks/OnSitePermille/GardenFood`, `ProductionSystem`, `NeedsSystem`, `ConsumptionSystem` |
+| Insumos | Receitas com `inputs` (por unidade produzida); `Building.InputStock` reabastecido pelos carregadores abaixo de metade da meta; Ferreiro e Pedreira | `Content/Defs.cs`, `ProductionSystem`, `World.DeliveryNeed` |
+| Logística | Urgência por necessidade: comida (e lenha no outono/inverno) abaixo de `haulUrgentDays` de consumo | `TransportSystem.MarkNeedUrgency` |
+| CA e sugestão | `World.AdminCapacity/AdminUsed/AdminOverload`; sobrecarga atrasa/falha (RNG "admin"); observação de remanejamentos → `DecreeSuggestion`; `AcceptSuggestion` / `DismissSuggestion` | `World.cs`, `Policies/Suggestions.cs`, `Commands/SimCommand.cs` |
+| Comandos | `World.ApplyPendingCommands()` — a view aplica no mesmo tick (resposta instantânea, inclusive pausado) | `World.cs`, `SimHost.Send` |
+| Balanceamento | Jogadores roteirizados `passive/naive/optimal` + `CrisisWatch` (crises 1–3, 1ª sugestão, trechos sem acontecimento); CLI `--player`, `--balance-report` | `Scripting/`, `Ironvale.Sim.Cli/BalanceReport.cs` |
+
+**Save:** v2 (obras) → v3 (faixa + log) → v4 (estradas, próxima célula do carregador) → v5 (horta) → v6 (insumos) →
+v7 (observações e sugestão). Saves de versões anteriores são **rejeitados** com mensagem clara (sem migração no 2A).

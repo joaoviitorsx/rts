@@ -114,3 +114,33 @@
 - Fazer nada perde todas as famílias por volta de 8 min (fome). O GDD pede falha branda; o passivo literalmente não
   constrói casas nem campos. Se parecer duro demais no playtest: subir `subsistenceFoodCoverPermille`.
 
+## 2A.6 — Capacidade Administrativa + sugestão de decreto
+
+### P19. Custos e capacidade (prioridade ALTA — confirmar)
+- **Escolha:** Salão = **4** de CA; decreto de faixa = 1 por recurso; ferramentas = 2 ("produção condicional",
+  GDD v0.2 §3.1). Com 3 de CA e comida custando 2, o critério §8.3 ("delegou ≥ 3 em 60 min") ficava impossível.
+- **Sobrecarga:** cada ponto acima do limite faz o reeve avaliar a cada 1 + n×`adminOverloadDelayDays` dias e falhar
+  ações com n×`adminOverloadErrorPermille` (150 ‰) de chance (fluxo de RNG próprio "admin" → determinístico).
+- **Sem fontes novas de CA no 2A** (escrivão, capela ficam para depois): o teto é 4 durante o playtest.
+
+### P20. O que conta como repetição (prioridade média)
+- **Escolha:** só remanejamentos — família tirada de um emprego e posta noutro produtor, ou troca de receita num
+  edifício com gente. Primeiras contratações não contam (senão a sugestão de comida saía no 1º minuto só por
+  preencher os campos). 3 ações em 60 dias (`suggestAfterActions`, `suggestWindowDays`); "Agora não" = 90 dias.
+
+### P21. Faixa sugerida (prioridade média)
+- **Escolha:** mínimo = média do estoque nos momentos das 3 ações, arredondada a 10; máximo = mínimo × 1,25.
+  Simples e explicável ("quando o estoque estava em ~60"), mas para lenha pode ficar baixo para o inverno.
+- **Alternativa:** considerar a demanda do próximo inverno para lenha/comida.
+
+### P22. Jogadores roteirizados mudaram (prioridade baixa)
+- **optimal:** mantém 3 decretos (3/4 de CA) e cuida da pedreira/ferreiro à mão (trocar o decreto de madeira pelo de
+  ferramentas fazia a madeira zerar → sem ferramentas → colapso no ano 15).
+- **naive:** no aviso de lenha remaneja as famílias dos campos para os lenhadores e as devolve na primavera (como um
+  humano faria). Nunca aceita sugestões. Sobrevive aos anos 1–2; cai no inverno do ano 3.
+
+### P23. Build e instrumentação do playtest (prioridade baixa)
+- `godot/export_presets.cfg` (Windows/Linux, release, exclui cenas de teste/ferramentas e impostores);
+  `project.godot` aponta `dotnet/project/solution_directory="../"` (a solução fica na raiz).
+- `SessionLog`: CSV por sessão em `user://playtest/` (comandos e eventos) só para medir o playtest; não altera o jogo.
+

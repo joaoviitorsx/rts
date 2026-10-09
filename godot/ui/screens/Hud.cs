@@ -314,7 +314,7 @@ public partial class Hud : CanvasLayer
         }
         else if (_activePanel == _families) _families.Bind(s);
         else if (_activePanel == _policies) _policies.Bind(s);
-        else if (_activePanel == _debug) _debug!.Bind(s);
+        else if (_debug is not null && _activePanel == _debug) _debug.Bind(s);   // no debug panel in player builds
         RefreshAlerts(s);
     }
 

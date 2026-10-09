@@ -78,9 +78,12 @@ public partial class SimHost : Node
     public UiSnapshot BuildUiSnapshot() =>
         UiSnapshotBuilder.Build(World, Speed, key => TranslationServer.Translate(key), ref _objectiveFloor);
 
+    private SessionLog? _log;
+
     public void Send(SimCommand command)
     {
         if (IsBusy) return;
+        (_log ??= new SessionLog()).Command(command, World.Calendar.TotalDays);
         World.Enqueue(command);
         World.ApplyPendingCommands();   // instant feedback, also while paused (same tick: deterministic)
     }
@@ -110,7 +113,11 @@ public partial class SimHost : Node
         }
 
         var events = World.DrainEvents();
-        if (events.Count > 0) EventsReceived?.Invoke(events);
+        if (events.Count > 0)
+        {
+            (_log ??= new SessionLog()).Events(events, World.Calendar.TotalDays);
+            EventsReceived?.Invoke(events);
+        }
     }
 
     /// <summary>Runs N years on a worker thread. The SceneTree is never touched from that thread.</summary>

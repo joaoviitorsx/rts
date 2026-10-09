@@ -49,3 +49,19 @@
 - **Abertura:** o jogo começa sem roteiro (só o Salão e a carroça). Carroça: 400 comida, 60 lenha (antes 300/60).
 - **Top 3 para o dono testar:** (1) os textos do cartão são claros sem tutorial? (2) a crise da lenha (~8 min) é
   percebida antes de virar fome/frio? (3) o jogo começa rodando a 1x — deveria começar pausado?
+
+## Marco 2A — item 6 — 09/10/2026 (passe medido pelo agente, sem jogador humano)
+
+- **Momento-chave (sugestão do reeve):** nos cenários da CLI, o jogador ingênuo recebe a 1ª sugestão no 1º outono
+  (~12 min), logo depois da crise da lenha (~8 min) — perto do alvo do GDD v0.2 §4.2 (15–25 min). O cartão mostra por
+  quê / o quê / custo em CA / o que se perde, com Criar decreto · Agora não · Nunca. Só remanejamentos contam como
+  repetição (preencher vagas no começo não dispara sugestão).
+- **CA sempre visível** na barra de cima ("CA 0/4"), em alerta quando estoura; o painel de decretos mostra o custo de
+  cada decreto. Sobrecarga: o reeve atrasa e falha (determinístico), e o livro de contas diz isso.
+- **Build de jogador:** exportar revelou um crash que só existe sem o painel de debug (null == null no HUD) —
+  corrigido; o build Linux passa no smoke test exportado. Windows exportado, não executado (sem Windows aqui).
+- **Resposta:** comandos continuam instantâneos (mesmo tick). Sem som/animação de "carimbo" ao aceitar (F3).
+- **Ritmo:** cartão de objetivo nunca volta atrás (antes regredia quando o jogador esvaziava um campo).
+- **Top 3 para o dono testar:** (1) a faixa sugerida pelo reeve (estoque observado, ex.: lenha 60–80) faz sentido ou
+  deveria considerar o inverno? (2) o custo em CA está claro antes de aceitar? (3) 4 de CA no começo é apertado o
+  bastante para ser uma escolha?

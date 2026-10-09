@@ -11,7 +11,7 @@
 | Etapa 2 — integração de assets | ✅ concluída (08/10/2026) | assets importados, cenas herdadas, registro visual |
 | Etapa 3 — TEST_VILLAGE_01 | ✅ concluída (08/10/2026) — montagem | cena de validação + screenshots em 3 zooms |
 | Look-dev visual: chão, vegetação, luz e câmera | ✅ aprovado (08/10/2026) | LOOKDEV_GROUND aplicado na TEST_VILLAGE_01; ajustes finos de arte ficam para a F3 |
-| **Marco 2A — loop central jogável** | 🟡 em andamento (plano em revisão) | gate: playtest com 5 pessoas (GDD §8.3) |
+| **Marco 2A — loop central jogável** | 🟢 itens 1–6 feitos na branch `overnight/2026-10-09` (09/10/2026) — aguardando playtest | gate: playtest com 5 pessoas (GDD §8.3) |
 | Marco 2B — diferenciais e polimento | 📋 registrado | depois do gate do 2A |
 
 ## Etapa 2 — integração de assets (plano combinado)
@@ -101,6 +101,14 @@ Cada tela passa por: 1 objetivo → 2 informações → 3 wireframe → 4 cinza 
 - Cada cenário mede o **impacto do trajeto**: % do turno em trajeto por edifício, produção perdida/ano e tempo livre
   (horta) por família, com e sem estrada, morando perto × longe do trabalho.
 - `docs/balance_report.md` com CSV e gráficos por cenário, verificando se as crises 1–3 aparecem nos minutos previstos no GDD v0.2 §4.
+
+## Marco 2A — estado (09/10/2026, madrugada)
+- Plano: `docs/plan_2A.md`. Relatório: `docs/reports/2026-10-09_madrugada.md`. Decisões a revisar: `docs/pending_decisions.md`.
+- Itens 1–6 implementados, cada um com testes (100 no total, incluindo determinismo, save/load e soak de 50 anos),
+  smoke na engine e commit. Balanceamento: `docs/balance_report.md` (CLI `--balance-report`).
+- Build de playtest (Windows + Linux, release) em `out/playtest/` (fora do git) e roteiro em `docs/playtest_2A.md`.
+- **Gate:** playtest com 5 pessoas (GDD §8.3) — não iniciado. Passe de feel humano (15 min) após os itens 3, 5 e 6:
+  pendente do dono (notas medidas em `docs/feel_notes.md`).
 
 ## Onde paramos (08/10/2026)
 - Paleta V2 "meadow" (mais saturada) escolhida e já padrão global. A aprovação do look-dev visual completo é o item
