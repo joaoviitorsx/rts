@@ -56,10 +56,13 @@ internal static class TestKit
             long actual = 0;
             foreach (var b in w.Buildings)
             {
-                long amount = b.Stock.Get(r).Milli, reserved = b.Stock.Reserved(r).Milli;
-                Assert.True(amount >= 0, $"{w.DescribeBuilding(b)} negative {w.Content.Resources[r].Id}: {amount}");
-                Assert.True(reserved >= 0 && reserved <= amount, $"{w.DescribeBuilding(b)} bad reservation");
-                actual += amount;
+                foreach (var stock in new[] { b.Stock, b.InputStock })
+                {
+                    long amount = stock.Get(r).Milli, reserved = stock.Reserved(r).Milli;
+                    Assert.True(amount >= 0, $"{w.DescribeBuilding(b)} negative {w.Content.Resources[r].Id}: {amount}");
+                    Assert.True(reserved >= 0 && reserved <= amount, $"{w.DescribeBuilding(b)} bad reservation");
+                    actual += amount;
+                }
             }
             foreach (var s in w.Shipments)
             {
@@ -71,7 +74,8 @@ internal static class TestKit
         }
         foreach (var b in w.Buildings)
         {
-            Assert.True(b.Stock.Incoming.Milli >= 0, "negative incoming");
+            Assert.True(b.Stock.Incoming.Milli >= 0 && b.InputStock.Incoming.Milli >= 0, "negative incoming");
+            Assert.True(b.InputStock.Total <= b.InputStock.Capacity || b.InputStock.Capacity.IsZero, $"{w.DescribeBuilding(b)} inputs over capacity");
             Assert.True(b.Stock.Total <= b.Stock.Capacity || b.Stock.Capacity.IsZero, $"{w.DescribeBuilding(b)} over capacity");
         }
         foreach (var h in w.Households)

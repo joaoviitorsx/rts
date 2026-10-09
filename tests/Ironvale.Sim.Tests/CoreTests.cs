@@ -165,7 +165,8 @@ public class ContentLoaderTests
     {
         var c = TestKit.Content;
         Assert.Equal(new[] { "wood", "firewood", "food", "stone", "tools", "coins" }, c.Resources.Select(r => r.Id));
-        Assert.Equal(new[] { "hall", "house", "woodcutter", "field", "granary" }, c.Buildings.Select(b => b.Id));
+        Assert.Equal(new[] { "hall", "house", "woodcutter", "field", "smithy", "quarry", "granary" }, c.Buildings.Select(b => b.Id));
+        Assert.True(c.Building("smithy").Recipes.Single().HasInputs);
         Assert.StartsWith("fnv64:", c.Hash);
     }
 

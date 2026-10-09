@@ -328,5 +328,7 @@ public partial class Hud : CanvasLayer
         if (name == "families") ShowPanel(_families);
         else if (name == "policies") ShowPanel(_policies);
         else if (name.StartsWith("building:") && int.TryParse(name[9..], out int id)) OpenBuilding(id);
+        else if (name.StartsWith("building:") && _host.World.Buildings.FirstOrDefault(b => b.Def.Id == name[9..]) is { } first)
+            OpenBuilding(first.Id);
     }
 }

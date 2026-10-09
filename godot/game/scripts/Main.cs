@@ -85,11 +85,17 @@ public partial class Main : Node3D
     private static void ApplyCommandLine(SimHost host)
     {
         var args = OS.GetCmdlineUserArgs();
-        if (args.Contains("--opening")) MvpOpening.Apply(host.World, roads: !args.Contains("--no-roads"));
+        IScriptedPlayer? player = args.Contains("--opening") ? new OptimalPlayer(roads: !args.Contains("--no-roads")) : null;
+        player?.Start(host.World);
         foreach (var arg in args)
         {
             if (arg.StartsWith("--speed=") && int.TryParse(arg[8..], out int speed)) host.SetSpeed(speed);
-            if (arg.StartsWith("--days=") && int.TryParse(arg[7..], out int days)) host.World.StepDays(days);
+            if (arg.StartsWith("--days=") && int.TryParse(arg[7..], out int days))
+                for (int d = 0; d < days; d++)
+                {
+                    host.World.StepDays(1);
+                    player?.Daily(host.World);   // the scripted player keeps playing during the pre-simulation
+                }
         }
     }
 }

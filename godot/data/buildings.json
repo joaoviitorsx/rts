@@ -10,6 +10,10 @@
       "roles": ["producer"], "jobSlots": 2, "recipes": ["chop_wood", "split_firewood"], "outputCapacity": 60 },
     { "id": "field", "name": "Campo", "footprint": [4, 4], "cost": { "wood": 5 }, "buildDays": 2,
       "roles": ["producer"], "jobSlots": 2, "recipes": ["grow_food"], "outputCapacity": 5000 },
+    { "id": "smithy", "name": "Ferreiro", "footprint": [2, 2], "cost": { "wood": 20, "stone": 4 }, "buildDays": 4,
+      "roles": ["producer"], "jobSlots": 2, "recipes": ["forge_tools"], "outputCapacity": 20, "inputCapacity": 20 },
+    { "id": "quarry", "name": "Pedreira", "footprint": [3, 3], "cost": { "wood": 15 }, "buildDays": 3,
+      "roles": ["producer"], "jobSlots": 2, "recipes": ["quarry_stone"], "outputCapacity": 60 },
     { "id": "granary", "name": "Celeiro", "footprint": [3, 2], "cost": { "wood": 30, "stone": 5 }, "buildDays": 5,
       "roles": ["storage"], "storageCapacity": 4000, "jobSlots": 2 }
   ]

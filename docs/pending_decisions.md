@@ -74,3 +74,20 @@
 - **Escolha:** a view aplica o comando no mesmo tick (`World.ApplyPendingCommands`), inclusive pausado. Resultado idêntico
   ao de esperar o próximo passo (teste). Corrige "posicionar pausado não faz nada".
 
+## 2A.4 — Ferreiro + decreto de ferramentas
+
+### P12. Pedreira adicionada (prioridade ALTA — confirmar) 
+- **Escolha:** Pedreira (3×3, 15 madeira, 2 vagas, 0,25 pedra/trabalhador-hora), sem recurso no mapa (pode ser posta em
+  qualquer lugar). Resolve P6. Modelo 3D ainda não existe: bloco cinza no `visual_catalog.json` (lacuna para o manifesto).
+- **Alternativa:** ferramentas só de madeira e sem pedreira (pedra continuaria finita).
+
+### P13. Receita e insumos do ferreiro (prioridade média)
+- **Escolha:** 1 ferramenta = 2 madeira + 1 pedra; 0,05 ferramenta/trabalhador-hora (~1/dia com 1 família). Buffer de insumo
+  de 20 (dividido entre os insumos) reabastecido pelos carregadores **quando cai abaixo da metade** (senão eles passavam
+  todas as viagens trazendo migalhas e nunca levavam a produção embora).
+- **Prioridade dos carregadores:** decreto urgente → obra/insumo (mais antigo primeiro) → buffer de produtor mais cheio.
+
+### P14. Jogador "optimal" usa a indústria no 1º inverno (prioridade baixa)
+- Pedreira + ferreiro + decretos "pedra entre 20 e 40" e "ferramentas entre 8 e 12". O `--opening` de dev no jogo agora usa
+  o mesmo jogador (continua jogando durante `--days`).
+

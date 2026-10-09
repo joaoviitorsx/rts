@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 5;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3)
+    public const int CurrentVersion = 6;   // 2: sites hold materials (2A.1) · 3: decree Min/Max + log (2A.2) · 4: roads + routes · 5: garden (2A.3) · 6: input buffers (2A.4)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -86,6 +86,7 @@ public static class SaveSerializer
                 Id = b.Id, Def = b.Def.Id, X = b.Origin.X, Y = b.Origin.Y, Rotation = b.Rotation,
                 Active = b.IsActive, BuildWorkMilli = b.BuildWorkMilli,
                 Stock = Map(b.Stock.AmountsRaw), Reserved = Map(b.Stock.ReservedRaw), Incoming = b.Stock.Incoming.Milli,
+                InStock = Map(b.InputStock.AmountsRaw), InReserved = Map(b.InputStock.ReservedRaw), InIncoming = b.InputStock.Incoming.Milli,
                 Slots = b.Slots.ToArray(), Recipe = b.Recipe?.Id, SeasonalWorkMilli = b.SeasonalWorkMilli,
                 RemainderMicro = Map(b.RemainderMicro),
             }).ToList(),
@@ -195,6 +196,7 @@ public static class SaveSerializer
                 Id = d.Id, Def = def, Origin = new Cell(d.X, d.Y), Rotation = d.Rotation, IsActive = d.Active,
                 BuildWorkMilli = d.BuildWorkMilli,
                 Stock = new Stockpile(content.ResourceCount, d.Active ? def.StockCapacity : def.TotalCost),
+                InputStock = new Stockpile(content.ResourceCount, def.InputCapacity),
                 Slots = d.Slots.ToArray(),
                 Recipe = d.Recipe is null ? null : def.Recipes.FirstOrDefault(r => r.Id == d.Recipe)
                     ?? throw new SaveException($"{d.Def} has no recipe '{d.Recipe}'"),
@@ -202,6 +204,7 @@ public static class SaveSerializer
                 RemainderMicro = Arr(d.RemainderMicro),
             };
             b.Stock.Restore(Arr(d.Stock), Arr(d.Reserved), d.Incoming);
+            b.InputStock.Restore(Arr(d.InStock), Arr(d.InReserved), d.InIncoming);
             w.InsertBuilding(b);
             w.Map.Fill(def, b.Origin, b.Rotation, b.Id);
         }

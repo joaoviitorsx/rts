@@ -206,7 +206,7 @@ public sealed class World
         return new Qty(sum);
     }
 
-    /// <summary>Material <paramref name="r"/> carriers are bringing (or about to bring) to a construction site.</summary>
+    /// <summary>Resource <paramref name="r"/> carriers are bringing (or about to bring) to a building (site or input buffer).</summary>
     public Qty SiteIncoming(Building site, int r)
     {
         long sum = 0;
@@ -219,6 +219,19 @@ public sealed class World
     /// <summary>Material still to be sent to a site: cost − on site − on the way.</summary>
     public Qty SiteNeed(Building site, int r) =>
         site.IsActive ? Qty.Zero : Qty.Max(Qty.Zero, site.Def.Cost[r] - site.Stock.Get(r) - SiteIncoming(site, r));
+
+    /// <summary>
+    /// What carriers should still bring to <paramref name="b"/>: site materials, or recipe inputs (2A.4) — those only
+    /// once the buffer (with what is on the way) drops below half its target, then topped up to the target, so
+    /// carriers don't spend every trip on trickles and still haul the output away.
+    /// </summary>
+    public Qty DeliveryNeed(Building b, int r)
+    {
+        if (!b.IsActive) return SiteNeed(b, r);
+        var target = b.InputTarget(r);
+        var have = b.InputStock.Get(r) + SiteIncoming(b, r);
+        return have.Milli * 2 >= target.Milli ? Qty.Zero : target - have;
+    }
 
     /// <summary>Households working on a site this hour (assigned by the player or helping).</summary>
     public int BuildersAt(Building site)
@@ -299,6 +312,7 @@ public sealed class World
             Rotation = rotation,
             IsActive = active,
             Stock = new Stockpile(Content.ResourceCount, active ? def.StockCapacity : def.TotalCost),
+            InputStock = new Stockpile(Content.ResourceCount, def.InputCapacity),
             Slots = new int[def.JobSlots],
             Recipe = def.Recipes.Count > 0 ? def.Recipes[0] : null,
             RemainderMicro = new long[Content.ResourceCount],
@@ -504,7 +518,7 @@ public sealed class World
             case CarrierPhase.ToPickup:
             case CarrierPhase.Loading:
                 GetBuilding(c.PickupId)?.Stock.Unreserve(c.Resource, c.Amount);
-                GetBuilding(c.DropoffId)?.Stock.CancelIncoming(c.Amount);
+                GetBuilding(c.DropoffId)?.DeliveryStock.CancelIncoming(c.Amount);
                 _carriers.Remove(c);
                 break;
             case CarrierPhase.ToDropoff:

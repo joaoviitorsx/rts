@@ -13,6 +13,19 @@ public sealed class Building
     /// </summary>
     public long BuildWorkMilli { get; internal set; }
     public Stockpile Stock { get; internal set; } = null!;
+    /// <summary>Inputs waiting to be used by the recipe (smithy: wood, stone). Empty capacity for other buildings.</summary>
+    public Stockpile InputStock { get; internal set; } = null!;
+
+    /// <summary>Where carriers unload when this building is the destination: site materials, recipe inputs or storage.</summary>
+    public Stockpile DeliveryStock => IsActive && IsProducer ? InputStock : Stock;
+
+    /// <summary>How much of input <paramref name="r"/> the current recipe wants buffered (capacity split among its inputs).</summary>
+    public Qty InputTarget(int r)
+    {
+        if (!IsActive || Recipe is not { HasInputs: true } recipe || !recipe.InputPerOutput[r].IsPositive) return Qty.Zero;
+        int n = recipe.InputPerOutput.Count(q => q.IsPositive);
+        return new Qty(Def.InputCapacity.Milli / n);
+    }
     /// <summary>Household id per job slot (0 = free).</summary>
     internal int[] Slots { get; set; } = Array.Empty<int>();
     public RecipeDef? Recipe { get; internal set; }

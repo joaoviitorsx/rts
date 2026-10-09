@@ -83,12 +83,27 @@ public sealed class NaivePlayer : IScriptedPlayer
     }
 }
 
-/// <summary>The scripted MVP opening (food first, decrees, carriers) plus roads linking the work areas.</summary>
+/// <summary>
+/// The scripted MVP opening (food first, decrees, carriers) plus roads linking the work areas; after the first
+/// autumn it adds a quarry and a smithy with "keep stone" and "keep tools" decrees (crisis 2, GDD v0.2 §4.3).
+/// </summary>
 public sealed class OptimalPlayer(bool roads) : IScriptedPlayer
 {
+    public static readonly Cell QuarryAt = new(20, 30);
+    public static readonly Cell SmithyAt = new(26, 36);
+    private bool _industry;
+
     public string Id => roads ? "optimal" : "optimal_no_roads";
 
     public void Start(World w) => MvpOpening.Apply(w, roads: roads);
 
-    public void Daily(World w) { }
+    public void Daily(World w)
+    {
+        if (_industry || w.Calendar.Season != Season.Winter) return;
+        _industry = true;
+        w.Enqueue(new PlaceBuilding("quarry", QuarryAt, 0));
+        w.Enqueue(new PlaceBuilding("smithy", SmithyAt, 0));
+        w.Enqueue(new CreatePolicy("keep_above", "stone", 20, 40));
+        w.Enqueue(new CreatePolicy("keep_above", "tools", 8, 12));
+    }
 }

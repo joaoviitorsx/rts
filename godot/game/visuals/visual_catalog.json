@@ -9,7 +9,10 @@
     "house":      { "variants": ["res://assets/buildings/BLD_House_T1_A.tscn", "res://assets/buildings/BLD_House_T1_B.tscn", "res://assets/buildings/BLD_House_T1_C.tscn"] },
     "woodcutter": { "scene": "res://assets/buildings/BLD_Woodcutter_A.tscn" },
     "field":      { "scene": "res://assets/buildings/BLD_Field_A.tscn" },
-    "granary":    { "scene": "res://assets/buildings/BLD_Granary_A.tscn" }
+    "granary":    { "scene": "res://assets/buildings/BLD_Granary_A.tscn" },
+    "smithy":     { "scene": "res://assets/buildings/BLD_Smithy_A.tscn" },
+    // Gap: no quarry model yet (asset_manifest "falta") — grey placeholder block.
+    "quarry":     { "primitive": "box", "size": [5.2, 1.2, 5.2], "color": "#8f8f8a" }
   },
   "characters": ["res://assets/characters/CHR_Villager_Base.tscn", "res://assets/characters/CHR_Villager_Base_F.tscn"],
   "agents": {

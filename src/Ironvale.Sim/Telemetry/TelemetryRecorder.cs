@@ -108,7 +108,7 @@ public sealed class TelemetryRecorder
         {
             var target = b.IsStorage ? stored : b.IsProducer ? local : null;
             if (target is null) continue;
-            for (int r = 0; r < _resources; r++) target[r] += b.Stock.Get(r).Milli;
+            for (int r = 0; r < _resources; r++) target[r] += b.Stock.Get(r).Milli + b.InputStock.Get(r).Milli;
         }
         foreach (var s in w.Shipments) transit[s.Resource] += s.Amount.Milli;
 

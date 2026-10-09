@@ -76,6 +76,9 @@ public sealed class BuildingDto
     public SortedDictionary<string, long> Stock { get; set; } = new(StringComparer.Ordinal);
     public SortedDictionary<string, long> Reserved { get; set; } = new(StringComparer.Ordinal);
     public long Incoming { get; set; }
+    public SortedDictionary<string, long> InStock { get; set; } = new(StringComparer.Ordinal);
+    public SortedDictionary<string, long> InReserved { get; set; } = new(StringComparer.Ordinal);
+    public long InIncoming { get; set; }
     public int[] Slots { get; set; } = Array.Empty<int>();
     public string? Recipe { get; set; }
     public long SeasonalWorkMilli { get; set; }

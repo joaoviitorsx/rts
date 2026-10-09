@@ -3,6 +3,10 @@
   "recipes": [
     { "id": "chop_wood",      "name": "Cortar madeira", "kind": "continuous", "outputs": { "wood": 0.5 },     "usesTools": true },
     { "id": "split_firewood", "name": "Rachar lenha",   "kind": "continuous", "outputs": { "firewood": 0.5 }, "usesTools": true },
+    // inputs = units consumed per unit of output (the building keeps an input buffer that carriers refill).
+    { "id": "forge_tools",    "name": "Forjar ferramentas", "kind": "continuous", "outputs": { "tools": 0.05 },
+      "inputs": { "wood": 2, "stone": 1 }, "usesTools": true },
+    { "id": "quarry_stone",   "name": "Extrair pedra", "kind": "continuous", "outputs": { "stone": 0.25 }, "usesTools": true },
     { "id": "grow_food",      "name": "Cultivar",       "kind": "seasonal",   "outputs": { "food": 0.8 },     "usesTools": true,
       "workSeasons": ["spring", "summer"] }
   ]

@@ -57,6 +57,8 @@ building.site.no_builders,Parada: sem construtores — libere uma família ou de
 building.site.waiting,Aguardando o material que está a caminho,Waiting for materials on the way
 building.status.no_workers,● Parado: sem trabalhadores,● Idle: no workers
 building.status.off_season,● Fora de estação (trabalho na primavera/verão),● Out of season (work in spring/summer)
+building.status.no_input,● Parado: sem {2} — os carregadores trazem do armazém,● Idle: no {2} — carriers bring it from storage
+building.inputs,Insumos (os carregadores repõem):,Inputs (carriers refill them):
 building.status.full,● Parado: estoque cheio — precisa de carregadores,● Idle: stock full — needs carriers
 building.status.working,● Funcionando,● Working
 building.status.ok,● Pronto,● Ready

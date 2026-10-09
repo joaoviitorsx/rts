@@ -61,7 +61,7 @@ public sealed class TransportSystem : ISimSystem
             case CarrierPhase.Unloading:
                 if (--c.WaitTicks > 0) return;
                 var shipment = w.GetShipment(c.ShipmentId)!;
-                w.GetBuilding(c.DropoffId)!.Stock.CompleteIncoming(shipment.Resource, shipment.Amount);
+                w.GetBuilding(c.DropoffId)!.DeliveryStock.CompleteIncoming(shipment.Resource, shipment.Amount);
                 w.RemoveShipment(shipment);
                 w.Telemetry.OnDelivery();
                 c.ShipmentId = 0;
@@ -142,7 +142,7 @@ public sealed class TransportSystem : ISimSystem
             }
         }
         bool urgentJob = best is not null && bestKey.urgent == 1;
-        if (!urgentJob && TryPlanSiteDelivery(w, c)) return true;
+        if (!urgentJob && TryPlanDelivery(w, c)) return true;
         if (best is null) return false;
 
         var home = w.GetBuilding(c.BaseId);
@@ -152,7 +152,7 @@ public sealed class TransportSystem : ISimSystem
         if (dropoff is null) return false;
 
         best.Stock.TryReserve(bestRes, bestAmount);
-        dropoff.Stock.TryReserveIncoming(bestAmount);
+        dropoff.DeliveryStock.TryReserveIncoming(bestAmount);
         c.PickupId = best.Id;
         c.DropoffId = dropoff.Id;
         c.Resource = bestRes;
@@ -163,22 +163,25 @@ public sealed class TransportSystem : ISimSystem
         return true;
     }
 
-    /// <summary>Storage → construction site: the oldest site still missing a material, from the nearest storage.</summary>
-    private static bool TryPlanSiteDelivery(World w, Carrier c)
+    /// <summary>
+    /// Storage → construction site or recipe input buffer (smithy): the oldest building still missing something,
+    /// from the nearest storage.
+    /// </summary>
+    private static bool TryPlanDelivery(World w, Carrier c)
     {
         foreach (var site in w.Buildings)
         {
-            if (site.IsActive) continue;
+            if (site.IsActive && site.Recipe is not { HasInputs: true }) continue;
             for (int r = 0; r < w.Content.ResourceCount; r++)
             {
-                var need = w.SiteNeed(site, r);
+                var need = w.DeliveryNeed(site, r);
                 if (!need.IsPositive) continue;
                 foreach (var storage in w.StoragesByDistance(site.Center))
                 {
                     var free = storage.Stock.Free(r);
                     if (!free.IsPositive) continue;
                     var amount = Qty.Min(Qty.Min(need, free), w.Content.Resources[r].CarryPerTrip);
-                    if (!site.Stock.TryReserveIncoming(amount)) break;
+                    if (!site.DeliveryStock.TryReserveIncoming(amount)) break;
                     storage.Stock.TryReserve(r, amount);
                     c.PickupId = storage.Id;
                     c.DropoffId = site.Id;

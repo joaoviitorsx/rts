@@ -33,7 +33,7 @@ public sealed record BuildingSnap(int Id, string DefId, string Name, string Stat
     IReadOnlyList<(string Name, long Amount)> Stock, long StockTotal, long Capacity, IReadOnlyList<SlotSnap> Slots,
     IReadOnlyList<string> Residents, int HousingCapacity, long ExpectedHarvest, bool SeasonalRecipe,
     IReadOnlyList<MaterialSnap> Materials, int Builders, int MaxBuilders, string SiteIssue, string SiteIssueArg,
-    int CommutePercent);
+    int CommutePercent, IReadOnlyList<MaterialSnap> Inputs);
 
 /// <summary>State: disabled · recruiting · releasing · in_band · above_max · blocked_* (why it can't act).</summary>
 public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, long Min, long Max, bool Enabled,
@@ -151,9 +151,15 @@ public static class UiSnapshotBuilder
     {
         var def = b.Def;
         string status;
+        string issueArg0 = "";
         if (!b.IsActive) status = "construction";
         else if (b.IsProducer && b.AssignedCount == 0) status = "no_workers";
         else if (b.IsProducer && !b.IsProductiveIn(cal.Season)) status = "off_season";
+        else if (b.Recipe is { HasInputs: true } rec && MissingInput(w, b, rec) is { } missingName)
+        {
+            status = "no_input";
+            issueArg0 = missingName;
+        }
         else if (b.Stock.Capacity.IsPositive && b.Stock.Space.Milli <= 0) status = "full";
         else status = b.IsProducer || b.IsStorage ? "working" : "ok";
 
@@ -173,8 +179,14 @@ public static class UiSnapshotBuilder
         }).ToList();
 
         var materials = new List<MaterialSnap>();
-        string issue = "", issueArg = "";
+        string issue = "", issueArg = issueArg0;
         if (!b.IsActive) (issue, issueArg) = SiteIssueOf(w, b, materials);
+        var inputs = new List<MaterialSnap>();
+        if (b.IsActive && b.Recipe is { HasInputs: true })
+            for (int r = 0; r < w.Content.ResourceCount; r++)
+                if (b.InputTarget(r).IsPositive)
+                    inputs.Add(new MaterialSnap(w.Content.Resources[r].Name, b.InputStock.Get(r).WholeUnits,
+                        w.SiteIncoming(b, r).WholeUnits, b.InputTarget(r).WholeUnits));
 
         return new BuildingSnap(b.Id, def.Id, def.Name, status, b.IsActive, b.BuildProgressDays, def.BuildDays,
             b.IsStorage, b.IsProducer, def.Has(BuildingRole.Housing), b.Recipe?.Id,
@@ -183,7 +195,16 @@ public static class UiSnapshotBuilder
             w.Households.Where(h => h.HomeId == b.Id).Select(h => h.Name).ToList(), def.HousingCapacity,
             b.SeasonalWorkMilli / 1000, b.Recipe?.Kind == RecipeKind.Seasonal,
             materials, b.IsActive ? 0 : w.BuildersAt(b), w.Content.Balance.MaxBuildersPerSite, issue, issueArg,
-            CommutePercentAt(w, b));
+            CommutePercentAt(w, b), inputs);
+    }
+
+    /// <summary>First input the recipe can't make one unit from (null when it can work).</summary>
+    private static string? MissingInput(World w, Building b, RecipeDef recipe)
+    {
+        for (int r = 0; r < recipe.InputPerOutput.Length; r++)
+            if (recipe.InputPerOutput[r].IsPositive && b.InputStock.Get(r) < recipe.InputPerOutput[r])
+                return w.Content.Resources[r].Name;
+        return null;
     }
 
     /// <summary>Average share of the shift the people working here spend walking (0 when nobody works here).</summary>

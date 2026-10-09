@@ -34,6 +34,8 @@ public sealed class BuildingDef
     public required IReadOnlyList<RecipeDef> Recipes { get; init; }
     public required Qty OutputCapacity { get; init; }
     public required Qty StorageCapacity { get; init; }
+    /// <summary>Input buffer of a producer whose recipes consume inputs (smithy), refilled by carriers.</summary>
+    public required Qty InputCapacity { get; init; }
     public required int HousingCapacity { get; init; }
 
     public bool Has(BuildingRole role) => (Roles & role) != 0;
@@ -70,6 +72,9 @@ public sealed class RecipeDef
     public required string Name { get; init; }
     public required RecipeKind Kind { get; init; }
     public required Qty[] OutputPerWorkerHour { get; init; }  // indexed by resource
+    /// <summary>Units of each input consumed per unit of output (indexed by resource; zero = not an input).</summary>
+    public required Qty[] InputPerOutput { get; init; }
+    public bool HasInputs => InputPerOutput.Any(q => q.IsPositive);
     public required bool UsesTools { get; init; }
     public required bool[] WorkSeasons { get; init; }         // indexed by Season
 

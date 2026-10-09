@@ -150,9 +150,12 @@ public static class ContentLoader
                 _ => throw c.Error($"kind must be 'continuous' or 'seasonal', got '{kindText}'"),
             };
             var outputs = c.QtyMap(el, "outputs", resIndex);
+            var inputs = c.QtyMap(el, "inputs", resIndex, optional: true);
             int outputCount = outputs.Count(q => q.IsPositive);
             if (outputCount == 0) throw c.Error("outputs must have at least one positive entry");
             if (kind == RecipeKind.Seasonal && outputCount != 1) throw c.Error("seasonal recipes must have exactly one output");
+            if (inputs.Any(q => q.IsPositive) && (kind != RecipeKind.Continuous || outputCount != 1))
+                throw c.Error("recipes with inputs must be continuous with exactly one output");
 
             var seasons = new bool[SimTime.SeasonsPerYear];
             if (el.TryGetProperty("workSeasons", out var ws))
@@ -172,6 +175,7 @@ public static class ContentLoader
                 Name = c.Str(el, "name"),
                 Kind = kind,
                 OutputPerWorkerHour = outputs,
+                InputPerOutput = inputs,
                 UsesTools = c.OptBool(el, "usesTools", false),
                 WorkSeasons = seasons,
             });
@@ -233,6 +237,7 @@ public static class ContentLoader
                 Recipes = recipeList,
                 OutputCapacity = Qty.FromDouble(c.OptNum(el, "outputCapacity", 0)),
                 StorageCapacity = Qty.FromDouble(c.OptNum(el, "storageCapacity", 0)),
+                InputCapacity = Qty.FromDouble(c.OptNum(el, "inputCapacity", 0)),
                 HousingCapacity = c.OptInt(el, "housingCapacity", 0),
             });
         }

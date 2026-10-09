@@ -28,6 +28,7 @@ public partial class BuildingPanel : PanelContainer
     public void Bind(BuildingSnap b, UiSnapshot snap)
     {
         string sig = $"{b.Id}|{b.Status}|{b.BuildProgressDays}|{b.SiteIssue}|{b.Builders}|{b.CommutePercent}|" +
+                     $"{string.Join(',', b.Inputs.Select(m => $"{m.OnSite}/{m.Incoming}"))}|" +
                      $"{string.Join(',', b.Materials.Select(m => $"{m.OnSite}/{m.Incoming}"))}|{b.RecipeId}|{string.Join(',', b.Slots.Select(s => s.HouseholdId))}|" +
                      $"{b.StockTotal}|{b.ExpectedHarvest}|{snap.Households.Count}|{string.Join(',', snap.Households.Select(h => h.JobBuildingId))}";
         if (sig == _signature) return;
@@ -35,8 +36,15 @@ public partial class BuildingPanel : PanelContainer
         UiNodes.Clear(_body);
 
         _body.AddChild(UiNodes.Header($"{b.Name} #{b.Id}", () => Closed?.Invoke()));
-        _body.AddChild(UiNodes.Label(UiText.T("building.status." + b.Status, b.BuildProgressDays, b.BuildDays),
-            b.Status is "no_workers" or "full" ? "WarningLabel" : null, wrap: true));
+        _body.AddChild(UiNodes.Label(UiText.T("building.status." + b.Status, b.BuildProgressDays, b.BuildDays, b.SiteIssueArg),
+            b.Status is "no_workers" or "full" or "no_input" ? "WarningLabel" : null, wrap: true));
+        if (b.Inputs.Count > 0)
+        {
+            _body.AddChild(UiNodes.Label(UiText.T("building.inputs"), "SecondaryLabel"));
+            foreach (var m in b.Inputs)
+                _body.AddChild(UiNodes.Label(UiText.T("building.material_line", m.Name, m.OnSite, m.Cost,
+                    m.Incoming > 0 ? UiText.T("building.material_incoming", m.Incoming) : "")));
+        }
 
         if (!b.Active)
         {
