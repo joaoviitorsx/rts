@@ -341,8 +341,9 @@ public partial class Hud : CanvasLayer
         var s = _snap;
         while (_chips.GetChildCount() < s.Resources.Count) _chips.AddChild(ChipScene.Instantiate<ResourceChip>());
         for (int i = 0; i < s.Resources.Count; i++) ((ResourceChip)_chips.GetChild(i)).Bind(s.Resources[i]);
-        _population.Text = s.Population == 0 && s.Colonists > 0 ? UiText.T("ui.top.colonists", s.Colonists)
-            : UiText.T("ui.top.population", s.Population);
+        _population.Text = s.Colonists == 0 ? UiText.T("ui.top.population", s.Population)
+            : s.Population == 0 ? UiText.T("ui.top.colonists", s.Colonists)
+            : UiText.T("ui.top.population_colonists", s.Population, s.Colonists);
         if (Units is not null) _unitPanel.Bind(s, Units.Selected);
         _date.Text = UiText.T("ui.top.date", s.Year, UiText.T("ui.season." + s.Season), s.Month, s.Day);
         _ca.Text = UiText.T("ui.top.ca", s.AdminUsed, s.AdminCapacity);
@@ -418,6 +419,11 @@ public partial class Hud : CanvasLayer
                 case BuildingCompleted c:
                     PushTransient(AlertSeverity.Info, UiText.T("event.completed", _host.World.GetBuilding(c.BuildingId) is { } done ? UiText.Bld(done.Def) : "?"));
                     break;
+                case FamilyFormed f:
+                    PushTransient(AlertSeverity.Info, UiText.T("event.family_formed", f.Name));
+                    Audio.Sfx.Play("site_complete");
+                    break;
+                case FamilyArrived a: PushTransient(AlertSeverity.Info, UiText.T("event.family_arrived", a.Name, a.Members)); break;
                 case SimAlert a: PushTransient(AlertSeverity.Warning, a.Text); break;
             }
         }

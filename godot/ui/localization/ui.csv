@@ -185,6 +185,8 @@ debug.series.prod,Produção/dia,Production/day
 debug.series.cons,Consumo/dia,Consumption/day
 debug.max,máx {0},max {0}
 event.rejected,Não foi possível: {0},Not possible: {0}
+event.family_formed,"{0} viraram uma família e moram na casa nova (designe um trabalho em Famílias)","{0} became a family and live in the new house (assign a job in Families)"
+event.family_arrived,"Chegou a {0} ({1} pessoas): havia casa livre","The {0} arrived ({1} people): there was a free house"
 event.left,A família {0} foi embora ({1}),The {0} family left ({1})
 event.completed,Obra concluída: {0},Finished: {0}
 res.wood,Madeira,Wood
@@ -226,8 +228,11 @@ chronicle.built,obras concluídas: {0},buildings finished: {0}
 chronicle.reeve_busy,o reeve remanejou famílias {0} vezes para manter os decretos,the reeve reassigned families {0} times to keep the decrees
 chronicle.overloaded,o reeve ficou sobrecarregado por {0} dias (decretos demais para a capacidade),the reeve was overloaded for {0} days (too many decrees for the capacity)
 chronicle.harvest,colheita farta: o estoque de comida chegou a {0},bumper harvest: food stock reached {0}
+chronicle.family_formed,{0} deixaram o bando e viraram uma família,{0} left the band and became a family
+chronicle.family_arrived,a {0} chegou porque havia casa livre,the {0} arrived because there was a free house
 chronicle.suggestion,o reeve deixou uma sugestão de decreto esperando por você,the reeve left a decree suggestion waiting for you
 ui.top.colonists,{0} colonos,{0} colonists
+ui.top.population_colonists,{0} famílias · {1} colonos,{0} families · {1} colonists
 units.title,{0} selecionado(s),{0} selected
 units.task.idle,parado,idle
 units.task.confused,? nada por perto,? nothing left nearby

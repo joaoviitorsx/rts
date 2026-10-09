@@ -295,4 +295,53 @@ public class OpeningUnitsTests
         var w = World.Create(TestKit.Content, TestKit.Scenario, 1);
         Assert.NotNull(w.PlacementError(w.Content.Building("campfire"), new Cell(5, 5), 0));
     }
+
+    // ------------------------------------------------------------------ step 3b: colonists → families
+
+    private static Building BuildHouse(World w)
+    {
+        int wood = Res(w, "wood");
+        Pile(w).Stock.AddUpTo(wood, Qty.Units(20));
+        w.Ledger.Initial[wood] += 20_000;
+        var house = PlaceAndBuild(w, "house", new Cell(w.Terrain!.Start.X + 4, w.Terrain.Start.Y), Colonists(w).Take(3));
+        Assert.True(StepUntil(w, () => house.IsActive, 20 * SimTime.TicksPerDay), "house not built");
+        return house;
+    }
+
+    [Fact]
+    public void A_finished_house_turns_the_two_nearest_colonists_into_a_family()
+    {
+        var w = NewWild(42, Patient.Value);
+        int before = Colonists(w).Count;
+        var house = BuildHouse(w);
+        var formed = Assert.Single(w.DrainEvents().OfType<FamilyFormed>());
+        Assert.Equal(before - 2, Colonists(w).Count);
+        var family = w.Households.Single();
+        Assert.Equal(house.Id, family.HomeId);
+        Assert.Equal(2, family.Members);
+        Assert.All(formed.UnitIds, id => Assert.DoesNotContain(w.Units, u => u.Id == id));
+        // The family is in the 2A model: it can be designated to a workplace.
+        w.StepDays(2);
+        Assert.Equal(house.Id, w.Households.Single().HomeId);
+        TestKit.AssertInvariants(w);
+    }
+
+    [Fact]
+    public void A_family_arrives_only_while_a_house_has_room_and_food_lasts()
+    {
+        var content = TestKit.ContentWith(("leaveAfterDeficitDays", "100000"), ("familyArrivalFoodDays", "1"));
+        var w = NewWild(42, content);
+        w.StepDays(12);
+        Assert.Empty(w.Households);   // no house, nobody comes
+        var house = BuildHouse(w);
+        Assert.True(StepUntil(w, () => w.Households.Count == 2, 25 * SimTime.TicksPerDay), "no family arrived");
+        var arrived = w.DrainEvents().OfType<FamilyArrived>().Single();
+        Assert.InRange(arrived.Members, 2, 4);
+        Assert.Equal(house.Id, arrived.HouseId);
+        // The house is full now (2 households): nobody else comes.
+        w.StepDays(25);
+        Assert.Equal(2, w.Households.Count(h => h.HomeId == house.Id));
+        Assert.Empty(w.DrainEvents().OfType<FamilyArrived>());
+        TestKit.AssertInvariants(w);
+    }
 }

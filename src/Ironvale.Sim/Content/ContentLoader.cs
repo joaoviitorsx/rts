@@ -393,6 +393,9 @@ public static class ContentLoader
             FirstRainDay = c.OptInt(el, "firstRainDay", 24),
             OpenPileSpoilPermille = Permille.Clamp(c.OptInt(el, "openPileSpoilPermille", 20)),
             CampfireFirewoodPerDay = c.OptInt(el, "campfireFirewoodPerDay", 1),
+            FamilyFromColonists = c.OptInt(el, "familyFromColonists", 2),
+            FamilyArrivalDays = c.OptInt(el, "familyArrivalDays", 10),
+            FamilyArrivalFoodDays = c.OptInt(el, "familyArrivalFoodDays", 30),
         };
     }
 

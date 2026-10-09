@@ -211,6 +211,11 @@ public sealed class BalanceDef
     public required int FirstRainDay { get; init; }
     public required int OpenPileSpoilPermille { get; init; }
     public required int CampfireFirewoodPerDay { get; init; }
+    /// <summary>Colonists a finished house turns into one family (GDD v0.3 §6).</summary>
+    public required int FamilyFromColonists { get; init; }
+    /// <summary>A new family may arrive every this many days, if a house has room and food lasts (D7).</summary>
+    public required int FamilyArrivalDays { get; init; }
+    public required int FamilyArrivalFoodDays { get; init; }
 }
 
 public sealed class ScenarioBuilding

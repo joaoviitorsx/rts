@@ -63,6 +63,12 @@ public sealed class Chronicle
                 case SuggestionOffered:
                     Add(cal, "suggestion", 2);
                     break;
+                case FamilyFormed f:
+                    Add(cal, "family_formed", 3, f.Name);
+                    break;
+                case FamilyArrived a:
+                    Add(cal, "family_arrived", 2, a.Name);
+                    break;
             }
         }
         if (w.AdminOverload > 0) _overloadDays++;

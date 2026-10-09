@@ -91,5 +91,10 @@
   "snowWinterPermille": 400,
   "firstRainDay": 24,
   "openPileSpoilPermille": 20,
-  "campfireFirewoodPerDay": 1
+  "campfireFirewoodPerDay": 1,
+  // Colonists → families (GDD v0.3 §6): a finished house takes the 2 nearest free colonists; a new family arrives
+  // every familyArrivalDays days while a house has room and the stores hold familyArrivalFoodDays of food for all.
+  "familyFromColonists": 2,
+  "familyArrivalDays": 10,
+  "familyArrivalFoodDays": 30
 }

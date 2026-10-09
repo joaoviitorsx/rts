@@ -103,6 +103,7 @@ public sealed partial class World
         s.Register(new ToolWearSystem());         // Consumption, Daily
         s.Register(new NeedsSystem());            // Needs, Daily
         s.Register(new UnitNeedsSystem());        // Needs, Daily (colonists, fires, tents)
+        s.Register(new FamilyArrivalSystem());    // Needs, Daily (generated maps: families arrive while a house has room)
         s.Register(new PolicySystem());           // Decisions, Daily
         return s;
     }
@@ -470,6 +471,7 @@ public sealed partial class World
             }
         }
         Emit(new BuildingCompleted(Tick, b.Id));
+        if (Terrain is not null && b.Def.Has(BuildingRole.Housing)) FormFamily(b);
     }
 
     /// <summary>

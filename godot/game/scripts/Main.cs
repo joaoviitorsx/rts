@@ -160,14 +160,14 @@ public partial class Main : Node3D
     }
 
     /// <summary>
-    /// Dev (--camp-demo, with --scenario=wild_camp_dev): campfire, covered depot and tent placed around the start and
+    /// Dev (--camp-demo, with --scenario=wild_camp_dev): campfire, covered depot, tent and a house placed around the start and
     /// built by the band (step 3 captures). Combine with --days=N to see them finished.
     /// </summary>
     private static void CampDemo(Ironvale.Sim.World w)
     {
         var band = w.Units.Where(u => u.IsColonist).Select(u => u.Id).ToArray();
         if (w.Terrain is not { } t || band.Length < 8) return;
-        var spots = new[] { ("campfire", 3, 3, band[..2]), ("depot", -5, 0, band[2..5]), ("tent", 1, 6, band[5..8]) };
+        var spots = new[] { ("campfire", 3, 3, band[..1]), ("depot", -5, 0, band[1..3]), ("tent", 1, 6, band[3..5]), ("house", 6, -3, band[5..8]) };
         foreach (var (id, dx, dy, who) in spots)
         {
             var def = w.Content.Building(id);

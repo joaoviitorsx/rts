@@ -16,6 +16,8 @@ public sealed record SimAlert(long Tick, string Text) : SimEvent(Tick);
 public sealed record SuggestionOffered(long Tick, int SuggestionId) : SimEvent(Tick);
 
 // ---- RTS opening (GDD v0.3): generated maps only
+public sealed record FamilyFormed(long Tick, int HouseholdId, int HouseId, string Name, int[] UnitIds) : SimEvent(Tick);
+public sealed record FamilyArrived(long Tick, int HouseholdId, int HouseId, string Name, int Members) : SimEvent(Tick);
 public sealed record UnitLeft(long Tick, int UnitId, string Name, string Reason) : SimEvent(Tick);
 /// <summary>A wolf scared a lone colonist: the load fell where they stood.</summary>
 public sealed record UnitScared(long Tick, int UnitId, int WolfId) : SimEvent(Tick);
