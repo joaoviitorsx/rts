@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700&family=Alegreya:ital@1&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+html,body{margin:0;background:#2A1E15;overflow-x:hidden;font-family:'Nunito',sans-serif;}
+a{color:#C48C39;text-decoration:underline;}
+a:hover{color:#F6EBD6;}
+button{font-family:inherit;}
+</style>
+</helmet>
+<div style="width:1920px;zoom:{{ scale }};font-variant-numeric:tabular-nums;color:#3B2A1E;">
+<div data-screen-label="HUD v2" onContextMenu="{{ cancelPlacing }}" style="width:1920px;height:1080px;position:relative;overflow:hidden;">
+
+  <!-- MUNDO -->
+  <div style="position:absolute;inset:0;background:#7d8a5c;filter:{{ worldFilter }};transition:filter 220ms;">
+    <image-slot id="mundo-3d-v2" shape="rect" placeholder="Solte aqui um screenshot do mundo 3D"></image-slot>
+  </div>
+  <div style="position:absolute;inset:0;pointer-events:none;box-shadow:{{ vignette }};transition:box-shadow 300ms;"></div>
+
+  <!-- UI espacial (marcadores no mundo) -->
+  <div style="position:absolute;left:820px;top:520px;width:200px;height:84px;border:3px dashed #F2D08A;border-radius:50%;pointer-events:none;"></div>
+  <div style="position:absolute;left:858px;top:470px;display:flex;align-items:center;gap:6px;background:#F6EBD6;border:2px solid #5A3D28;border-radius:16px;padding:4px 12px 4px 4px;box-shadow:0 4px 10px rgba(30,18,8,.35);">
+    <span style="width:24px;height:24px;border-radius:50%;background:#C48C39;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 3l7 7-3 1-5-5z" fill="#3B2A1E"></path><path d="M13 7l4 4-10 10-4-4z" fill="#3B2A1E"></path></svg></span>
+    <span style="font-size:14px;font-weight:800;">Lenhador</span>
+  </div>
+  <div style="position:absolute;left:1180px;top:380px;display:flex;flex-direction:column;align-items:center;">
+    <div style="display:flex;align-items:center;gap:6px;background:#F6EBD6;border:2px solid #9A6418;border-radius:16px;padding:4px 12px 4px 4px;box-shadow:0 4px 10px rgba(30,18,8,.35);">
+      <span style="width:24px;height:24px;border-radius:4px;transform:rotate(45deg);background:#D9952B;display:flex;align-items:center;justify-content:center;"><span style="transform:rotate(-45deg);font-weight:900;font-size:14px;color:#2A1C10;">!</span></span>
+      <span style="font-size:14px;font-weight:800;">Machados gastos</span>
+    </div>
+    <div style="width:2px;height:28px;background:#F6EBD6;"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:#F6EBD6;"></div>
+  </div>
+  <div style="position:absolute;left:1360px;top:640px;display:flex;flex-direction:column;align-items:center;">
+    <div style="display:flex;align-items:center;gap:6px;background:#F6EBD6;border:2px solid #5E8A45;border-radius:16px;padding:4px 12px 4px 4px;box-shadow:0 4px 10px rgba(30,18,8,.35);">
+      <span style="width:24px;height:24px;border-radius:50%;background:#5E8A45;color:#F6EBD6;display:flex;align-items:center;justify-content:center;font-size:14px;">♥</span>
+      <span style="font-size:14px;font-weight:800;">Família Roth acolhida</span>
+    </div>
+    <div style="width:2px;height:28px;background:#F6EBD6;"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:#F6EBD6;"></div>
+  </div>
+
+  <sc-if value="{{ bannerOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;top:96px;left:50%;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:12px;background:#3E2A1C;color:#F6EBD6;border:2px solid #C48C39;border-radius:8px;padding:8px 16px;box-shadow:0 6px 16px rgba(30,18,8,.4);">
+      <span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:18px;">{{ bannerTitle }}</span>
+      <span style="font-size:14px;color:#E6D5B5;">{{ bannerText }}</span>
+    </div>
+  </sc-if>
+
+  <!-- TOPO (madeira) -->
+  <div style="position:absolute;z-index:6;top:0;left:0;right:0;height:72px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 2px,transparent 2px 64px),#6B4630;border-bottom:3px solid #3E2A1C;box-shadow:inset 0 -2px 0 #C48C39,0 6px 16px rgba(30,18,8,.35);display:flex;align-items:center;gap:16px;padding:0 16px;color:#F6EBD6;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="width:40px;height:46px;background:#B04A3A;border:2px solid #C48C39;border-radius:4px 4px 20px 20px;display:flex;align-items:center;justify-content:center;font-family:'Alegreya SC',serif;font-weight:700;font-size:20px;color:#F6EBD6;box-shadow:0 2px 0 #3E2A1C;">V</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:22px;line-height:1;">Vale Alto</span>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#E6D5B5;">
+          <span>Aldeia</span>
+          <div style="width:96px;height:6px;background:#3E2A1C;border-radius:3px;overflow:hidden;"><div style="width:62%;height:100%;background:#F2D08A;"></div></div>
+          <span>62% para Vila</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;padding-left:16px;border-left:1px solid #8A6042;height:44px;align-items:center;">
+      <div style="display:flex;flex-direction:column;line-height:1.15;"><span style="font-size:18px;font-weight:800;">23</span><span style="font-size:12px;color:#E6D5B5;font-weight:700;">aldeões · 6 famílias</span></div>
+      <div title="Ânimo da vila" style="display:flex;align-items:center;gap:6px;height:36px;padding:0 10px;background:#3E2A1C;border-radius:18px;">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#8DB06A"></circle><circle cx="8.5" cy="10" r="1.4" fill="#2A1C10"></circle><circle cx="15.5" cy="10" r="1.4" fill="#2A1C10"></circle><path d="M7.5 14.5q4.5 4 9 0" stroke="#2A1C10" stroke-width="1.8" fill="none"></path></svg>
+        <span style="font-size:16px;font-weight:800;">78</span><span style="font-size:12px;font-weight:700;color:#B9D79A;">Contentes</span>
+      </div>
+    </div>
+
+    <div style="flex:1;display:flex;justify-content:center;">
+      <div style="position:relative;display:flex;gap:12px;">
+        <div style="display:flex;gap:4px;">
+          <div onMouseEnter="{{ res.mad.enter }}" onMouseLeave="{{ resLeave }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#F2E6CF;border:2px solid #3E2A1C;border-radius:6px;box-shadow:inset 0 -3px 0 #E0CBA6;color:#3B2A1E;cursor:default;">
+            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="7" width="16" height="5" rx="2.5" fill="#9A6A3E"></rect><rect x="5" y="13" width="16" height="5" rx="2.5" fill="#7A5230"></rect><circle cx="18.5" cy="15.5" r="1.6" fill="#E0B98A"></circle></svg>
+            <span style="font-size:18px;font-weight:800;">120</span><span style="font-size:14px;font-weight:800;color:#5E8A45;">▲6</span>
+          </div>
+          <div onMouseEnter="{{ res.ped.enter }}" onMouseLeave="{{ resLeave }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#F2E6CF;border:2px solid #3E2A1C;border-radius:6px;box-shadow:inset 0 -3px 0 #E0CBA6;color:#3B2A1E;cursor:default;">
+            <svg width="24" height="24" viewBox="0 0 24 24"><polygon points="3,18 6,10 12,6 19,9 21,18" fill="#8C8A84"></polygon><polygon points="12,6 19,9 15,13 8,12" fill="#ABA9A2"></polygon></svg>
+            <span style="font-size:18px;font-weight:800;">30</span><span style="font-size:14px;font-weight:800;color:#6E5A48;">● 0</span>
+          </div>
+          <div onMouseEnter="{{ res.fer.enter }}" onMouseLeave="{{ resLeave }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#F2E6CF;border:2px solid #3E2A1C;border-radius:6px;box-shadow:inset 0 -3px 0 #E0CBA6;color:#3B2A1E;cursor:default;">
+            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="11" y="9" width="3" height="13" rx="1" fill="#8A6042"></rect><rect x="5" y="4" width="14" height="6" rx="1.5" fill="#6F7A86"></rect></svg>
+            <span style="font-size:18px;font-weight:800;">12</span><span style="font-size:14px;font-weight:800;color:#B04A3A;">▼2</span>
+          </div>
+        </div>
+        <div style="width:2px;background:#C48C39;border-radius:1px;margin:8px 0;"></div>
+        <div style="display:flex;gap:4px;">
+          <div onMouseEnter="{{ res.com.enter }}" onMouseLeave="{{ resLeave }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#F2E6CF;border:2px solid #3E2A1C;border-radius:6px;box-shadow:inset 0 -3px 0 #E0CBA6;color:#3B2A1E;cursor:default;">
+            <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 22V6" stroke="#9C7A2E" stroke-width="2"></path><ellipse cx="9" cy="9" rx="2" ry="3.5" transform="rotate(-25 9 9)" fill="#D7A93E"></ellipse><ellipse cx="15" cy="9" rx="2" ry="3.5" transform="rotate(25 15 9)" fill="#D7A93E"></ellipse><ellipse cx="9" cy="15" rx="2" ry="3.5" transform="rotate(-25 9 15)" fill="#D7A93E"></ellipse><ellipse cx="15" cy="15" rx="2" ry="3.5" transform="rotate(25 15 15)" fill="#D7A93E"></ellipse><ellipse cx="12" cy="4" rx="1.8" ry="3" fill="#D7A93E"></ellipse></svg>
+            <span style="font-size:18px;font-weight:800;">450</span><span style="font-size:14px;font-weight:800;color:#5E8A45;">▲12</span>
+          </div>
+          <div onMouseEnter="{{ res.len.enter }}" onMouseLeave="{{ resLeave }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#FBE3D2;border:2px solid #B04A3A;border-radius:6px;box-shadow:inset 0 -3px 0 #EBC3A8;color:#3B2A1E;cursor:default;">
+            <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 2-7 1 1 2 2 2 4 1-3 1-6 2-9z" fill="#D9652B"></path><path d="M12 12c1 2 3 3 3 5a3 3 0 0 1-6 0c0-2 2-3 3-5z" fill="#F2B544"></path></svg>
+            <span style="font-size:18px;font-weight:800;">80</span><span style="font-size:14px;font-weight:800;color:#B04A3A;">▼4</span>
+          </div>
+        </div>
+        <div style="width:2px;background:#C48C39;border-radius:1px;margin:8px 0;"></div>
+        <div onMouseEnter="{{ res.moe.enter }}" onMouseLeave="{{ resLeave }}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#F2E6CF;border:2px solid #3E2A1C;border-radius:6px;box-shadow:inset 0 -3px 0 #E0CBA6;color:#3B2A1E;cursor:default;">
+          <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#C48C39"></circle><circle cx="12" cy="12" r="6" fill="none" stroke="#F2D08A" stroke-width="1.5"></circle></svg>
+          <span style="font-size:18px;font-weight:800;">210</span><span style="font-size:14px;font-weight:800;color:#5E8A45;">▲3</span>
+        </div>
+
+        <sc-if value="{{ tipOn }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:56px;left:{{ tipLeft }};width:320px;z-index:10;background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,inset 0 0 0 4px #F6EBD6,0 10px 24px rgba(30,18,8,.4);padding:14px 18px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:#3B2A1E;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:20px;">{{ tip.name }}</span><span style="font-size:18px;font-weight:800;">{{ tip.value }}</span></div>
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+              <span style="color:#6E5A48;">Produção</span><span style="text-align:right;"><b style="color:#5E8A45;">{{ tip.prod }}</b> · {{ tip.prodSrc }}</span>
+              <span style="color:#6E5A48;">Consumo</span><span style="text-align:right;"><b style="color:#B04A3A;">{{ tip.cons }}</b> · {{ tip.consSrc }}</span>
+            </div>
+            <div style="border-top:1px dashed #C9AE86;padding-top:8px;display:flex;justify-content:space-between;gap:12px;"><span style="color:#6E5A48;">Previsão</span><b style="text-align:right;">{{ tip.lasts }}</b></div>
+            <span style="font-size:12px;font-weight:700;color:#49637A;">Clique para detalhes · segure Alt para fixar</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:16px;padding-left:16px;border-left:1px solid #8A6042;height:52px;">
+      <div style="display:flex;flex-direction:column;gap:4px;width:340px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:18px;white-space:nowrap;">{{ seasonLabel }}</span>
+          <span style="font-size:14px;font-weight:800;white-space:nowrap;color:{{ seasonHintColor }};">{{ seasonHint }}</span>
+        </div>
+        <div style="position:relative;height:10px;border-radius:5px;background:{{ timelineBg }};border:1px solid #3E2A1C;">
+          <sc-for list="{{ events }}" as="ev" hint-placeholder-count="3">
+            <div title="{{ ev.title }}" style="position:absolute;top:-4px;left:{{ ev.pos }};width:14px;height:14px;margin-left:-7px;transform:rotate(45deg);background:{{ ev.color }};border:2px solid #3E2A1C;"></div>
+          </sc-for>
+        </div>
+        <div style="position:relative;height:14px;font-size:12px;font-weight:700;color:#E6D5B5;">
+          <sc-for list="{{ events }}" as="ev" hint-placeholder-count="3">
+            <span style="position:absolute;left:{{ ev.pos }};transform:translateX(-50%);white-space:nowrap;">{{ ev.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;padding:4px;background:#3E2A1C;border-radius:8px;">
+        <button onClick="{{ togglePause }}" title="Pausar (Espaço)" style="width:40px;height:40px;border-radius:5px;border:none;background:{{ pauseBg }};color:{{ pauseFg }};font-size:14px;font-weight:900;cursor:pointer;" style-hover="filter:brightness(1.1)">❚❚</button>
+        <sc-for list="{{ speeds }}" as="s" hint-placeholder-count="3">
+          <button onClick="{{ s.set }}" title="{{ s.title }}" style="width:40px;height:40px;border-radius:5px;border:none;background:{{ s.bg }};color:{{ s.fg }};font-size:12px;font-weight:900;letter-spacing:-2px;cursor:pointer;" style-hover="filter:brightness(1.1)">{{ s.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRILHO DE MAPAS -->
+  <div style="position:absolute;top:96px;left:16px;width:64px;background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,0 6px 0 rgba(30,18,8,.3),0 10px 20px rgba(30,18,8,.25);padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+    <span style="font-size:12px;font-weight:800;color:#6E5A48;letter-spacing:.06em;text-transform:uppercase;padding-bottom:4px;">Mapas</span>
+    <button onClick="{{ ov.Fluxo.toggle }}" title="Fluxo (F1)" style="width:52px;height:52px;border-radius:6px;border:2px solid {{ ov.Fluxo.border }};background:{{ ov.Fluxo.bg }};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;" style-hover="filter:brightness(1.05)">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 8h14l-3-3M21 16H7l3 3" stroke="{{ ov.Fluxo.fg }}" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <span style="font-size:12px;font-weight:800;color:{{ ov.Fluxo.fg }};">F1</span>
+    </button>
+    <button onClick="{{ ov.Necessidades.toggle }}" title="Necessidades (F2)" style="width:52px;height:52px;border-radius:6px;border:2px solid {{ ov.Necessidades.border }};background:{{ ov.Necessidades.bg }};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;" style-hover="filter:brightness(1.05)">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" fill="{{ ov.Necessidades.fg }}"></path></svg>
+      <span style="font-size:12px;font-weight:800;color:{{ ov.Necessidades.fg }};">F2</span>
+    </button>
+    <button onClick="{{ ov.Trabalho.toggle }}" title="Trabalho (F3)" style="width:52px;height:52px;border-radius:6px;border:2px solid {{ ov.Trabalho.border }};background:{{ ov.Trabalho.bg }};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;" style-hover="filter:brightness(1.05)">
+      <svg width="24" height="24" viewBox="0 0 24 24"><rect x="11" y="9" width="3" height="13" rx="1" fill="{{ ov.Trabalho.fg }}"></rect><rect x="5" y="4" width="14" height="6" rx="1.5" fill="{{ ov.Trabalho.fg }}"></rect></svg>
+      <span style="font-size:12px;font-weight:800;color:{{ ov.Trabalho.fg }};">F3</span>
+    </button>
+    <button onClick="{{ ov.Alcance.toggle }}" title="Alcance (F4)" style="width:52px;height:52px;border-radius:6px;border:2px solid {{ ov.Alcance.border }};background:{{ ov.Alcance.bg }};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;" style-hover="filter:brightness(1.05)">
+      <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="{{ ov.Alcance.fg }}" stroke-width="2" stroke-dasharray="3 2.5" fill="none"></circle><circle cx="12" cy="12" r="3" fill="{{ ov.Alcance.fg }}"></circle></svg>
+      <span style="font-size:12px;font-weight:800;color:{{ ov.Alcance.fg }};">F4</span>
+    </button>
+    <button onClick="{{ ov.Fertilidade.toggle }}" title="Fertilidade (F5)" style="width:52px;height:52px;border-radius:6px;border:2px solid {{ ov.Fertilidade.border }};background:{{ ov.Fertilidade.bg }};cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;" style-hover="filter:brightness(1.05)">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 21V11" stroke="{{ ov.Fertilidade.fg }}" stroke-width="2.2"></path><path d="M12 12C12 7 8 5 4 5c0 4 3 7 8 7zM12 10c0-4 3-6 7-6 0 4-3 6-7 6z" fill="{{ ov.Fertilidade.fg }}"></path></svg>
+      <span style="font-size:12px;font-weight:800;color:{{ ov.Fertilidade.fg }};">F5</span>
+    </button>
+  </div>
+
+  <!-- COLUNA ESQUERDA -->
+  <div style="position:absolute;top:96px;left:96px;width:344px;display:flex;flex-direction:column;gap:12px;">
+    <div style="background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,inset 0 0 0 4px #F6EBD6,0 6px 0 rgba(30,18,8,.3),0 10px 20px rgba(30,18,8,.25);padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:12px;font-weight:800;color:#6E5A48;letter-spacing:.06em;text-transform:uppercase;">Próximo objetivo</span><span style="font-size:12px;font-weight:800;color:#B04A3A;">9 dias</span></div>
+      <span style="font-size:16px;font-weight:800;">Estocar 150 de lenha antes do inverno</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="flex:1;height:10px;background:#E6D5B5;border:1px solid #C9AE86;border-radius:5px;overflow:hidden;"><div style="width:53%;height:100%;background:#D9652B;"></div></div>
+        <span style="font-size:14px;font-weight:800;">80 / 150</span>
+      </div>
+    </div>
+
+    <sc-if value="{{ showDecree }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,0 6px 0 rgba(30,18,8,.3),0 10px 20px rgba(30,18,8,.25);overflow:hidden;">
+        <div style="background:#49637A;color:#F6EBD6;padding:8px 14px;display:flex;align-items:center;gap:10px;border-bottom:2px solid #C48C39;">
+          <div style="width:32px;height:32px;border-radius:50%;background:#E6D5B5;border:2px solid #C48C39;display:flex;align-items:center;justify-content:center;color:#3B2A1E;font-family:'Alegreya SC',serif;font-weight:700;font-size:16px;">G</div>
+          <div style="display:flex;flex-direction:column;line-height:1.1;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:18px;">O reeve sugere</span><span style="font-size:12px;color:#DCE5EC;font-weight:700;">Godric, reeve de Vale Alto</span></div>
+        </div>
+        <div style="padding:12px 16px;display:flex;flex-direction:column;gap:10px;font-size:14px;">
+          <span style="font-family:'Alegreya',serif;font-style:italic;font-size:16px;text-wrap:pretty;">"Meu senhor, já mandou gente cortar lenha 3 vezes quando o estoque estava em ~80. Quer que eu cuide disso?"</span>
+          <div style="background:#E6D5B5;border:1px dashed #8A6042;border-radius:4px;padding:8px 12px;font-weight:800;font-size:16px;">Decreto: manter lenha entre 80 e 100</div>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+            <span style="color:#6E5A48;">Custo</span><span><b>1</b> de Capacidade Adm.</span>
+            <span style="color:#6E5A48;">Você deixa de</span><span style="text-wrap:pretty;">escolher quem produz lenha (famílias que você designou não mudam)</span>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button onClick="{{ acceptDecree }}" style="flex:1;height:40px;border-radius:6px;border:2px solid #5A3D28;background:#C48C39;color:#2A1C10;font-size:16px;font-weight:800;cursor:pointer;box-shadow:inset 0 -3px 0 #9B6B26;" style-hover="filter:brightness(1.06)" style-active="box-shadow:none;transform:translateY(2px)">Criar decreto</button>
+            <button onClick="{{ laterDecree }}" style="height:40px;padding:0 12px;border-radius:6px;border:2px solid #5A3D28;background:#F6EBD6;color:#3B2A1E;font-size:14px;font-weight:700;cursor:pointer;" style-hover="background:#FFF9EC">Agora não</button>
+            <button onClick="{{ laterDecree }}" style="height:40px;padding:0 8px;border:none;background:transparent;color:#6E5A48;font-size:14px;font-weight:700;cursor:pointer;" style-hover="color:#3B2A1E">Nunca</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="3">
+      <div style="background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:0 4px 0 rgba(30,18,8,.3),0 8px 16px rgba(30,18,8,.2);display:flex;align-items:center;gap:10px;padding:8px 8px 8px 10px;">
+        <div style="width:28px;height:28px;flex:none;border-radius:{{ a.radius }};transform:{{ a.rot }};background:{{ a.color }};display:flex;align-items:center;justify-content:center;"><span style="transform:{{ a.unrot }};color:#FFF9EC;font-weight:900;font-size:14px;">{{ a.glyph }}</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;">
+          <span style="font-size:14px;font-weight:800;">{{ a.problem }}</span>
+          <span style="font-size:12px;color:#6E5A48;font-weight:600;">{{ a.detail }}</span>
+        </div>
+        <button style="height:30px;padding:0 10px;border-radius:5px;border:2px solid #5A3D28;background:#E6D5B5;font-size:13px;font-weight:800;color:#3B2A1E;cursor:pointer;" style-hover="background:#FFF9EC">Ir</button>
+        <button onClick="{{ a.dismiss }}" title="Dispensar" style="width:24px;height:30px;border:none;background:transparent;font-size:14px;color:#6E5A48;cursor:pointer;" style-hover="color:#3B2A1E">✕</button>
+      </div>
+    </sc-for>
+
+    <div style="background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,0 6px 0 rgba(30,18,8,.3),0 10px 20px rgba(30,18,8,.25);padding:12px 16px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:18px;">Na vila</span><span style="font-size:12px;font-weight:700;color:#6E5A48;">conversas de hoje</span></div>
+      <sc-for list="{{ feed }}" as="f" hint-placeholder-count="2">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:36px;height:36px;flex:none;border-radius:50%;background:{{ f.color }};border:2px solid #5A3D28;display:flex;align-items:center;justify-content:center;color:#F6EBD6;font-weight:800;font-size:14px;">{{ f.ini }}</div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-size:13px;font-weight:800;">{{ f.name }} <span style="font-weight:600;color:#6E5A48;">· {{ f.role }}</span></span>
+            <span style="font-family:'Alegreya',serif;font-style:italic;font-size:15px;line-height:1.3;text-wrap:pretty;">"{{ f.quote }}"</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- PAINEL DIREITO -->
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:96px;right:16px;width:424px;background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,0 6px 0 rgba(30,18,8,.3),0 12px 24px rgba(30,18,8,.3);overflow:hidden;">
+      <div style="background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 2px,transparent 2px 48px),#6B4630;color:#F6EBD6;padding:10px 10px 10px 16px;display:flex;align-items:center;gap:12px;border-bottom:2px solid #C48C39;">
+        <div style="width:44px;height:44px;border-radius:6px;background:#3E2A1C;border:2px solid #C48C39;display:flex;align-items:center;justify-content:center;"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M14 3l7 7-3 1-5-5z" fill="#F2D08A"></path><path d="M13 7l4 4-10 10-4-4z" fill="#F2D08A"></path></svg></div>
+        <div style="flex:1;display:flex;flex-direction:column;line-height:1.1;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:22px;">Lenhador</span><span style="font-size:12px;font-weight:700;color:#E6D5B5;">Cabana · Rua do Moinho</span></div>
+        <button onClick="{{ closePanel }}" title="Fechar (Esc)" style="width:32px;height:32px;border-radius:5px;border:2px solid #C48C39;background:#3E2A1C;font-size:14px;color:#F6EBD6;cursor:pointer;" style-hover="background:#5A3D28">✕</button>
+      </div>
+      <div style="display:flex;gap:4px;padding:8px 12px 0;background:#E6D5B5;border-bottom:2px solid #8A6042;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button onClick="{{ t.select }}" style="flex:1;height:36px;border-radius:6px 6px 0 0;border:2px solid #8A6042;border-bottom:none;margin-bottom:-2px;background:{{ t.bg }};color:#3B2A1E;font-size:14px;font-weight:800;cursor:pointer;" style-hover="background:#FFF9EC">{{ t.name }}</button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ tabGeral }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:800;color:{{ statusColor }};"><span style="width:10px;height:10px;border-radius:50%;background:{{ statusColor }};"></span>{{ statusLabel }}</span>
+            <div style="flex:1;height:10px;background:#E6D5B5;border:1px solid #C9AE86;border-radius:5px;overflow:hidden;"><div style="width:{{ effLabel }};height:100%;background:{{ statusColor }};"></div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <div style="background:#FFF9EC;border:1px solid #C9AE86;border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;"><span style="font-size:12px;font-weight:700;color:#6E5A48;">Produção</span><span style="font-size:20px;font-weight:800;">{{ production }}<span style="font-size:12px;color:#6E5A48;"> /dia</span></span></div>
+            <div style="background:#FFF9EC;border:1px solid #C9AE86;border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;"><span style="font-size:12px;font-weight:700;color:#6E5A48;">Estoque local</span><span style="font-size:20px;font-weight:800;">22<span style="font-size:12px;color:#6E5A48;"> /50</span></span></div>
+            <div style="background:#FFF9EC;border:1px solid #C9AE86;border-radius:6px;padding:8px 10px;display:flex;flex-direction:column;"><span style="font-size:12px;font-weight:700;color:#6E5A48;">Eficiência</span><span style="font-size:20px;font-weight:800;">{{ effLabel }}</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:14px;font-weight:700;color:#6E5A48;flex:1;">Trabalhadores {{ workers }}/3</span>
+            <div style="display:flex;">
+              <sc-for list="{{ workerFaces }}" as="w" hint-placeholder-count="3">
+                <div title="{{ w.name }}" style="width:32px;height:32px;margin-left:-6px;border-radius:50%;background:{{ w.color }};border:2px solid {{ w.border }};display:flex;align-items:center;justify-content:center;color:{{ w.fg }};font-size:12px;font-weight:800;">{{ w.ini }}</div>
+              </sc-for>
+            </div>
+            <button onClick="{{ decWorker }}" style="width:32px;height:32px;border-radius:5px;border:2px solid #5A3D28;background:#E6D5B5;font-size:18px;font-weight:800;color:#3B2A1E;cursor:pointer;" style-hover="background:#FFF9EC">−</button>
+            <button onClick="{{ incWorker }}" style="width:32px;height:32px;border-radius:5px;border:2px solid #5A3D28;background:#E6D5B5;font-size:18px;font-weight:800;color:#3B2A1E;cursor:pointer;" style-hover="background:#FFF9EC">+</button>
+          </div>
+          <div style="background:#FBEBD0;border:2px solid #D9952B;border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:14px;font-weight:800;">Por que {{ effLabel }}?</span>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:14px;">
+              <span style="color:#6E5A48;">Base</span><span style="font-weight:700;">100%</span>
+              <span>Machados desgastados</span><span style="font-weight:800;color:#B04A3A;">−20%</span>
+              <span style="border-top:1px dashed #D9B27A;padding-top:4px;font-weight:800;">Total</span><span style="border-top:1px dashed #D9B27A;padding-top:4px;font-weight:800;">80%</span>
+            </div>
+            <button style="align-self:flex-start;height:32px;padding:0 12px;border-radius:5px;border:2px solid #5A3D28;background:#F6EBD6;font-size:14px;font-weight:800;color:#3B2A1E;cursor:pointer;" style-hover="background:#FFF9EC">Ver ferreiro →</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:14px;font-weight:700;color:#6E5A48;flex:1;">Prioridade de transporte</span>
+            <div style="display:flex;padding:3px;gap:2px;background:#E6D5B5;border:1px solid #C9AE86;border-radius:6px;">
+              <sc-for list="{{ prios }}" as="p" hint-placeholder-count="3">
+                <button onClick="{{ p.select }}" style="height:30px;padding:0 12px;border-radius:4px;border:none;background:{{ p.bg }};color:{{ p.fg }};font-size:13px;font-weight:800;cursor:pointer;">{{ p.name }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabGente }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ workerCards }}" as="w" hint-placeholder-count="2">
+            <div style="background:#FFF9EC;border:1px solid #C9AE86;border-radius:6px;padding:10px 12px;display:flex;gap:12px;align-items:flex-start;">
+              <div style="width:48px;height:48px;flex:none;border-radius:50%;background:{{ w.color }};border:2px solid #5A3D28;display:flex;align-items:center;justify-content:center;color:#F6EBD6;font-weight:800;font-size:16px;">{{ w.ini }}</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:16px;font-weight:800;">{{ w.name }}</span><span style="font-size:12px;font-weight:800;color:{{ w.moodColor }};">{{ w.moodGlyph }} {{ w.mood }}</span></div>
+                <span style="font-size:12px;font-weight:700;color:#6E5A48;">{{ w.family }}</span>
+                <span style="font-family:'Alegreya',serif;font-style:italic;font-size:15px;line-height:1.3;">"{{ w.quote }}"</span>
+              </div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ emptySlots }}" as="e" hint-placeholder-count="1">
+            <button onClick="{{ incWorker }}" style="height:56px;border-radius:6px;border:2px dashed #8A6042;background:transparent;color:#6E5A48;font-size:14px;font-weight:800;cursor:pointer;" style-hover="background:#FFF9EC;color:#3B2A1E">+ Vaga aberta · designar família</button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabHist }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:14px;font-weight:800;">Lenha produzida · últimos 30 dias</span><span style="font-size:12px;font-weight:700;color:#B04A3A;">▼ 22% desde o dia 12</span></div>
+          <div style="background:#FFF9EC;border:1px solid #C9AE86;border-radius:6px;padding:8px;">
+            <svg width="372" height="120" viewBox="0 0 372 120"><line x1="0" y1="30" x2="372" y2="30" stroke="#E6D5B5" stroke-dasharray="4 4"></line><line x1="0" y1="70" x2="372" y2="70" stroke="#E6D5B5" stroke-dasharray="4 4"></line><line x1="134" y1="0" x2="134" y2="120" stroke="#D9952B" stroke-width="1.5" stroke-dasharray="3 3"></line><polyline points="{{ spark }}" fill="none" stroke="#D9652B" stroke-width="3" stroke-linejoin="round"></polyline></svg>
+            <span style="font-size:12px;font-weight:700;color:#9A6418;">┆ dia 12: machados começaram a gastar</span>
+          </div>
+          <span style="font-size:12px;font-weight:800;color:#6E5A48;letter-spacing:.06em;text-transform:uppercase;">Livro de contas</span>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;">
+            <span>• <b>Dia 19</b> · Você designou a Família Moss (lenha 78)</span>
+            <span>• <b>Dia 12</b> · Ferreiro sem ferro: machados não repostos</span>
+            <span>• <b>Dia 4</b> · Você designou a Família Roth (lenha 81)</span>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- BANDEJA DE CONSTRUÇÃO -->
+  <sc-if value="{{ hoverOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;bottom:316px;left:50%;transform:translateX(-50%);width:520px;z-index:7;background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,0 10px 24px rgba(30,18,8,.4);padding:14px 18px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:20px;">{{ hov.name }}</span><span style="font-size:13px;font-weight:800;color:#6E5A48;">{{ hov.vagas }} vagas · manutenção {{ hov.upkeep }}</span></div>
+      <span style="font-size:14px;text-wrap:pretty;">{{ hov.desc }}</span>
+      <div style="display:flex;justify-content:space-between;gap:12px;font-size:14px;border-top:1px dashed #C9AE86;padding-top:8px;"><span style="font-weight:800;">{{ hov.out }}</span><span style="font-weight:800;color:{{ hov.reqColor }};">{{ hov.req }}</span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ trayOpen }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;bottom:112px;left:50%;transform:translateX(-50%);background:#F6EBD6;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39,0 6px 0 rgba(30,18,8,.3),0 12px 24px rgba(30,18,8,.3);padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 4px;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:18px;">{{ catName }}</span><span style="font-size:12px;font-weight:700;color:#6E5A48;">clique para posicionar · botão direito cancela</span></div>
+      <div style="display:flex;gap:8px;">
+        <sc-for list="{{ trayItems }}" as="it" hint-placeholder-count="4">
+          <button onClick="{{ it.place }}" onMouseEnter="{{ it.enter }}" onMouseLeave="{{ it.leave }}" style="width:152px;padding:6px;border-radius:6px;border:2px solid {{ it.border }};background:{{ it.bg }};cursor:pointer;display:flex;flex-direction:column;gap:6px;text-align:left;color:#3B2A1E;transition:transform 140ms;" style-hover="transform:translateY(-3px)">
+            <div style="height:80px;border-radius:4px;background:repeating-linear-gradient(45deg,#E6D5B5 0 6px,#EEDFC2 6px 12px);border:1px solid #C9AE86;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:monospace;color:#6E5A48;">miniatura 3D</div>
+            <span style="font-size:14px;font-weight:800;padding:0 2px;">{{ it.name }}</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;padding:0 2px;">
+              <sc-for list="{{ it.costs }}" as="c" hint-placeholder-count="1">
+                <span style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:800;color:{{ c.fg }};"><span style="width:10px;height:10px;border-radius:2px;background:{{ c.dot }};border:1px solid #3E2A1C;"></span>{{ c.amt }}{{ c.mark }}</span>
+              </sc-for>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- BASE (madeira) -->
+  <div style="position:absolute;z-index:6;left:0;right:0;bottom:0;height:96px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 2px,transparent 2px 64px),#6B4630;border-top:3px solid #3E2A1C;box-shadow:inset 0 2px 0 #C48C39,0 -6px 16px rgba(30,18,8,.35);display:flex;align-items:center;padding:0 16px;gap:16px;color:#F6EBD6;">
+    <div style="display:flex;gap:6px;width:360px;">
+      <button style="height:56px;padding:0 14px;border-radius:6px;border:2px solid #3E2A1C;background:#F2E6CF;color:#3B2A1E;font-size:14px;font-weight:800;cursor:pointer;box-shadow:inset 0 -3px 0 #E0CBA6;display:flex;align-items:center;gap:8px;" style-hover="background:#FFF9EC">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z M20 4h-4a2 2 0 0 0-2 2" fill="none" stroke="#3B2A1E" stroke-width="2"></path></svg>Livro de contas
+      </button>
+      <button title="Opções · escala da UI" style="width:56px;height:56px;border-radius:6px;border:2px solid #3E2A1C;background:#F2E6CF;color:#3B2A1E;cursor:pointer;box-shadow:inset 0 -3px 0 #E0CBA6;display:flex;align-items:center;justify-content:center;" style-hover="background:#FFF9EC">
+        <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" fill="none" stroke="#3B2A1E" stroke-width="2"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3" stroke="#3B2A1E" stroke-width="2" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+
+    <div style="flex:1;display:flex;justify-content:center;gap:6px;">
+      <button onClick="{{ cat.Habitacao.select }}" style="width:108px;height:76px;border-radius:6px;border:2px solid #3E2A1C;background:{{ cat.Habitacao.bg }};color:#3B2A1E;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:{{ cat.Habitacao.shadow }};transform:{{ cat.Habitacao.lift }};transition:transform 140ms;" style-hover="filter:brightness(1.05)">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7" stroke="#3B2A1E" stroke-width="2.2" fill="none" stroke-linejoin="round"></path><path d="M6 10v10h12V10" fill="#B04A3A"></path><rect x="10" y="14" width="4" height="6" fill="#3B2A1E"></rect></svg>
+        <span style="font-size:13px;font-weight:800;">Habitação</span><span style="font-size:11px;font-weight:800;color:#6E5A48;margin-top:-4px;">H</span>
+      </button>
+      <button onClick="{{ cat.Comida.select }}" style="width:108px;height:76px;border-radius:6px;border:2px solid #3E2A1C;background:{{ cat.Comida.bg }};color:#3B2A1E;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:{{ cat.Comida.shadow }};transform:{{ cat.Comida.lift }};transition:transform 140ms;" style-hover="filter:brightness(1.05)">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M12 22V6" stroke="#9C7A2E" stroke-width="2"></path><ellipse cx="9" cy="9" rx="2" ry="3.5" transform="rotate(-25 9 9)" fill="#D7A93E"></ellipse><ellipse cx="15" cy="9" rx="2" ry="3.5" transform="rotate(25 15 9)" fill="#D7A93E"></ellipse><ellipse cx="9" cy="15" rx="2" ry="3.5" transform="rotate(-25 9 15)" fill="#D7A93E"></ellipse><ellipse cx="15" cy="15" rx="2" ry="3.5" transform="rotate(25 15 15)" fill="#D7A93E"></ellipse></svg>
+        <span style="font-size:13px;font-weight:800;">Comida</span><span style="font-size:11px;font-weight:800;color:#6E5A48;margin-top:-4px;">C</span>
+      </button>
+      <button onClick="{{ cat.Recursos.select }}" style="width:108px;height:76px;border-radius:6px;border:2px solid #3E2A1C;background:{{ cat.Recursos.bg }};color:#3B2A1E;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:{{ cat.Recursos.shadow }};transform:{{ cat.Recursos.lift }};transition:transform 140ms;" style-hover="filter:brightness(1.05)">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M14 3l7 7-3 1-5-5z" fill="#6F7A86"></path><path d="M13 7l4 4-10 10-4-4z" fill="#8A6042"></path></svg>
+        <span style="font-size:13px;font-weight:800;">Recursos</span><span style="font-size:11px;font-weight:800;color:#6E5A48;margin-top:-4px;">R</span>
+      </button>
+      <button onClick="{{ cat.Industria.select }}" style="width:108px;height:76px;border-radius:6px;border:2px solid #3E2A1C;background:{{ cat.Industria.bg }};color:#3B2A1E;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:{{ cat.Industria.shadow }};transform:{{ cat.Industria.lift }};transition:transform 140ms;" style-hover="filter:brightness(1.05)">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 8h14c0 3-2 5-5 5h-1v3h3v3H6v-3h3v-3H8C5 13 3 11 3 8z" fill="#6F7A86"></path><path d="M17 8h4v2h-4z" fill="#6F7A86"></path></svg>
+        <span style="font-size:13px;font-weight:800;">Ofícios</span><span style="font-size:11px;font-weight:800;color:#6E5A48;margin-top:-4px;">O</span>
+      </button>
+      <button onClick="{{ cat.Armazens.select }}" style="width:108px;height:76px;border-radius:6px;border:2px solid #3E2A1C;background:{{ cat.Armazens.bg }};color:#3B2A1E;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:{{ cat.Armazens.shadow }};transform:{{ cat.Armazens.lift }};transition:transform 140ms;" style-hover="filter:brightness(1.05)">
+        <svg width="28" height="28" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="7" ry="9" fill="#9A6A3E"></ellipse><path d="M5.5 8h13M5.5 16h13" stroke="#3B2A1E" stroke-width="2"></path></svg>
+        <span style="font-size:13px;font-weight:800;">Armazéns</span><span style="font-size:11px;font-weight:800;color:#6E5A48;margin-top:-4px;">A</span>
+      </button>
+      <button onClick="{{ cat.Estradas.select }}" style="width:108px;height:76px;border-radius:6px;border:2px solid #3E2A1C;background:{{ cat.Estradas.bg }};color:#3B2A1E;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:{{ cat.Estradas.shadow }};transform:{{ cat.Estradas.lift }};transition:transform 140ms;" style-hover="filter:brightness(1.05)">
+        <svg width="28" height="28" viewBox="0 0 24 24"><path d="M9 3L5 21M15 3l4 18" stroke="#8A6042" stroke-width="2.5"></path><path d="M12 5v3M12 11v3M12 17v3" stroke="#C48C39" stroke-width="2"></path></svg>
+        <span style="font-size:13px;font-weight:800;">Estradas</span><span style="font-size:11px;font-weight:800;color:#6E5A48;margin-top:-4px;">E</span>
+      </button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;width:360px;justify-content:flex-end;">
+      <div title="Capacidade Administrativa: escrivães, pergaminhos e o salão do senhor" style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800;"><span style="color:#E6D5B5;">Capacidade Adm.</span><span>{{ caUsed }}/8</span></div>
+        <div style="display:flex;gap:3px;">
+          <sc-for list="{{ caSegs }}" as="seg" hint-placeholder-count="8">
+            <div style="width:20px;height:16px;border-radius:2px;border:2px solid #3E2A1C;background:{{ seg.bg }};"></div>
+          </sc-for>
+        </div>
+      </div>
+      <button style="height:56px;padding:0 14px 0 8px;border-radius:6px;border:2px solid #3E2A1C;background:#F2E6CF;color:#3B2A1E;cursor:pointer;box-shadow:inset 0 -3px 0 #E0CBA6;display:flex;align-items:center;gap:8px;" style-hover="background:#FFF9EC">
+        <div style="width:36px;height:36px;border-radius:50%;background:#49637A;border:2px solid #C48C39;color:#F6EBD6;display:flex;align-items:center;justify-content:center;font-family:'Alegreya SC',serif;font-weight:700;">G</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.1;"><span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:17px;">Reeve</span><span style="font-size:12px;font-weight:700;color:#6E5A48;">{{ decreeCount }} decretos</span></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- PINOS DE ANOTAÇÃO -->
+  <sc-if value="{{ pinsOn }}" hint-placeholder-val="{{ true }}">
+    <sc-for list="{{ pins }}" as="p" hint-placeholder-count="10">
+      <a href="#nota-{{ p.n }}" style="position:absolute;z-index:20;left:{{ p.x }};top:{{ p.y }};width:28px;height:28px;border-radius:50%;background:#F2D08A;border:2px solid #2A1C10;color:#2A1C10;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 3px 8px rgba(0,0,0,.45);">{{ p.n }}</a>
+    </sc-for>
+  </sc-if>
+</div>
+
+<!-- NOTAS DE DESIGN -->
+<div data-screen-label="Notas de design" style="padding:64px 64px 96px;display:flex;flex-direction:column;gap:32px;color:#F6EBD6;">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:1100px;">
+    <span style="font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#C48C39;">HUD v2 · notas de design</span>
+    <span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:44px;line-height:1.1;">Leitura de city builder moderno, acabamento de oficina medieval</span>
+    <span style="font-size:18px;line-height:1.5;color:#E6D5B5;text-wrap:pretty;">A estrutura segue Cities: Skylines (mapas de informação, bandeja de construção com miniaturas, feed da cidade). O material segue a regra: madeira para a estrutura fixa (barras), pergaminho para o conteúdo (painéis), latão para seleção e ação. Os números abaixo correspondem aos pinos na tela.</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;">
+    <sc-for list="{{ notes }}" as="n" hint-placeholder-count="10">
+      <div id="nota-{{ n.n }}" style="background:#F6EBD6;color:#3B2A1E;border:3px solid #5A3D28;border-radius:8px;box-shadow:inset 0 0 0 2px #C48C39;padding:18px 20px;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:28px;height:28px;flex:none;border-radius:50%;background:#F2D08A;border:2px solid #2A1C10;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;">{{ n.n }}</span>
+          <span style="font-family:'Alegreya SC',serif;font-weight:700;font-size:20px;line-height:1.1;">{{ n.title }}</span>
+        </div>
+        <span style="font-size:15px;line-height:1.45;text-wrap:pretty;">{{ n.body }}</span>
+        <span style="font-size:12px;font-weight:800;color:#6E5A48;border-top:1px dashed #C9AE86;padding-top:8px;">{{ n.src }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;font-size:15px;color:#E6D5B5;">
+    <span style="font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#C48C39;">Fontes</span>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 24px;">
+      <a href="https://cs2.paradoxwikis.com/Info_views" target="_blank">Cities: Skylines II — Info views</a>
+      <a href="https://lostgarden.com/2018/01/24/cozy-games/" target="_blank">Lost Garden — Cozy Games (2018)</a>
+      <a href="https://celiahodent.com/" target="_blank">Celia Hodent — The Gamer's Brain</a>
+      <a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank">Nielsen — 10 heurísticas</a>
+      <a href="https://lawsofux.com/" target="_blank">Laws of UX</a>
+      <a href="https://gameaccessibilityguidelines.com/" target="_blank">Game Accessibility Guidelines</a>
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;estacao&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Outono&quot;,&quot;Inverno&quot;],&quot;default&quot;:&quot;Outono&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;anotacoes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;tooltip&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { scale: 1, paused: false, speed: 1, cat: 'Recursos', hover: null, placing: null, overlay: null, tab: 'geral', workers: 2, prio: 'Normal', closed: false, decree: 'open', dismissed: [], tip: null, tipLeft: 0 };
+  componentDidMount() {
+    this.fit = () => { const w = document.documentElement.clientWidth || window.innerWidth; if (!w) { requestAnimationFrame(this.fit); return; } this.setState({ scale: w / 1920 }); };
+    this.fit(); window.addEventListener('resize', this.fit);
+    this.ro = new ResizeObserver(this.fit); this.ro.observe(document.documentElement);
+    this.key = (e) => {
+      if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+      if (e.code === 'Space') { e.preventDefault(); this.setState(s => ({ paused: !s.paused })); }
+      if (['1','2','3'].includes(e.key)) this.setState({ speed: +e.key, paused: false });
+      if (e.key === 'Escape') this.setState(s => s.placing ? { placing: null, overlay: null } : s.overlay ? { overlay: null } : s.cat ? { cat: null } : { closed: true });
+      const f = { F1: 'Fluxo', F2: 'Necessidades', F3: 'Trabalho', F4: 'Alcance', F5: 'Fertilidade' }[e.key];
+      if (f) { e.preventDefault(); this.setState(s => ({ overlay: s.overlay === f ? null : f })); }
+    };
+    window.addEventListener('keydown', this.key);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); window.removeEventListener('resize', this.fit); window.removeEventListener('keydown', this.key); }
+  renderVals() {
+    const p = this.props, s = this.state;
+    const winter = (p.estacao ?? 'Outono') === 'Inverno';
+    const R = { mad: '#9A6A3E', ped: '#8C8A84', fer: '#6F7A86', moe: '#C48C39' };
+    const have = { mad: 120, ped: 30, fer: 12, moe: 210 };
+    const cost = (k, amt) => ({ amt, dot: R[k], fg: amt > have[k] ? '#B04A3A' : '#3B2A1E', mark: amt > have[k] ? ' ✕' : '', short: amt > have[k] });
+    const B = (name, costs, desc, out, vagas, upkeep, req, overlay) => ({ name, costs, desc, out, vagas, upkeep, req, overlay });
+    const catalog = {
+      Habitacao: { name: 'Habitação', ov: 'Necessidades', items: [B('Casebre', [cost('mad', 30)], 'Abriga uma família. Famílias perto do poço e do mercado ficam mais contentes.', 'Moradia para 1 família', 0, '1 lenha/sem.', 'Sem requisito', 'Necessidades'), B('Casa de pedra', [cost('mad', 20), cost('ped', 40)], 'Abriga uma família e gasta menos lenha no inverno.', 'Moradia para 1 família', 0, '0,5 lenha/sem.', 'Falta pedra (30/40)', 'Necessidades')] },
+      Comida: { name: 'Comida', ov: 'Fertilidade', items: [B('Campo', [cost('mad', 10)], 'Planta trigo nas terras férteis. Colheita no fim do verão.', '+60 comida por colheita', 2, 'nenhuma', 'Solo fértil', 'Fertilidade'), B('Coletor', [cost('mad', 15)], 'Coleta frutas e ervas na mata próxima, exceto no inverno.', '+5 comida/dia', 2, 'nenhuma', 'Mata no alcance', 'Fertilidade'), B('Caçador', [cost('mad', 20)], 'Caça na floresta. Produz carne e couro.', '+4 comida/dia', 1, 'nenhuma', 'Floresta no alcance', 'Alcance'), B('Celeiro', [cost('mad', 40), cost('ped', 10)], 'Guarda comida e a distribui para as casas no alcance.', 'Armazena 400 comida', 1, '2 moedas/sem.', 'Sem requisito', 'Alcance')] },
+      Recursos: { name: 'Recursos', ov: 'Alcance', items: [B('Lenhador', [cost('mad', 20)], 'Corta árvores dentro do alcance e transforma em lenha. Rende mais com machados novos.', '7 lenha/dia por trabalhador', 3, 'nenhuma', 'Floresta no alcance', 'Alcance'), B('Pedreira', [cost('mad', 30)], 'Extrai pedra de um afloramento. Trabalho pesado: cansa as famílias.', '4 pedra/dia por trabalhador', 3, 'nenhuma', 'Afloramento de pedra', 'Alcance'), B('Mina', [cost('mad', 40), cost('fer', 15)], 'Extrai minério de ferro para o ferreiro.', '3 ferro/dia por trabalhador', 3, '3 moedas/sem.', 'Faltam 3 ferramentas', 'Alcance'), B('Carvoaria', [cost('mad', 25), cost('ped', 10)], 'Queima madeira devagar para fazer carvão para a forja.', '2 carvão/dia', 1, 'nenhuma', 'Sem requisito', 'Trabalho')] },
+      Industria: { name: 'Ofícios', ov: 'Trabalho', items: [B('Ferreiro', [cost('mad', 30), cost('ped', 20)], 'Transforma ferro e carvão em ferramentas e machados.', '1 ferramenta/dia', 2, '2 moedas/sem.', 'Sem requisito', 'Trabalho'), B('Tecelão', [cost('mad', 25)], 'Tece lã em roupas quentes para o inverno.', '2 roupas/dia', 2, 'nenhuma', 'Sem requisito', 'Trabalho')] },
+      Armazens: { name: 'Armazéns', ov: 'Fluxo', items: [B('Depósito', [cost('mad', 30)], 'Guarda madeira, pedra e ferramentas perto de onde são usadas.', 'Armazena 300 itens', 1, 'nenhuma', 'Sem requisito', 'Fluxo'), B('Mercado', [cost('mad', 40), cost('moe', 50)], 'As famílias buscam aqui o que precisam. Aumenta o ânimo no alcance.', '+8 ânimo no alcance', 2, '3 moedas/sem.', 'Sem requisito', 'Alcance')] },
+      Estradas: { name: 'Estradas', ov: 'Fluxo', items: [B('Trilha de terra', [cost('mad', 0)], 'Caminho básico. Fica lento com chuva e neve.', 'Velocidade 1×', 0, 'nenhuma', 'Sem requisito', 'Fluxo'), B('Estrada de pedra', [cost('ped', 2)], 'Mais rápida e não atola. Custo por trecho.', 'Velocidade 1,5×', 0, 'nenhuma', 'Sem requisito', 'Fluxo')] },
+    };
+    const curCat = s.cat ? catalog[s.cat] : null;
+    const trayItems = (curCat ? curCat.items : []).map((it, i) => {
+      const short = it.costs.some(c => c.short);
+      return { ...it, border: s.placing === it.name ? '#C48C39' : short ? '#B04A3A' : '#C9AE86', bg: s.placing === it.name ? '#FFF1D2' : '#FFF9EC',
+        enter: () => this.setState({ hover: i }), leave: () => this.setState({ hover: null }),
+        place: () => { if (!short) this.setState({ placing: it.name, overlay: it.overlay }); } };
+    });
+    const hovItem = s.hover != null && curCat ? curCat.items[s.hover] : null;
+    const tips = {
+      mad: { name: 'Madeira', value: 120, prod: '+10/dia', prodSrc: 'Lenhador ×1', cons: '−4/dia', consSrc: 'obras', lasts: 'Sobe ~6 por dia' },
+      ped: { name: 'Pedra', value: 30, prod: '+0/dia', prodSrc: 'sem pedreira', cons: '0/dia', consSrc: '—', lasts: 'Estável' },
+      fer: { name: 'Ferramentas', value: 12, prod: '+0/dia', prodSrc: 'ferreiro parado', cons: '−2/dia', consSrc: 'desgaste', lasts: 'Acabam em ~6 dias' },
+      com: { name: 'Comida', value: 450, prod: '+38/dia', prodSrc: 'Campo ×2, Coleta ×1', cons: '−26/dia', consSrc: '6 famílias', lasts: '~17 dias sem colheita' },
+      len: { name: 'Lenha', value: 80, prod: '+14/dia', prodSrc: 'Lenhador (80%)', cons: '−18/dia', consSrc: '6 casas', lasts: 'Acaba em ~6 dias (inverno em 9)' },
+      moe: { name: 'Moedas', value: 210, prod: '+5/dia', prodSrc: 'aluguel', cons: '−2/dia', consSrc: 'manutenção', lasts: 'Sobe ~3 por dia' },
+    };
+    const forceTip = (p.tooltip ?? false) && !s.tip;
+    const tipKey = s.tip || (forceTip ? 'com' : null);
+    const res = {};
+    Object.keys(tips).forEach(k => { res[k] = { enter: (e) => { const el = e.currentTarget; this.setState({ tip: k, tipLeft: el.offsetLeft - 8 }); } }; });
+    const alertsAll = [
+      { id: 1, glyph: '!!', color: '#B04A3A', radius: '4px', rot: 'rotate(45deg)', unrot: 'rotate(-45deg)', problem: 'Lenha acaba em ~6 dias', detail: 'Inverno em 9 · consumo maior que produção' },
+      { id: 2, glyph: '!', color: '#9A6418', radius: '4px', rot: 'none', unrot: 'none', problem: '1 vaga parada no Lenhador', detail: 'Faltam machados → ferreiro sem ferro' },
+      { id: 3, glyph: 'i', color: '#49637A', radius: '50%', rot: 'none', unrot: 'none', problem: 'Família Roth chegou', detail: 'O reeve a designou ao Campo #8' },
+    ];
+    const people = [
+      { ini: 'BR', name: 'Bram Roth', family: 'Família Roth · 4 membros', color: '#8A6042', mood: 'Cansado', moodColor: '#9A6418', moodGlyph: '▼', quote: 'Esse machado já não corta nem manteiga.' },
+      { ini: 'HM', name: 'Hilde Moss', family: 'Família Moss · 3 membros', color: '#5E8A45', mood: 'Contente', moodColor: '#5E8A45', moodGlyph: '▲', quote: 'Gosto do cheiro de pinho de manhã cedo.' },
+      { ini: 'OT', name: 'Otto Tanner', family: 'Família Tanner · 5 membros', color: '#49637A', mood: 'Satisfeito', moodColor: '#6E5A48', moodGlyph: '●', quote: 'Trabalho é trabalho. Contanto que tenha sopa.' },
+    ];
+    const workerCards = people.slice(0, s.workers);
+    const workerFaces = [0, 1, 2].map(i => i < s.workers ? { ...people[i], border: '#F6EBD6', fg: '#F6EBD6' } : { ini: '+', name: 'Vaga aberta', color: '#E6D5B5', border: '#8A6042', fg: '#6E5A48' });
+    const effNum = s.workers === 0 ? 0 : 80;
+    const days = [16,17,16,18,17,18,17,18,19,18,17,18,16,15,15,14,15,14,14,13,14,14,13,14,14,13,14,14,13,14];
+    const spark = days.map((v, i) => `${(i * 372 / 29).toFixed(1)},${(120 - (v - 8) * 10).toFixed(1)}`).join(' ');
+    const decreeAccepted = s.decree === 'accepted';
+    const caUsed = 6 + (decreeAccepted ? 1 : 0);
+    const ovText = { Fluxo: 'Linhas de transporte: largura = volume, cor = recurso', Necessidades: 'Casas coloridas por satisfação', Trabalho: 'Edifícios por eficiência', Alcance: 'Áreas de serviço e florestas ao alcance', Fertilidade: 'Solo fértil em verde, pobre em ocre' };
+    const ov = {};
+    Object.keys(ovText).forEach(name => { const on = s.overlay === name; ov[name] = { bg: on ? '#3E2A1C' : '#FFF9EC', fg: on ? '#F2D08A' : '#3B2A1E', border: on ? '#C48C39' : '#C9AE86', toggle: () => this.setState({ overlay: on ? null : name, placing: null }) }; });
+    const cat = {};
+    Object.keys(catalog).forEach(k => { const on = s.cat === k; cat[k] = { bg: on ? '#C48C39' : '#F2E6CF', shadow: on ? 'inset 0 -3px 0 #9B6B26, 0 0 0 2px #F2D08A' : 'inset 0 -3px 0 #E0CBA6', lift: on ? 'translateY(-4px)' : 'none', select: () => this.setState({ cat: on ? null : k, hover: null, placing: null, overlay: on ? null : s.overlay }) }; });
+    const P = (n, x, y) => ({ n, x: x + 'px', y: y + 'px' });
+    return {
+      scale: s.scale,
+      worldFilter: s.overlay ? 'saturate(0.15) brightness(0.9)' : 'none',
+      vignette: winter ? 'inset 0 0 240px 70px rgba(150,185,215,.6)' : 'inset 0 0 180px 30px rgba(40,25,10,.3)',
+      bannerOn: !!(s.placing || s.overlay),
+      bannerTitle: s.placing ? `Posicionando ${s.placing}` : `Mapa: ${s.overlay}`,
+      bannerText: s.placing ? `Mapa de ${s.overlay} aberto sozinho · botão direito ou Esc cancela` : ovText[s.overlay] || '',
+      cancelPlacing: (e) => { if (s.placing) { e.preventDefault(); this.setState({ placing: null, overlay: null }); } },
+      res, resLeave: () => this.setState({ tip: null }),
+      tipOn: !!tipKey, tip: tipKey ? tips[tipKey] : tips.com, tipLeft: (s.tip ? s.tipLeft : 340) + 'px',
+      seasonLabel: winter ? 'Inverno · Ano 2 · dia 3' : 'Outono · Ano 2 · dia 21',
+      seasonHint: winter ? 'Primavera em 44 dias' : 'Inverno em 9 dias',
+      seasonHintColor: winter ? '#B9D2E6' : '#F2B08A',
+      timelineBg: winter ? 'linear-gradient(90deg,#9DB5C8 0 100%)' : 'linear-gradient(90deg,#C9783A 0 75%,#9DB5C8 75% 100%)',
+      events: winter ? [{ pos: '30%', color: '#F6EBD6', label: 'Nevasca · 4d', title: 'Nevasca em 4 dias' }, { pos: '70%', color: '#C48C39', label: 'Mercador · 9d', title: 'Mercador em 9 dias' }]
+        : [{ pos: '25%', color: '#D7A93E', label: 'Colheita · 3d', title: 'Colheita em 3 dias' }, { pos: '50%', color: '#C48C39', label: 'Mercador · 6d', title: 'Mercador em 6 dias' }, { pos: '75%', color: '#9DB5C8', label: 'Inverno · 9d', title: 'Inverno em 9 dias' }],
+      pauseBg: s.paused ? '#B04A3A' : '#5A3D28', pauseFg: '#F6EBD6',
+      togglePause: () => this.setState({ paused: !s.paused }),
+      speeds: [1, 2, 3].map(n => { const on = !s.paused && s.speed === n; return { label: '▶'.repeat(n), title: `Velocidade ${n} (${n})`, bg: on ? '#C48C39' : '#5A3D28', fg: on ? '#2A1C10' : '#F6EBD6', set: () => this.setState({ speed: n, paused: false }) }; }),
+      ov,
+      showDecree: s.decree === 'open',
+      acceptDecree: () => this.setState({ decree: 'accepted' }),
+      laterDecree: () => this.setState({ decree: 'later' }),
+      alerts: alertsAll.filter(a => !s.dismissed.includes(a.id)).map(a => ({ ...a, dismiss: () => this.setState({ dismissed: [...s.dismissed, a.id] }) })),
+      feed: [
+        { ini: 'IL', name: 'Ilse', role: 'padeira', color: '#B04A3A', quote: 'O forno está quentinho, mas a lenha do depósito está no fim.' },
+        { ini: 'BR', name: 'Bram', role: 'lenhador', color: '#8A6042', quote: 'Esse machado já não corta nem manteiga.' },
+      ],
+      panelOpen: !s.closed,
+      closePanel: () => this.setState({ closed: true }),
+      tabs: [['geral', 'Visão geral'], ['gente', 'Trabalhadores'], ['hist', 'Histórico']].map(([id, name]) => ({ name, bg: s.tab === id ? '#F6EBD6' : '#E6D5B5', select: () => this.setState({ tab: id }) })),
+      tabGeral: s.tab === 'geral', tabGente: s.tab === 'gente', tabHist: s.tab === 'hist',
+      workers: s.workers, production: Math.round(s.workers * 7 * (effNum / 80)),
+      statusLabel: s.workers === 0 ? 'Parado · sem trabalhadores' : 'Produzindo',
+      statusColor: s.workers === 0 ? '#B04A3A' : '#5E8A45',
+      effLabel: effNum + '%',
+      incWorker: () => this.setState({ workers: Math.min(3, s.workers + 1) }),
+      decWorker: () => this.setState({ workers: Math.max(0, s.workers - 1) }),
+      workerFaces, workerCards, emptySlots: Array.from({ length: 3 - s.workers }, (_, i) => ({ i })),
+      prios: ['Baixa', 'Normal', 'Alta'].map(n => ({ name: n, bg: s.prio === n ? '#5A3D28' : 'transparent', fg: s.prio === n ? '#F6EBD6' : '#3B2A1E', select: () => this.setState({ prio: n }) })),
+      spark,
+      hoverOn: !!hovItem, hov: hovItem ? { ...hovItem, reqColor: /Falta/.test(hovItem.req) ? '#B04A3A' : '#5E8A45' } : {},
+      trayOpen: !!curCat, catName: curCat ? curCat.name : '', trayItems, cat,
+      caUsed, caSegs: Array.from({ length: 8 }, (_, i) => ({ bg: i < caUsed ? '#C48C39' : '#3E2A1C' })),
+      decreeCount: decreeAccepted ? 3 : 2,
+      pinsOn: p.anotacoes ?? true,
+      pins: [P(1, 900, 4), P(2, 1500, 4), P(3, 4, 88), P(4, 412, 176), P(5, 1290, 360), P(6, 1460, 150), P(7, 610, 600), P(8, 412, 760), P(9, 1600, 1000), P(10, 1180, 80)],
+      notes: [
+        { n: 1, title: 'Recursos por cadeia', body: 'Três grupos (obra, sobrevivência, riqueza) separados por latão. Valor e tendência ficam juntos; a seta tem forma própria para não depender da cor. Passe o mouse para ver produção, consumo e previsão.', src: 'Gestalt · Miller · Nielsen #1' },
+        { n: 2, title: 'Linha do tempo da estação', body: 'Os próximos 12 dias com colheita, mercador e inverno. A troca para o inverno é um corte seco de cor: o limite entre o seguro e o perigoso deve ser nítido.', src: 'Frostpunk · Lost Garden (limiares)' },
+        { n: 3, title: 'Trilho de mapas', body: 'Como as info views de Cities: Skylines: um clique troca a leitura do mundo, que fica dessaturado. Ao escolher um edifício, o mapa relacionado abre sozinho.', src: 'Cities: Skylines II — Info views' },
+        { n: 4, title: 'O reeve fala', body: 'A sugestão de decreto vem de um personagem com nome e rosto. Mostra o que acontece, o custo e o controle que você perde. Ensina pela situação, sem tutorial em texto.', src: 'GDD §3.2 · Hodent (aprender fazendo)' },
+        { n: 5, title: 'Marcadores no mundo', body: 'Problemas aparecem sobre o edifício, ancorados por uma haste. Losango = aviso, círculo = informação: a forma diferencia a gravidade antes da cor.', src: 'Fagerholt & Lorentzon — UI espacial' },
+        { n: 6, title: 'Painel com abas', body: 'Uma pergunta por aba: está produzindo? quem trabalha? o que mudou? Os trabalhadores têm rosto, humor e fala, então a causa de um problema vira uma pessoa.', src: 'Nielsen #8 · Manor Lords' },
+        { n: 7, title: 'Bandeja de construção', body: 'Miniaturas 3D com custo visível antes do clique; o que falta fica em vermelho com ✕. O cartão acima mostra o que o edifício produz e o que exige.', src: 'Cities: Skylines · Hick · Nielsen #5' },
+        { n: 8, title: 'Na vila', body: 'Equivalente ao feed de Cities: Skylines, com falas dos aldeões. Informação de baixa urgência em tom acolhedor, que reforça o alerta sem repeti-lo.', src: 'Lost Garden — Cozy Games' },
+        { n: 9, title: 'Capacidade administrativa', body: 'Medidor segmentado: a contagem se lê num olhar, sem ler números. O reeve fica ao lado, porque é ele quem consome essa capacidade.', src: 'Hodent — percepção e atenção' },
+        { n: 10, title: 'Materiais', body: 'Madeira = moldura fixa da tela. Pergaminho = conteúdo. Latão = seleção e ação principal. Sombras sólidas de 6px dão volume tátil sem gradientes chamativos.', src: 'Kenney RPG · Lands of Koastalia' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
