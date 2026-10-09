@@ -223,8 +223,10 @@
   de subir para 150%, e o HUD de 1920 não cabe numa janela de 1280 (o teto atual é "caber na tela").
 - **Opções:** (a) legendas a 12 px e aceitar ~10 px em 720p com a escala no teto que cabe; (b) piso de 14 px para
   legendas só em telas pequenas (variação `LabelCaption` com 14 px quando a janela < 1600 px); (c) subir `caption` para 13–14 px.
-- **Escolha provisória:** etapa 1 segue a spec (12 px). Decido na etapa 2 (estrutura em 1280×720) com medição, pela
-  opção mais simples que mantenha ≥ 12 px real — provavelmente (b). `UiSettings.SmallestFont` passa de 14 para 12 junto.
+- **Escolha (etapa 2, medida):** (b), feita de forma genérica — `UiSettings` calcula a escala aplicada (gosto do jogador,
+  subida até caber) e, se mesmo assim o menor texto ficar < 12 px na tela, **sobe no Theme** todo tamanho de fonte menor
+  que o piso (`FontFloor`; nunca diminui). Medido: 1920×1080 → 100%, sem piso, 12 px; **1280×720 → 130%, piso 14,
+  menor texto 12,1 px**; 2560×1440 → 100%, 16 px. `SmallestFont` passou de 14 para 12. Nenhum tamanho é posto nos nós.
 
 ### P32. Variações antigas do HUD 2A mantidas durante a transição (prioridade baixa)
 - **Escolha:** o Theme novo convive com as variações do HUD 2A (`PanelPrimary`, `TopBar`, `ChipPanel`, `Alert*`…) e

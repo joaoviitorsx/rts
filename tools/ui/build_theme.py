@@ -311,6 +311,7 @@ def main():
     # ---- panels (spec §2.4)
     variation("PanelParchment", "PanelContainer", styles__panel=tex_style("panel_parchment", parchment, (16, 12, 16, 12)))
     variation("PanelParchmentFlush", "PanelContainer", styles__panel=tex_style("panel_parchment_flush", parchment, (5, 5, 5, 5)))
+    variation("PanelRail", "PanelContainer", styles__panel=tex_style("panel_rail", parchment, (6, 8, 6, 8)))   # 52 + 12 = 64 px
     variation("PanelParchmentInner", "PanelContainer", styles__panel=flat("panel_inner", None, content=(16, 12, 16, 14)))
     variation("PanelParchmentHeader", "PanelContainer", styles__panel=tex_style("panel_header", header, (16, 10, 10, 12)))
     variation("PanelReeveHeader", "PanelContainer", styles__panel=flat("panel_reeve", C["info"], content=(14, 8, 14, 8),
@@ -396,6 +397,14 @@ def main():
     progress("ProgressFire", C["parchment_alt"], C["fire"], (C["parchment_line"], 1), 5)
     progress("ProgressPositive", C["parchment_alt"], C["positive"], (C["parchment_line"], 1), 5)
     progress("ProgressOnWood", C["wood_dark"], C["brass_light"], None, 3)
+
+    # ---- layout spacing (spec §2.3, 4-px grid) — containers take spacing from the theme, never from overrides
+    variation("RowBar", "HBoxContainer", constants__separation="16")
+    variation("RowTight", "HBoxContainer", constants__separation="8")
+    variation("RowSegments", "HBoxContainer", constants__separation="4")
+    variation("ColumnCards", "VBoxContainer", constants__separation="12")
+    variation("ColumnTight", "VBoxContainer", constants__separation="4")
+    variation("ColumnRail", "VBoxContainer", constants__separation="8")
 
     # ---- separators
     variation("SeparatorWood", "VSeparator", styles__separator=T.sub_res("StyleBoxLine", "sep_wood",

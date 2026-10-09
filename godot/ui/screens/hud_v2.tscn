@@ -1,0 +1,182 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/screens/HudV2.cs" id="1_hud"]
+[ext_resource type="Theme" path="res://ui/theme/main_theme.tres" id="2_theme"]
+
+[node name="HudV2" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+
+[node name="TopBar" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 72.0
+grow_horizontal = 2
+theme_type_variation = &"BarWood"
+
+[node name="Row" type="HBoxContainer" parent="Root/TopBar"]
+layout_mode = 2
+theme_type_variation = &"RowBar"
+
+[node name="Settlement" type="HBoxContainer" parent="Root/TopBar/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RowTight"
+
+[node name="SepSettlement" type="VSeparator" parent="Root/TopBar/Row"]
+layout_mode = 2
+theme_type_variation = &"SeparatorWood"
+
+[node name="Population" type="HBoxContainer" parent="Root/TopBar/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RowTight"
+
+[node name="SepPopulation" type="VSeparator" parent="Root/TopBar/Row"]
+layout_mode = 2
+theme_type_variation = &"SeparatorWood"
+
+[node name="Resources" type="HBoxContainer" parent="Root/TopBar/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_type_variation = &"RowBar"
+
+[node name="SepResources" type="VSeparator" parent="Root/TopBar/Row"]
+layout_mode = 2
+theme_type_variation = &"SeparatorWood"
+
+[node name="Season" type="VBoxContainer" parent="Root/TopBar/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"ColumnTight"
+
+[node name="Speed" type="HBoxContainer" parent="Root/TopBar/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RowTight"
+
+[node name="OverlayRail" type="PanelContainer" parent="Root"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 96.0
+offset_right = 80.0
+offset_bottom = 96.0
+theme_type_variation = &"PanelRail"
+
+[node name="Buttons" type="VBoxContainer" parent="Root/OverlayRail"]
+layout_mode = 2
+theme_type_variation = &"ColumnRail"
+
+[node name="LeftColumn" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 96.0
+offset_top = 96.0
+offset_right = 440.0
+offset_bottom = -112.0
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"ColumnCards"
+
+[node name="RightPanel" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -440.0
+offset_top = 96.0
+offset_right = -16.0
+offset_bottom = -112.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"ColumnCards"
+
+[node name="ModeBanner" type="PanelContainer" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 96.0
+grow_horizontal = 2
+theme_type_variation = &"PanelDark"
+
+[node name="BuildHover" type="PanelContainer" parent="Root"]
+visible = false
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -316.0
+offset_right = 260.0
+offset_bottom = -316.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"PanelParchment"
+
+[node name="BuildTray" type="PanelContainer" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -112.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"PanelParchment"
+
+[node name="BottomBar" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -96.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"BarWoodBottom"
+
+[node name="Row" type="HBoxContainer" parent="Root/BottomBar"]
+layout_mode = 2
+theme_type_variation = &"RowBar"
+
+[node name="Left" type="HBoxContainer" parent="Root/BottomBar/Row"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RowTight"
+
+[node name="Categories" type="HBoxContainer" parent="Root/BottomBar/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_type_variation = &"RowTight"
+alignment = 1
+
+[node name="Right" type="HBoxContainer" parent="Root/BottomBar/Row"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RowBar"
+alignment = 2

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=101 format=3]
+[gd_resource type="Theme" load_steps=102 format=3]
 
 [ext_resource type="FontVariation" path="res://assets/ui/fonts/nunito_semibold.tres" id="1_nunito_semibold"]
 [ext_resource type="FontVariation" path="res://assets/ui/fonts/nunito_bold.tres" id="2_nunito_bold"]
@@ -59,6 +59,21 @@ content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
+texture = ExtResource("9_panel_parchment")
+texture_margin_left = 22.0
+texture_margin_top = 22.0
+texture_margin_right = 22.0
+texture_margin_bottom = 28.0
+expand_margin_left = 12.0
+expand_margin_top = 12.0
+expand_margin_right = 12.0
+expand_margin_bottom = 18.0
+
+[sub_resource type="StyleBoxTexture" id="panel_rail"]
+content_margin_left = 6.0
+content_margin_top = 8.0
+content_margin_right = 6.0
+content_margin_bottom = 8.0
 texture = ExtResource("9_panel_parchment")
 texture_margin_left = 22.0
 texture_margin_top = 22.0
@@ -1200,6 +1215,8 @@ PanelParchment/base_type = &"PanelContainer"
 PanelParchment/styles/panel = SubResource("panel_parchment")
 PanelParchmentFlush/base_type = &"PanelContainer"
 PanelParchmentFlush/styles/panel = SubResource("panel_parchment_flush")
+PanelRail/base_type = &"PanelContainer"
+PanelRail/styles/panel = SubResource("panel_rail")
 PanelParchmentInner/base_type = &"PanelContainer"
 PanelParchmentInner/styles/panel = SubResource("panel_inner")
 PanelParchmentHeader/base_type = &"PanelContainer"
@@ -1452,6 +1469,18 @@ ProgressOnWood/styles/fill = SubResource("ProgressOnWood_fill")
 ProgressOnWood/fonts/font = ExtResource("4_nunito_caption")
 ProgressOnWood/font_sizes/font_size = 12
 ProgressOnWood/colors/font_color = Color(0.2314, 0.1647, 0.1176, 1)
+RowBar/base_type = &"HBoxContainer"
+RowBar/constants/separation = 16
+RowTight/base_type = &"HBoxContainer"
+RowTight/constants/separation = 8
+RowSegments/base_type = &"HBoxContainer"
+RowSegments/constants/separation = 4
+ColumnCards/base_type = &"VBoxContainer"
+ColumnCards/constants/separation = 12
+ColumnTight/base_type = &"VBoxContainer"
+ColumnTight/constants/separation = 4
+ColumnRail/base_type = &"VBoxContainer"
+ColumnRail/constants/separation = 8
 SeparatorWood/base_type = &"VSeparator"
 SeparatorWood/styles/separator = SubResource("sep_wood")
 SeparatorWood/constants/separation = 16

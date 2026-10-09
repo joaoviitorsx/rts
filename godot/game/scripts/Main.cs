@@ -64,6 +64,16 @@ public partial class Main : Node3D
         var ui = GD.Load<PackedScene>("res://ui/screens/hud.tscn").Instantiate<Hud>();
         AddChild(ui);
         ui.Init(host, build, view, camera);
+        if (OS.GetCmdlineUserArgs().Contains("--hud=v2"))
+        {
+            // Dev: HUD v2 in progress (docs/ui/HUD_v2_spec.md §7) replaces the 2A HUD on screen; --hud-zones shows the
+            // empty structure. The 2A HUD becomes the fallback once step 3 is done.
+            ui.Visible = false;
+            var v2 = GD.Load<PackedScene>("res://ui/screens/hud_v2.tscn").Instantiate<HudV2>();
+            AddChild(v2);
+            v2.Init();
+            if (OS.GetCmdlineUserArgs().Contains("--hud-zones")) v2.ShowZones();
+        }
 
         ApplyCommandLine(host);
         PerfProbe.AttachIfRequested(this);

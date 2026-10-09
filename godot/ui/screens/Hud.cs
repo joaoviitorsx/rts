@@ -72,6 +72,7 @@ public partial class Hud : CanvasLayer
         var root = new Control { Name = "Root", MouseFilter = Control.MouseFilterEnum.Ignore, Theme = GD.Load<Theme>(ThemePath) };
         root.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         AddChild(root);
+        UiSettings.RegisterTheme(root.Theme);
         var margin = new MarginContainer { ThemeTypeVariation = "ScreenMargin", MouseFilter = Control.MouseFilterEnum.Ignore };
         margin.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
         root.AddChild(margin);

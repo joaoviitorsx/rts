@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 namespace Ironvale.Game.UI;
@@ -15,8 +16,8 @@ public static class UiSettings
     public const float MinScale = 0.8f;
     public const float MaxScale = 1.5f;
     public const float Step = 0.1f;
-    /// <summary>Smallest font the player UI uses (theme SecondaryLabel; the 12 px chart is debug-only).</summary>
-    public const int SmallestFont = 14;
+    /// <summary>Smallest font the player UI uses (HUD v2 caption, spec §2.2).</summary>
+    public const int SmallestFont = 12;
     public const float MinTextPx = 12f;
 
     /// <summary>Smallest logical HUD area that still fits every bar and panel (base 1920×1080 layout).</summary>
@@ -30,6 +31,16 @@ public static class UiSettings
     public static float LegibleMin { get; private set; } = 1f;
     /// <summary>Largest scale at which the HUD still fits this window.</summary>
     public static float FitMax { get; private set; } = MaxScale;
+
+    /// <summary>
+    /// Font floor (logical px) applied to the Theme when even the applied scale leaves text under
+    /// <see cref="MinTextPx"/> on screen — small windows, where the 1920 layout must still fit (pending P31). 0 = off.
+    /// </summary>
+    public static int FontFloor { get; private set; }
+
+    private static Theme? _theme;
+    private static readonly Dictionary<(StringName Type, StringName Name), int> BaseSizes = new();
+    private static int _baseDefaultSize;
 
     public static event Action? Changed;
 
@@ -83,22 +94,55 @@ public static class UiSettings
     /// <summary>canvas_items + expand: on-screen size = logical × stretch × factor, stretch = min(w/1920, h/1080).</summary>
     private static void Apply(Window root)
     {
-        Vector2 window = root.Size;
-        float stretch = Mathf.Min(window.X / 1920f, window.Y / 1080f);
-        if (stretch <= 0) return;
-        LegibleMin = MinTextPx / (SmallestFont * stretch);
-        FitMax = Mathf.Min(window.X / (stretch * MinLogical.X), window.Y / (stretch * MinLogical.Y));
-        // Legibility first, then fit: on a tiny window fitting wins (a cut-off HUD is worse than small text).
-        Applied = Mathf.Min(Mathf.Max(Scale, LegibleMin), FitMax);
+        if (!ApplyFor(root.Size)) return;
         root.ContentScaleFactor = Applied;
         Changed?.Invoke();
+    }
+
+    /// <summary>
+    /// Computes the applied scale and the font floor for a window size (also used by the layout test scene, which
+    /// renders the HUD at exact sizes in a SubViewport). False if the size is empty.
+    /// </summary>
+    public static bool ApplyFor(Vector2 window)
+    {
+        float stretch = Mathf.Min(window.X / 1920f, window.Y / 1080f);
+        if (stretch <= 0) return false;
+        LegibleMin = MinTextPx / (SmallestFont * stretch);
+        FitMax = Mathf.Min(window.X / (stretch * MinLogical.X), window.Y / (stretch * MinLogical.Y));
+        // Legibility first, then fit: on a tiny window fitting wins — and the font floor keeps text ≥ 12 px anyway.
+        Applied = Mathf.Min(Mathf.Max(Scale, LegibleMin), FitMax);
+        int floor = Mathf.CeilToInt(MinTextPx / (stretch * Applied) - 0.01f);
+        FontFloor = floor > SmallestFont ? floor : 0;
+        ApplyFontFloor();
+        return true;
+    }
+
+    /// <summary>The HUD's Theme: its font sizes are raised to <see cref="FontFloor"/> when needed (never lowered).</summary>
+    public static void RegisterTheme(Theme theme)
+    {
+        if (_theme == theme) return;
+        _theme = theme;
+        BaseSizes.Clear();
+        _baseDefaultSize = theme.DefaultFontSize;
+        foreach (var type in theme.GetFontSizeTypeList())
+            foreach (var name in theme.GetFontSizeList(type))
+                BaseSizes[(type, name)] = theme.GetFontSize(name, type);
+        ApplyFontFloor();
+    }
+
+    private static void ApplyFontFloor()
+    {
+        if (_theme is null) return;
+        _theme.DefaultFontSize = Math.Max(_baseDefaultSize, FontFloor);
+        foreach (var ((type, name), size) in BaseSizes)
+            _theme.SetFontSize(name, type, Math.Max(size, FontFloor));
     }
 
     /// <summary>Smallest text size on screen right now, in pixels.</summary>
     public static float SmallestTextPx(Window root)
     {
         Vector2 window = root.Size;
-        return SmallestFont * Mathf.Min(window.X / 1920f, window.Y / 1080f) * Applied;
+        return Math.Max(SmallestFont, FontFloor) * Mathf.Min(window.X / 1920f, window.Y / 1080f) * Applied;
     }
 
     public static void Set(Window root, float scale)
