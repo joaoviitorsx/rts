@@ -95,8 +95,9 @@ public sealed class TransportSystem : ISimSystem
     }
 
     /// <summary>
-    /// Picks what to haul. Priority: (1) resources a policy says are short (urgent), (2) the fullest producer
-    /// buffer (a full buffer stops production), (3) bigger load, (4) nearest, (5) lowest id/resource.
+    /// Picks what to haul. Priority: (1) producer output of resources a policy says are short (urgent),
+    /// (2) materials for construction sites (oldest site first), (3) the fullest producer buffer (a full buffer
+    /// stops production), then bigger load, nearest, lowest id/resource.
     /// </summary>
     private static bool TryPlan(World w, Carrier c)
     {
@@ -131,6 +132,8 @@ public sealed class TransportSystem : ISimSystem
                 }
             }
         }
+        bool urgentJob = best is not null && bestKey.urgent == 1;
+        if (!urgentJob && TryPlanSiteDelivery(w, c)) return true;
         if (best is null) return false;
 
         var home = w.GetBuilding(c.BaseId);
@@ -149,5 +152,36 @@ public sealed class TransportSystem : ISimSystem
         c.StepTicks = 0;
         c.Phase = CarrierPhase.ToPickup;
         return true;
+    }
+
+    /// <summary>Storage → construction site: the oldest site still missing a material, from the nearest storage.</summary>
+    private static bool TryPlanSiteDelivery(World w, Carrier c)
+    {
+        foreach (var site in w.Buildings)
+        {
+            if (site.IsActive) continue;
+            for (int r = 0; r < w.Content.ResourceCount; r++)
+            {
+                var need = w.SiteNeed(site, r);
+                if (!need.IsPositive) continue;
+                foreach (var storage in w.StoragesByDistance(site.Center))
+                {
+                    var free = storage.Stock.Free(r);
+                    if (!free.IsPositive) continue;
+                    var amount = Qty.Min(Qty.Min(need, free), w.Content.Resources[r].CarryPerTrip);
+                    if (!site.Stock.TryReserveIncoming(amount)) break;
+                    storage.Stock.TryReserve(r, amount);
+                    c.PickupId = storage.Id;
+                    c.DropoffId = site.Id;
+                    c.Resource = r;
+                    c.Amount = amount;
+                    c.Target = storage.Center;
+                    c.StepTicks = 0;
+                    c.Phase = CarrierPhase.ToPickup;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -24,10 +24,14 @@ public sealed record SlotSnap(int HouseholdId, string Name, string Source);
 
 public sealed record RecipeSnap(string Id, string Name);
 
+/// <summary>Construction material: on site / on the way / total needed (whole units).</summary>
+public sealed record MaterialSnap(string Name, long OnSite, long Incoming, long Cost);
+
 public sealed record BuildingSnap(int Id, string DefId, string Name, string Status, bool Active, int BuildProgressDays,
     int BuildDays, bool IsStorage, bool IsProducer, bool IsHousing, string? RecipeId, IReadOnlyList<RecipeSnap> Recipes,
     IReadOnlyList<(string Name, long Amount)> Stock, long StockTotal, long Capacity, IReadOnlyList<SlotSnap> Slots,
-    IReadOnlyList<string> Residents, int HousingCapacity, long ExpectedHarvest, bool SeasonalRecipe);
+    IReadOnlyList<string> Residents, int HousingCapacity, long ExpectedHarvest, bool SeasonalRecipe,
+    IReadOnlyList<MaterialSnap> Materials, int Builders, int MaxBuilders, string SiteIssue, string SiteIssueArg);
 
 public sealed record PolicySnap(int Id, string ResourceId, string ResourceName, long Threshold, bool Enabled);
 
@@ -143,12 +147,43 @@ public static class UiSnapshotBuilder
             });
         }).ToList();
 
+        var materials = new List<MaterialSnap>();
+        string issue = "", issueArg = "";
+        if (!b.IsActive) (issue, issueArg) = SiteIssueOf(w, b, materials);
+
         return new BuildingSnap(b.Id, def.Id, def.Name, status, b.IsActive, b.BuildProgressDays, def.BuildDays,
             b.IsStorage, b.IsProducer, def.Has(BuildingRole.Housing), b.Recipe?.Id,
             def.Recipes.Select(r => new RecipeSnap(r.Id, r.Name)).ToList(), stock, b.Stock.Total.WholeUnits,
             b.Stock.Capacity.WholeUnits, slots,
             w.Households.Where(h => h.HomeId == b.Id).Select(h => h.Name).ToList(), def.HousingCapacity,
-            b.SeasonalWorkMilli / 1000, b.Recipe?.Kind == RecipeKind.Seasonal);
+            b.SeasonalWorkMilli / 1000, b.Recipe?.Kind == RecipeKind.Seasonal,
+            materials, b.IsActive ? 0 : w.BuildersAt(b), w.Content.Balance.MaxBuildersPerSite, issue, issueArg);
+    }
+
+    /// <summary>
+    /// Why a site is stopped, most actionable first: a material missing from storage → nobody hauling →
+    /// nobody building → only waiting for deliveries already on the way. Fills <paramref name="materials"/>.
+    /// </summary>
+    private static (string Issue, string Arg) SiteIssueOf(World w, Building b, List<MaterialSnap> materials)
+    {
+        string missing = "";
+        bool needsHauling = false;
+        for (int r = 0; r < w.Content.ResourceCount; r++)
+        {
+            var cost = b.Def.Cost[r];
+            if (!cost.IsPositive) continue;
+            var res = w.Content.Resources[r];
+            materials.Add(new MaterialSnap(res.Name, b.Stock.Get(r).WholeUnits, w.SiteIncoming(b, r).WholeUnits, cost.WholeUnits));
+            var need = w.SiteNeed(b, r);
+            if (!need.IsPositive) continue;
+            if (w.StorageFree(r) < need && missing.Length == 0) missing = res.Name;
+            needsHauling = true;
+        }
+        if (missing.Length > 0) return ("no_material", missing);
+        if (needsHauling && !w.Carriers.Any(c => !c.Retiring)) return ("no_carriers", "");
+        if (b.CanProgress && w.BuildersAt(b) == 0) return ("no_builders", "");
+        if (!b.CanProgress) return ("waiting", "");
+        return ("", "");
     }
 
     /// <summary>Presentation-level warnings derived from the snapshot numbers (no game rules live here).</summary>
@@ -164,6 +199,15 @@ public static class UiSnapshotBuilder
         if (daysToWinter is > 0 and <= 30 && firewood.Stock / 1000.0 < w.Households.Count * 90 * 0.6)
             list.Add(new AlertSnap("firewood", AlertSeverity.Warning,
                 string.Format(tr("alert.firewood_winter"), firewood.Stock / 1000, daysToWinter), 0));
+        foreach (var b in w.Buildings.Where(b => !b.IsActive))
+        {
+            var (issue, arg) = SiteIssueOf(w, b, new List<MaterialSnap>());
+            if (issue is "no_carriers" or "no_material")
+            {
+                list.Add(new AlertSnap($"site_{issue}", AlertSeverity.Warning, string.Format(tr("alert.site_" + issue), b.Def.Name, arg), b.Id));
+                break;
+            }
+        }
         if (w.Telemetry.Deadlocked)
             list.Add(new AlertSnap("deadlock", AlertSeverity.Critical, tr("alert.deadlock"), 0));
         foreach (var h in w.Households.Where(h => h.FoodDeficitDays > 5).Take(1))

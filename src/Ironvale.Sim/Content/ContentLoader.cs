@@ -285,6 +285,8 @@ public static class ContentLoader
             HarvestVariancePermille = Permille.Clamp(c.OptInt(el, "harvestVariancePermille", 0)),
             DeadlockWindowDays = c.PositiveInt(el, "deadlockWindowDays"),
             PolicyLogMax = c.PositiveInt(el, "policyLogMax"),
+            AutoBuilders = c.OptInt(el, "autoBuilders", 1) != 0,
+            MaxBuildersPerSite = Math.Max(1, c.OptInt(el, "maxBuildersPerSite", 3)),
         };
     }
 

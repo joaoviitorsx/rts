@@ -20,10 +20,12 @@ ui.bottom.debug,Debug,Debug
 ui.bottom.build,Construir:,Build:
 ui.build.tooltip,"{0}
 Custo: {1}
-Obra: {2} dias
+Obra: {2} dias de trabalho (1 família)
+O material vai do armazém até a obra pelos carregadores
 R gira · Shift mantém · botão direito cancela","{0}
 Cost: {1}
-Build time: {2} days
+Build time: {2} work days (1 family)
+Carriers bring the materials from storage to the site
 R rotates · Shift keeps · right click cancels"
 ui.resource.tooltip,"{0}: {1}
 Produção: +{2}/dia
@@ -41,8 +43,18 @@ alert.food_out,Comida acaba em ~{0} dias,Food runs out in ~{0} days
 alert.food_low,Comida para ~{0} dias,Food for ~{0} days
 alert.firewood_winter,Pouca lenha ({0}) — inverno em {1} dias,Low firewood ({0}) — winter in {1} days
 alert.deadlock,Economia travada: nada é produzido nem transportado,Economy stalled: nothing produced or hauled
+alert.site_no_material,Obra de {0} parada: falta {1} no armazém,{0} site stopped: no {1} in storage
+alert.site_no_carriers,Obra de {0} parada: ninguém carregando material,{0} site stopped: nobody hauling materials
 alert.hunger,Família {0} com fome há {1} dias,{0} family hungry for {1} days
-building.status.construction,● Em obra: {0}/{1} dias,● Under construction: {0}/{1} days
+building.status.construction,● Em obra: {0}/{1} dias de trabalho,● Under construction: {0}/{1} work days
+building.materials,Material na obra:,Materials on site:
+building.material_line,   {0}: {1}/{2}{3},   {0}: {1}/{2}{3}
+building.material_incoming, ({0} a caminho), ({0} on the way)
+building.builders,Construtores ({0}/{1}) — famílias sem trabalho ajudam sozinhas,Builders ({0}/{1}) — jobless families help on their own
+building.site.no_material,Parada: falta {0} no armazém,Stopped: no {0} in storage
+building.site.no_carriers,Parada: ninguém carregando material — designe carregadores no Salão ou no Celeiro,Stopped: nobody hauling materials — assign carriers at the Hall or a Granary
+building.site.no_builders,Parada: sem construtores — libere uma família ou designe uma aqui,Stopped: no builders — free a family or assign one here
+building.site.waiting,Aguardando o material que está a caminho,Waiting for materials on the way
 building.status.no_workers,● Parado: sem trabalhadores,● Idle: no workers
 building.status.off_season,● Fora de estação (trabalho na primavera/verão),● Out of season (work in spring/summer)
 building.status.full,● Parado: estoque cheio — precisa de carregadores,● Idle: stock full — needs carriers
@@ -57,7 +69,7 @@ building.carriers,Carregadores ({0}/{1}),Carriers ({0}/{1})
 building.slot_free,(vaga livre),(free slot)
 building.remove,Remover,Remove
 building.assign,Designar,Assign
-building.cancel,Cancelar obra (reembolsa),Cancel construction (refund)
+building.cancel,Cancelar obra (material volta ao armazém),Cancel construction (materials go back to storage)
 building.no_job,sem emprego,unemployed
 source.player,manual,manual
 source.policy,política,policy
@@ -71,6 +83,7 @@ families.homeless, · sem casa, · homeless
 state.Working,trabalhando,working
 state.Hauling,carregando,hauling
 state.Subsisting,subsistência,subsisting
+state.Building,construindo,building
 policies.title,Políticas,Policies
 policies.keep,Manter,Keep
 policies.above,acima de,above

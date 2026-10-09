@@ -13,7 +13,7 @@ public sealed class SaveException(string message) : Exception(message);
 public static class SaveSerializer
 {
     public const string FormatId = "ironvale-save";
-    public const int CurrentVersion = 1;
+    public const int CurrentVersion = 2;   // 2: construction sites hold materials + build work (2A.1)
     public const string GameVersion = "0.1.0";
 
     private static readonly JsonSerializerOptions Options = new()
@@ -22,8 +22,6 @@ public static class SaveSerializer
         WriteIndented = false,
     };
 
-    /// <summary>Ordered chain: index i migrates version i+1 → i+2. Empty while only v1 exists.</summary>
-    private static readonly List<Func<JsonObject, JsonObject>> Migrations = new();
 
     // ------------------------------------------------------------------ save
 
@@ -81,11 +79,12 @@ public static class SaveSerializer
                 AssignedByPolicyId = h.AssignedByPolicyId, ToolCondition = h.ToolCondition,
                 FoodDeficitDays = h.FoodDeficitDays, ColdDeficitDays = h.ColdDeficitDays,
                 Productivity = h.ProductivityPermille, State = h.State.ToString(), ToolHoursToday = h.ToolHoursToday,
+                BuildSiteId = h.BuildSiteId,
             }).ToList(),
             Buildings = w.Buildings.Select(b => new BuildingDto
             {
                 Id = b.Id, Def = b.Def.Id, X = b.Origin.X, Y = b.Origin.Y, Rotation = b.Rotation,
-                Active = b.IsActive, BuildProgressDays = b.BuildProgressDays,
+                Active = b.IsActive, BuildWorkMilli = b.BuildWorkMilli,
                 Stock = Map(b.Stock.AmountsRaw), Reserved = Map(b.Stock.ReservedRaw), Incoming = b.Stock.Incoming.Milli,
                 Slots = b.Slots.ToArray(), Recipe = b.Recipe?.Id, SeasonalWorkMilli = b.SeasonalWorkMilli,
                 RemainderMicro = Map(b.RemainderMicro),
@@ -153,12 +152,8 @@ public static class SaveSerializer
         if ((string?)root["format"] != FormatId) throw new SaveException("not an Ironvale save");
         int version = (int?)root["saveVersion"] ?? throw new SaveException("missing saveVersion");
         if (version > CurrentVersion) throw new SaveException($"save v{version} is newer than this game (v{CurrentVersion})");
-        while (version < CurrentVersion)
-        {
-            root = Migrations[version - 1](root);
-            version++;
-            root["saveVersion"] = version;
-        }
+        if (version < CurrentVersion)
+            throw new SaveException($"save v{version} é de uma versão anterior do jogo e não é compatível com esta (v{CurrentVersion})");
 
         var file = root.Deserialize<SaveFile>(Options) ?? throw new SaveException("empty save");
         var warnings = new List<string>();
@@ -197,8 +192,8 @@ public static class SaveSerializer
             var b = new Building
             {
                 Id = d.Id, Def = def, Origin = new Cell(d.X, d.Y), Rotation = d.Rotation, IsActive = d.Active,
-                BuildProgressDays = d.BuildProgressDays,
-                Stock = new Stockpile(content.ResourceCount, def.StockCapacity),
+                BuildWorkMilli = d.BuildWorkMilli,
+                Stock = new Stockpile(content.ResourceCount, d.Active ? def.StockCapacity : def.TotalCost),
                 Slots = d.Slots.ToArray(),
                 Recipe = d.Recipe is null ? null : def.Recipes.FirstOrDefault(r => r.Id == d.Recipe)
                     ?? throw new SaveException($"{d.Def} has no recipe '{d.Recipe}'"),
@@ -219,7 +214,7 @@ public static class SaveSerializer
                 AssignedByPolicyId = d.AssignedByPolicyId, ToolCondition = d.ToolCondition,
                 FoodDeficitDays = d.FoodDeficitDays, ColdDeficitDays = d.ColdDeficitDays,
                 ProductivityPermille = d.Productivity, State = Enum<HouseholdState>(d.State),
-                ToolHoursToday = d.ToolHoursToday,
+                ToolHoursToday = d.ToolHoursToday, BuildSiteId = d.BuildSiteId,
             });
         }
 

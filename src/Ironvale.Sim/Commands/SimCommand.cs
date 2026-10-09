@@ -18,18 +18,8 @@ public sealed record PlaceBuilding(string DefId, Cell Origin, int Rotation) : Si
         if (!def.Buildable) return $"{def.Name} não pode ser construído";
         int rot = ((Rotation % 4) + 4) % 4;
         if (!w.Map.CanPlace(def, Origin, rot)) return "local ocupado ou fora do mapa";
-        for (int r = 0; r < def.Cost.Length; r++)
-        {
-            if (w.StorageFree(r) < def.Cost[r])
-                return $"faltam {w.Content.Resources[r].Name} ({w.StorageFree(r)}/{def.Cost[r]})";
-        }
-        for (int r = 0; r < def.Cost.Length; r++)
-        {
-            if (!def.Cost[r].IsPositive) continue;
-            var taken = w.TakeFromStorages(r, def.Cost[r], Origin);
-            w.RecordConsumed(r, taken, fromStorage: true);
-        }
-        w.AddBuilding(def, Origin, rot, active: def.BuildDays <= 0);
+        // Nothing is paid here: carriers bring the materials to the site and builders use them (Marco 2A.1).
+        w.AddBuilding(def, Origin, rot, active: false);
         return null;
     }
 }
@@ -41,13 +31,7 @@ public sealed record CancelConstruction(int BuildingId) : SimCommand
         var b = w.GetBuilding(BuildingId);
         if (b is null) return "edifício não existe";
         if (b.IsActive) return "só obras em andamento podem ser canceladas";
-        w.RemoveBuilding(b);
-        for (int r = 0; r < b.Def.Cost.Length; r++)
-        {
-            if (!b.Def.Cost[r].IsPositive) continue;
-            var added = w.AddToStorages(r, b.Def.Cost[r], b.Center);
-            w.RecordProduced(r, added, economic: false);
-        }
+        w.CancelSite(b);
         return null;
     }
 }
@@ -60,7 +44,14 @@ public sealed record AssignHousehold(int HouseholdId, int BuildingId) : SimComma
         var b = w.GetBuilding(BuildingId);
         if (h is null) return "família não existe";
         if (b is null) return "edifício não existe";
-        if (!b.IsActive) return "edifício ainda em obra";
+        if (!b.IsActive)
+        {
+            if (h.JobBuildingId == b.Id) return null;
+            if (w.Households.Count(x => x.JobBuildingId == b.Id) >= w.Content.Balance.MaxBuildersPerSite)
+                return "obra já tem o máximo de construtores";
+            w.AssignBuilder(h, b);
+            return null;
+        }
         if (h.JobBuildingId == b.Id)
         {
             h.AssignedBy = AssignmentSource.Player;   // player takes ownership of an existing assignment

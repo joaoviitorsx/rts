@@ -187,13 +187,36 @@ public sealed class World
         return new Qty(sum);
     }
 
-    /// <summary>Stock in storage plus what carriers are bringing to storage right now.</summary>
+    /// <summary>Stock in storage plus what carriers are bringing to storage right now (not to sites).</summary>
     public Qty StorageStockIncludingTransit(int r)
     {
         long sum = StorageStock(r).Milli;
         foreach (var s in _shipments)
-            if (s.Resource == r) sum += s.Amount.Milli;
+            if (s.Resource == r && GetBuilding(s.ToId) is { IsStorage: true }) sum += s.Amount.Milli;
         return new Qty(sum);
+    }
+
+    /// <summary>Material <paramref name="r"/> carriers are bringing (or about to bring) to a construction site.</summary>
+    public Qty SiteIncoming(Building site, int r)
+    {
+        long sum = 0;
+        foreach (var c in _carriers)
+            if (c.DropoffId == site.Id && c.Resource == r && c.Phase is not (CarrierPhase.Idle or CarrierPhase.Returning))
+                sum += c.Amount.Milli;
+        return new Qty(sum);
+    }
+
+    /// <summary>Material still to be sent to a site: cost − on site − on the way.</summary>
+    public Qty SiteNeed(Building site, int r) =>
+        site.IsActive ? Qty.Zero : Qty.Max(Qty.Zero, site.Def.Cost[r] - site.Stock.Get(r) - SiteIncoming(site, r));
+
+    /// <summary>Households working on a site this hour (assigned by the player or helping).</summary>
+    public int BuildersAt(Building site)
+    {
+        int n = 0;
+        foreach (var h in _households)
+            if (h.BuildSiteId == site.Id || h.JobBuildingId == site.Id) n++;
+        return n;
     }
 
     public Cell HomeCellOf(Household h) =>
@@ -214,7 +237,7 @@ public sealed class World
             Origin = origin,
             Rotation = rotation,
             IsActive = active,
-            Stock = new Stockpile(Content.ResourceCount, def.StockCapacity),
+            Stock = new Stockpile(Content.ResourceCount, active ? def.StockCapacity : def.TotalCost),
             Slots = new int[def.JobSlots],
             Recipe = def.Recipes.Count > 0 ? def.Recipes[0] : null,
             RemainderMicro = new long[Content.ResourceCount],
@@ -279,6 +302,106 @@ public sealed class World
         }
         HouseholdStateSystem.Refresh(this, h, Calendar);
         Emit(new HouseholdAssigned(Tick, h.Id, b.Id));
+    }
+
+    /// <summary>Player puts a household on a construction site (no job slot: sites have their own builder cap).</summary>
+    internal void AssignBuilder(Household h, Building site)
+    {
+        if (h.HasJob) Unassign(h);
+        h.JobBuildingId = site.Id;
+        h.AssignedBy = AssignmentSource.Player;
+        h.AssignedByPolicyId = 0;
+        HouseholdStateSystem.Refresh(this, h, Calendar);
+        Emit(new HouseholdAssigned(Tick, h.Id, site.Id));
+    }
+
+    /// <summary>Work done: materials on site are consumed, the stock becomes the building's own, builders go free.</summary>
+    internal void CompleteConstruction(Building b)
+    {
+        for (int r = 0; r < Content.ResourceCount; r++)
+        {
+            var q = b.Stock.RemoveUpTo(r, b.Stock.Get(r));
+            RecordConsumed(r, q, fromStorage: true);
+        }
+        b.Stock = new Stockpile(Content.ResourceCount, b.Def.StockCapacity);
+        b.IsActive = true;
+        foreach (var h in _households.ToArray())
+        {
+            if (h.JobBuildingId == b.Id) Unassign(h);
+            else if (h.BuildSiteId == b.Id)
+            {
+                h.BuildSiteId = 0;
+                h.State = HouseholdState.Subsisting;
+            }
+        }
+        Emit(new BuildingCompleted(Tick, b.Id));
+    }
+
+    /// <summary>
+    /// Cancels a site: carriers bound to it are released or redirected (cargo goes to the nearest storage with
+    /// space), delivered materials go back to storage; only what fits nowhere is lost (ledger records it).
+    /// </summary>
+    internal void CancelSite(Building site)
+    {
+        foreach (var c in _carriers.ToArray())
+        {
+            if (c.DropoffId != site.Id) continue;
+            if (c.Phase is CarrierPhase.ToPickup or CarrierPhase.Loading)
+            {
+                GetBuilding(c.PickupId)?.Stock.Unreserve(c.Resource, c.Amount);
+                site.Stock.CancelIncoming(c.Amount);
+                ResetCarrier(c);
+                continue;
+            }
+            var shipment = GetShipment(c.ShipmentId)!;
+            site.Stock.CancelIncoming(c.Amount);
+            var dest = StoragesByDistance(c.Pos).FirstOrDefault(s => s.Stock.Space >= c.Amount);
+            if (dest is not null)
+            {
+                dest.Stock.TryReserveIncoming(c.Amount);
+                c.DropoffId = dest.Id;
+                shipment.ToId = dest.Id;
+                c.Target = dest.Center;
+                c.Phase = CarrierPhase.ToDropoff;
+            }
+            else
+            {
+                RecordConsumed(shipment.Resource, shipment.Amount, fromStorage: false);
+                Emit(new SimAlert(Tick, $"{shipment.Amount} {Content.Resources[shipment.Resource].Name} perdidos: armazéns cheios"));
+                RemoveShipment(shipment);
+                ResetCarrier(c);
+            }
+        }
+        for (int r = 0; r < Content.ResourceCount; r++)
+        {
+            var q = site.Stock.RemoveUpTo(r, site.Stock.Get(r));
+            var lost = q - AddToStorages(r, q, site.Center);
+            if (lost.IsPositive)
+            {
+                RecordConsumed(r, lost, fromStorage: false);
+                Emit(new SimAlert(Tick, $"{lost} {Content.Resources[r].Name} perdidos: armazéns cheios"));
+            }
+        }
+        foreach (var h in _households)
+            if (h.BuildSiteId == site.Id) h.BuildSiteId = 0;
+        RemoveBuilding(site);
+    }
+
+    /// <summary>Drops the carrier's current job (no cargo) and sends it home.</summary>
+    private void ResetCarrier(Carrier c)
+    {
+        c.ShipmentId = 0;
+        c.PickupId = 0;
+        c.DropoffId = 0;
+        c.Resource = -1;
+        c.Amount = Qty.Zero;
+        if (c.Retiring)
+        {
+            _carriers.Remove(c);
+            return;
+        }
+        c.Target = GetBuilding(c.BaseId)?.Center ?? c.Pos;
+        c.Phase = c.Pos == c.Target ? CarrierPhase.Idle : CarrierPhase.Returning;
     }
 
     internal void Unassign(Household h)

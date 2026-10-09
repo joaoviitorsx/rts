@@ -1,7 +1,8 @@
 namespace Ironvale.Sim.Save;
 
 // Save DTOs. Decoupled from runtime classes so the save schema only changes on purpose.
-// Any change here must bump SaveSerializer.CurrentVersion and add a migration.
+// Any change here must bump SaveSerializer.CurrentVersion. Marco 2A decision: older saves are rejected
+// with a clear message (no migrations while there are no players).
 // Resources and defs are stored by string id (never by index) so content reordering doesn't break saves.
 
 public sealed class SaveFile
@@ -57,6 +58,7 @@ public sealed class HouseholdDto
     public int Productivity { get; set; }
     public string State { get; set; } = "";
     public int ToolHoursToday { get; set; }
+    public int BuildSiteId { get; set; }
 }
 
 public sealed class BuildingDto
@@ -67,7 +69,7 @@ public sealed class BuildingDto
     public int Y { get; set; }
     public int Rotation { get; set; }
     public bool Active { get; set; }
-    public int BuildProgressDays { get; set; }
+    public long BuildWorkMilli { get; set; }
     public SortedDictionary<string, long> Stock { get; set; } = new(StringComparer.Ordinal);
     public SortedDictionary<string, long> Reserved { get; set; } = new(StringComparer.Ordinal);
     public long Incoming { get; set; }

@@ -44,6 +44,7 @@ public partial class SmokeTest : Node
                 break;
             case 30:
                 if (w.Buildings.Count != _buildingsBefore + 1) Fail("click in build mode did not place a building");
+                _host.Send(new AssignHousehold(w.Households[5].Id, w.SeatBuilding!.Id));   // carrier for the materials
                 w.StepDays(10);   // finish construction
                 break;
             case 40:

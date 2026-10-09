@@ -19,6 +19,31 @@ internal static class TestKit
 
     public static int Res(string id) => Content.Resource(id).Index;
 
+    /// <summary>Real content with balance.json fields overridden (e.g. ("autoBuilders", "0")).</summary>
+    public static ContentDb ContentWith(params (string Key, string Json)[] balance)
+    {
+        string dir = DataPaths.FindDataDirectory();
+        var files = ContentLoader.RequiredFiles.ToDictionary(f => f, f => File.ReadAllText(Path.Combine(dir, f)));
+        var text = files[ContentLoader.BalanceFile];
+        foreach (var (key, json) in balance)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(text, $"\"{key}\"\\s*:\\s*[^,\\n}}]+");
+            Assert.True(m.Success, $"balance key {key} not found");
+            text = text.Remove(m.Index, m.Length).Insert(m.Index, $"\"{key}\": {json}");
+        }
+        files[ContentLoader.BalanceFile] = text;
+        return ContentLoader.Load(files);
+    }
+
+    public static World NewWorld(ContentDb content, ulong seed = 42)
+    {
+        var scenario = ContentLoader.LoadScenario(
+            File.ReadAllText(Path.Combine(DataPaths.FindDataDirectory(), DataPaths.ScenarioDir, "mvp_start.json")), content);
+        var w = World.Create(content, scenario, seed);
+        w.CollectEvents = true;
+        return w;
+    }
+
     public static Building AddActive(World w, string defId, Cell origin) =>
         w.AddBuilding(Content.Building(defId), origin, 0, active: true);
 

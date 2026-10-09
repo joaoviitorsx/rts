@@ -27,6 +27,7 @@ public sealed class BuildingDef
     public required int FootprintH { get; init; }
     public required bool Buildable { get; init; }
     public required Qty[] Cost { get; init; }              // indexed by resource
+    /// <summary>Days of work for one household at 100% productivity (more builders = faster).</summary>
     public required int BuildDays { get; init; }
     public required BuildingRole Roles { get; init; }
     public required int JobSlots { get; init; }
@@ -36,6 +37,17 @@ public sealed class BuildingDef
     public required int HousingCapacity { get; init; }
 
     public bool Has(BuildingRole role) => (Roles & role) != 0;
+
+    /// <summary>Sum of the construction cost (capacity of the site's material stock).</summary>
+    public Qty TotalCost
+    {
+        get
+        {
+            long sum = 0;
+            foreach (var q in Cost) sum += q.Milli;
+            return new Qty(sum);
+        }
+    }
 
     /// <summary>Stock capacity of a building of this type.</summary>
     public Qty StockCapacity =>
@@ -98,6 +110,9 @@ public sealed class BalanceDef
     public required int HarvestVariancePermille { get; init; }
     public required int DeadlockWindowDays { get; init; }
     public required int PolicyLogMax { get; init; }
+    /// <summary>Families without a job help the nearest construction site that can progress.</summary>
+    public required bool AutoBuilders { get; init; }
+    public required int MaxBuildersPerSite { get; init; }
 }
 
 public sealed class ScenarioBuilding

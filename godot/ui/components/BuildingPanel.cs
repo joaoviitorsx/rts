@@ -27,7 +27,8 @@ public partial class BuildingPanel : PanelContainer
 
     public void Bind(BuildingSnap b, UiSnapshot snap)
     {
-        string sig = $"{b.Id}|{b.Status}|{b.BuildProgressDays}|{b.RecipeId}|{string.Join(',', b.Slots.Select(s => s.HouseholdId))}|" +
+        string sig = $"{b.Id}|{b.Status}|{b.BuildProgressDays}|{b.SiteIssue}|{b.Builders}|" +
+                     $"{string.Join(',', b.Materials.Select(m => $"{m.OnSite}/{m.Incoming}"))}|{b.RecipeId}|{string.Join(',', b.Slots.Select(s => s.HouseholdId))}|" +
                      $"{b.StockTotal}|{b.ExpectedHarvest}|{snap.Households.Count}|{string.Join(',', snap.Households.Select(h => h.JobBuildingId))}";
         if (sig == _signature) return;
         _signature = sig;
@@ -39,6 +40,14 @@ public partial class BuildingPanel : PanelContainer
 
         if (!b.Active)
         {
+            if (b.SiteIssue.Length > 0)
+                _body.AddChild(UiNodes.Label(UiText.T("building.site." + b.SiteIssue, b.SiteIssueArg),
+                    b.SiteIssue == "waiting" ? "SecondaryLabel" : "WarningLabel", wrap: true));
+            _body.AddChild(UiNodes.Label(UiText.T("building.materials"), "SecondaryLabel"));
+            foreach (var m in b.Materials)
+                _body.AddChild(UiNodes.Label(UiText.T("building.material_line", m.Name, m.OnSite, m.Cost,
+                    m.Incoming > 0 ? UiText.T("building.material_incoming", m.Incoming) : "")));
+            _body.AddChild(UiNodes.Label(UiText.T("building.builders", b.Builders, b.MaxBuilders), "SecondaryLabel"));
             _body.AddChild(UiNodes.Button(UiText.T("building.cancel"), () => Send(new CancelConstruction(b.Id))));
             return;
         }

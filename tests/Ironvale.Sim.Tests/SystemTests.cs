@@ -300,20 +300,22 @@ public class PolicyTests
 public class CommandTests
 {
     [Fact]
-    public void Commands_apply_at_the_next_step_and_pay_the_cost()
+    public void Commands_apply_at_the_next_step_and_the_cost_is_paid_on_completion()
     {
         var w = TestKit.NewWorld();
         int wood = TestKit.Res("wood");
         var before = w.StorageStock(wood);
-        w.Enqueue(new PlaceBuilding("house", new Cell(10, 10), 0));
+        w.Enqueue(new PlaceBuilding("house", new Cell(26, 30), 0));
+        w.Enqueue(new AssignHousehold(w.Households[0].Id, w.SeatBuilding!.Id));   // a carrier for the materials
         Assert.Single(w.Buildings);
         w.Step();
         Assert.Equal(2, w.Buildings.Count);
-        Assert.Equal(before - Qty.Units(15), w.StorageStock(wood));
+        Assert.Equal(before, w.StorageStock(wood));          // placing pays nothing
         Assert.False(w.Buildings[1].IsActive);
 
-        w.StepDays(w.Content.Building("house").BuildDays + 1);
+        w.StepDays(w.Content.Building("house").BuildDays + 2);
         Assert.True(w.Buildings[1].IsActive);
+        Assert.Equal(before - Qty.Units(15), w.StorageStock(wood));
         TestKit.AssertInvariants(w);
     }
 
@@ -333,12 +335,13 @@ public class CommandTests
     }
 
     [Fact]
-    public void Placement_without_enough_resources_is_rejected()
+    public void Placement_does_not_need_the_materials_up_front()
     {
         var w = TestKit.NewWorld();
         for (int i = 0; i < 5; i++) w.Enqueue(new PlaceBuilding("granary", new Cell(2 + i * 4, 2), 0));  // 5×30 wood > 120
         w.Step();
-        Assert.Contains(w.DrainEvents().OfType<CommandRejected>(), e => e.Reason.Contains("faltam Madeira"));
+        Assert.Empty(w.DrainEvents().OfType<CommandRejected>());
+        Assert.Equal(6, w.Buildings.Count);
         TestKit.AssertInvariants(w);
     }
 
