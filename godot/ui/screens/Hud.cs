@@ -52,6 +52,7 @@ public partial class Hud : CanvasLayer
     private UiSnapshot? _snap;
 
     private readonly HashSet<string> _dismissed = new();
+    private readonly HashSet<string> _alertKeysHeard = new();
     private readonly List<(string Key, AlertSeverity Severity, string Text, double Expires)> _transient = new();
     private int _transientCounter;
 
@@ -98,7 +99,11 @@ public partial class Hud : CanvasLayer
         _settings = AddPanel(right, new SettingsPanel());
         _settings.Closed += CloseActivePanel;
         _policies = AddPanel(right, new PoliciesPanel());
-        _policies.Send = _host.Send;
+        _policies.Send = cmd =>
+        {
+            _host.Send(cmd);
+            if (cmd is CreatePolicy) DecreeStamp();
+        };
         _policies.Closed += CloseActivePanel;
         if (OS.IsDebugBuild())   // telemetry never ships to players
         {
@@ -182,11 +187,25 @@ public partial class Hud : CanvasLayer
         _suggestionLose = UiNodes.Label("", "SecondaryLabel", wrap: true);
         box.AddChild(_suggestionLose);
         var buttons = new HBoxContainer();
-        buttons.AddChild(UiNodes.Button(UiText.T("suggestion.accept"), () => _host.Send(new AcceptSuggestion(_suggestionId))));
+        buttons.AddChild(UiNodes.Button(UiText.T("suggestion.accept"), () =>
+        {
+            _host.Send(new AcceptSuggestion(_suggestionId));
+            DecreeStamp();
+        }));
         buttons.AddChild(UiNodes.Button(UiText.T("suggestion.later"), () => _host.Send(new DismissSuggestion(_suggestionId, false))));
         buttons.AddChild(UiNodes.Button(UiText.T("suggestion.never"), () => _host.Send(new DismissSuggestion(_suggestionId, true))));
         box.AddChild(buttons);
         return _suggestionCard;
+    }
+
+    /// <summary>Decree issued: stamp sound + the CA meter pulses (guide §5.3).</summary>
+    private void DecreeStamp()
+    {
+        Audio.Sfx.Play("decree_stamp");
+        _ca.PivotOffset = _ca.Size / 2;
+        var tw = _ca.CreateTween().SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+        tw.TweenProperty(_ca, "scale", Vector2.One * 1.35f, 0.1f);
+        tw.TweenProperty(_ca, "scale", Vector2.One, 0.18f);
     }
 
     private void BindSuggestion(UiSnapshot s)
@@ -194,6 +213,7 @@ public partial class Hud : CanvasLayer
         _suggestionCard.Visible = s.Suggestion is not null;
         if (s.Suggestion is not { } g || g.Id == _suggestionId) return;
         _suggestionId = g.Id;
+        Audio.Sfx.Play("suggestion");
         _suggestionWhy.Text = UiText.T("suggestion.why", g.ResourceName, g.Actions, g.AverageStock);
         _suggestionWhat.Text = UiText.T("suggestion.what", g.ResourceName, g.Min, g.Max)
                                + (g.WinterAdjusted ? "\n" + UiText.T("suggestion.winter") : "");
@@ -252,6 +272,7 @@ public partial class Hud : CanvasLayer
 
     private void ShowPanel(Control panel)
     {
+        if (_activePanel != panel) Audio.Sfx.Play("panel_open");
         if (_activePanel is not null && _activePanel != panel) _activePanel.Visible = false;   // one big panel at a time
         _activePanel = panel;
         panel.Visible = true;
@@ -267,6 +288,7 @@ public partial class Hud : CanvasLayer
 
     private void CloseActivePanel()
     {
+        if (_activePanel is not null) Audio.Sfx.Play("panel_close");
         if (_activePanel is not null) _activePanel.Visible = false;
         _activePanel = null;
         _selectedBuilding = 0;
@@ -339,6 +361,9 @@ public partial class Hud : CanvasLayer
             .OrderByDescending(a => a.Severity)
             .Take(MaxAlerts)
             .ToList();
+        if (shown.Any(a => a.Severity >= AlertSeverity.Warning && !_alertKeysHeard.Contains(a.Key)))
+            Audio.Sfx.Play("alert");
+        foreach (var a in shown) _alertKeysHeard.Add(a.Key);
         while (_alerts.GetChildCount() < shown.Count)
         {
             var card = AlertScene.Instantiate<AlertCard>();
@@ -365,7 +390,10 @@ public partial class Hud : CanvasLayer
         {
             switch (e)
             {
-                case CommandRejected r: PushTransient(AlertSeverity.Warning, UiText.T("event.rejected", r.Reason)); break;
+                case CommandRejected r:
+                    PushTransient(AlertSeverity.Warning, UiText.T("event.rejected", r.Reason));
+                    Audio.Sfx.Play("build_error");
+                    break;
                 case HouseholdLeft l: PushTransient(AlertSeverity.Critical, UiText.T("event.left", l.Name, l.Reason)); break;
                 case BuildingCompleted c:
                     PushTransient(AlertSeverity.Info, UiText.T("event.completed", _host.World.GetBuilding(c.BuildingId) is { } done ? UiText.Bld(done.Def) : "?"));

@@ -36,6 +36,7 @@ public partial class WorldView : Node3D
         public required MeshInstance3D Pile;
         public required Label3D Label;
         public Node3D? Site;
+        public CpuParticles3D? SiteDust;
         public bool WasActive;
     }
 
@@ -76,8 +77,11 @@ public partial class WorldView : Node3D
         Rebuild();
     }
 
+    private bool _rebuilding;
+
     private void Rebuild()
     {
+        _rebuilding = true;
         foreach (var node in _buildings.Values) node.Root.QueueFree();
         _buildings.Clear();
         foreach (var agent in _agentNodes.Values) agent.Root.QueueFree();
@@ -87,6 +91,7 @@ public partial class WorldView : Node3D
         AddChild(_ground);
         _roadVersion = -1;
         Sync();
+        _rebuilding = false;
     }
 
     public override void _Process(double delta)
@@ -201,7 +206,14 @@ public partial class WorldView : Node3D
             root.AddChild(site);
         }
         AddChild(root);
-        return new BuildingNode { Root = root, Visual = visual, Pile = pile, Label = label, Site = site };
+        if (!_rebuilding && !b.IsActive)
+        {
+            // Placed just now (not loaded): hammer + dust + pop (UI_UX_guide §5.3).
+            Visual.Fx.Pop(root);
+            Visual.Fx.Dust(root, footprint, continuous: false);
+            Audio.Sfx.PlayAt("build_place", root.GlobalPosition);
+        }
+        return new BuildingNode { Root = root, Visual = visual, Pile = pile, Label = label, Site = site, WasActive = b.IsActive };
     }
 
     private void UpdateBuildingNode(World w, Building b, BuildingNode node)
@@ -212,6 +224,14 @@ public partial class WorldView : Node3D
             node.Visual.Scale = new Vector3(1, Mathf.Lerp(0.15f, 0.9f, progress), 1);
             node.Label.Text = $"🔨 {Ironvale.Game.UI.UiText.Bld(b.Def)} {b.BuildProgressDays}/{b.Def.BuildDays}d";
             node.Label.Visible = true;
+            // Light dust while someone is building.
+            bool working = w.BuildersAt(b) > 0 && b.CanProgress;
+            if (working && node.SiteDust is null)
+            {
+                var (wc, hc) = b.Size;
+                node.SiteDust = Visual.Fx.Dust(node.Root, new Vector2(wc, hc) * _catalog.CellSize, continuous: true);
+            }
+            if (node.SiteDust is not null) node.SiteDust.Emitting = working;
         }
         else
         {
@@ -220,6 +240,13 @@ public partial class WorldView : Node3D
                 node.Visual.Scale = Vector3.One;
                 node.Site?.QueueFree();
                 node.Site = null;
+                node.SiteDust?.QueueFree();
+                node.SiteDust = null;
+                // Completed just now: pop + puff + sound.
+                var (wc, hc) = b.Size;
+                Visual.Fx.Pop(node.Root);
+                Visual.Fx.Dust(node.Root, new Vector2(wc, hc) * _catalog.CellSize, continuous: false);
+                Audio.Sfx.PlayAt("site_complete", node.Root.GlobalPosition);
             }
             bool isProducer = b.IsProducer;
             node.Label.Visible = isProducer || b.IsStorage;

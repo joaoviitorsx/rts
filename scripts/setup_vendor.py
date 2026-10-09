@@ -36,6 +36,7 @@ DST = ROOT / "godot" / "assets" / "vendor"
 
 MODEL_EXT = {".gltf", ".glb"}
 IMAGE_EXT = {".png", ".jpg", ".jpeg", ".webp", ".tga", ".exr"}
+AUDIO_EXT = {".ogg", ".wav"}
 SKIP_DIR_WORDS = ("fbx", "obj", "unity", "blend", "__macosx")
 
 # id -> (glob for the raw folder, [(source subdir, destination subdir, kind)])
@@ -62,6 +63,10 @@ PACKS: dict[str, tuple[str, list[tuple[str, str, str]]]] = {
     ]),
     # UI art (F3): Kenney UI Pack RPG Extension — PNG only (vector/swf/spritesheet stay in vendor_raw).
     "kenney_ui_rpg": ("UIpack_RPG", [("PNG", "", "images_recursive")]),
+    # Placeholder sounds (2B polish): Kenney audio packs, CC0 — .ogg only.
+    "kenney_interface_sounds": ("kenney_interface-sounds", [("Audio", "", "audio_recursive")]),
+    "kenney_impact_sounds": ("kenney_impact-sounds", [("Audio", "", "audio_recursive")]),
+    "kenney_rpg_audio": ("kenney_rpg-audio", [("Audio", "", "audio_recursive")]),
     # Layout unknown until downloaded: discovered recursively.
     "kaykit_resource_bits": ("*Resource*Bits*", [("", "", "models_recursive")]),
     "watercolor_terrain_textures": ("*atercolor*", [("", "", "images_recursive")]),
@@ -98,6 +103,11 @@ def plan_pack(pack_id: str, raw_dir: Path, entries) -> dict[Path, Path]:
         dst = DST / pack_id / dst_sub if dst_sub else DST / pack_id
         if not src.is_dir():
             print(f"  ! {pack_id}: missing folder '{src_sub}'", file=sys.stderr)
+            continue
+        if kind == "audio_recursive":
+            for f in sorted(src.rglob("*")):
+                if f.is_file() and f.suffix.lower() in AUDIO_EXT and not f.name.startswith("._"):
+                    plan[dst / f.relative_to(src)] = f
             continue
         if kind == "images_recursive":
             for f in sorted(src.rglob("*")):

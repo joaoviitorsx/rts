@@ -33,10 +33,49 @@ public static class UiSettings
 
     public static event Action? Changed;
 
+    /// <summary>Linear volumes 0–1: master and sound effects ("SFX" bus).</summary>
+    public static float MasterVolume { get; private set; } = 0.8f;
+    public static float EffectsVolume { get; private set; } = 0.8f;
+
+    private static void ApplyVolumes()
+    {
+        AudioServer.SetBusVolumeDb(0, Mathf.LinearToDb(Mathf.Max(MasterVolume, 0.0001f)));
+        AudioServer.SetBusMute(0, MasterVolume <= 0.001f);
+        int sfx = AudioServer.GetBusIndex("SFX");
+        if (sfx >= 0)
+        {
+            AudioServer.SetBusVolumeDb(sfx, Mathf.LinearToDb(Mathf.Max(EffectsVolume, 0.0001f)));
+            AudioServer.SetBusMute(sfx, EffectsVolume <= 0.001f);
+        }
+    }
+
+    public static void SetVolumes(float master, float effects)
+    {
+        MasterVolume = Mathf.Clamp(master, 0f, 1f);
+        EffectsVolume = Mathf.Clamp(effects, 0f, 1f);
+        ApplyVolumes();
+        Save("audio", "master", MasterVolume);
+        Save("audio", "effects", EffectsVolume);
+    }
+
+    private static void Save(string section, string key, float value)
+    {
+        var cfg = new ConfigFile();
+        cfg.Load(Path);
+        cfg.SetValue(section, key, value);
+        cfg.Save(Path);
+    }
+
     public static void Load(Window root)
     {
         var cfg = new ConfigFile();
-        if (cfg.Load(Path) == Error.Ok) Scale = Mathf.Clamp((float)cfg.GetValue("ui", "scale", 1f).AsDouble(), MinScale, MaxScale);
+        if (cfg.Load(Path) == Error.Ok)
+        {
+            Scale = Mathf.Clamp((float)cfg.GetValue("ui", "scale", 1f).AsDouble(), MinScale, MaxScale);
+            MasterVolume = Mathf.Clamp((float)cfg.GetValue("audio", "master", 0.8f).AsDouble(), 0f, 1f);
+            EffectsVolume = Mathf.Clamp((float)cfg.GetValue("audio", "effects", 0.8f).AsDouble(), 0f, 1f);
+        }
+        ApplyVolumes();
         Apply(root);
         root.SizeChanged += () => Apply(root);
     }

@@ -168,3 +168,12 @@
   (`SessionRecorder`); o analisador lê v1 e v2 e diz o que o v1 não tem. **Opção para o dono:** se quiser crises com horário
   já no 1º playtest, usar um build da branch (mas ele também traz as mudanças de view/UI dos itens seguintes).
 
+### P26. Sons placeholder e retorno de UI (prioridade baixa)
+- **Escolha:** pacotes Kenney (Interface, Impact, RPG Audio; CC0) em `art/vendor_raw/`, copiados pelo `setup_vendor.py`; o jogo
+  toca só `godot/assets/audio/SFX_<id>.tres` (IDs lógicos: hover, clique "toc", martelada, carimbo, livro do reeve…), gerados
+  por `tools/assets/build_audio.py`. Barramento "SFX"; volume geral e de efeitos nas Configurações (`user://settings.cfg`).
+- **Botões:** hover = clarear + escala 1,03; clique = "afundar" (escala 0,97) — por escala, sem mexer no layout (o guia fala
+  em 1–2 px; deslocar dentro de containers brigaria com o layout).
+- **Decreto criado:** carimbo + pulso no medidor de CA (o "cartão voando até o medidor" fica para a arte final).
+- **Poeira:** esferas translúcidas (a textura de gradiente não renderizava como partícula); discreta de propósito.
+

@@ -15,6 +15,9 @@ Credit is not required; we record it anyway.
 
 | Hand-Painted Watercolor Terrain Textures | Jonas Voland (Voxel Core Lab GmbH) | 1024 px | CC0 1.0 | https://voxelcorelab.itch.io | `art/vendor_raw/VoxelCoreLab_Watercolor_Terrain_Textures_1024px/` |
 | UI Pack: RPG Extension | Kenney (www.kenney.nl) | — | CC0 1.0 | https://kenney.nl | `art/vendor_raw/UIpack_RPG/` |
+| Interface Sounds | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/interface-sounds | `art/vendor_raw/kenney_interface-sounds/` |
+| Impact Sounds | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/impact-sounds | `art/vendor_raw/kenney_impact-sounds/` |
+| RPG Audio | Kenney (www.kenney.nl) | 1.0 | CC0 1.0 | https://kenney.nl/assets/rpg-audio | `art/vendor_raw/kenney_rpg-audio/` |
 
 Planned, not yet in the project: KayKit Resource Bits (Kay Lousberg, CC0); game-icons.net icons (CC BY 3.0, per-icon credit in `docs/icon_credits.csv`).
 

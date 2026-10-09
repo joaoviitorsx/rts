@@ -5,7 +5,7 @@ namespace Ironvale.Game;
 /// <summary>
 /// Official RTS camera: perspective FOV 32°, pitch 50° (owner: 45–55°, 30–35°), smooth pan and zoom,
 /// rotation in 90° steps. No pixel snapping (cozy 3D direction).
-/// Controls: WASD/arrows/screen edge/middle-drag = pan · wheel = zoom · Q/E = rotate.
+/// Controls: WASD/arrows/screen edge/middle-drag = pan · wheel = zoom toward the cursor · Q/E = rotate (animated).
 /// </summary>
 public partial class CameraRig : Node3D
 {
@@ -55,11 +55,11 @@ public partial class CameraRig : Node3D
     {
         switch (e)
         {
-            case InputEventMouseButton { ButtonIndex: MouseButton.WheelUp, Pressed: true }:
-                _targetDistance = Mathf.Clamp(_targetDistance * 0.88f, MinDistance, MaxDistance);
+            case InputEventMouseButton { ButtonIndex: MouseButton.WheelUp, Pressed: true } up:
+                ZoomToward(up.Position, _targetDistance * 0.88f);
                 break;
-            case InputEventMouseButton { ButtonIndex: MouseButton.WheelDown, Pressed: true }:
-                _targetDistance = Mathf.Clamp(_targetDistance / 0.88f, MinDistance, MaxDistance);
+            case InputEventMouseButton { ButtonIndex: MouseButton.WheelDown, Pressed: true } down:
+                ZoomToward(down.Position, _targetDistance / 0.88f);
                 break;
             case InputEventMouseButton { ButtonIndex: MouseButton.Middle } mb:
                 _dragging = mb.Pressed;
@@ -115,6 +115,21 @@ public partial class CameraRig : Node3D
         _distance = Mathf.Lerp(_distance, _targetDistance, t);
         _yaw = Mathf.LerpAngle(_yaw, _targetYaw, t);
         ApplyTransform();
+    }
+
+    /// <summary>
+    /// Zoom keeping the ground point under the cursor in place (guide §5.3): the focus moves toward that point by the
+    /// same ratio the distance shrinks (and away from it when zooming out).
+    /// </summary>
+    private void ZoomToward(Vector2 screen, float distance)
+    {
+        float next = Mathf.Clamp(distance, MinDistance, MaxDistance);
+        if (GroundUnderMouse(screen) is { } hit && _targetDistance > 0)
+        {
+            float k = 1f - next / _targetDistance;
+            _targetPos += (hit with { Y = 0 } - _targetPos) * k;
+        }
+        _targetDistance = next;
     }
 
     private Vector3 PlanarForward() => new(-Mathf.Sin(_yaw), 0, -Mathf.Cos(_yaw));

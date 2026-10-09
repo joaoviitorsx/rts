@@ -1,0 +1,14 @@
+{
+  "ui_hover": -14.0,
+  "ui_click": -6.0,
+  "panel_open": -10.0,
+  "panel_close": -10.0,
+  "build_snap": -16.0,
+  "build_place": -4.0,
+  "road_place": -8.0,
+  "build_error": -6.0,
+  "site_complete": -3.0,
+  "decree_stamp": -6.0,
+  "suggestion": -6.0,
+  "alert": -10.0
+}

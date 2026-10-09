@@ -23,6 +23,8 @@ public partial class BuildController : Node3D
     private int _rotation;
     private Cell _cell;
     private bool _valid;
+    private Vector3 _ghostTarget;
+    private Cell? _lastCell;
 
     public BuildingDef? Selected { get; private set; }
     public bool RoadMode { get; private set; }
@@ -108,8 +110,18 @@ public partial class BuildController : Node3D
         BuildModeChanged?.Invoke();
     }
 
+    private void ShakeGhost()
+    {
+        if (_ghost is null) return;
+        var tw = _ghost.CreateTween();
+        var basePos = _ghostTarget;
+        foreach (float dx in new[] { 0.35f, -0.3f, 0.2f, -0.1f, 0f })
+            tw.TweenProperty(_ghost, "position", basePos + new Vector3(dx, 0, 0), 0.035f);
+    }
+
     public void Cancel()
     {
+        _lastCell = null;
         RoadMode = false;
         _roadStart = null;
         _roadGhost?.QueueFree();
@@ -140,6 +152,8 @@ public partial class BuildController : Node3D
         if (RoadMode && !_host.IsBusy) UpdateRoadGhost();
         if (Selected is null || _ghost is null || _host.IsBusy) return;
         UpdateGhost(null);
+        // Smooth follow (≈ 80 ms to settle) instead of jumping cell to cell.
+        _ghost.Position = _ghost.Position.Lerp(_ghostTarget, 1f - Mathf.Exp(-25f * (float)delta));
     }
 
     /// <summary>Snaps the ghost to the grid under the given screen position (or the mouse) and validates it.</summary>
@@ -152,7 +166,10 @@ public partial class BuildController : Node3D
         float cs = _catalog.CellSize;
         // Centre the footprint on the mouse.
         _cell = new Cell(Mathf.FloorToInt(hit.X / cs - (w - 1) / 2f), Mathf.FloorToInt(hit.Z / cs - (h - 1) / 2f));
-        _ghost.Position = _catalog.CellToWorld(_cell.X, _cell.Y) + new Vector3(w, 0, h) * (cs / 2);
+        _ghostTarget = _catalog.CellToWorld(_cell.X, _cell.Y) + new Vector3(w, 0, h) * (cs / 2);
+        if (_lastCell is null) _ghost.Position = _ghostTarget;   // first frame: no slide from the origin
+        if (_lastCell != _cell) Audio.Sfx.Play("build_snap");
+        _lastCell = _cell;
 
         var world = _host.World;
         _valid = world.Map.CanPlace(Selected, _cell, _rotation);   // materials come later, carried to the site
@@ -177,6 +194,7 @@ public partial class BuildController : Node3D
                     {
                         var cells = RoadLine(start, end);
                         _host.Send(Input.IsKeyPressed(Key.Ctrl) ? new RemoveRoad(cells) : new PlaceRoad(cells));
+                        Audio.Sfx.PlayAt("road_place", _view.CellCenter(end));
                     }
                     _roadStart = null;   // stay in road mode for the next segment
                     GetViewport().SetInputAsHandled();
@@ -199,6 +217,11 @@ public partial class BuildController : Node3D
                     {
                         _host.Send(new PlaceBuilding(Selected.Id, _cell, _rotation));
                         if (!Input.IsKeyPressed(Key.Shift)) Cancel();   // Shift = keep placing
+                    }
+                    else
+                    {
+                        ShakeGhost();   // guide §5.3: short shake + muffled sound
+                        Audio.Sfx.Play("build_error");
                     }
                     GetViewport().SetInputAsHandled();
                     break;

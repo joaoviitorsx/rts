@@ -57,6 +57,8 @@ settings.scale,Escala da interface,Interface scale
 settings.scale.tooltip,"Escala da interface (80%–150%). Também: Ctrl+= / Ctrl+-.","Interface scale (80%–150%). Also: Ctrl+= / Ctrl+-."
 settings.applied,"Aplicada nesta janela: {0}% (menor texto ≈ {1} px){2}","Applied in this window: {0}% (smallest text ≈ {1} px){2}"
 settings.applied.legible," — aumentada para o texto ficar legível (≥ 12 px)"," — raised so text stays readable (≥ 12 px)"
+settings.volume.master,Volume geral,Master volume
+settings.volume.effects,Efeitos sonoros,Sound effects
 settings.applied.fit," — reduzida para a interface caber na janela"," — reduced so the interface fits the window"
 alert.food_out,Comida acaba em ~{0} dias,Food runs out in ~{0} days
 alert.food_low,Comida para ~{0} dias,Food for ~{0} days
